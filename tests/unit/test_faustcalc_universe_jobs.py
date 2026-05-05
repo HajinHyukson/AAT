@@ -7,10 +7,14 @@ from sqlalchemy.dialects import postgresql
 
 from jobs.build_faustcalc_universe import eligible_member_statement
 from jobs.run_faustcalc_attribution_backfill import (
+    LOCKED_ELSEWHERE_STATUS,
+    choose_candidate_task,
     chunked_windows,
     format_task_progress,
     pending_tasks_statement,
+    process_task,
     process_window_chunk,
+    task_advisory_lock_key,
     valid_windows_for_backfill,
     windows_after_checkpoint,
 )
@@ -89,6 +93,9 @@ def test_task_progress_format_shows_completed_out_of_total() -> None:
             "current_ran_windows": 25,
             "current_expected_windows": 575,
             "current_last_window_end": "2024-08-01T00:00:00+00:00",
+            "worker_id": "dev-1",
+            "workers": 2,
+            "locked_misses": 3,
         }
     )
 
@@ -97,6 +104,50 @@ def test_task_progress_format_shows_completed_out_of_total() -> None:
     assert "windows_ran=950/1000" in text
     assert "current_ticker=A" in text
     assert "current_windows=25/575" in text
+    assert "worker_id=dev-1" in text
+    assert "workers=2" in text
+    assert "locked_misses=3" in text
+
+
+def test_task_advisory_lock_key_is_stable_signed_int64() -> None:
+    task_id = uuid4()
+
+    first = task_advisory_lock_key(task_id)
+    second = task_advisory_lock_key(task_id)
+
+    assert first == second
+    assert -(2**63) <= first < 2**63
+
+
+def test_choose_candidate_task_skips_inflight_and_deferred_locked() -> None:
+    first = uuid4()
+    second = uuid4()
+    third = uuid4()
+
+    selected = choose_candidate_task(
+        candidates=[first, second, third],
+        inflight_task_ids={first},
+        deferred_locked_task_ids={second},
+    )
+
+    assert selected == third
+
+
+def test_process_task_reports_locked_elsewhere_without_work(monkeypatch) -> None:
+    task_id = uuid4()
+
+    monkeypatch.setattr("jobs.run_faustcalc_attribution_backfill.try_acquire_task_lock", lambda **_kwargs: None)
+
+    report = process_task(
+        task_id=task_id,
+        lookback_days=252,
+        window_commit_size=25,
+        progress_every=0,
+        prefer_compose_port=True,
+    )
+
+    assert report["status"] == LOCKED_ELSEWHERE_STATUS
+    assert report["ticker"] == str(task_id)
 
 
 def test_pending_tasks_statement_orders_by_expected_windows() -> None:

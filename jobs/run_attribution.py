@@ -18,6 +18,7 @@ from engine.contracts import (
     PriceBar as EnginePriceBar,
     TimeWindow,
 )
+from jobs.advisory_locks import advisory_lock_key
 from engine.events.taxonomy import classify_event
 from engine.factors.baseline import build_factor_baseline_result
 from engine.factors.french_model import FRENCH_FACTOR_NAMES, build_french_factor_inputs
@@ -857,50 +858,52 @@ def persist_attribution_result(
 ) -> models.AttributionRun:
     if cadence not in {"daily", "weekly", "monthly"}:
         raise ValueError(f"unsupported attribution cadence {cadence}")
-    run = session.execute(
-        select(models.AttributionRun)
-        .where(models.AttributionRun.security_id == result.security_id)
-        .where(models.AttributionRun.window_start == result.window.start)
-        .where(models.AttributionRun.window_end == result.window.end)
-        .where(models.AttributionRun.model_version == result.model_version)
-        .where(models.AttributionRun.factor_basket_version == factor_basket_version)
-        .where(models.AttributionRun.cadence == cadence)
-    ).scalar_one_or_none()
-
-    if run is None:
-        run = models.AttributionRun(
-            attribution_run_id=uuid.uuid4(),
-            security_id=result.security_id,
-            window_start=result.window.start,
-            window_end=result.window.end,
-            attribution_cutoff=result.attribution_cutoff,
-            observed_return_bps=result.observed_return_bps,
-            unexplained_residual_bps=result.unexplained_residual_bps,
-            model_version=result.model_version,
-            data_version="local-dev",
-            factor_basket_version=factor_basket_version,
-            cadence=cadence,
-            created_at=datetime.now(timezone.utc),
+    created_at = datetime.now(timezone.utc)
+    lock_key = attribution_run_advisory_lock_key(
+        security_id=result.security_id,
+        window_start=result.window.start,
+        window_end=result.window.end,
+        model_version=result.model_version,
+        factor_basket_version=factor_basket_version,
+        cadence=cadence,
+    )
+    session.execute(select(func.pg_advisory_xact_lock(lock_key)))
+    stmt = insert(models.AttributionRun).values(
+        attribution_run_id=uuid.uuid4(),
+        security_id=result.security_id,
+        window_start=result.window.start,
+        window_end=result.window.end,
+        attribution_cutoff=result.attribution_cutoff,
+        observed_return_bps=result.observed_return_bps,
+        unexplained_residual_bps=result.unexplained_residual_bps,
+        model_version=result.model_version,
+        data_version="local-dev",
+        factor_basket_version=factor_basket_version,
+        cadence=cadence,
+        created_at=created_at,
+    )
+    stmt = stmt.on_conflict_do_update(
+        constraint="uq_attribution_run_window_model",
+        set_={
+            "attribution_cutoff": stmt.excluded.attribution_cutoff,
+            "observed_return_bps": stmt.excluded.observed_return_bps,
+            "unexplained_residual_bps": stmt.excluded.unexplained_residual_bps,
+            "data_version": stmt.excluded.data_version,
+            "created_at": stmt.excluded.created_at,
+        },
+    ).returning(models.AttributionRun.attribution_run_id)
+    run_id = session.execute(stmt).scalar_one()
+    session.execute(
+        delete(models.AttributionContribution).where(
+            models.AttributionContribution.attribution_run_id == run_id
         )
-        session.add(run)
-    else:
-        run.attribution_cutoff = result.attribution_cutoff
-        run.observed_return_bps = result.observed_return_bps
-        run.unexplained_residual_bps = result.unexplained_residual_bps
-        run.data_version = "local-dev"
-        run.created_at = datetime.now(timezone.utc)
-        session.execute(
-            delete(models.AttributionContribution).where(
-                models.AttributionContribution.attribution_run_id == run.attribution_run_id
-            )
-        )
-    session.flush()
+    )
 
     for contribution in result.contributions:
         session.add(
             models.AttributionContribution(
                 attribution_contribution_id=uuid.uuid4(),
-                attribution_run_id=run.attribution_run_id,
+                attribution_run_id=run_id,
                 driver=contribution.driver.value,
                 name=contribution.name,
                 contribution_bps=contribution.contribution_bps,
@@ -912,7 +915,37 @@ def persist_attribution_result(
             )
         )
     session.flush()
+    run = models.AttributionRun(
+        attribution_run_id=run_id,
+        security_id=result.security_id,
+        window_start=result.window.start,
+        window_end=result.window.end,
+        attribution_cutoff=result.attribution_cutoff,
+        observed_return_bps=result.observed_return_bps,
+        unexplained_residual_bps=result.unexplained_residual_bps,
+        model_version=result.model_version,
+        data_version="local-dev",
+        factor_basket_version=factor_basket_version,
+        cadence=cadence,
+        created_at=created_at,
+    )
     return run
+
+
+def attribution_run_advisory_lock_key(
+    *,
+    security_id: uuid.UUID,
+    window_start: datetime,
+    window_end: datetime,
+    model_version: str,
+    factor_basket_version: str,
+    cadence: str,
+) -> int:
+    return advisory_lock_key(
+        "aat:attribution_run:"
+        f"{security_id}:{window_start.isoformat()}:{window_end.isoformat()}:"
+        f"{model_version}:{factor_basket_version}:{cadence}"
+    )
 
 
 def _date_to_utc_datetime(value: date) -> datetime:

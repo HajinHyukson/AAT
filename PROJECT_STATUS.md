@@ -1,10 +1,12 @@
 # Project Status
 
-Last updated: 2026-05-04
+Last updated: 2026-05-05
 
 ## Current Snapshot
 
 The project is an executable MVP v0 scaffold with expanded attribution plumbing, not yet a production-complete attribution model.
+
+Detailed FaustCalc migration, data-content, server DB, and backfill progress notes now live in `docs/FAUSTCALC_DATA_IMPLEMENTATION_REPORT.md`.
 
 Current implemented surface:
 
@@ -22,7 +24,7 @@ Latest local verification:
 python -m pytest tests/unit tests/lookahead_audit
 ```
 
-Result: 81 tests passed on 2026-05-04.
+Result: 84 tests passed on 2026-05-05.
 
 Current production boundary:
 
@@ -77,6 +79,7 @@ Current target: MVP v0 scaffold.
 - Added DB-backed progress output to the FaustCalc attribution backfill command, including completed task count out of the total task count.
 - Optimized the FaustCalc attribution backfill for local execution: reusable peer basket context avoids repeated peer price loads, tasks now checkpoint every window chunk, `--task-order expected-windows` runs the smallest positive-window tasks first, and `--status-only` prints tracker state without running work.
 - Fixed DB session pooling so repeated checkpoint sessions reuse a small shared SQLAlchemy pool instead of exhausting the local Postgres client limit.
+- Added distributed FaustCalc backfill coordination with Postgres advisory task locks, opt-in `--workers`, worker IDs, lock-miss progress reporting, and concurrency-safe attribution run upserts.
 
 ## Where We Left Off
 

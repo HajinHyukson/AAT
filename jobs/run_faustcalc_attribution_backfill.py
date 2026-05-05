@@ -1,17 +1,21 @@
 from __future__ import annotations
 
 import argparse
+import os
+import socket
 import uuid
 from collections import Counter
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from dataclasses import dataclass, field
 from datetime import date, datetime, time, timedelta, timezone
 
-from sqlalchemy import case, func, select
+from sqlalchemy import case, func, select, text
 from sqlalchemy.dialects.postgresql import insert
 
 from db import models
-from db.session import session_scope
+from db.session import make_engine, session_scope
 from engine.contracts import TimeWindow
+from jobs.advisory_locks import advisory_lock_key
 from jobs.faustcalc_common import (
     DEFAULT_FAUSTCALC_UNIVERSE_NAME,
     DEFAULT_FAUSTCALC_UNIVERSE_VERSION,
@@ -32,6 +36,7 @@ from jobs.run_batch_attribution import build_windows, load_trading_dates
 
 VALID_CADENCES = ("daily", "weekly", "monthly")
 VALID_TASK_ORDERS = ("expected-windows", "ticker")
+LOCKED_ELSEWHERE_STATUS = "locked_elsewhere"
 
 
 @dataclass
@@ -51,6 +56,9 @@ class FaustcalcAttributionBackfillReport:
     analysis_end: date | None = None
     tasks_created: int = 0
     tasks_processed: int = 0
+    locked_misses: int = 0
+    workers: int = 1
+    worker_id: str | None = None
     summaries_refreshed: int = 0
     final_task_progress: dict[str, object] = field(default_factory=dict)
     cadence_coverage: dict[str, CadenceBackfillCoverage] = field(default_factory=dict)
@@ -68,6 +76,9 @@ class FaustcalcAttributionBackfillReport:
             "analysis_end": self.analysis_end.isoformat() if self.analysis_end else None,
             "tasks_created": self.tasks_created,
             "tasks_processed": self.tasks_processed,
+            "locked_misses": self.locked_misses,
+            "workers": self.workers,
+            "worker_id": self.worker_id,
             "summaries_refreshed": self.summaries_refreshed,
             "final_task_progress": self.final_task_progress,
             "cadence_coverage": {
@@ -88,7 +99,9 @@ class FaustcalcAttributionBackfillReport:
             f"  backfill_run_id={self.backfill_run_id}",
             f"  universe={self.universe_name} version={self.universe_version}",
             f"  analysis_window={self.analysis_start}->{self.analysis_end}",
-            f"  tasks_created={self.tasks_created} tasks_processed={self.tasks_processed}",
+            f"  tasks_created={self.tasks_created} tasks_processed={self.tasks_processed} "
+            f"locked_misses={self.locked_misses}",
+            f"  worker_id={self.worker_id} workers={self.workers}",
             f"  task_progress={format_task_progress(self.final_task_progress)}",
             f"  summaries_refreshed={self.summaries_refreshed}",
             f"  success={self.success}",
@@ -116,6 +129,13 @@ def main() -> None:
     parser.add_argument("--max-tasks", type=int, help="Stop after processing this many tasks")
     parser.add_argument("--window-commit-size", type=int, default=25)
     parser.add_argument("--task-order", choices=VALID_TASK_ORDERS, default="expected-windows")
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Number of local worker threads in this process; distributed safety uses Postgres advisory locks",
+    )
+    parser.add_argument("--worker-id", help="Optional human-readable worker id for progress output")
     parser.add_argument("--status-only", action="store_true")
     parser.add_argument(
         "--progress-every",
@@ -155,6 +175,8 @@ def main() -> None:
         max_tasks=args.max_tasks,
         window_commit_size=args.window_commit_size,
         task_order=args.task_order,
+        workers=args.workers,
+        worker_id=args.worker_id,
         progress_every=args.progress_every,
         refresh_summaries=not args.skip_summary_refresh,
         prefer_compose_port=args.prefer_compose_port,
@@ -177,6 +199,8 @@ def run_faustcalc_attribution_backfill(
     max_tasks: int | None = None,
     window_commit_size: int = 25,
     task_order: str = "expected-windows",
+    workers: int = 1,
+    worker_id: str | None = None,
     progress_every: int = 1,
     refresh_summaries: bool = True,
     prefer_compose_port: bool = False,
@@ -185,9 +209,14 @@ def run_faustcalc_attribution_backfill(
         raise ValueError("window_commit_size must be positive")
     if task_order not in VALID_TASK_ORDERS:
         raise ValueError(f"task_order must be one of {VALID_TASK_ORDERS}")
+    if workers <= 0:
+        raise ValueError("workers must be positive")
+    worker_id = worker_id or default_worker_id()
     report = FaustcalcAttributionBackfillReport(
         universe_name=universe_name,
         universe_version=universe_version,
+        workers=workers,
+        worker_id=worker_id,
         cadence_coverage={cadence: CadenceBackfillCoverage() for cadence in cadences},
     )
     with session_scope(prefer_compose_port=prefer_compose_port) as session:
@@ -226,52 +255,29 @@ def run_faustcalc_attribution_backfill(
                 session=session,
                 backfill_run_id=backfill_run_id,
                 prefix="progress initial",
+                worker_id=worker_id,
+                workers=workers,
             )
 
-    processed = 0
-    while max_tasks is None or processed < max_tasks:
-        limit = batch_size if max_tasks is None else min(batch_size, max_tasks - processed)
-        with session_scope(prefer_compose_port=prefer_compose_port) as session:
-            tasks = load_pending_tasks(
-                session=session,
-                backfill_run_id=backfill_run_id,
-                limit=limit,
-                task_order=task_order,
-            )
-        if not tasks:
-            break
-        for task_id in tasks:
-            task_report = process_task(
-                task_id=task_id,
-                lookback_days=lookback_days,
-                window_commit_size=window_commit_size,
-                progress_every=progress_every,
-                prefer_compose_port=prefer_compose_port,
-            )
-            processed += 1
-            report.tasks_processed += 1
-            coverage = report.cadence_coverage.setdefault(task_report["cadence"], CadenceBackfillCoverage())
-            coverage.expected += task_report["expected_windows"]
-            coverage.ran += task_report["ran_windows"]
-            coverage.skipped += task_report["skipped_windows"]
-            if task_report["status"] == "failed":
-                coverage.failed_tasks += 1
-            report.skip_reasons.extend(task_report["skip_reasons"])
-            if progress_every > 0 and processed % progress_every == 0:
-                with session_scope(prefer_compose_port=prefer_compose_port) as session:
-                    print_task_progress(
-                        session=session,
-                        backfill_run_id=backfill_run_id,
-                        prefix="progress",
-                    )
-            if max_tasks is not None and processed >= max_tasks:
-                break
+    process_backfill_tasks(
+        report=report,
+        backfill_run_id=backfill_run_id,
+        lookback_days=lookback_days,
+        batch_size=batch_size,
+        max_tasks=max_tasks,
+        window_commit_size=window_commit_size,
+        task_order=task_order,
+        workers=workers,
+        worker_id=worker_id,
+        progress_every=progress_every,
+        prefer_compose_port=prefer_compose_port,
+    )
 
     with session_scope(prefer_compose_port=prefer_compose_port) as session:
         report.final_task_progress = task_progress(session=session, backfill_run_id=backfill_run_id)
         remaining = remaining_task_count(session=session, backfill_run_id=backfill_run_id)
         final_status = "running" if remaining else ("completed" if report.success else "failed")
-        if refresh_summaries:
+        if refresh_summaries and remaining == 0:
             summary_report = refresh_attribution_summaries(
                 session=session,
                 universe_name=universe_name,
@@ -431,6 +437,189 @@ def ensure_backfill_tasks(
     return created
 
 
+def process_backfill_tasks(
+    *,
+    report: FaustcalcAttributionBackfillReport,
+    backfill_run_id: uuid.UUID,
+    lookback_days: int,
+    batch_size: int,
+    max_tasks: int | None,
+    window_commit_size: int,
+    task_order: str,
+    workers: int,
+    worker_id: str,
+    progress_every: int,
+    prefer_compose_port: bool,
+) -> None:
+    if workers == 1:
+        process_backfill_tasks_sequential(
+            report=report,
+            backfill_run_id=backfill_run_id,
+            lookback_days=lookback_days,
+            batch_size=batch_size,
+            max_tasks=max_tasks,
+            window_commit_size=window_commit_size,
+            task_order=task_order,
+            worker_id=worker_id,
+            progress_every=progress_every,
+            prefer_compose_port=prefer_compose_port,
+        )
+        return
+
+    inflight: dict = {}
+    inflight_task_ids: set[uuid.UUID] = set()
+    deferred_locked: set[uuid.UUID] = set()
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        while max_tasks is None or report.tasks_processed < max_tasks:
+            submitted = False
+            while len(inflight) < workers and (max_tasks is None or report.tasks_processed + len(inflight) < max_tasks):
+                fetch_limit = max(batch_size, workers * 4) + len(deferred_locked)
+                with session_scope(prefer_compose_port=prefer_compose_port) as session:
+                    candidates = load_pending_tasks(
+                        session=session,
+                        backfill_run_id=backfill_run_id,
+                        limit=fetch_limit,
+                        task_order=task_order,
+                    )
+                task_id = choose_candidate_task(
+                    candidates=candidates,
+                    inflight_task_ids=inflight_task_ids,
+                    deferred_locked_task_ids=deferred_locked,
+                )
+                if task_id is None:
+                    break
+                inflight_task_ids.add(task_id)
+                future = executor.submit(
+                    process_task,
+                    task_id=task_id,
+                    lookback_days=lookback_days,
+                    window_commit_size=window_commit_size,
+                    progress_every=progress_every,
+                    worker_id=worker_id,
+                    prefer_compose_port=prefer_compose_port,
+                )
+                inflight[future] = task_id
+                submitted = True
+
+            if not inflight:
+                if submitted:
+                    continue
+                break
+
+            done, _pending = wait(inflight, return_when=FIRST_COMPLETED)
+            for future in done:
+                task_id = inflight.pop(future)
+                inflight_task_ids.discard(task_id)
+                task_report = future.result()
+                if task_report["status"] == LOCKED_ELSEWHERE_STATUS:
+                    report.locked_misses += 1
+                    deferred_locked.add(task_id)
+                    continue
+
+                deferred_locked.discard(task_id)
+                apply_task_report(report=report, task_report=task_report)
+                if progress_every > 0 and report.tasks_processed % progress_every == 0:
+                    with session_scope(prefer_compose_port=prefer_compose_port) as session:
+                        print_task_progress(
+                            session=session,
+                            backfill_run_id=backfill_run_id,
+                            prefix="progress",
+                            worker_id=worker_id,
+                            workers=workers,
+                            locked_misses=report.locked_misses,
+                        )
+
+        for future in list(inflight):
+            task_id = inflight[future]
+            task_report = future.result()
+            inflight_task_ids.discard(task_id)
+            if task_report["status"] == LOCKED_ELSEWHERE_STATUS:
+                report.locked_misses += 1
+                continue
+            apply_task_report(report=report, task_report=task_report)
+
+
+def process_backfill_tasks_sequential(
+    *,
+    report: FaustcalcAttributionBackfillReport,
+    backfill_run_id: uuid.UUID,
+    lookback_days: int,
+    batch_size: int,
+    max_tasks: int | None,
+    window_commit_size: int,
+    task_order: str,
+    worker_id: str,
+    progress_every: int,
+    prefer_compose_port: bool,
+) -> None:
+    deferred_locked: set[uuid.UUID] = set()
+    while max_tasks is None or report.tasks_processed < max_tasks:
+        fetch_limit = max(batch_size, 1) + len(deferred_locked)
+        with session_scope(prefer_compose_port=prefer_compose_port) as session:
+            candidates = load_pending_tasks(
+                session=session,
+                backfill_run_id=backfill_run_id,
+                limit=fetch_limit,
+                task_order=task_order,
+            )
+        task_id = choose_candidate_task(
+            candidates=candidates,
+            inflight_task_ids=set(),
+            deferred_locked_task_ids=deferred_locked,
+        )
+        if task_id is None:
+            break
+        task_report = process_task(
+            task_id=task_id,
+            lookback_days=lookback_days,
+            window_commit_size=window_commit_size,
+            progress_every=progress_every,
+            worker_id=worker_id,
+            prefer_compose_port=prefer_compose_port,
+        )
+        if task_report["status"] == LOCKED_ELSEWHERE_STATUS:
+            report.locked_misses += 1
+            deferred_locked.add(task_id)
+            continue
+
+        deferred_locked.discard(task_id)
+        apply_task_report(report=report, task_report=task_report)
+        if progress_every > 0 and report.tasks_processed % progress_every == 0:
+            with session_scope(prefer_compose_port=prefer_compose_port) as session:
+                print_task_progress(
+                    session=session,
+                    backfill_run_id=backfill_run_id,
+                    prefix="progress",
+                    worker_id=worker_id,
+                    workers=1,
+                    locked_misses=report.locked_misses,
+                )
+
+
+def choose_candidate_task(
+    *,
+    candidates: list[uuid.UUID],
+    inflight_task_ids: set[uuid.UUID],
+    deferred_locked_task_ids: set[uuid.UUID],
+) -> uuid.UUID | None:
+    for task_id in candidates:
+        if task_id in inflight_task_ids or task_id in deferred_locked_task_ids:
+            continue
+        return task_id
+    return None
+
+
+def apply_task_report(*, report: FaustcalcAttributionBackfillReport, task_report: dict) -> None:
+    report.tasks_processed += 1
+    coverage = report.cadence_coverage.setdefault(task_report["cadence"], CadenceBackfillCoverage())
+    coverage.expected += task_report["expected_windows"]
+    coverage.ran += task_report["ran_windows"]
+    coverage.skipped += task_report["skipped_windows"]
+    if task_report["status"] == "failed":
+        coverage.failed_tasks += 1
+    report.skip_reasons.extend(task_report["skip_reasons"])
+
+
 def load_pending_tasks(
     *,
     session,
@@ -495,7 +684,7 @@ def task_progress(*, session, backfill_run_id: uuid.UUID) -> dict[str, object]:
             func.coalesce(func.sum(models.AttributionBackfillTask.skipped_windows), 0),
         ).where(models.AttributionBackfillTask.backfill_run_id == backfill_run_id)
     ).one()
-    current = session.execute(
+    current_rows = session.execute(
         select(
             models.AttributionBackfillTask.ticker,
             models.AttributionBackfillTask.cadence,
@@ -506,8 +695,8 @@ def task_progress(*, session, backfill_run_id: uuid.UUID) -> dict[str, object]:
         .where(models.AttributionBackfillTask.backfill_run_id == backfill_run_id)
         .where(models.AttributionBackfillTask.status == "running")
         .order_by(models.AttributionBackfillTask.updated_at.desc())
-        .limit(1)
-    ).one_or_none()
+        .limit(5)
+    ).all()
     total_tasks = sum(status_counts.values())
     completed_tasks = status_counts.get("completed", 0)
     skipped_tasks = status_counts.get("skipped", 0)
@@ -525,7 +714,8 @@ def task_progress(*, session, backfill_run_id: uuid.UUID) -> dict[str, object]:
         "ran_windows": int(totals[1] or 0),
         "skipped_windows": int(totals[2] or 0),
     }
-    if current is not None:
+    if current_rows:
+        current = current_rows[0]
         progress.update(
             {
                 "current_ticker": current.ticker,
@@ -537,12 +727,37 @@ def task_progress(*, session, backfill_run_id: uuid.UUID) -> dict[str, object]:
                 "current_expected_windows": int(current.expected_windows or 0),
             }
         )
+        progress["current_tasks"] = [
+            {
+                "ticker": row.ticker,
+                "cadence": row.cadence,
+                "ran_windows": int(row.ran_windows or 0),
+                "expected_windows": int(row.expected_windows or 0),
+                "last_window_end": row.last_window_end.isoformat() if row.last_window_end is not None else None,
+            }
+            for row in current_rows
+        ]
     return progress
 
 
-def print_task_progress(*, session, backfill_run_id: uuid.UUID, prefix: str = "progress") -> None:
+def print_task_progress(
+    *,
+    session,
+    backfill_run_id: uuid.UUID,
+    prefix: str = "progress",
+    worker_id: str | None = None,
+    workers: int | None = None,
+    locked_misses: int | None = None,
+) -> None:
+    progress = task_progress(session=session, backfill_run_id=backfill_run_id)
+    if worker_id is not None:
+        progress["worker_id"] = worker_id
+    if workers is not None:
+        progress["workers"] = workers
+    if locked_misses is not None:
+        progress["locked_misses"] = locked_misses
     print(
-        f"{prefix} backfill_run_id={backfill_run_id} {format_task_progress(task_progress(session=session, backfill_run_id=backfill_run_id))}",
+        f"{prefix} backfill_run_id={backfill_run_id} {format_task_progress(progress)}",
         flush=True,
     )
 
@@ -561,6 +776,12 @@ def format_task_progress(progress: dict[str, object]) -> str:
         f"windows_ran={progress.get('ran_windows', 0)}/{progress.get('expected_windows', 0)} "
         f"windows_skipped={progress.get('skipped_windows', 0)}"
     )
+    if progress.get("worker_id"):
+        text += f" worker_id={progress.get('worker_id')}"
+    if progress.get("workers"):
+        text += f" workers={progress.get('workers')}"
+    if progress.get("locked_misses") is not None:
+        text += f" locked_misses={progress.get('locked_misses')}"
     if progress.get("current_ticker"):
         text += (
             f" current_ticker={progress.get('current_ticker')} "
@@ -568,7 +789,47 @@ def format_task_progress(progress: dict[str, object]) -> str:
             f"current_windows={progress.get('current_ran_windows', 0)}/{progress.get('current_expected_windows', 0)} "
             f"current_last_window_end={progress.get('current_last_window_end')}"
         )
+    current_tasks = progress.get("current_tasks")
+    if isinstance(current_tasks, list) and len(current_tasks) > 1:
+        active = ",".join(
+            f"{item.get('ticker')}:{item.get('cadence')}:{item.get('ran_windows', 0)}/{item.get('expected_windows', 0)}"
+            for item in current_tasks[:5]
+            if isinstance(item, dict)
+        )
+        text += f" active_tasks={active}"
     return text
+
+
+@dataclass
+class TaskAdvisoryLock:
+    connection: object
+    key: int
+
+    def release(self) -> None:
+        try:
+            self.connection.execute(text("SELECT pg_advisory_unlock(:lock_key)"), {"lock_key": self.key})
+        finally:
+            self.connection.close()
+
+
+def task_advisory_lock_key(task_id: uuid.UUID) -> int:
+    return advisory_lock_key(f"aat:faustcalc_backfill_task:{task_id}")
+
+
+def try_acquire_task_lock(*, task_id: uuid.UUID, prefer_compose_port: bool) -> TaskAdvisoryLock | None:
+    connection = make_engine(prefer_compose_port).connect()
+    key = task_advisory_lock_key(task_id)
+    try:
+        acquired = bool(
+            connection.execute(text("SELECT pg_try_advisory_lock(:lock_key)"), {"lock_key": key}).scalar_one()
+        )
+        if not acquired:
+            connection.close()
+            return None
+        return TaskAdvisoryLock(connection=connection, key=key)
+    except Exception:
+        connection.close()
+        raise
 
 
 def process_task(
@@ -577,6 +838,32 @@ def process_task(
     lookback_days: int,
     window_commit_size: int = 25,
     progress_every: int = 0,
+    worker_id: str | None = None,
+    prefer_compose_port: bool,
+) -> dict:
+    lock = try_acquire_task_lock(task_id=task_id, prefer_compose_port=prefer_compose_port)
+    if lock is None:
+        return locked_elsewhere_task_payload(task_id=task_id)
+    try:
+        return _process_task_locked(
+            task_id=task_id,
+            lookback_days=lookback_days,
+            window_commit_size=window_commit_size,
+            progress_every=progress_every,
+            worker_id=worker_id,
+            prefer_compose_port=prefer_compose_port,
+        )
+    finally:
+        lock.release()
+
+
+def _process_task_locked(
+    *,
+    task_id: uuid.UUID,
+    lookback_days: int,
+    window_commit_size: int = 25,
+    progress_every: int = 0,
+    worker_id: str | None = None,
     prefer_compose_port: bool,
 ) -> dict:
     skip_reasons: list[str] = []
@@ -586,6 +873,8 @@ def process_task(
             task = session.get(models.AttributionBackfillTask, task_id)
             if task is None:
                 raise RuntimeError(f"backfill task {task_id} not found")
+            if task.status in {"completed", "skipped", "failed"}:
+                return task_payload(task=task, skip_reasons=[])
             task.status = "running"
             task.started_at = task.started_at or cutoff
             task.updated_at = cutoff
@@ -696,6 +985,7 @@ def process_task(
                         session=session,
                         backfill_run_id=task_state["backfill_run_id"],
                         prefix="progress window",
+                        worker_id=worker_id,
                     )
 
         with session_scope(prefer_compose_port=prefer_compose_port) as session:
@@ -792,6 +1082,18 @@ def task_payload(*, task, skip_reasons: list[str]) -> dict:
     }
 
 
+def locked_elsewhere_task_payload(*, task_id: uuid.UUID) -> dict:
+    return {
+        "ticker": str(task_id),
+        "cadence": "unknown",
+        "status": LOCKED_ELSEWHERE_STATUS,
+        "expected_windows": 0,
+        "ran_windows": 0,
+        "skipped_windows": 0,
+        "skip_reasons": [],
+    }
+
+
 def valid_windows_for_backfill(
     *,
     trading_dates: list[datetime],
@@ -852,6 +1154,10 @@ def max_datetime(left: datetime, right: datetime | None) -> datetime:
 
 def min_datetime(left: datetime, right: datetime | None) -> datetime:
     return min(left, right) if right is not None else left
+
+
+def default_worker_id() -> str:
+    return f"{socket.gethostname()}-{os.getpid()}-{uuid.uuid4().hex[:8]}"
 
 
 if __name__ == "__main__":

@@ -13,12 +13,15 @@ class FakeSession:
     def __init__(self) -> None:
         self.items = []
         self.executed = []
+        self.run_id = uuid4()
 
     def execute(self, statement):
         self.executed.append(statement)
+        run_id = self.run_id
+
         class Result:
-            def scalar_one_or_none(self):
-                return None
+            def scalar_one(self):
+                return run_id
 
         return Result()
 
@@ -46,6 +49,7 @@ def test_persist_attribution_result_writes_run_and_contributions() -> None:
     run = persist_attribution_result(session=session, result=result)
 
     assert run.security_id == security_id
+    assert run.attribution_run_id == session.run_id
     assert run.cadence == "daily"
     contribution = session.items[-1]
     assert contribution.driver == DriverType.UNEXPLAINED_RESIDUAL.value
@@ -54,7 +58,6 @@ def test_persist_attribution_result_writes_run_and_contributions() -> None:
 
 def test_persist_attribution_result_replaces_existing_cadence_run() -> None:
     security_id = uuid4()
-    existing_run = build_existing_run(security_id=security_id)
     result = build_factor_baseline_result(
         security_id=security_id,
         window=TimeWindow(
@@ -65,25 +68,13 @@ def test_persist_attribution_result_replaces_existing_cadence_run() -> None:
         observed_return_bps=100,
         factor_inputs=[],
     )
-
-    class ExistingSession(FakeSession):
-        def execute(self, statement):
-            self.executed.append(statement)
-
-            class Result:
-                def scalar_one_or_none(self_inner):
-                    return existing_run
-
-            if len(self.executed) == 1:
-                return Result()
-            return super().execute(statement)
-
-    session = ExistingSession()
+    session = FakeSession()
     run = persist_attribution_result(session=session, result=result, cadence="weekly")
 
-    assert run is existing_run
+    assert run.attribution_run_id == session.run_id
     assert run.cadence == "weekly"
     assert run.observed_return_bps == 100
+    assert any(statement.__class__.__name__ == "Delete" for statement in session.executed)
     assert any(item.__class__.__name__ == "AttributionContribution" for item in session.items)
 
 
