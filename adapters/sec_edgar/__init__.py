@@ -1,0 +1,2 @@
+"""SEC EDGAR adapter."""
+

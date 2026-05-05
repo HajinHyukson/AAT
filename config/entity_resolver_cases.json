@@ -1,0 +1,13 @@
+{
+  "version": "entity_resolver_cases_v0",
+  "cases": [
+    {"kind": "ticker_change", "before": "FB", "after": "META", "effective_date": "2022-06-09", "company": "Meta Platforms, Inc."},
+    {"kind": "ticker_change", "before": "GOOG", "after": "GOOGL", "effective_date": "2014-04-03", "company": "Alphabet Inc.", "note": "share-class split requires class-aware mapping"},
+    {"kind": "ticker_change", "before": "UTX", "after": "RTX", "effective_date": "2020-04-03", "company": "RTX Corporation", "note": "merger/spinoff history"},
+    {"kind": "m_and_a", "before": "TWTR", "after": null, "effective_date": "2022-10-28", "company": "Twitter, Inc.", "note": "delisted after acquisition"},
+    {"kind": "m_and_a", "before": "ATVI", "after": null, "effective_date": "2023-10-13", "company": "Activision Blizzard, Inc.", "note": "acquired by Microsoft"},
+    {"kind": "m_and_a", "before": "SIVB", "after": null, "effective_date": "2023-03-10", "company": "SVB Financial Group", "note": "failed bank/delist edge case"},
+    {"kind": "m_and_a", "before": "WORK", "after": null, "effective_date": "2021-07-21", "company": "Slack Technologies, Inc.", "note": "acquired by Salesforce"},
+    {"kind": "m_and_a", "before": "XLNX", "after": null, "effective_date": "2022-02-14", "company": "Xilinx, Inc.", "note": "acquired by AMD"}
+  ]
+}
