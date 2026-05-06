@@ -207,7 +207,8 @@ The system is **deterministic where correctness matters, statistical where sensi
   └──────────────────┬───────────────────────────┘
                      │
   ┌─ Layer 2: Statistical attribution ───────────┐  ← Statsmodels / sklearn
-  │   Factor regressions, peer-adjusted returns, │
+  │   Factor regressions, peer-adju
+  sted returns, │
   │   event-study sensitivities, residuals.      │
   └──────────────────┬───────────────────────────┘
                      │

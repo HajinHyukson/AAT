@@ -8,6 +8,8 @@ The project is an executable MVP v0 scaffold with expanded attribution plumbing,
 
 Detailed FaustCalc migration, data-content, server DB, and backfill progress notes now live in `docs/FAUSTCALC_DATA_IMPLEMENTATION_REPORT.md`.
 
+Live-backfill development restrictions are documented in `docs/LIVE_BACKFILL_DEVELOPMENT_GUARDRAILS.md`. Until the server FaustCalc backfill completes, avoid schema migrations, DB-loading changes, and backfill-contract changes unless the job is stopped, backed up, and resumed deliberately.
+
 Current implemented surface:
 
 - Deterministic adjusted close-to-close return accounting.

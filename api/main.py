@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import hmac
+import os
 import uuid
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
 from fastapi import HTTPException, Query
 from fastapi import FastAPI
+from fastapi import Request
+from fastapi.responses import JSONResponse
 from sqlalchemy import func, literal, select
 
 from api.schemas import (
@@ -38,6 +42,16 @@ CHART_RANGE_DAYS = {
     "6m": 183,
     "1y": 366,
 }
+
+
+@app.middleware("http")
+async def require_api_key(request: Request, call_next):
+    expected_api_key = os.getenv("AAT_API_KEY")
+    if expected_api_key and request.url.path != "/health":
+        supplied_api_key = request.headers.get("x-aat-api-key", "")
+        if not hmac.compare_digest(supplied_api_key, expected_api_key):
+            return JSONResponse(status_code=401, content={"detail": "invalid API key"})
+    return await call_next(request)
 
 
 @app.get("/health")

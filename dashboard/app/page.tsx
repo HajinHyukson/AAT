@@ -15,6 +15,8 @@ import {
 } from "@/lib/api";
 import type { AttributionChartResponse, AttributionRun, ExposureUpdateDecision } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 type SearchParams = {
   ticker?: string;
   runId?: string;
