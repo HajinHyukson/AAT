@@ -60,6 +60,35 @@ def test_chart_attribution_points_convert_bps_to_percent_points() -> None:
     assert points[0].contributions[0].share_of_move == pytest.approx(0.5)
 
 
+def test_chart_attribution_points_suppress_unstable_share_percentages() -> None:
+    run_id = uuid4()
+    security_id = uuid4()
+    run = attribution_run(
+        attribution_run_id=run_id,
+        security_id=security_id,
+        observed_return_bps=1,
+    )
+    contribution = attribution_contribution(
+        attribution_run_id=run_id,
+        driver="unexplained_residual",
+        name="Residual",
+        contribution_bps=70,
+        share_of_move=70,
+    )
+
+    points = api_main.build_chart_attribution_points(runs=[run], contributions=[contribution])
+
+    assert points[0].contributions[0].share_of_move is None
+
+
+def test_latest_residual_usd_suppresses_unstable_denominator() -> None:
+    assert api_main.latest_residual_usd(
+        latest_residual_bps=70,
+        latest_observed_return_bps=1,
+        latest_price_change_usd=0.01,
+    ) is None
+
+
 def test_attribute_share_aggregation_includes_small_attributes() -> None:
     run_id = uuid4()
     security_id = uuid4()

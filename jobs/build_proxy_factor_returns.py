@@ -12,13 +12,17 @@ from engine.contracts import TimeWindow
 
 
 SECTOR_PROXY_TICKERS = {
-    "Information Technology": "XLK",
     "Communication Services": "XLC",
     "Consumer Discretionary": "XLY",
     "Consumer Staples": "XLP",
+    "Energy": "XLE",
     "Financials": "XLF",
     "Health Care": "XLV",
-    "Energy": "XLE",
+    "Industrials": "XLI",
+    "Information Technology": "XLK",
+    "Materials": "XLB",
+    "Real Estate": "XLRE",
+    "Utilities": "XLU",
 }
 
 INDUSTRY_PROXY_TICKERS = {

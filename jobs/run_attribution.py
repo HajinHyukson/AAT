@@ -20,8 +20,12 @@ from engine.contracts import (
 )
 from jobs.advisory_locks import advisory_lock_key
 from engine.events.taxonomy import classify_event
-from engine.factors.baseline import build_factor_baseline_result
+from engine.factors.baseline import RESIDUAL_SAFETY_MODEL_VERSION, build_factor_baseline_result
 from engine.factors.french_model import FRENCH_FACTOR_NAMES, build_french_factor_inputs
+from engine.factors.hierarchical_model import (
+    HierarchicalFactorSpec,
+    build_hierarchical_residualized_inputs,
+)
 from engine.factors.macro_model import (
     build_macro_factor_inputs,
     level_changes_by_date,
@@ -33,6 +37,19 @@ from engine.factors.peer_model import PeerWeight, build_peer_basket_returns, bui
 from engine.factors.sector_model import build_sector_factor_inputs
 from engine.factors.style_model import build_return_style_descriptors, descriptors_to_exposures
 from engine.returns.accounting import close_to_close_return_bps
+
+
+METHODOLOGY_LEGACY = "legacy"
+METHODOLOGY_RESIDUAL_SAFETY = "residual_safety_v1"
+METHODOLOGY_HIERARCHICAL_MARKET_FIRST = "hierarchical_market_first_v1"
+VALID_ATTRIBUTION_METHODOLOGIES = (
+    METHODOLOGY_LEGACY,
+    METHODOLOGY_RESIDUAL_SAFETY,
+    METHODOLOGY_HIERARCHICAL_MARKET_FIRST,
+)
+HIERARCHICAL_BASELINE_MODEL_VERSION = "factor-baseline-hierarchical-market-v1"
+HIERARCHICAL_FACTOR_BASKET_VERSION = "mvp_expanded_hierarchical_market_v1"
+RESIDUAL_SAFETY_FACTOR_BASKET_VERSION = "mvp_expanded_residual_safety_v1"
 
 
 @dataclass(frozen=True)
@@ -55,6 +72,7 @@ def main() -> None:
     parser.add_argument("--use-expanded-mvp", action="store_true")
     parser.add_argument("--include-event-evidence", action="store_true")
     parser.add_argument("--lookback-days", type=int, default=60)
+    parser.add_argument("--methodology", choices=VALID_ATTRIBUTION_METHODOLOGIES, default=METHODOLOGY_LEGACY)
     parser.add_argument("--prefer-compose-port", action="store_true")
     args = parser.parse_args()
 
@@ -80,6 +98,7 @@ def main() -> None:
             use_expanded_mvp=args.use_expanded_mvp,
             include_event_evidence=args.include_event_evidence,
             lookback_days=args.lookback_days,
+            methodology=args.methodology,
         )
 
     print(
@@ -105,6 +124,7 @@ def run_attribution_for_ticker(
     preloaded_factor_returns_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_peer_context: ActivePeerContext | None = None,
+    methodology: str = METHODOLOGY_LEGACY,
 ):
     security = find_security(session=session, ticker=ticker)
     return run_attribution_for_security(
@@ -122,6 +142,7 @@ def run_attribution_for_ticker(
         preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
         preloaded_macro_values_by_name=preloaded_macro_values_by_name,
         preloaded_peer_context=preloaded_peer_context,
+        methodology=methodology,
     )
 
 
@@ -141,7 +162,10 @@ def run_attribution_for_security(
     preloaded_factor_returns_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_peer_context: ActivePeerContext | None = None,
+    methodology: str = METHODOLOGY_LEGACY,
 ):
+    if methodology not in VALID_ATTRIBUTION_METHODOLOGIES:
+        raise ValueError(f"unsupported attribution methodology {methodology}")
     estimation_window = TimeWindow(
         start=window.start - timedelta(days=lookback_days),
         end=window.start,
@@ -173,12 +197,19 @@ def run_attribution_for_security(
     )
     factor_inputs = []
     factor_basket_version = "none"
+    french_factor_returns_by_name: dict[str, dict[datetime, float]] = {}
     if use_expanded_mvp:
         use_french_factors = True
-        factor_basket_version = "mvp_expanded_v0"
+        factor_basket_version = (
+            HIERARCHICAL_FACTOR_BASKET_VERSION
+            if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST
+            else RESIDUAL_SAFETY_FACTOR_BASKET_VERSION
+            if methodology == METHODOLOGY_RESIDUAL_SAFETY
+            else "mvp_expanded_v0"
+        )
 
     if use_french_factors:
-        factor_returns_by_name = factor_returns_for_window(
+        french_factor_returns_by_name = factor_returns_for_window(
             session=session,
             preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
             factor_names=FRENCH_FACTOR_NAMES,
@@ -189,10 +220,13 @@ def run_attribution_for_security(
             build_french_factor_inputs(
                 security_id=security.security_id,
                 price_bars=bars,
-                factor_returns_by_name=factor_returns_by_name,
+                factor_returns_by_name=french_factor_returns_by_name,
                 estimation_window=estimation_window,
                 attribution_window=window,
                 attribution_cutoff=attribution_cutoff,
+                min_observations=60
+                if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST
+                else None,
             )
         )
         if not use_expanded_mvp:
@@ -212,47 +246,63 @@ def run_attribution_for_security(
             estimation_window=estimation_window,
             attribution_window=window,
             attribution_cutoff=attribution_cutoff,
-            preloaded_peer_context=preloaded_peer_context,
         )
         if market_input is not None:
             factor_inputs.append(market_input)
         factor_basket_version = "french_market_v0"
 
     if use_expanded_mvp:
-        sector_factor_names = load_active_sector_factor_names(
-            session=session,
-            security_id=security.security_id,
-            attribution_cutoff=attribution_cutoff,
-        )
-        if sector_factor_names:
-            factor_returns_by_name = factor_returns_for_window(
-                session=session,
-                preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
-                factor_names=tuple(sector_factor_names),
-                window=TimeWindow(start=estimation_window.start, end=window.end),
-                attribution_cutoff=attribution_cutoff,
-            )
+        if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST:
             factor_inputs.extend(
-                build_sector_factor_inputs(
-                    security_id=security.security_id,
-                    price_bars=bars,
-                    factor_returns_by_name=factor_returns_by_name,
+                build_hierarchical_expanded_inputs(
+                    session=session,
+                    security=security,
+                    bars=bars,
                     estimation_window=estimation_window,
                     attribution_window=window,
                     attribution_cutoff=attribution_cutoff,
+                    prior_factor_returns_by_name=french_factor_returns_by_name,
+                    preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
+                    preloaded_macro_values_by_name=preloaded_macro_values_by_name,
+                    preloaded_peer_context=preloaded_peer_context,
                 )
             )
+        else:
+            sector_factor_names = load_active_sector_factor_names(
+                session=session,
+                security_id=security.security_id,
+                attribution_cutoff=attribution_cutoff,
+            )
+            if sector_factor_names:
+                factor_returns_by_name = factor_returns_for_window(
+                    session=session,
+                    preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
+                    factor_names=tuple(sector_factor_names),
+                    window=TimeWindow(start=estimation_window.start, end=window.end),
+                    attribution_cutoff=attribution_cutoff,
+                )
+                factor_inputs.extend(
+                    build_sector_factor_inputs(
+                        security_id=security.security_id,
+                        price_bars=bars,
+                        factor_returns_by_name=factor_returns_by_name,
+                        estimation_window=estimation_window,
+                        attribution_window=window,
+                        attribution_cutoff=attribution_cutoff,
+                    )
+                )
 
-        peer_input = build_active_peer_input(
-            session=session,
-            security_id=security.security_id,
-            target_bars=bars,
-            estimation_window=estimation_window,
-            attribution_window=window,
-            attribution_cutoff=attribution_cutoff,
-        )
-        if peer_input is not None:
-            factor_inputs.append(peer_input)
+            peer_input = build_active_peer_input(
+                session=session,
+                security_id=security.security_id,
+                target_bars=bars,
+                estimation_window=estimation_window,
+                attribution_window=window,
+                attribution_cutoff=attribution_cutoff,
+                preloaded_peer_context=preloaded_peer_context,
+            )
+            if peer_input is not None:
+                factor_inputs.append(peer_input)
 
         descriptors = build_return_style_descriptors(
             security_id=security.security_id,
@@ -276,16 +326,17 @@ def run_attribution_for_security(
             )
         )
 
-        macro_inputs = build_mvp_macro_inputs(
-            session=session,
-            security=security,
-            bars=bars,
-            estimation_window=estimation_window,
-            attribution_window=window,
-            attribution_cutoff=attribution_cutoff,
-            preloaded_macro_values_by_name=preloaded_macro_values_by_name,
-        )
-        factor_inputs.extend(macro_inputs)
+        if methodology != METHODOLOGY_HIERARCHICAL_MARKET_FIRST:
+            macro_inputs = build_mvp_macro_inputs(
+                session=session,
+                security=security,
+                bars=bars,
+                estimation_window=estimation_window,
+                attribution_window=window,
+                attribution_cutoff=attribution_cutoff,
+                preloaded_macro_values_by_name=preloaded_macro_values_by_name,
+            )
+            factor_inputs.extend(macro_inputs)
 
         if include_event_evidence:
             factor_inputs.extend(
@@ -303,6 +354,16 @@ def run_attribution_for_security(
         attribution_cutoff=attribution_cutoff,
         observed_return_bps=observed_return_bps,
         factor_inputs=factor_inputs,
+        share_policy=METHODOLOGY_RESIDUAL_SAFETY
+        if methodology in {METHODOLOGY_RESIDUAL_SAFETY, METHODOLOGY_HIERARCHICAL_MARKET_FIRST}
+        else METHODOLOGY_LEGACY,
+        model_version=(
+            HIERARCHICAL_BASELINE_MODEL_VERSION
+            if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST
+            else RESIDUAL_SAFETY_MODEL_VERSION
+            if methodology == METHODOLOGY_RESIDUAL_SAFETY
+            else "factor-baseline-v0"
+        ),
     )
     persist_attribution_result(
         session=session,
@@ -501,6 +562,96 @@ def style_descriptors_to_evidence_inputs(
     ]
 
 
+def build_hierarchical_expanded_inputs(
+    *,
+    session,
+    security: models.Security,
+    bars: list[EnginePriceBar],
+    estimation_window: TimeWindow,
+    attribution_window: TimeWindow,
+    attribution_cutoff: datetime,
+    prior_factor_returns_by_name: dict[str, dict[datetime, float]],
+    preloaded_factor_returns_by_name: dict[str, dict[datetime, float]] | None = None,
+    preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
+    preloaded_peer_context: ActivePeerContext | None = None,
+) -> list[FactorContributionInput]:
+    specs: list[HierarchicalFactorSpec] = []
+    sector_factor_names = load_active_sector_factor_names(
+        session=session,
+        security_id=security.security_id,
+        attribution_cutoff=attribution_cutoff,
+    )
+    if sector_factor_names:
+        factor_returns_by_name = factor_returns_for_window(
+            session=session,
+            preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
+            factor_names=tuple(sector_factor_names),
+            window=TimeWindow(start=estimation_window.start, end=attribution_window.end),
+            attribution_cutoff=attribution_cutoff,
+        )
+        for factor_name in sector_factor_names:
+            specs.append(
+                HierarchicalFactorSpec(
+                    factor_name=factor_name,
+                    driver=DriverType.SECTOR,
+                    display_name=f"Residualized sector/industry factor ({factor_name})",
+                    raw_returns=factor_returns_by_name.get(factor_name, {}),
+                )
+            )
+
+    peer_context = (
+        preloaded_peer_context
+        if preloaded_peer_context is not None
+        and preloaded_peer_context.target_security_id == security.security_id
+        else load_active_peer_context(
+            session=session,
+            security_id=security.security_id,
+            price_window=estimation_window,
+            through=attribution_window.end,
+            attribution_cutoff=attribution_cutoff,
+        )
+    )
+    if peer_context is not None and peer_context.peer_basket_returns:
+        specs.append(
+            HierarchicalFactorSpec(
+                factor_name=f"peer:{peer_context.basket_name}",
+                driver=DriverType.PEER,
+                display_name=f"Residualized peer basket ({peer_context.basket_name})",
+                raw_returns=peer_context.peer_basket_returns,
+            )
+        )
+
+    macro_factor_moves, macro_gates = mvp_macro_factor_moves_and_gates(
+        session=session,
+        security=security,
+        estimation_window=estimation_window,
+        attribution_window=attribution_window,
+        attribution_cutoff=attribution_cutoff,
+        preloaded_macro_values_by_name=preloaded_macro_values_by_name,
+    )
+    for factor_name, moves in macro_factor_moves.items():
+        specs.append(
+            HierarchicalFactorSpec(
+                factor_name=factor_name,
+                driver=DriverType.MACRO,
+                display_name=f"Residualized macro factor ({factor_name})",
+                raw_returns=moves,
+                gate=macro_gates.get(factor_name, 1.0),
+            )
+        )
+
+    return build_hierarchical_residualized_inputs(
+        security_id=security.security_id,
+        price_bars=bars,
+        prior_factor_returns_by_name=prior_factor_returns_by_name,
+        factor_specs=specs,
+        estimation_window=estimation_window,
+        attribution_window=attribution_window,
+        attribution_cutoff=attribution_cutoff,
+        min_observations=60,
+    )
+
+
 def build_mvp_macro_inputs(
     *,
     session,
@@ -511,6 +662,34 @@ def build_mvp_macro_inputs(
     attribution_cutoff: datetime,
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
 ) -> list[FactorContributionInput]:
+    factor_moves, gates = mvp_macro_factor_moves_and_gates(
+        session=session,
+        security=security,
+        estimation_window=estimation_window,
+        attribution_window=attribution_window,
+        attribution_cutoff=attribution_cutoff,
+        preloaded_macro_values_by_name=preloaded_macro_values_by_name,
+    )
+    return build_macro_factor_inputs(
+        security_id=security.security_id,
+        price_bars=bars,
+        macro_factor_moves_by_name={name: moves for name, moves in factor_moves.items() if moves},
+        estimation_window=estimation_window,
+        attribution_window=attribution_window,
+        attribution_cutoff=attribution_cutoff,
+        exposure_gate_by_name=gates,
+    )
+
+
+def mvp_macro_factor_moves_and_gates(
+    *,
+    session,
+    security: models.Security,
+    estimation_window: TimeWindow,
+    attribution_window: TimeWindow,
+    attribution_cutoff: datetime,
+    preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
+) -> tuple[dict[str, dict[datetime, float]], dict[str, float]]:
     values_by_name = {
         name: series_for_window(
             series=preloaded_macro_values_by_name.get(name, {})
@@ -549,15 +728,7 @@ def build_mvp_macro_inputs(
         company_id=security.company_id,
         attribution_cutoff=attribution_cutoff,
     )
-    return build_macro_factor_inputs(
-        security_id=security.security_id,
-        price_bars=bars,
-        macro_factor_moves_by_name={name: moves for name, moves in factor_moves.items() if moves},
-        estimation_window=estimation_window,
-        attribution_window=attribution_window,
-        attribution_cutoff=attribution_cutoff,
-        exposure_gate_by_name=gates,
-    )
+    return {name: moves for name, moves in factor_moves.items() if moves}, gates
 
 
 def load_macro_values(

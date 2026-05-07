@@ -29,6 +29,7 @@ def build_french_factor_inputs(
     attribution_window: TimeWindow,
     attribution_cutoff: datetime,
     factor_names: tuple[str, ...] = FRENCH_FACTOR_NAMES,
+    min_observations: int | None = None,
 ) -> list[FactorContributionInput]:
     visible_bars = [
         bar
@@ -48,7 +49,8 @@ def build_french_factor_inputs(
         if estimation_window.start <= event_time < attribution_window.start
         and all(event_time in factor_returns_by_name.get(name, {}) for name in factor_names)
     ]
-    if len(paired_dates) < max(10, len(factor_names) * 2):
+    required_observations = min_observations or max(10, len(factor_names) * 2)
+    if len(paired_dates) < required_observations:
         return []
 
     y = np.array([stock_returns[event_time] for event_time in paired_dates], dtype=float)

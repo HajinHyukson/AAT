@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from engine.attribution.diagnostics import is_share_stable
 from engine.contracts import AttributionContribution, AttributionResult, DriverType
 
 
@@ -10,9 +11,10 @@ def build_deterministic_narrative(result: AttributionResult) -> str:
         if item.driver != DriverType.UNEXPLAINED_RESIDUAL and abs(item.contribution_bps) > 0
     ]
     production.sort(key=lambda item: abs(item.contribution_bps), reverse=True)
+    stable_share = is_share_stable(result.observed_return_bps)
     residual_share = (
         abs(result.unexplained_residual_bps) / abs(result.observed_return_bps)
-        if result.observed_return_bps
+        if result.observed_return_bps and stable_share
         else 0.0
     )
     sentences: list[str] = [
@@ -27,10 +29,15 @@ def build_deterministic_narrative(result: AttributionResult) -> str:
         )
     else:
         sentences.append("No production factor rows were available, so the move remains residual-driven.")
-    residual_label = "large" if residual_share > 0.5 else "contained"
-    sentences.append(
-        f"Unexplained residual was {result.unexplained_residual_bps:.1f} bps, which is {residual_label} relative to the move."
-    )
+    if stable_share:
+        residual_label = "large" if residual_share > 0.5 else "contained"
+        sentences.append(
+            f"Unexplained residual was {result.unexplained_residual_bps:.1f} bps, which is {residual_label} relative to the move."
+        )
+    else:
+        sentences.append(
+            f"Unexplained residual was {result.unexplained_residual_bps:.1f} bps; share percentages are unstable for this small observed move."
+        )
     event_evidence = _event_evidence_count(result.contributions)
     if event_evidence:
         sentences.append(f"{event_evidence} visible event evidence row(s) were attached but not assigned causal contribution.")

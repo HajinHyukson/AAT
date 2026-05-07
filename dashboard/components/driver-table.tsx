@@ -41,6 +41,8 @@ export function DriverTable({ run }: { run: AttributionRun }) {
   const [driverFilter, setDriverFilter] = useState("all");
   const [status, setStatus] = useState<string>("");
   const observedAbs = Math.abs(run.observed_return_bps);
+  const shareThresholdBps = shareStabilityThreshold(run);
+  const shareStable = observedAbs >= shareThresholdBps;
   const filteredContributions = useMemo(
     () =>
       driverFilter === "all"
@@ -59,7 +61,7 @@ export function DriverTable({ run }: { run: AttributionRun }) {
           const key = row.id;
           const isResidual = contribution.driver === "unexplained_residual";
           const residualIsLarge =
-            isResidual && Math.abs(contribution.contribution_bps) > observedAbs * 0.5;
+            isResidual && Math.abs(contribution.contribution_bps) > Math.max(observedAbs, shareThresholdBps) * 0.5;
           return (
             <button
               className="flex min-h-10 w-full items-center gap-2 text-left"
@@ -91,10 +93,16 @@ export function DriverTable({ run }: { run: AttributionRun }) {
       {
         accessorKey: "share_of_move",
         header: "Share",
-        cell: ({ row }) =>
-          row.original.share_of_move === null
-            ? "n/a"
-            : `${(row.original.share_of_move * 100).toFixed(1)}%`,
+        cell: ({ row }) => {
+          if (!shareStable || row.original.share_of_move === null) {
+            return (
+              <span className="text-steel" title={!shareStable ? "Share unstable: small observed move" : undefined}>
+                n/a
+              </span>
+            );
+          }
+          return `${(row.original.share_of_move * 100).toFixed(1)}%`;
+        },
       },
       {
         accessorKey: "confidence",
@@ -123,7 +131,7 @@ export function DriverTable({ run }: { run: AttributionRun }) {
         ),
       },
     ],
-    [expanded, feedback, observedAbs],
+    [expanded, feedback, observedAbs, shareStable, shareThresholdBps],
   );
 
   const table = useReactTable({
@@ -296,7 +304,7 @@ function exportCsv(run: AttributionRun) {
       item.driver,
       item.name,
       item.contribution_bps,
-      item.share_of_move ?? "",
+      displayShareForCsv(item, run) ?? "",
       item.confidence,
       item.contribution_stage,
       JSON.stringify(item.evidence),
@@ -311,6 +319,23 @@ function exportCsv(run: AttributionRun) {
   link.download = `${run.ticker}_${run.attribution_run_id}.csv`;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+function shareStabilityThreshold(run: AttributionRun): number {
+  for (const contribution of run.contributions) {
+    const threshold = contribution.evidence_payload?.share_stability_threshold_bps;
+    if (typeof threshold === "number" && threshold > 0) {
+      return threshold;
+    }
+  }
+  return 25;
+}
+
+function displayShareForCsv(item: Contribution, run: AttributionRun): number | null {
+  if (Math.abs(run.observed_return_bps) < shareStabilityThreshold(run)) {
+    return null;
+  }
+  return item.share_of_move;
 }
 
 function csvCell(value: unknown): string {

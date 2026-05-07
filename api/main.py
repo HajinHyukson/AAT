@@ -28,6 +28,7 @@ from api.schemas import (
 )
 from db import models
 from db.session import session_scope
+from engine.attribution.diagnostics import is_share_stable
 from engine.contracts import AttributionContribution, AttributionResult, ConfidenceLevel, DriverType, TimeWindow
 from engine.narrative import build_deterministic_narrative
 from jobs.faustcalc_common import DEFAULT_FAUSTCALC_UNIVERSE_NAME, DEFAULT_FAUSTCALC_UNIVERSE_VERSION
@@ -379,10 +380,16 @@ def latest_residual_usd(
         latest_residual_bps is None
         or latest_observed_return_bps is None
         or latest_price_change_usd is None
-        or float(latest_observed_return_bps) == 0
+        or not is_share_stable(float(latest_observed_return_bps))
     ):
         return None
     return float(latest_residual_bps) / float(latest_observed_return_bps) * float(latest_price_change_usd)
+
+
+def display_share_of_move(*, share_of_move, observed_return_bps) -> float | None:
+    if share_of_move is None or not is_share_stable(float(observed_return_bps)):
+        return None
+    return float(share_of_move)
 
 
 def chart_cadence(chart_range: str) -> str:
@@ -430,10 +437,9 @@ def build_chart_attribution_points(
                         driver=contribution.driver,
                         name=contribution.name,
                         contribution_pct=float(contribution.contribution_bps) / 100,
-                        share_of_move=(
-                            float(contribution.share_of_move)
-                            if contribution.share_of_move is not None
-                            else None
+                        share_of_move=display_share_of_move(
+                            share_of_move=contribution.share_of_move,
+                            observed_return_bps=run.observed_return_bps,
                         ),
                     )
                     for contribution in run_contributions
@@ -670,7 +676,10 @@ def build_attribution_response(
                 driver=item.driver,
                 name=item.name,
                 contribution_bps=float(item.contribution_bps),
-                share_of_move=float(item.share_of_move) if item.share_of_move is not None else None,
+                share_of_move=display_share_of_move(
+                    share_of_move=item.share_of_move,
+                    observed_return_bps=run.observed_return_bps,
+                ),
                 confidence=item.confidence,
                 evidence=item.evidence or [],
                 contribution_stage=item.contribution_stage,
@@ -695,7 +704,10 @@ def build_narrative_from_run(*, run: models.AttributionRun, contributions: list[
                 driver=DriverType(item.driver),
                 name=item.name,
                 contribution_bps=float(item.contribution_bps),
-                share_of_move=float(item.share_of_move) if item.share_of_move is not None else None,
+                share_of_move=display_share_of_move(
+                    share_of_move=item.share_of_move,
+                    observed_return_bps=run.observed_return_bps,
+                ),
                 confidence=ConfidenceLevel(item.confidence),
                 evidence=item.evidence or [],
                 evidence_payload=item.evidence_payload or {},
