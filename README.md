@@ -7,6 +7,142 @@ The project is currently centered around two backfill tracks:
 - A live FaustCalc-expanded full-history attribution backfill on the server database.
 - A local S&P 500 pilot backfill for methodology development and residual-share safety work.
 
+## Where The Project Is Now
+
+AAT is between an MVP scaffold and a complete attribution platform.
+
+The current version can ingest market and event data, preserve large source snapshots, build named security universes, run point-in-time attribution windows, store contribution rows, and power a dashboard/API. It is good enough for proving the architecture and running research-scale backfills.
+
+The full version is intended to be a production-grade attribution system with licensed point-in-time data, calibrated factor and event contribution methods, out-of-sample validation, confidence calibration, stable residual diagnostics, and operational monitoring around every data and model layer.
+
+Current state by major capability:
+
+| Capability | Current Version | Complete Version Target |
+|---|---|---|
+| Data ingestion | FMP/FaustCalc/French/FRED/EDGAR adapters and import jobs exist. FaustCalc prices and filings are staged and partially promoted. | Licensed production data sources, point-in-time vintages, corporate-action validation, and source-priority governance. |
+| Entity model | `company`, `security`, ticker history, sector classification, peer baskets, and universe membership are implemented. | Robust issuer/security/share-class handling, corporate actions, identifiers, delistings, restatements, and audit workflows. |
+| Attribution engine | French five-factor, sector, peer, macro, style descriptors, event evidence, residual safety, and pilot hierarchical methodology exist. | Calibrated production methodology with residualized or regularized factors, event impact models, validation gates, and stable reporting rules. |
+| Backfill execution | Large FaustCalc backfill is resumable, checkpointed, and can use advisory-lock-aware distributed workers. Local S&P pilot backfill supports resume-by-skipping completed windows. | Scheduler-managed jobs, monitoring, retries, resource controls, post-run validation, and reproducible run manifests. |
+| Dashboard/API | Universe, attribution, evidence, summary, feedback, and export paths exist. Expanded universe summary depends on backfill completion. | Fast paginated production dashboards with quality flags, coverage explanations, model comparisons, and operational health surfaces. |
+| Validation/governance | Unit tests, look-ahead audit tests, guardrail docs, and source/license warnings exist. | Formal model validation, source entitlement checks, confidence calibration, out-of-sample promotion gates, and release controls. |
+
+## AAT Layers
+
+AAT is easier to reason about as a stack. The active backfills are moving data through this stack from lower layers into attribution outputs and dashboard summaries.
+
+### 1. Source And Adapter Layer
+
+This layer pulls or receives raw source data. Current sources include FMP-style prices, the FaustCalc feature-store snapshot, Kenneth French factor files, FRED macro series, SEC EDGAR submissions, proxy ETF prices, and the static S&P 500 pilot universe config.
+
+Its job is to know how to talk to each source and convert responses into typed Python records. It should not decide final model truth. In the complete version, this layer also needs source entitlements, data-vintage handling, retry policy, corporate-action checks, and clear source-priority rules.
+
+### 2. Staging And Snapshot Preservation Layer
+
+This layer preserves imported source data without prematurely collapsing it into AAT's canonical model. FaustCalc uses `faustcalc_` staging tables for assets, companies, prices, fundamentals, price features, theme scores, filing analysis, peer analysis, and SEC filing catalogs.
+
+The purpose is auditability. If a source row is messy, duplicated, or not promotion-ready, AAT can keep it in staging while rejecting or delaying canonical promotion. The current FaustCalc import already follows this pattern. The full version should extend the same discipline to every large vendor or public data source.
+
+### 3. Canonical Market And Event Layer
+
+This layer contains AAT's normalized tables: `company`, `security`, `security_ticker_history`, `price_bar`, `factor_return`, `macro_series`, `event`, and `event_feature`.
+
+Attribution jobs read from this layer, not directly from source snapshots. FaustCalc has already promoted roughly 11.3 million representable price bars into `price_bar`, and SEC filing imports promoted canonical event rows/features. The complete version needs stronger corporate-action validation, vintage-aware macro/factor rows, and source/license governance.
+
+### 4. Universe And Identity Layer
+
+This layer decides what securities are runnable for a workflow. AAT does not assume every security in `security` belongs in every runtime universe.
+
+Current named universes include:
+
+- `faustcalc_active_us_equities` on the server: active USD stock securities from FaustCalc with canonical price coverage.
+- `pilot_sp500_static` locally: static S&P 500 pilot rows from `config/pilot_sp500_universe.json`.
+
+The full version should support multiple named universes, universe versions, inclusion/exclusion reasons, delisted names, liquidity filters, analyst watchlists, and benchmark-specific cohorts.
+
+### 5. Mapping, Classification, And Exposure Layer
+
+This layer adds economic context: sector/subindustry, peer baskets, proxy mappings, macro exposure gates, and curated company exposures.
+
+Current curated MVP mappings are preserved as higher-confidence rows. FaustCalc and S&P pilot jobs generate deterministic mappings to fill gaps without overwriting curated mappings. The complete version should add analyst review, confidence levels, model promotion gates, and multiple mapping versions for research versus production.
+
+### 6. Factor, Event, And Evidence Layer
+
+This layer builds the explanatory inputs used by attribution: French factors, sector and industry proxy factors, peer basket returns, macro factor transforms, return-style descriptors, EDGAR filing evidence, and event taxonomy/surprise features.
+
+The current version treats events and style descriptors mostly as evidence-only. They help explain context, but they do not yet reduce residual as calibrated causal contribution rows. The complete version should include validated event-impact models and explicit event contribution promotion rules.
+
+### 7. Attribution Methodology Layer
+
+This layer turns returns and evidence into contribution rows. It computes observed return, factor contributions, event/evidence rows, and the accounting residual.
+
+Current methodologies include:
+
+- `legacy`: the existing expanded additive stack.
+- `residual_safety_v1`: legacy attribution plus safer residual-share diagnostics and display behavior.
+- `hierarchical_market_first_v1`: local pilot research methodology that residualizes lower layers after market/French factors.
+
+The current residual is an accounting residual, not yet a fully clean idiosyncratic residual. The complete version should use residualized or regularized multivariate factor models, beta stability gates, contribution leverage diagnostics, calibrated confidence, and out-of-sample validation.
+
+### 8. Backfill Orchestration Layer
+
+This layer decides which windows to run, tracks progress, resumes interrupted work, and prevents duplicate outputs.
+
+The FaustCalc backfill creates one task per security/cadence, checkpoints within long tasks, and stores progress in `attribution_backfill_task`. It uses Postgres advisory locks so multiple workers can join the same run safely when they run compatible code.
+
+The S&P pilot runner is lighter: it checks existing attribution rows and skips already-completed windows by default. It is meant for local methodology iteration, not server-scale production scheduling.
+
+The complete version should add job scheduling, worker health monitoring, retry dashboards, resource controls, alerting, and post-run validation reports.
+
+### 9. Summary, API, And Dashboard Layer
+
+This layer turns raw attribution rows into something fast and usable. The `security_attribution_summary` table stores latest run status, latest price, top driver, contribution count, sector/industry, and coverage flags for `/universe`.
+
+The server expanded dashboard will not look complete until the FaustCalc backfill finishes and `jobs.refresh_attribution_summaries` is run. The full version should show coverage gaps, freshness, methodology version, residual stability, and model-quality diagnostics directly in the UI.
+
+### 10. Validation And Governance Layer
+
+This layer protects the system from look-ahead bias, unstable methodology, source misuse, and unsafe operational changes.
+
+Current validation includes unit tests, look-ahead audit tests, live-backfill guardrail docs, source/license warnings, and residual-share methodology notes. The full version needs formal model validation, out-of-sample promotion tests, source entitlement review, production runbooks, release gates, and backup/restore discipline.
+
+## What The Backfills Are Doing
+
+The active backfills are not just "running calculations." They are proving whether all layers can work together over many securities, windows, and data-quality conditions.
+
+### FaustCalc Server Backfill
+
+The FaustCalc backfill runs on the server database against the `faustcalc_active_us_equities` universe. The current universe contains about 12.6k eligible active USD stock securities with FaustCalc price coverage. For each security and each cadence, AAT builds valid historical windows and runs expanded attribution wherever the inputs exist.
+
+At a high level, each task does this:
+
+1. Claim a `security + cadence` task using DB-backed task state and advisory locks.
+2. Load visible point-in-time price history, factor returns, macro data, and peer context.
+3. Build valid daily, weekly, or monthly attribution windows.
+4. Skip windows that do not have enough price/factor history.
+5. Compute observed return and contribution rows.
+6. Persist `attribution_run` and `attribution_contribution` rows using idempotent upserts.
+7. Checkpoint `ran_windows`, `skipped_windows`, and `last_window_end`.
+8. Mark the task completed, skipped, or failed.
+
+The job is large because it is roughly millions of windows across tens of thousands of `security + cadence` tasks. It is designed to be stopped and resumed. The server DB should remain running, and the code used by all workers should remain compatible with already-created tasks.
+
+### Local S&P 500 Pilot Backfill
+
+The local pilot is intentionally separate from the server. It uses the `aat_pilot_sp500` database and the `pilot_sp500_static` universe so methodology changes can be developed without disturbing the FaustCalc backfill.
+
+The pilot currently has:
+
+- Static S&P 500 universe rows, including share classes.
+- FMP price coverage for the S&P names and proxy ETFs.
+- Kenneth French factors.
+- Proxy factor returns.
+- Deterministic peer baskets.
+- Residual-safety and hierarchical research methodology paths.
+
+FRED macro may fail locally because the FRED endpoint can time out or reset connections. That is not a blocker for the pilot attribution run; it only means macro contribution rows may be absent or degraded until macro rows are loaded.
+
+The pilot runner now skips existing windows by default, so rerunning a command picks up from where it left off unless `--rerun-existing` is passed.
+
 ## Backfill Warning
 
 The FaustCalc server backfill is treated as a live production-like data job until it finishes and a post-backfill backup is created.
