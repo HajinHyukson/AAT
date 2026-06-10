@@ -160,7 +160,7 @@ export function UniverseTable({
               Basis points
             </DisplayLink>
             <DisplayLink active={displayMode === "usd"} href={queryHref(params, { display: "usd" })}>
-              USD
+              Price change
             </DisplayLink>
           </div>
         </div>
@@ -377,7 +377,7 @@ function formatValue({
   usd: number | null;
 }) {
   if (mode === "usd") {
-    return formatUsd(usd);
+    return formatPrice(usd);
   }
   if (bps === null) {
     return "n/a";
@@ -385,14 +385,16 @@ function formatValue({
   return `${bps.toFixed(1)} bp`;
 }
 
-function formatUsd(value: number | null) {
+const PRICE_CURRENCY = process.env.NEXT_PUBLIC_PRICE_CURRENCY ?? "USD";
+
+function formatPrice(value: number | null) {
   if (value === null) {
     return "n/a";
   }
-  const absolute = Math.abs(value);
-  const formatted = absolute.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+  // KRW is a zero-decimal currency; Intl handles symbol and digits per currency.
+  return value.toLocaleString(undefined, {
+    style: "currency",
+    currency: PRICE_CURRENCY,
+    currencyDisplay: "narrowSymbol",
   });
-  return value < 0 ? `-$${formatted}` : `$${formatted}`;
 }

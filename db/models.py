@@ -937,3 +937,179 @@ class FaustcalcSecFiling(Base):
         Index("ix_faustcalc_sec_filing_ticker_available", "canonical_ticker", "available_at"),
         CheckConstraint("status IN ('valid', 'rejected')", name="ck_faustcalc_sec_filing_status"),
     )
+
+
+class AcquinImportRun(Base):
+    __tablename__ = "acquin_import_run"
+
+    acquin_import_run_id: Mapped[uuid.UUID] = uuid_pk()
+    mode: Mapped[str] = mapped_column(String(32), nullable=False)
+    source_database_fingerprint: Mapped[str | None] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    started_at: Mapped[datetime] = utc_datetime()
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_counts: Mapped[dict | None] = mapped_column(JSONB)
+    imported_counts: Mapped[dict | None] = mapped_column(JSONB)
+    error_payload: Mapped[dict | None] = mapped_column(JSONB)
+
+    __table_args__ = (
+        Index("ix_acquin_import_run_status_started", "status", "started_at"),
+        CheckConstraint(
+            "status IN ('running', 'completed', 'failed', 'dry_run')",
+            name="ck_acquin_import_run_status",
+        ),
+    )
+
+
+class AcquinValidationIssue(Base):
+    __tablename__ = "acquin_validation_issue"
+
+    acquin_validation_issue_id: Mapped[uuid.UUID] = uuid_pk()
+    acquin_import_run_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("acquin_import_run.acquin_import_run_id")
+    )
+    severity: Mapped[str] = mapped_column(String(32), nullable=False)
+    issue_type: Mapped[str] = mapped_column(String(128), nullable=False)
+    source_table: Mapped[str | None] = mapped_column(String(128))
+    source_key: Mapped[str | None] = mapped_column(Text)
+    resolution_status: Mapped[str] = mapped_column(String(32), nullable=False, default="open")
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    details: Mapped[dict | None] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = utc_datetime()
+
+    __table_args__ = (
+        Index("ix_acquin_validation_issue_run", "acquin_import_run_id", "severity"),
+        Index("ix_acquin_validation_issue_open", "issue_type", "resolution_status", "source_key"),
+        CheckConstraint("severity IN ('info', 'warning', 'error')", name="ck_acquin_issue_severity"),
+        CheckConstraint(
+            "resolution_status IN ('open', 'resolved')",
+            name="ck_acquin_issue_resolution_status",
+        ),
+    )
+
+
+class AcquinStock(Base):
+    __tablename__ = "acquin_stock"
+
+    acquin_stock_id: Mapped[uuid.UUID] = uuid_pk()
+    acquin_import_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("acquin_import_run.acquin_import_run_id"), nullable=False
+    )
+    ticker: Mapped[str] = mapped_column(String(32), nullable=False)
+    market: Mapped[str] = mapped_column(String(32), nullable=False)
+    is_preferred: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    source_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    raw_payload: Mapped[dict] = mapped_column(JSONB, nullable=False)
+
+    __table_args__ = (UniqueConstraint("ticker", name="uq_acquin_stock_ticker"),)
+
+
+class AcquinPrice(Base):
+    __tablename__ = "acquin_price"
+
+    acquin_price_id: Mapped[uuid.UUID] = uuid_pk()
+    acquin_import_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("acquin_import_run.acquin_import_run_id"), nullable=False
+    )
+    ticker: Mapped[str] = mapped_column(String(32), nullable=False)
+    price_date: Mapped[date] = mapped_column(Date, nullable=False)
+    open: Mapped[float | None] = mapped_column(Float)
+    high: Mapped[float | None] = mapped_column(Float)
+    low: Mapped[float | None] = mapped_column(Float)
+    close: Mapped[float | None] = mapped_column(Float)
+    adj_close: Mapped[float | None] = mapped_column(Float)
+    volume: Mapped[float | None] = mapped_column(Float)
+    trading_value: Mapped[float | None] = mapped_column(Float)
+    market_cap: Mapped[float | None] = mapped_column(Float)
+    shares_outstanding: Mapped[float | None] = mapped_column(Float)
+    return_1d: Mapped[float | None] = mapped_column(Float)
+    source: Mapped[str | None] = mapped_column(String(64))
+    freshness_state: Mapped[str | None] = mapped_column(String(32))
+    source_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    __table_args__ = (
+        UniqueConstraint("ticker", "price_date", name="uq_acquin_price_ticker_date"),
+        Index("ix_acquin_price_date", "price_date"),
+    )
+
+
+class AcquinInvestorFlow(Base):
+    __tablename__ = "acquin_investor_flow"
+
+    acquin_investor_flow_id: Mapped[uuid.UUID] = uuid_pk()
+    acquin_import_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("acquin_import_run.acquin_import_run_id"), nullable=False
+    )
+    ticker: Mapped[str] = mapped_column(String(32), nullable=False)
+    flow_date: Mapped[date] = mapped_column(Date, nullable=False)
+    investor_group: Mapped[str] = mapped_column(String(32), nullable=False)
+    buy_volume: Mapped[float | None] = mapped_column(Float)
+    sell_volume: Mapped[float | None] = mapped_column(Float)
+    net_buy_volume: Mapped[float | None] = mapped_column(Float)
+    buy_amount: Mapped[float | None] = mapped_column(Float)
+    sell_amount: Mapped[float | None] = mapped_column(Float)
+    net_buy_amount: Mapped[float | None] = mapped_column(Float)
+    source: Mapped[str | None] = mapped_column(String(64))
+    freshness_state: Mapped[str | None] = mapped_column(String(32))
+    source_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    __table_args__ = (
+        UniqueConstraint(
+            "ticker", "flow_date", "investor_group", name="uq_acquin_investor_flow_ticker_date_group"
+        ),
+        Index("ix_acquin_investor_flow_ticker_date", "ticker", "flow_date"),
+    )
+
+
+class AcquinForeignHolding(Base):
+    __tablename__ = "acquin_foreign_holding"
+
+    acquin_foreign_holding_id: Mapped[uuid.UUID] = uuid_pk()
+    acquin_import_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("acquin_import_run.acquin_import_run_id"), nullable=False
+    )
+    ticker: Mapped[str] = mapped_column(String(32), nullable=False)
+    holding_date: Mapped[date] = mapped_column(Date, nullable=False)
+    foreign_held_shares: Mapped[float | None] = mapped_column(Float)
+    foreign_ownership_pct: Mapped[float | None] = mapped_column(Float)
+    foreign_limit_shares: Mapped[float | None] = mapped_column(Float)
+    foreign_limit_exhaustion_pct: Mapped[float | None] = mapped_column(Float)
+    source: Mapped[str | None] = mapped_column(String(64))
+    freshness_state: Mapped[str | None] = mapped_column(String(32))
+    source_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    __table_args__ = (
+        UniqueConstraint("ticker", "holding_date", name="uq_acquin_foreign_holding_ticker_date"),
+        Index("ix_acquin_foreign_holding_ticker_date", "ticker", "holding_date"),
+    )
+
+
+class AcquinIndex(Base):
+    __tablename__ = "acquin_index"
+
+    acquin_index_id: Mapped[uuid.UUID] = uuid_pk()
+    acquin_import_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("acquin_import_run.acquin_import_run_id"), nullable=False
+    )
+    index_code: Mapped[str] = mapped_column(String(32), nullable=False)
+    index_date: Mapped[date] = mapped_column(Date, nullable=False)
+    name: Mapped[str | None] = mapped_column(String(128))
+    open: Mapped[float | None] = mapped_column(Float)
+    high: Mapped[float | None] = mapped_column(Float)
+    low: Mapped[float | None] = mapped_column(Float)
+    close: Mapped[float | None] = mapped_column(Float)
+    return_1d: Mapped[float | None] = mapped_column(Float)
+    source: Mapped[str | None] = mapped_column(String(64))
+    freshness_state: Mapped[str | None] = mapped_column(String(32))
+    source_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    __table_args__ = (
+        UniqueConstraint("index_code", "index_date", name="uq_acquin_index_code_date"),
+        Index("ix_acquin_index_date", "index_code", "index_date"),
+    )

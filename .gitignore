@@ -90,6 +90,7 @@ desktop.ini
 
 # --- Claude Code -------------------------------------------------------------
 # Personal/local settings stay out of the repo; .claude/agents/ is committed.
+.claude/settings.json
 .claude/settings.local.json
 .claude/.session/
 

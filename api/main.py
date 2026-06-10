@@ -35,6 +35,29 @@ from jobs.faustcalc_common import DEFAULT_FAUSTCALC_UNIVERSE_NAME, DEFAULT_FAUST
 
 app = FastAPI(title="Single-Stock Attribution Engine", version="0.1.0")
 
+LATEST_UNIVERSE_VERSION = "latest"
+
+
+def default_universe_name() -> str:
+    return os.getenv("AAT_DEFAULT_UNIVERSE_NAME", DEFAULT_FAUSTCALC_UNIVERSE_NAME)
+
+
+def default_universe_version() -> str:
+    return os.getenv("AAT_DEFAULT_UNIVERSE_VERSION", DEFAULT_FAUSTCALC_UNIVERSE_VERSION)
+
+
+def resolve_universe_version(*, session, universe_name: str, universe_version: str) -> str:
+    if universe_version != LATEST_UNIVERSE_VERSION:
+        return universe_version
+    resolved = session.execute(
+        select(func.max(models.ModelUniverseMember.universe_version)).where(
+            models.ModelUniverseMember.universe_name == universe_name
+        )
+    ).scalar_one_or_none()
+    if resolved is None:
+        raise HTTPException(status_code=404, detail=f"universe {universe_name} has no versions")
+    return resolved
+
 CHART_RANGES = {"10d", "1m", "3m", "6m", "1y", "max"}
 CHART_RANGE_DAYS = {
     "10d": 10,
@@ -148,15 +171,22 @@ def universe(
     industry: str | None = None,
     exchange: str | None = None,
     status: str | None = Query(default=None, pattern="^(available|missing)$"),
-    universe_name: str = DEFAULT_FAUSTCALC_UNIVERSE_NAME,
-    universe_version: str = DEFAULT_FAUSTCALC_UNIVERSE_VERSION,
+    universe_name: str | None = None,
+    universe_version: str | None = None,
     sort: str = Query(default="ticker"),
     order: str = Query(default="asc", pattern="^(asc|desc)$"),
     limit: int = Query(default=50, ge=1, le=250),
     offset: int = Query(default=0, ge=0),
     prefer_compose_port: bool = Query(default=False),
 ) -> UniverseResponse:
+    universe_name = universe_name or default_universe_name()
+    universe_version = universe_version or default_universe_version()
     with session_scope(prefer_compose_port=prefer_compose_port) as session:
+        universe_version = resolve_universe_version(
+            session=session,
+            universe_name=universe_name,
+            universe_version=universe_version,
+        )
         row_stmt, sort_columns = build_universe_statement(
             search=search,
             sector=sector,

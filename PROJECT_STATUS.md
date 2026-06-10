@@ -82,6 +82,7 @@ Current target: MVP v0 scaffold.
 - Optimized the FaustCalc attribution backfill for local execution: reusable peer basket context avoids repeated peer price loads, tasks now checkpoint every window chunk, `--task-order expected-windows` runs the smallest positive-window tasks first, and `--status-only` prints tracker state without running work.
 - Fixed DB session pooling so repeated checkpoint sessions reuse a small shared SQLAlchemy pool instead of exhausting the local Postgres client limit.
 - Added distributed FaustCalc backfill coordination with Postgres advisory task locks, opt-in `--workers`, worker IDs, lock-miss progress reporting, and concurrency-safe attribution run upserts.
+- Added KOSPI pilot Phase 1 (see `docs/ACQUIN_KOSPI_ADAPTER_DESIGN.md`): `acquin_*` staging tables and migration `20260609_0012`, read-only Acquin Railway snapshot import, placeholder-entity universe seeding, price promotion into `price_bar` (KRW) behind a continuity guard and the Acquin vintage policy, `kospi_market` proxy factor returns, evidence-only investor-flow inputs, a configurable market factor name in attribution runs, and `jobs.run_pilot_kospi_attribution` on the local `aat_pilot_kospi` database.
 
 ## Where We Left Off
 
@@ -111,7 +112,24 @@ Check progress without running work:
 python -m jobs.run_faustcalc_attribution_backfill --prefer-compose-port --status-only
 ```
 
+KOSPI pilot (local-only, requires `ACQUIN_DB_URL` in `.env`):
+
+```powershell
+python -m jobs.init_pilot_kospi_db
+$env:DATABASE_URL="postgresql+psycopg://attribution:attribution@localhost:55432/aat_pilot_kospi"
+python -m jobs.import_acquin_snapshot
+python -m jobs.promote_acquin_data
+python -m jobs.run_pilot_kospi_attribution --from 2026-01-02 --cadences daily weekly
+```
+
+The KOSPI pilot refreshes itself daily: the Windows scheduled task `AAT Pilot KOSPI Daily`
+runs `jobs.run_pilot_kospi_daily` at 17:30 KST (import -> promote -> attribution for new
+windows -> summary refresh). The dashboard is Vercel-deployable against the pilot DB with
+`AAT_DEFAULT_UNIVERSE_NAME=pilot_kospi_static`, `AAT_DEFAULT_UNIVERSE_VERSION=latest`, and
+`NEXT_PUBLIC_PRICE_CURRENCY=KRW`; see `docs/VERCEL_CLOUDFLARE_TUNNEL_DEPLOYMENT.md`.
+
 Manual input likely needed soon:
 
 - Confirm the MVP production price-data source and license status. FMP remains development-only unless `FMP_PRODUCTION_LICENSE_CONFIRMED=true`.
 - Fill real values in `.env` for `FMP_API_KEY` and `EDGAR_USER_AGENT`. FRED CSV ingestion does not require a key.
+- Review open `acquin_validation_issue` continuity suspects (e.g. `204210`, `140910`) before trusting their KOSPI pilot attribution output.

@@ -127,3 +127,40 @@ Expected behavior:
 - Dashboard data loads after signing in.
 - Browser devtools show dashboard API calls going to `/api/aat/*`, not to the raw tunnel URL.
 - Postgres port `55432` remains private to the server computer.
+
+## KOSPI Pilot Deployment
+
+The same dashboard code serves the KOSPI pilot universe; the universe is selected by
+environment variables, not code changes. One deployment serves one universe.
+
+Run FastAPI against the KOSPI pilot database instead of the server database:
+
+```powershell
+$env:DATABASE_URL="postgresql+psycopg://attribution:attribution@localhost:55432/aat_pilot_kospi"
+$env:AAT_API_KEY="<shared-api-key>"
+$env:AAT_DEFAULT_UNIVERSE_NAME="pilot_kospi_static"
+$env:AAT_DEFAULT_UNIVERSE_VERSION="latest"
+.\.venv\Scripts\python.exe -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+```
+
+`AAT_DEFAULT_UNIVERSE_VERSION=latest` resolves the newest seeded universe version at
+request time, so a future universe refresh does not require an API restart.
+
+Vercel environment variables (in addition to the four in the Secrets section):
+
+```text
+NEXT_PUBLIC_PRICE_CURRENCY=KRW
+```
+
+Daily data refresh: the Windows scheduled task `AAT Pilot KOSPI Daily`
+(`scripts/register_pilot_kospi_daily_task.ps1`) runs
+`jobs.run_pilot_kospi_daily` at 17:30 KST — after the Acquin database writes
+post-close rows (~16:22 KST). It imports new staging rows, promotes them behind
+the continuity guard, runs attribution for new windows only, and refreshes the
+dashboard summaries. The dashboard reflects the new trading day automatically;
+no redeploy is needed. Logs land in `logs/pilot_kospi_daily_<date>.log`.
+
+Licensing boundary: KOSPI rows originate from pykrx and are development/research
+only (`docs/ACQUIN_KOSPI_ADAPTER_DESIGN.md`). Keep Basic Auth enabled on any
+KOSPI deployment, keep `ENV=development` on the API host, and do not set
+`ACQUIN_PYKRX_PRODUCTION_LICENSE_CONFIRMED` without a licensed feed.

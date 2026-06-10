@@ -50,6 +50,13 @@ VALID_ATTRIBUTION_METHODOLOGIES = (
 HIERARCHICAL_BASELINE_MODEL_VERSION = "factor-baseline-hierarchical-market-v1"
 HIERARCHICAL_FACTOR_BASKET_VERSION = "mvp_expanded_hierarchical_market_v1"
 RESIDUAL_SAFETY_FACTOR_BASKET_VERSION = "mvp_expanded_residual_safety_v1"
+DEFAULT_MARKET_FACTOR_NAME = "Mkt-RF"
+
+
+def market_factor_basket_version(market_factor_name: str) -> str:
+    if market_factor_name == DEFAULT_MARKET_FACTOR_NAME:
+        return "french_market_v0"
+    return f"market_{market_factor_name}_v0"
 
 
 @dataclass(frozen=True)
@@ -125,6 +132,8 @@ def run_attribution_for_ticker(
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_peer_context: ActivePeerContext | None = None,
     methodology: str = METHODOLOGY_LEGACY,
+    market_factor_name: str = DEFAULT_MARKET_FACTOR_NAME,
+    extra_factor_inputs: list[FactorContributionInput] | None = None,
 ):
     security = find_security(session=session, ticker=ticker)
     return run_attribution_for_security(
@@ -143,6 +152,8 @@ def run_attribution_for_ticker(
         preloaded_macro_values_by_name=preloaded_macro_values_by_name,
         preloaded_peer_context=preloaded_peer_context,
         methodology=methodology,
+        market_factor_name=market_factor_name,
+        extra_factor_inputs=extra_factor_inputs,
     )
 
 
@@ -163,6 +174,8 @@ def run_attribution_for_security(
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_peer_context: ActivePeerContext | None = None,
     methodology: str = METHODOLOGY_LEGACY,
+    market_factor_name: str = DEFAULT_MARKET_FACTOR_NAME,
+    extra_factor_inputs: list[FactorContributionInput] | None = None,
 ):
     if methodology not in VALID_ATTRIBUTION_METHODOLOGIES:
         raise ValueError(f"unsupported attribution methodology {methodology}")
@@ -235,10 +248,10 @@ def run_attribution_for_security(
         market_returns = factor_returns_for_window(
             session=session,
             preloaded_factor_returns_by_name=preloaded_factor_returns_by_name,
-            factor_names=("Mkt-RF",),
+            factor_names=(market_factor_name,),
             window=TimeWindow(start=estimation_window.start, end=window.end),
             attribution_cutoff=attribution_cutoff,
-        )["Mkt-RF"]
+        )[market_factor_name]
         market_input = build_market_factor_input(
             security_id=security.security_id,
             price_bars=bars,
@@ -246,10 +259,11 @@ def run_attribution_for_security(
             estimation_window=estimation_window,
             attribution_window=window,
             attribution_cutoff=attribution_cutoff,
+            factor_name=market_factor_name,
         )
         if market_input is not None:
             factor_inputs.append(market_input)
-        factor_basket_version = "french_market_v0"
+        factor_basket_version = market_factor_basket_version(market_factor_name)
 
     if use_expanded_mvp:
         if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST:
@@ -347,6 +361,9 @@ def run_attribution_for_security(
                     attribution_cutoff=attribution_cutoff,
                 )
             )
+
+    if extra_factor_inputs:
+        factor_inputs.extend(extra_factor_inputs)
 
     result = build_factor_baseline_result(
         security_id=security.security_id,

@@ -1,0 +1,4756 @@
+{
+  "version": "kospi_static_2026_06_01_v0",
+  "universe_name": "pilot_kospi_static",
+  "source": "acquin_railway_dim_stock_snapshot",
+  "retrieved_at": "2026-06-01T13:45:47Z",
+  "active_from": "2026-06-01T13:45:47Z",
+  "timestamp_available": "2026-06-01T13:45:47Z",
+  "notes": [
+    "Static KOSPI pilot universe for local methodology research only.",
+    "Survivorship-biased: active listings only, no delistings since 2019.",
+    "No sector/industry metadata in Phase 1; names are placeholders.",
+    "Source data originates from pykrx via Acquin; development use only."
+  ],
+  "securities": [
+    {
+      "ticker": "000020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000087",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000105",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000145",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000155",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000157",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000215",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000225",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000227",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000300",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000325",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000480",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000545",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000725",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000815",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "000850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "00088K",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "000990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001045",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "00104K",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001065",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001067",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001275",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001290",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001340",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001465",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001470",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001510",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001515",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001525",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001527",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001620",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001630",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001685",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001750",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001755",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001795",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "001800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "001940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002025",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "002030",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002355",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002410",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002600",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002620",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002630",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002785",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002787",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002795",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "00279K",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002920",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "002995",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003010",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003030",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003075",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "0030R0",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003300",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003465",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003470",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003475",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003480",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003495",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003535",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003545",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003547",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003555",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003620",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003920",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "003925",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "003960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004105",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004255",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004365",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004410",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004415",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004545",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004835",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004920",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "004985",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "004990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "00499K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005010",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005030",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005110",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005257",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005300",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005305",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005385",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005387",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005389",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005725",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005745",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005750",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005930",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005935",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005945",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "005950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "005965",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "006040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006110",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006125",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "006200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006340",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006345",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "006360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006405",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "006490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006805",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "00680K",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "006980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007110",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007340",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007575",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "007590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007815",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "00781K",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "007980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "00806K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "008250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008355",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "008420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008600",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008730",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008775",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "008870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008930",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "008970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009155",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "009160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009190",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009290",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009410",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009415",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "009420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009470",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009835",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "009900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "009970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "010955",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "010960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011155",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "011170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011300",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011330",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011785",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "011790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "011930",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012030",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "0120G0",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012205",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "012280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012330",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012510",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012630",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "0126Z0",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012750",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "012800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "013890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014285",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "014440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014825",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "014830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "014915",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "014990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "015890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "016880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "017960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "018250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "018260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "018470",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "018500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "018670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "018880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "019170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "019175",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "019180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "019490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "019680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "019685",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "020000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "020120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "020150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "020560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "020760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "021050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "021240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "021820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "022100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "023960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "024070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "024090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "024110",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "024720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "024890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "024900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025620",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025750",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "025890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "026890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "026940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "026960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "027410",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "027740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "027970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "028050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "028100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "028260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "02826K",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "028670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "029460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "029530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "029780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "030000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "030190",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "030200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "030210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "030610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "030720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "031210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "031430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "031440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "031820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "032350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "032560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "032640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "032830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "033240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "033250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "033270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "033530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "033780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "033920",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "034730",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "03473K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "034830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "035000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "035150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "035250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "035420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "035510",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "035720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "036420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "036460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "036530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "036570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "036580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "037270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "037560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "037710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "039130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "039490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "039570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "041650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "042660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "042700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "044380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "044450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "044820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "047040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "047050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "047400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "047810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "049800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "051600",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "051630",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "051900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "051905",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "051910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "051915",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "052690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "053210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "053690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "055490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "055550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "057050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "058430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "058650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "058730",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "058850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "058860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "060980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "062040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "063160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "064350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "064400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "064960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "066570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "066575",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "066970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "067830",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "068270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "068290",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "069260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "069460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "069620",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "069640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "069730",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "069960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "070960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "071050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "071055",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "071090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "071320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "071840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "071950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "071970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "072130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "072710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "073240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "074610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "075180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "075580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "077500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "077970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "078000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "078520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "078930",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "078935",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "079160",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "079430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "079550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "079900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "079980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "081000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "081660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "082640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "082740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "083420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "084010",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "084670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "084680",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "084690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "084695",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "084870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "085310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "085620",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "086280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "086790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "088260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "088350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "088790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "088980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "089470",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "089590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "089860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "090080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "090350",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "090355",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "090370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "090430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "090435",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "090460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "091810",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "092200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "092220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "092230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "092440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "092780",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "092790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "093050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "093240",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "093370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "094280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "094800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "095570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "095720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "096760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "096770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "096775",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "097230",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "097520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "097950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "097955",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "100090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "100220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "100250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "100840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "101140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "101530",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "102260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "102460",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "103140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "103590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "104700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "105560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "105630",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "105840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "107590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "108320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "108670",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "108675",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "109070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "111110",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "111380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "111770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "112610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "114090",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "117580",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "118000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "119650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "120030",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "120110",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "120115",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "122900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "123690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "123700",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "123890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "126560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "126720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "128820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "128940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "129260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "130660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "133820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "134380",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "134790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "136490",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "137310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "138040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "138930",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "139130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "139480",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "139990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "140910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "143210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "145210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "145270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "145720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "145990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "145995",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "155660",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "161000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "161390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "161890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "163560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "170900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "175330",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "178920",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "180640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "18064K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "181710",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "183190",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "185750",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "192080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "192400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "192650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "192820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "194370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "195870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "200880",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "204210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "204320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "207940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "210540",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "210980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "213500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "214320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "214330",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "214390",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "214420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "217590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "226320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "227840",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "229640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "234080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "241560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "241590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "244920",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "248070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "248170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "249420",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "251270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "259960",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "264900",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "26490K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "267250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "267260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "267270",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "267290",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "267850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "268280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "271560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "271940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "271980",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "272210",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "272450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "272550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "278470",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "279570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "280360",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "281820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "282330",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "284740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "285130",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "28513K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "286940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "293480",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "293940",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "294870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "298000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "298020",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "298040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "298050",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "298690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "300720",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "302440",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "306200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "307950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "308170",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "316140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "317400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "317450",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "322000",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "323410",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "326030",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "329180",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "330590",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "334890",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "336260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "33626K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "33626L",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "336370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "33637K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "33637L",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "338100",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "339770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "344820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "348950",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "350520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "352820",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "353200",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "35320K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "357120",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "357250",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "357430",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "361610",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "363280",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "36328K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "365550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "372910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "373220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "375500",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "37550K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "37550L",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "377190",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "377300",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "377740",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "378850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "381970",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "383220",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "383800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "38380K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "395400",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "396690",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "400760",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "402340",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "403550",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "404990",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "415640",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "417310",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "432320",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "439260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "443060",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "446070",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "448730",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "450080",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "451800",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "452260",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "45226K",
+      "market": "KOSPI",
+      "is_preferred": true
+    },
+    {
+      "ticker": "453340",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "454910",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "456040",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "457190",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "460850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "460860",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "462520",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "462870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "465770",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "475150",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "475560",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "480370",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "481850",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "483650",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "484870",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "487570",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "489790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "499790",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "900140",
+      "market": "KOSPI",
+      "is_preferred": false
+    },
+    {
+      "ticker": "950210",
+      "market": "KOSPI",
+      "is_preferred": false
+    }
+  ]
+}

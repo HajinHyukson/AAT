@@ -40,3 +40,6 @@
 - Added exposure update decisions to the dashboard view.
 - Added initial look-ahead audit suite with timestamp and leakage probes.
 - Added idempotent attribution runs, daily/weekly/monthly batch runner, French five-factor attribution, and historical run API/dashboard support.
+- Added Acquin KOSPI adapter design doc and read-only Acquin database profiling scripts.
+- Added KOSPI pilot Phase 1: acquin_* staging tables and migration, Acquin Railway snapshot import, price promotion with continuity guard and Acquin vintage policy, kospi_market proxy factor returns, evidence-only investor-flow inputs, configurable market factor name in attribution runs, and the pilot KOSPI attribution runner.
+- Made the KOSPI pilot web-servable: env-driven API universe defaults with latest-version resolution, currency-aware dashboard price display, daily refresh orchestrator job with Windows scheduled task scripts, and KOSPI deployment docs.
