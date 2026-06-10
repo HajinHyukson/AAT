@@ -13,7 +13,12 @@ import {
   getLatestAttribution,
   getUniverse,
 } from "@/lib/api";
-import type { AttributionChartResponse, AttributionRun, ExposureUpdateDecision } from "@/lib/types";
+import type {
+  AttributionChartResponse,
+  AttributionRun,
+  ExposureUpdateDecision,
+  UniverseResponse,
+} from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -39,17 +44,24 @@ export default async function Home({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const universe = await getUniverse({
-    search: params.search,
-    sector: params.sector,
-    industry: params.industry,
-    exchange: params.exchange,
-    status: params.status,
-    sort: params.sort ?? "ticker",
-    order: params.order ?? "asc",
-    limit: numberParam(params.limit, 50),
-    offset: numberParam(params.offset, 0),
-  });
+  let universe: UniverseResponse;
+  try {
+    universe = await getUniverse({
+      search: params.search,
+      sector: params.sector,
+      industry: params.industry,
+      exchange: params.exchange,
+      status: params.status,
+      sort: params.sort ?? "ticker",
+      order: params.order ?? "asc",
+      limit: numberParam(params.limit, 50),
+      offset: numberParam(params.offset, 0),
+    });
+  } catch (error) {
+    return (
+      <ApiUnavailable message={error instanceof Error ? error.message : String(error)} />
+    );
+  }
   const defaultStock =
     universe.rows.find((stock) => stock.run_status === "available") ?? universe.rows[0] ?? null;
   const selectedTicker = (params.ticker ?? defaultStock?.ticker ?? "").toUpperCase();
@@ -159,6 +171,30 @@ function AttributionWorkspace({
         <ExposureDecisions decisions={exposureDecisions} />
       </section>
     </>
+  );
+}
+
+function ApiUnavailable({ message }: { message: string }) {
+  return (
+    <main className="min-h-screen bg-paper text-ink">
+      <section className="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-16">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center bg-ink text-sm font-semibold text-white">
+            AAT
+          </div>
+          <h1 className="text-xl font-semibold">Attribution data is unreachable</h1>
+        </div>
+        <div className="border-y border-line bg-white px-4 py-6 text-sm text-steel">
+          <p>
+            The dashboard could not reach the attribution API. This usually means the API
+            server or its tunnel is down, or <code>AAT_API_BASE_URL</code> is not configured
+            for this deployment.
+          </p>
+          <p className="mt-3 font-mono text-xs">{message}</p>
+          <p className="mt-3">Reload the page once the API is back.</p>
+        </div>
+      </section>
+    </main>
   );
 }
 
