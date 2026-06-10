@@ -2,10 +2,11 @@
 
 This is the low-cost deployment path for the dashboard:
 
-- Vercel hosts the Next.js dashboard.
+- Vercel hosts the Next.js dashboard. The dashboard is public: there is no sign-in.
 - The server computer keeps Postgres and FastAPI.
 - Cloudflare Tunnel exposes only FastAPI, not Postgres.
-- The browser talks to Vercel only. Vercel server code forwards API requests with `AAT_API_KEY`.
+- The browser talks to Vercel only. Vercel server code forwards API requests with `AAT_API_KEY`,
+  so the tunnel endpoint rejects direct API calls that lack the key.
 
 ## Secrets
 
@@ -18,8 +19,6 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"
 Vercel environment variables for the `dashboard` project:
 
 ```text
-AAT_DASHBOARD_USER=aat
-AAT_DASHBOARD_PASSWORD=<shared-dashboard-password>
 AAT_API_BASE_URL=<cloudflare-tunnel-url>
 AAT_API_KEY=<shared-api-key>
 ```
@@ -108,7 +107,7 @@ Install Command: npm install
 Build Command: npm run build
 ```
 
-Add the four Vercel environment variables from the Secrets section for Production and Preview.
+Add the two Vercel environment variables from the Secrets section for Production and Preview.
 Redeploy after changing any env var.
 
 ## Validation
@@ -122,10 +121,10 @@ curl -I https://<vercel-app-url>/
 
 Expected behavior:
 
-- The dashboard asks for Basic Auth.
+- The dashboard loads directly, with no sign-in.
 - `/api/aat/health` returns the FastAPI health response through Vercel.
-- Dashboard data loads after signing in.
 - Browser devtools show dashboard API calls going to `/api/aat/*`, not to the raw tunnel URL.
+- Calling the tunnel URL directly without `X-AAT-API-Key` returns 401.
 - Postgres port `55432` remains private to the server computer.
 
 ## KOSPI Pilot Deployment
@@ -146,7 +145,7 @@ $env:AAT_DEFAULT_UNIVERSE_VERSION="latest"
 `AAT_DEFAULT_UNIVERSE_VERSION=latest` resolves the newest seeded universe version at
 request time, so a future universe refresh does not require an API restart.
 
-Vercel environment variables (in addition to the four in the Secrets section):
+Vercel environment variables (in addition to the two in the Secrets section):
 
 ```text
 NEXT_PUBLIC_PRICE_CURRENCY=KRW
@@ -161,6 +160,8 @@ dashboard summaries. The dashboard reflects the new trading day automatically;
 no redeploy is needed. Logs land in `logs/pilot_kospi_daily_<date>.log`.
 
 Licensing boundary: KOSPI rows originate from pykrx and are development/research
-only (`docs/ACQUIN_KOSPI_ADAPTER_DESIGN.md`). Keep Basic Auth enabled on any
-KOSPI deployment, keep `ENV=development` on the API host, and do not set
-`ACQUIN_PYKRX_PRODUCTION_LICENSE_CONFIRMED` without a licensed feed.
+only (`docs/ACQUIN_KOSPI_ADAPTER_DESIGN.md`). The dashboard has no sign-in, so a
+deployed KOSPI dashboard is publicly accessible — treat the deployment URL as
+unlisted, keep `ENV=development` on the API host, do not set
+`ACQUIN_PYKRX_PRODUCTION_LICENSE_CONFIRMED` without a licensed feed, and take the
+deployment down if redistribution becomes a concern before a licensed feed exists.

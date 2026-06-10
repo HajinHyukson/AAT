@@ -43,3 +43,4 @@
 - Added Acquin KOSPI adapter design doc and read-only Acquin database profiling scripts.
 - Added KOSPI pilot Phase 1: acquin_* staging tables and migration, Acquin Railway snapshot import, price promotion with continuity guard and Acquin vintage policy, kospi_market proxy factor returns, evidence-only investor-flow inputs, configurable market factor name in attribution runs, and the pilot KOSPI attribution runner.
 - Made the KOSPI pilot web-servable: env-driven API universe defaults with latest-version resolution, currency-aware dashboard price display, daily refresh orchestrator job with Windows scheduled task scripts, and KOSPI deployment docs.
+- Removed dashboard Basic Auth; the deployed dashboard is public and the tunnel API stays key-gated server-to-server.
