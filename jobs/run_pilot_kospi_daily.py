@@ -44,7 +44,8 @@ class PilotKospiDailyReport:
     imported_rows: int = 0
     bars_promoted: int = 0
     quarantined_bars: int = 0
-    new_continuity_suspects: list[str] = field(default_factory=list)
+    # Includes previously reported suspects that are still open, not only new ones.
+    continuity_suspects: list[str] = field(default_factory=list)
     ran_windows: int = 0
     skipped_windows: int = 0
     already_completed_windows: int = 0
@@ -57,7 +58,7 @@ class PilotKospiDailyReport:
             f"  imported_rows={self.imported_rows}\n"
             f"  bars_promoted={self.bars_promoted}\n"
             f"  quarantined_bars={self.quarantined_bars}\n"
-            f"  new_continuity_suspects={self.new_continuity_suspects}\n"
+            f"  continuity_suspects={self.continuity_suspects}\n"
             f"  ran_windows={self.ran_windows}\n"
             f"  skipped_windows={self.skipped_windows}\n"
             f"  already_completed_windows={self.already_completed_windows}\n"
@@ -85,10 +86,10 @@ def main() -> None:
         skip_import=args.skip_import,
     )
     print(report.render())
-    if report.new_continuity_suspects:
+    if report.continuity_suspects:
         print(
-            "WARNING: new continuity suspects quarantined; review acquin_validation_issue "
-            "rows and resolve or re-import the affected tickers.",
+            "WARNING: open continuity suspects (new or previously reported); review "
+            "acquin_validation_issue rows and resolve or re-import the affected tickers.",
             file=sys.stderr,
         )
 
@@ -114,7 +115,7 @@ def run_pilot_kospi_daily(
     promotion_report = promote_acquin_data(config_path=config_path)
     report.bars_promoted = promotion_report.bars_promoted
     report.quarantined_bars = promotion_report.quarantined_bars
-    report.new_continuity_suspects = list(promotion_report.continuity_suspects)
+    report.continuity_suspects = list(promotion_report.continuity_suspects)
 
     attribution_report = run_pilot_kospi_attribution(
         config_path=config_path,

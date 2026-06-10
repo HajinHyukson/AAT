@@ -31,7 +31,14 @@ try {
         throw ".venv not found; run SETUP.md local Python steps first"
     }
 
-    & $python -m jobs.run_pilot_kospi_daily *>> $logFile
+    # Native stderr lines (e.g. the continuity-suspect WARNING) must not become
+    # terminating errors under Stop preference, and must land in the log as utf8.
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    & $python -m jobs.run_pilot_kospi_daily 2>&1 |
+        ForEach-Object { $_.ToString() } |
+        Add-Content -Path $logFile -Encoding utf8
+    $ErrorActionPreference = $previousPreference
     if ($LASTEXITCODE -ne 0) {
         throw "jobs.run_pilot_kospi_daily exited with code $LASTEXITCODE"
     }

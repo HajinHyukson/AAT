@@ -79,7 +79,7 @@ def test_daily_chain_runs_steps_in_order(chain_calls) -> None:
     assert [name for name, _ in calls] == ["import", "promote", "attribution", "summaries"]
     assert report.imported_rows == 948
     assert report.bars_promoted == 948
-    assert report.new_continuity_suspects == ["140910:2026-05-29"]
+    assert report.continuity_suspects == ["140910:2026-05-29"]
     assert report.ran_windows == 950
     assert report.summaries_refreshed == 948
     assert report.summaries_available == 940
