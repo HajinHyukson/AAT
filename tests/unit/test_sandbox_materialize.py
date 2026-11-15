@@ -76,3 +76,124 @@ def test_universe_currency_is_earliest_event_date_regardless_of_row_order(tmp_pa
     src = _source(_prices([("b", date(2024,1,3), 5.0, 5.0, 1, "USD", t), ("b", date(2024,1,2), 5.0, 5.0, 1, "EUR", t)]))
     panel = materialize(src, PanelSpec(start=date(2024,1,1), end=date(2024,1,31)), SandboxSettings(data_dir=tmp_path))
     assert set(_universe_currency(panel)) == {("b", "EUR")}
+
+
+def _spec():
+    return PanelSpec(start=date(2024, 1, 1), end=date(2024, 1, 31))
+
+
+def _one_row_source():
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    return _source(_prices([("a", date(2024, 1, 2), 10.0, 10.0, 1, "USD", t)]))
+
+
+def test_prices_parquet_carries_ingestion_time_after_available_at(tmp_path):
+    t = datetime(2024, 5, 1, 3, tzinfo=timezone.utc)
+    src = _source(_prices([("a", date(2024, 1, 2), 10.0, 10.0, 1, "USD", t)]))
+    panel = materialize(src, _spec(), SandboxSettings(data_dir=tmp_path))
+    prices = pl.read_parquet(panel.directory / "prices.parquet")
+    assert prices.columns == [
+        "security_id",
+        "event_date",
+        "available_at",
+        "ingestion_time",
+        "close",
+        "adjusted_close",
+        "volume",
+        "currency",
+    ]
+    assert prices.schema["ingestion_time"] == pl.Datetime("us", "UTC")
+    assert prices["ingestion_time"].to_list() == [t]
+
+
+def test_duplicate_securities_rows_raise(tmp_path):
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    secs = pl.DataFrame(
+        {
+            "security_id": ["b", "b", "a", "a"],
+            "ticker": ["BBB", "BBB2", "AAA", "AAA2"],
+            "exchange": ["NYSE"] * 4,
+            "currency": ["USD"] * 4,
+            "sector": ["Tech", "Fin", None, None],
+            "industry": [None] * 4,
+            "classification_as_of": [None] * 4,
+        }
+    )
+    src = InMemoryCanonicalSource(
+        secs, _prices([("a", date(2024, 1, 2), 10.0, 10.0, 1, "USD", t)])
+    )
+    with pytest.raises(MaterializationError, match=r"^Duplicate securities rows for security_id=a$"):
+        materialize(src, _spec(), SandboxSettings(data_dir=tmp_path))
+
+
+def test_panel_write_leaves_only_the_final_directory(tmp_path):
+    panel = materialize(_one_row_source(), _spec(), SandboxSettings(data_dir=tmp_path))
+    assert [p.name for p in (tmp_path / "panels").iterdir()] == [panel.manifest.manifest_id]
+    assert sorted(p.name for p in panel.directory.iterdir()) == [
+        "manifest.json",
+        "prices.parquet",
+        "universe.parquet",
+    ]
+
+
+def test_concurrent_winner_panel_is_returned_and_temp_discarded(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    src = _one_row_source()
+    original = src.securities
+    winner = {}
+
+    def securities_with_race():
+        if not winner:
+            winner["panel"] = materialize(_one_row_source(), _spec(), settings)
+        return original()
+
+    src.securities = securities_with_race
+    loser = materialize(src, _spec(), settings)
+    assert loser.directory == winner["panel"].directory
+    assert loser.manifest.created_at == winner["panel"].manifest.created_at
+    assert [p.name for p in (tmp_path / "panels").iterdir()] == [loser.manifest.manifest_id]
+
+
+def test_failed_panel_write_leaves_no_temp_dir(tmp_path, monkeypatch):
+    def boom(self, *args, **kwargs):
+        raise OSError("disk full")
+
+    monkeypatch.setattr(pl.DataFrame, "write_parquet", boom)
+    with pytest.raises(OSError, match="disk full"):
+        materialize(_one_row_source(), _spec(), SandboxSettings(data_dir=tmp_path))
+    assert list((tmp_path / "panels").iterdir()) == []
+
+
+def _reference_membership(prices, lookback):
+    calendar = sorted(set(prices["event_date"].to_list()))
+    index_of = {d: i for i, d in enumerate(calendar)}
+    priced = {}
+    for sid, d in zip(prices["security_id"].to_list(), prices["event_date"].to_list()):
+        priced.setdefault(sid, set()).add(index_of[d])
+    return sorted(
+        (calendar[i], sid)
+        for sid, js in priced.items()
+        for i in range(len(calendar))
+        if any(i - lookback + 1 <= j <= i for j in js)
+    )
+
+
+def test_membership_matches_index_definition_on_random_panels():
+    import random
+
+    rng = random.Random(7)
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    days = [date(2024, 1, 1) + __import__("datetime").timedelta(days=k) for k in range(40)]
+    for lookback in (1, 3, 5, 10):
+        rows = [
+            (sid, d, 1.0, 1.0, 1, "USD", t)
+            for sid in ("a", "b", "c", "d")
+            for d in days
+            if rng.random() < 0.3
+        ]
+        prices = _prices(rows)
+        got = derive_membership(prices, lookback)
+        assert got.schema == {"event_date": pl.Date, "security_id": pl.Utf8}
+        assert list(zip(got["event_date"].to_list(), got["security_id"].to_list())) == (
+            _reference_membership(prices, lookback)
+        )

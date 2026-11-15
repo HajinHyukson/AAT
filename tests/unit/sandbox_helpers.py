@@ -16,6 +16,7 @@ def make_panel(root: Path) -> Path:
             datetime(2024, 1, 3, 21, tzinfo=timezone.utc),
             datetime(2024, 1, 2, 21, tzinfo=timezone.utc),
         ],
+        "ingestion_time": [datetime(2024, 5, 1, tzinfo=timezone.utc)] * 3,
         "close": [10.0, 11.0, 5.0],
         "adjusted_close": [10.0, 11.0, 5.0],
         "volume": [1, 2, 3],

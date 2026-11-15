@@ -11,6 +11,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import shutil
+import tempfile
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -87,41 +90,54 @@ def _assert_no_duplicate_price_rows(prices: pl.DataFrame) -> None:
         )
 
 
+def _assert_no_duplicate_securities(securities: pl.DataFrame) -> None:
+    dupes = (
+        securities.group_by("security_id")
+        .agg(pl.len().alias("n"))
+        .filter(pl.col("n") > 1)
+        .sort("security_id")
+    )
+    if not dupes.is_empty():
+        sid = dupes["security_id"][0]
+        raise MaterializationError(f"Duplicate securities rows for security_id={sid}")
+
+
 def derive_membership(prices: pl.DataFrame, lookback_trading_days: int) -> pl.DataFrame:
     """Universe membership pairs under a trailing trading-day lookback.
 
     A security is a member on calendar index ``i`` (trading days are the
     distinct ``event_date`` values present in ``prices``) iff it has a price
     row on some calendar index ``j`` with ``i - lookback + 1 <= j <= i``.
+    Equivalently each priced index ``j`` makes the security a member on
+    ``j .. j + lookback - 1``, clipped to the calendar.
     """
     schema = {"event_date": pl.Date, "security_id": pl.Utf8}
-    calendar = sorted(prices["event_date"].unique().to_list())
-    n = len(calendar)
+    calendar = prices.select(pl.col("event_date").unique().sort()).with_row_index("i")
+    n = calendar.height
     if n == 0:
         return pl.DataFrame(schema=schema)
-    index_of = {d: i for i, d in enumerate(calendar)}
+    lookback = max(lookback_trading_days, 0)
+    return (
+        prices.select("security_id", "event_date")
+        .join(calendar, on="event_date", how="inner")
+        .select(
+            "security_id",
+            pl.int_ranges(
+                pl.col("i"), pl.min_horizontal(pl.col("i") + lookback, pl.lit(n)), dtype=pl.UInt32
+            ).alias("i"),
+        )
+        .explode("i")
+        .drop_nulls("i")
+        .unique()
+        .join(calendar, on="i", how="inner")
+        .select(pl.col("event_date"), pl.col("security_id").cast(pl.Utf8))
+        .sort(["event_date", "security_id"])
+    )
 
-    priced_by_security: dict[str, list[bool]] = {}
-    for sid, event_date in zip(
-        prices["security_id"].to_list(), prices["event_date"].to_list(), strict=True
-    ):
-        priced_by_security.setdefault(sid, [False] * n)[index_of[event_date]] = True
 
-    rows: list[tuple[date, str]] = []
-    for sid in sorted(priced_by_security):
-        priced = priced_by_security[sid]
-        window_count = 0
-        for i in range(n):
-            if priced[i]:
-                window_count += 1
-            drop_idx = i - lookback_trading_days
-            if drop_idx >= 0 and priced[drop_idx]:
-                window_count -= 1
-            if window_count > 0:
-                rows.append((calendar[i], sid))
-
-    out = pl.DataFrame(rows, schema=schema, orient="row") if rows else pl.DataFrame(schema=schema)
-    return out.sort(["event_date", "security_id"])
+def _load_cached(directory: Path) -> MaterializedPanel:
+    manifest = DataManifest.model_validate_json((directory / MANIFEST_FILENAME).read_text())
+    return MaterializedPanel(directory=directory, manifest=manifest)
 
 
 def materialize(
@@ -132,10 +148,8 @@ def materialize(
         spec, EOD_POLICY_VERSION, canonical_snapshot_id, settings.price_adjustment_status
     )
     directory = settings.data_dir / "panels" / manifest_id
-    manifest_path = directory / MANIFEST_FILENAME
-    if manifest_path.exists():
-        manifest = DataManifest.model_validate_json(manifest_path.read_text())
-        return MaterializedPanel(directory=directory, manifest=manifest)
+    if (directory / MANIFEST_FILENAME).exists():
+        return _load_cached(directory)
 
     prices = source.price_bars(spec.start, spec.end, source=spec.price_source)
     _assert_no_duplicate_price_rows(prices)
@@ -154,6 +168,7 @@ def materialize(
             "security_id",
             "event_date",
             "available_at",
+            "ingestion_time",
             "close",
             "adjusted_close",
             "volume",
@@ -161,9 +176,11 @@ def materialize(
         ]
     )
 
+    securities = source.securities()
+    _assert_no_duplicate_securities(securities)
     membership = derive_membership(prices, spec.membership_lookback_trading_days)
     universe_out = (
-        membership.join(source.securities().drop("currency"), on="security_id", how="left")
+        membership.join(securities.drop("currency"), on="security_id", how="left")
         .join(currency_by_security, on="security_id", how="left")
         .select(
             [
@@ -179,10 +196,6 @@ def materialize(
         )
     )
 
-    directory.mkdir(parents=True, exist_ok=True)
-    prices_out.write_parquet(directory / PRICES_FILENAME)
-    universe_out.write_parquet(directory / UNIVERSE_FILENAME)
-
     manifest = DataManifest(
         manifest_id=manifest_id,
         spec=spec,
@@ -195,6 +208,23 @@ def materialize(
         currencies=sorted(prices_out["currency"].unique().to_list()),
         created_at=datetime.now(timezone.utc),
     )
-    manifest_path.write_text(manifest.model_dump_json())
+
+    # Build the panel in a unique sibling directory and rename it into place, so readers only
+    # ever see a complete panel. If another run renamed its copy first, use that one.
+    directory.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix=f".{manifest_id}.tmp-", dir=directory.parent))
+    try:
+        prices_out.write_parquet(staging / PRICES_FILENAME)
+        universe_out.write_parquet(staging / UNIVERSE_FILENAME)
+        (staging / MANIFEST_FILENAME).write_text(manifest.model_dump_json())
+        try:
+            os.replace(staging, directory)
+        except OSError:
+            if (directory / MANIFEST_FILENAME).exists():
+                return _load_cached(directory)
+            raise
+    finally:
+        if staging.exists():
+            shutil.rmtree(staging, ignore_errors=True)
 
     return MaterializedPanel(directory=directory, manifest=manifest)
