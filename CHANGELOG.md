@@ -3,6 +3,7 @@
 ## 2026-11-15
 
 - Added the VIZA quant sandbox (spec phases 1-2): `viza_sandbox/` package with a read-only canonical price source, point-in-time panel materialization, isolated runner (Docker and local-dev backends), quantile backtest with disclosed D+1 execution convention, per-user-token HTTP API, and the operator CLI `python -m viza_sandbox.cli` (`init-db`, `create-user`, `check-split-adjustment`, `serve`). Operator guide: `docs/viza_end_product/VIZA_SANDBOX_OPERATIONS.md`; spec `docs/superpowers/specs/2026-11-15-viza-quant-sandbox-design.md`; plan `docs/superpowers/plans/2026-11-15-viza-quant-sandbox-phase-1-2.md`. The Docker image and `DockerRunner` are not yet exercised against a daemon.
+- Pinned the sandbox runtime image dependencies and base image (`viza_sandbox/runtime_image/Dockerfile`). First Docker execution on a development machine: runner tests 11 passed with none skipped, one end-to-end API run through the `docker` runner, and the split-adjustment check clean on NVDA, CMG, AVGO and WMT. Recorded in the operator guide, together with a data-quality gap: bad ticks in `faustcalc_fmp_snapshot` make full-universe equal-weight quantile results unusable until the universe is filtered.
 
 ## 2026-05-21
 

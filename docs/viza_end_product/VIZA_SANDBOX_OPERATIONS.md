@@ -13,10 +13,18 @@ This delivers spec phases 1 (data foundation) and 2 (execution) only.
 
 ## Known gaps to close before trusting isolation
 
-- The Docker image build and `DockerRunner` have not been executed in development, because no
-  Docker daemon was available. On the server, build the image (below) and run
-  `python -m pytest tests/unit/test_sandbox_runner.py -q`. The Docker test must pass, not skip.
-  Until it does, treat container isolation as unverified.
+- The Docker image build and `DockerRunner` were first executed on 2026-11-15 on a development
+  machine (Docker Desktop 29.4.1, Windows): `python -m pytest tests/unit/test_sandbox_runner.py -q`
+  gave 11 passed, 0 skipped, and one strategy ran end to end through the API with the `docker`
+  runner against a local copy of the canonical database. They have not been executed on the
+  Linux server. Repeat the build and the test there; the Docker test must pass, not skip. The
+  `--user uid:gid` path is POSIX-only and is still unexercised.
+- Bad ticks in `faustcalc_fmp_snapshot` dominate equal-weight results. In January 2024, 164 of
+  284,106 daily bars are a 10x or larger jump on the previous close (for example FSBN alternating
+  between 0.05 and 5000), almost all in OTC and bankrupt-shell tickers. A 2-day momentum run over
+  the default universe returned a bottom-tercile equity curve of about 43,000x for the month, and
+  a 5 USD price floor inside the strategy did not remove it. Until the universe is filtered or
+  returns are screened, treat full-universe quantile results as unusable.
 - `VIZA_SANDBOX_RUNNER=local` runs user code as a plain subprocess with no network, memory or
   filesystem isolation, and with write access to the shared panel cache through the run
   directory's data link. It is for tests and development only. Never use it for code written by
@@ -25,12 +33,14 @@ This delivers spec phases 1 (data foundation) and 2 (execution) only.
 ## Pre-flight before the first real run
 
 - Build the image, run the Docker test above, and confirm it passes (not skips).
-- On the first server build, pin the image's dependency versions in
-  `viza_sandbox/runtime_image/Dockerfile` and record the built image digest
-  (`docker image inspect --format '{{.Id}}' viza-sandbox-runtime:latest`) alongside the
-  deployment, so a rebuild cannot silently change results for the same code and data manifest.
+- The image's dependency versions are pinned in `viza_sandbox/runtime_image/Dockerfile`. Record
+  the built image digest (`docker image inspect --format '{{.Id}}' viza-sandbox-runtime:latest`)
+  alongside the deployment, so a rebuild cannot silently change results for the same code and
+  data manifest. The digest differs per build host.
 - Measure materialization time and memory for the intended date range before the first real
-  run. Materialization runs in the API process, outside the container's limits.
+  run. Materialization runs in the API process, outside the container's limits. One reference
+  point: one month (2024-01, 299,077 price rows) took about 11 seconds on the development
+  machine; memory was not measured.
 - Run the split-adjustment check below and set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS`.
 
 ## Server prerequisites
@@ -120,6 +130,11 @@ or a data gap) the command exits nonzero with no verdict; that is not evidence o
 - `verdict=unadjusted`: a consecutive close ratio of 3x or more (or 1/3 or less) was found, so
   closes are not split-adjusted. Set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS=unadjusted`. Per the
   spec, the remedy is to source FMP `adjClose`; that is not built in this phase.
+On 2026-11-15 the check returned `no_split_signature` on a local copy of the canonical database
+for NVDA (2024-06-10, 10-for-1), CMG (2024-06-26, 50-for-1), AVGO (2024-07-15, 10-for-1) and WMT
+(2024-02-26, 3-for-1), with pre-split closes at post-split scale (NVDA 122.44 on 2024-06-05).
+Repeat it on the server before setting the status there.
+
 - `verdict=no_split_signature`: no jump was found in the window. This supports, but a single
   ticker does not prove, adjustment. Set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS=adjusted` only
   after you are satisfied, and leave `unverified` otherwise.
