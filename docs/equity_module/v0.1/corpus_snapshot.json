@@ -1,0 +1,21 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "corpus_status": "expanded_high_confidence_corpus_completed",
+  "build_stage": "artifact_generation",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "primary_research_log": "docs/CLAUDE_EQUITY_MODULE.md",
+  "expanded_corpus_locations": [
+    "docs/equity_module/v0.1/registries/",
+    "docs/equity_high_confidence_upgrade/",
+    "docs/equity_module/v0.1/corpus_v0.2/"
+  ],
+  "registry_output_path": "docs/equity_module/v0.1/registries/",
+  "created_by": "Codex build agent",
+  "created_at": "2026-05-14T16:56:19Z",
+  "notes": [
+    "Corpus expansion completed.",
+    "Next tasks are registry generation, seeders, fixtures, pilot validation, package tests, documentation, and proof handoff.",
+    "This snapshot freezes the completed corpus for v0.1 artifact generation; it does not assert production readiness."
+  ]
+}

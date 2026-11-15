@@ -1,0 +1,1036 @@
+object_id,object_family,registry,core_primitive,extends_core_primitive,viza_module_path,integration_notes
+equity_security,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+company,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+issuer,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+share_class,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+listing,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+adr,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+sector,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+industry,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+subindustry,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+peer_group,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+index,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+benchmark,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+portfolio,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+position,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+watchlist,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+filing,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+financial_statement,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+proxy_statement,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+earnings_call,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+transcript,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+press_release,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+news_document,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+user_memo,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+event,entity_type,equity_entity_types,event,,viza.core.strategy.event,primitive=event; extends=none; module=viza.finance.equity_investment
+catalyst,entity_type,equity_entity_types,scenario,,viza.core.strategy.scenario,primitive=scenario; extends=none; module=viza.finance.equity_investment
+thesis,entity_type,equity_entity_types,assumption,,viza.core.strategy.assumption,primitive=assumption; extends=none; module=viza.finance.equity_investment
+decision,entity_type,equity_entity_types,decision,,viza.core.strategy.decision,primitive=decision; extends=none; module=viza.finance.equity_investment
+recommendation,entity_type,equity_entity_types,output,,viza.core.strategy.output_radar,primitive=output; extends=none; module=viza.finance.equity_investment
+valuation_model,entity_type,equity_entity_types,transform,,viza.core.strategy.transform,primitive=transform; extends=none; module=viza.finance.equity_investment
+assumption,entity_type,equity_entity_types,assumption,,viza.core.strategy.assumption,primitive=assumption; extends=none; module=viza.finance.equity_investment
+scenario,entity_type,equity_entity_types,scenario,,viza.core.strategy.scenario,primitive=scenario; extends=none; module=viza.finance.equity_investment
+risk_case,entity_type,equity_entity_types,scenario,,viza.core.strategy.scenario,primitive=scenario; extends=none; module=viza.finance.equity_investment
+owner,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+holder,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+institutional_holder,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+beneficial_owner,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+insider,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+executive,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+board_member,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+analyst_provider,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+analyst_estimate,entity_type,equity_entity_types,evidence,,viza.core.strategy.evidence,primitive=evidence; extends=none; module=viza.finance.equity_investment
+consensus_snapshot,entity_type,equity_entity_types,evidence,,viza.core.strategy.evidence,primitive=evidence; extends=none; module=viza.finance.equity_investment
+rating_change,entity_type,equity_entity_types,event,,viza.core.strategy.event,primitive=event; extends=none; module=viza.finance.equity_investment
+macro_series,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+macro_vintage,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+regulator,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+connector,entity_type,equity_entity_types,entity,,viza.core.strategy.entity,primitive=entity; extends=none; module=viza.finance.equity_investment
+rights_policy,entity_type,equity_entity_types,audit,,viza.core.strategy.audit_record,primitive=audit; extends=none; module=viza.finance.equity_investment
+validation_record,entity_type,equity_entity_types,audit,,viza.core.strategy.audit_record,primitive=audit; extends=none; module=viza.finance.equity_investment
+audit_proof,entity_type,equity_entity_types,audit,,viza.core.strategy.audit_record,primitive=audit; extends=none; module=viza.finance.equity_investment
+package,entity_type,equity_entity_types,output,,viza.core.strategy.output_radar,primitive=output; extends=none; module=viza.finance.equity_investment
+data_quality_warning,entity_type,equity_entity_types,audit,,viza.core.strategy.audit_record,primitive=audit; extends=none; module=viza.finance.equity_investment
+equity_decision_context,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+mandate_context,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+horizon_context,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+candidate_set_context,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+portfolio_context_handoff,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+research_thesis_builder,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+evidence_bundle,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+signal_classifier,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+catalyst_classifier,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+confirmation_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+risk_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+invalidation_condition,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+action_mapper,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+strategy_profile_interpreter,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+output_selector,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+decision_audit_record,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+research_intake,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+company_snapshot,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+business_model_summary,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+industry_context_handoff,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+financial_analysis_handoff,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+valuation_support_handoff,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+thesis_writer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+catalyst_section_builder,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+risk_invalidation_section_builder,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+liquidity_float_review_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+management_governance_section,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+recommendation_logic_node,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+portfolio_context_note_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+research_completeness_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+investment_memo_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+analyst_scorecard_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+thesis_tracker_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+universe_loader,node_type,equity_node_types,universe,universe,viza.core.strategy.universe,primitive=universe; extends=universe; module=viza.finance.equity_investment
+candidate_set_filter,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+security_resolver,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+company_resolver,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+liquidity_capacity_filter,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+identifier_mapping_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+security_master_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+prices_ohlcv_connector_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+corporate_actions_connector,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+fundamentals_standardized_connector,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+fundamentals_as_reported_connector,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+edgar_filings_intake,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+xbrl_facts_intake,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+news_events_connector,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+transcripts_connector,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+business_model_classifier,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+fundamental_snapshot,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+revenue_quality_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+margin_structure_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+cash_conversion_transform,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+balance_sheet_risk_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+accounting_quality_score,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+restatement_handler,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+non_gaap_reconciler,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+segment_decomposer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+valuation_input_collector,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+valuation_assumption_object,node_type,equity_node_types,assumption,transform,viza.core.strategy.assumption,primitive=assumption; extends=transform; module=viza.finance.equity_investment
+dcf_model_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+ddm_model_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+residual_income_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+relative_valuation_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+sotp_decomposer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+asset_value_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+precedent_transactions_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+market_implied_assumption_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+scenario_valuation_node,node_type,equity_node_types,scenario,transform,viza.core.strategy.scenario,primitive=scenario; extends=transform; module=viza.finance.equity_investment
+sensitivity_table_builder,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+peer_selector,node_type,equity_node_types,relationship,relationship,viza.core.strategy.relationship,primitive=relationship; extends=relationship; module=viza.finance.equity_investment
+valuation_gap_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+margin_of_safety_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+value_trap_detector,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+industry_classifier,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+peer_group_builder,node_type,equity_node_types,relationship,relationship,viza.core.strategy.relationship,primitive=relationship; extends=relationship; module=viza.finance.equity_investment
+market_size_estimator,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+profit_pool_decomposer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+five_forces_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+pestle_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+moat_classifier,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+regulation_exposure_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+disruption_risk_node,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+substitution_risk_node,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+sector_relative_attribute_normalizer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+peer_drift_detector,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+governance_snapshot_builder,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+board_structure_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+control_structure_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+compensation_analyzer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+insider_transaction_analyzer,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_cluster_detector,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+buyback_quality_analyzer,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+dividend_sustainability_analyzer,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+m_a_track_record_analyzer,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+activist_vulnerability_node,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+related_party_detector,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+governance_risk_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+factor_definition_loader,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+factor_score_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_neutralization_transform,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+factor_orthogonalization_transform,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+factor_z_score_normalizer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+factor_decile_assigner,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+factor_residual_calculator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+factor_crowding_estimator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_capacity_estimator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_validation_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+factor_attribution_node,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+portfolio_context_loader,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+sizing_engine,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+position_cap_validator,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+sector_industry_cap_validator,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+issuer_cap_validator,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+liquidity_capacity_validator,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+factor_exposure_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_neutralization_engine,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+tracking_error_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+risk_contribution_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+covariance_estimator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+hedging_recommender,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+rebalance_planner,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+exit_planner,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+thesis_monitor_attached,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+drawdown_simulator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+stress_tester,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+moving_average_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+rsi_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+breakout_breakdown_node,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+volume_confirmation_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+abnormal_volume_node,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+realized_volatility_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+implied_volatility_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+put_call_ratio_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+volatility_spread_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+short_interest_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+days_to_cover_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+borrow_status_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+spread_estimator,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+amihud_illiquidity_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+market_impact_estimator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+execution_plan_builder,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+technical_confirmation_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+event_intake,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+earnings_surprise_calculator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+revisions_aggregator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+m_and_a_classifier,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+spinoff_tracker,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+index_calendar_tracker,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fda_calendar_tracker,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+litigation_event_classifier,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+buyback_event_classifier,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+dividend_event_classifier,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_event_classifier,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+event_materiality_estimator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+event_source_credibility_classifier,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+event_invalidation_monitor,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+special_situation_template_loader,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+ownership_intake,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+holder_classifier,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+institutional_ownership_calculator,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+short_interest_calculator,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+borrow_status_node_link,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+options_positioning_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+analyst_coverage_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+crowding_estimator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+flow_intake,node_type,equity_node_types,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+index_membership_tracker,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+ownership_relationship_writer,node_type,equity_node_types,relationship,relationship,viza.core.strategy.relationship,primitive=relationship; extends=relationship; module=viza.finance.equity_investment
+news_sentiment_intake,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+lm_dictionary_text_scorer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+social_sentiment_intake,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+attention_intake,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+narrative_topic_extractor,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+sentiment_disagreement_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+manipulation_risk_classifier,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+meme_stock_detector,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+behavioral_mechanism_classifier,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+macro_snapshot_loader,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+regime_classifier_rules,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+regime_classifier_hmm,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+rate_sensitivity_calculator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+inflation_exposure_classifier,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+fx_exposure_extractor,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+commodity_exposure_extractor,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+credit_risk_overlay_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+sector_cycle_fit_classifier,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+defensive_overlay_node,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+macro_scenario_builder,node_type,equity_node_types,scenario,transform,viza.core.strategy.scenario,primitive=scenario; extends=transform; module=viza.finance.equity_investment
+short_thesis_builder,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+red_flag_extractor,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+distress_score_node,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+borrow_status_node_short_link,node_type,equity_node_types,attribute,attribute,viza.core.strategy.attribute,primitive=attribute; extends=attribute; module=viza.finance.equity_investment
+squeeze_risk_estimator,node_type,equity_node_types,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+legal_review_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+short_action_gate,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+risk_avoidance_writer,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+short_report_intake,node_type,equity_node_types,evidence,transform,viza.core.strategy.evidence,primitive=evidence; extends=transform; module=viza.finance.equity_investment
+graph_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+data_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+rights_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+statistical_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+portfolio_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+output_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+marketplace_validator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+validation_record_writer,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+proof_object_generator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+human_review_trigger_router,node_type,equity_node_types,filter,filter,viza.core.strategy.filter,primitive=filter; extends=filter; module=viza.finance.equity_investment
+equity_radar_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+investment_memo_renderer_output,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+trade_plan_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+watchlist_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+risk_dashboard_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+validation_report_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+source_rights_report_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+analyst_scorecard_renderer_output,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+thesis_tracker_renderer_output,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+backtest_report_renderer,node_type,equity_node_types,output_radar,output_radar,viza.core.strategy.output_radar,primitive=output_radar; extends=output_radar; module=viza.finance.equity_investment
+package_export_node,node_type,equity_node_types,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+package_import_node,node_type,equity_node_types,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+methodology_graph_hasher,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+strategy_profile_hasher,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_checksum_calculator,node_type,equity_node_types,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+marketplace_draft_redactor,node_type,equity_node_types,transform,transform,viza.core.strategy.transform,primitive=transform; extends=transform; module=viza.finance.equity_investment
+company_issues_security,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+security_has_listing,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+share_class_of_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+adr_of_underlying_security,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+company_belongs_to_industry,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+industry_belongs_to_sector,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+subindustry_belongs_to_industry,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+company_peer_of_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+company_competes_with_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+company_supplier_of_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+company_customer_of_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+holder_owns_security,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+insider_affiliated_with_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+executive_serves_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+board_member_serves_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+filing_discloses_event,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+event_affects_security,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+thesis_supported_by_evidence,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+decision_uses_thesis,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+valuation_model_uses_assumption,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+valuation_model_uses_scenario,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+portfolio_holds_position,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+position_references_security,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+macro_series_affects_sector,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+validation_record_validates_object,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+recommendation_based_on_thesis,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+analyst_provider_issues_estimate,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+consensus_aggregates_estimates,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+regulator_regulates_company,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+audit_proof_proves_package,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+connector_provides_evidence,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+data_quality_warning_about_observation,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+user_memo_authored_by_user,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+watchlist_contains_entity,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+macro_vintage_versions_macro_series,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+benchmark_tracks_index,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+package_contains_object,edge_type,equity_edge_types,relationship,,viza.core.strategy.relationship,primitive=relationship; extends=none; module=viza.finance.equity_investment
+earnings_release,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+earnings_call_held,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+earnings_surprise_positive,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+earnings_surprise_negative,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+revenue_surprise_positive,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+revenue_surprise_negative,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+margin_surprise_positive,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+margin_surprise_negative,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+guidance_issued,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+guidance_raised,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+guidance_lowered,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+guidance_withdrawn,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+guidance_reaffirmed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+analyst_upgrade,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+analyst_downgrade,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+analyst_initiation,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+analyst_coverage_drop,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+analyst_target_price_change,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+estimate_revision_up,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+estimate_revision_down,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+estimate_dispersion_shift,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+estimate_recommendation_change,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_rumor_target,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_rumor_acquirer,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_terms_changed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_regulatory_review_filed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_regulatory_approval,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_regulatory_block,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_deal_break,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+mna_completed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+merger_arb_spread_widened,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+merger_arb_spread_narrowed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+merger_arb_break_event,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+merger_arb_regulatory_clearance,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+spinoff_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+spinoff_record_date,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+spinoff_distribution_completed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+spinoff_post_distribution_overhang,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+restructuring_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+restructuring_milestone,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+restructuring_completed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+activist_13d_filed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+activist_proxy_contest_initiated,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+activist_board_seat_won,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+activist_settlement,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+activist_withdrawal,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+buyback_authorized,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+buyback_accelerated,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+buyback_suspended,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+buyback_completed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+dividend_initiation,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+dividend_increase,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+dividend_decrease,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+dividend_suspension,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+dividend_special,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+secondary_offering,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+convertible_issuance,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+atm_offering,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+debt_issuance,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+debt_repayment,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+debt_refinanced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_purchase,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_sale,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_grant,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_exercise,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+insider_cluster_purchase,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+regulatory_proposal,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+regulatory_final_rule,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+regulatory_interpretive_release,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+regulatory_enforcement_action,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fda_pdufa_date,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fda_advisory_committee_meeting,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fda_approval,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fda_complete_response_letter,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fda_boxed_warning_added,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+litigation_filed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+litigation_settled,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+litigation_appellate_ruling,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+class_action_certified,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+covenant_breach,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+chapter_11_filing,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+chapter_7_filing,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+emergence_from_bankruptcy,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+index_inclusion_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+index_inclusion_effective,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+index_deletion,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+index_rebalance_event,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+ceo_change_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+cfo_change_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+chair_change_announced,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+director_resignation,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+succession_plan_disclosed,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+product_launch,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+product_launch_delay,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+product_recall,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+product_quality_issue,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+supply_chain_disruption,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+supply_chain_recovery,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+unusual_volume_spike,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+unusual_volume_collapse,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+unusual_options_call_activity,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+unusual_options_put_activity,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+social_sentiment_spike,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+meme_stock_alert,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+news_sentiment_shift_positive,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+news_sentiment_shift_negative,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+peer_event_contagion,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+peer_fundamental_drift,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+sector_event_contagion,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+sector_regime_shift,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+fomc_decision,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+ecb_decision,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+boj_decision,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+boe_decision,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+cpi_release,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+payrolls_release,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+gdp_release,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+ism_release,event_type,equity_event_registry_seed,event,transform,viza.core.strategy.event,primitive=event; extends=transform; module=viza.finance.equity_investment
+cash_conversion_strength,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+margin_expansion_signal,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+revenue_growth_acceleration,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+revenue_growth_deceleration,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+balance_sheet_fragility,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+accounting_quality_red_flag,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+fundamental_deterioration,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+revenue_quality_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+non_gaap_addback_inflation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+restatement_downgrade,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+late_filing_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+valuation_discount,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+valuation_premium,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+margin_of_safety_present,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+margin_of_safety_absent,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+implied_growth_too_high,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+implied_growth_too_low,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+peer_overhang,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+peer_underhang,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+sensitivity_asymmetric_downside,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+value_trap_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+moat_widening,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+moat_narrowing,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+moat_unclear,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+market_share_gain,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+market_share_loss,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+industry_consolidation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+regulatory_overhang,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+disruption_threat,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+governance_strong,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+governance_weak,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+incentive_misalignment,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+insider_cluster_buying_signal,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+insider_heavy_selling_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+buyback_above_intrinsic_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+buyback_below_intrinsic_value_creation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+dividend_unsustainable_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+ma_value_creation_pattern,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+ma_overpay_pattern,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_signal_strong,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_signal_weak,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_signal_decayed,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_crowded_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_capacity_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_orthogonal_alpha,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_loading_consistent_with_thesis,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_loading_contradicts_thesis,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+earnings_beat_with_guidance_raise,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+earnings_beat_with_guidance_cut,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+earnings_miss_with_guidance_raise,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+earnings_miss_with_guidance_cut,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+analyst_revision_momentum,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+deal_spread_attractive,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+deal_break_risk_high,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+spinoff_forced_selling_observed,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+index_inclusion_premium_observed,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+fda_binary_pending,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+activist_engagement_observed,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+litigation_material_overhang,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+institutional_quality_high,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+institutional_quality_weak,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+crowded_long_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+crowded_short_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+squeeze_risk_elevated,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+ownership_concentration_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+passive_overhang_high,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+activist_presence_disclosed,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+fund_redemption_risk,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+analyst_coverage_thin,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+overreaction_detected,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+underreaction_detected,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+investor_inattention_setup,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+narrative_shift_constructive,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+narrative_shift_negative,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+crowded_narrative_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+manipulation_risk_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+meme_stock_risk_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+recession_regime_overlay,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+late_cycle_overlay,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+rate_shock_overlay,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+credit_widening_overlay,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+inflation_pricing_power_signal,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+fx_translation_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+commodity_input_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+sector_cycle_fit_match,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+sector_cycle_fit_mismatch,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+policy_event_pending,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+overvaluation_with_deterioration_pattern,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+distress_risk_elevated,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+fraud_risk_flag,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+borrow_unavailable,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+short_thesis_invalidation_trigger_observed,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+governance_red_flag_severe,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+disclosure_quality_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+auditor_change_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+material_weakness_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+going_concern_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+position_concentration_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+sector_concentration_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+liquidity_capacity_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_overexposure_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+tracking_error_breach,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+factor_diversification_low,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+hedge_recommendation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+rebalance_recommendation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+drawdown_risk_elevated,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+exit_rule_triggered,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+thesis_supported,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+thesis_partially_supported,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+thesis_contradicted,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+thesis_invalidated,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+signal_without_confirmation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+catalyst_without_confirmation,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+risk_gate_blocks_action,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+action_downgraded_to_watch,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+validation_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+validation_blocked,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+statistical_validation_pass,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+rights_restriction_blocks_export,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+marketplace_draft_redaction_required,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+license_missing_for_connector,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+pit_warning_blocks_backtest,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+lookahead_risk_elevated,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+vintage_unavailable_warning,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+restatement_revintage_required,insight_type,equity_insight_registry_seed,score,score,viza.core.strategy.score,primitive=score; extends=score; module=viza.finance.equity_investment
+quality_value_long_only,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+portfolio_risk_radar,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+earnings_revision_momentum,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+growth_at_reasonable_price,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+cheap_compounder,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+rsi_swing_catalyst_confirmation,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+post_earnings_drift_radar,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+insider_cluster_breakout,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+merger_arbitrage_watchlist,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+special_situations_monitor,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+short_red_flag_monitor,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+factor_neutral_quantamental_selector,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+macro_regime_equity_selector,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+dividend_sustainability_radar,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+activism_vulnerability_radar,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+valuation_trap_detector,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+event_risk_monitor,strategy_profile,equity_strategy_profiles,decision,score,viza.core.strategy.decision,primitive=decision; extends=score; module=viza.finance.equity_investment
+equity_radar,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+investment_memo,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+trade_plan,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+watchlist,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+risk_dashboard,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+validation_report,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+source_rights_report,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+strategy_fit_insight_cards,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+relationship_graph,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+portfolio_impact_report,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+analyst_scorecard,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+thesis_tracker,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+backtest_report,output_view,equity_output_views,output,output_radar,viza.core.strategy.output_radar,primitive=output; extends=output_radar; module=viza.finance.equity_investment
+schema_graph_schema_supported,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+schema_node_types_in_palette,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+schema_edge_types_in_palette,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+schema_no_cycles_in_data_flow,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+schema_output_radar_reachable,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+data_source_id_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+data_observed_at_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+data_available_at_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+data_retrieved_at_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+data_no_ticker_as_primary_key,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_no_lookahead,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_vintage_required_for_backtest,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_restatement_revintage_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_thirteenf_lag,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_short_interest_publication_date,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+pit_alfred_macro_required_for_backtest,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+rights_rights_policy_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+rights_restricted_no_export,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+rights_production_connector_fail_closed,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+rights_unclear_defaults_restrictive,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_thesis_requires_evidence_horizon_invalidation,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_valuation_requires_assumptions_and_sensitivity,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_event_requires_source_credibility_and_timestamp,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_rumor_no_direct_action,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+evidence_non_advice_boundary,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+statistical_factor_oos_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+statistical_factor_costs_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+statistical_factor_liquidity_capacity_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+statistical_deflated_sharpe_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+statistical_survivorship_bias_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+qualitative_human_review_fraud_legal_short,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+qualitative_short_action_requires_borrow_and_squeeze_review,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+qualitative_sentiment_social_credibility_review,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+portfolio_sizing_requires_portfolio_context,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+portfolio_caps_enforced,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+portfolio_tracking_error_budget,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+output_validation_summary_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+output_pit_summary_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+output_rights_summary_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+output_invalidation_display_for_recommendations,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+package_marketplace_draft_redact_restricted,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+package_proof_checksum_required,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+package_no_monetized_endpoints,validation_rule,equity_validation_rules,audit,transform,viza.core.strategy.audit_record,primitive=audit; extends=transform; module=viza.finance.equity_investment
+official_public_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+sec_filings,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+xbrl_facts,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+fred_macro,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+alfred_macro_vintage,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+finra_short_interest,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_market_data_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_fundamentals_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_estimates_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_text_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_options_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_borrow_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+licensed_index_membership_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+user_document_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+user_portfolio_connector,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+derived_calculation_engine,connector_requirement,equity_connector_requirements,entity,attribute,viza.core.strategy.entity,primitive=entity; extends=attribute; module=viza.finance.equity_investment
+company_id,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+security_id,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+issuer_id,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+share_class_id,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+listing_id,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+ticker_display,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+cik,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+lei,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+figi,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=identity; production_scoring_eligible=false
+sector_gics,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+industry_gics,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+subindustry_gics,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+naics_code,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+market_cap_band,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+country,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+currency_listing,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+exchange_primary,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+primary_listing_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+universe_eligible_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=universe; production_scoring_eligible=false
+exchange_mic,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=listing; production_scoring_eligible=false
+listing_status,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=listing; production_scoring_eligible=false
+listing_start,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=listing; production_scoring_eligible=false
+listing_end,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=listing; production_scoring_eligible=false
+adr_ratio_to_underlying,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=listing; production_scoring_eligible=false
+sponsoring_bank,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=listing; production_scoring_eligible=false
+adv_dollar_20d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+adv_dollar_60d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+adv_shares_20d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+free_float_shares,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+float_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+days_to_unwind_at_10pct_adv,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+days_to_unwind_at_20pct_adv,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+relative_volume,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+opening_imbalance,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+closing_imbalance,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+spread_bps_roll,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+spread_bps_corwin_schultz,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+amihud_illiquidity_20d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+kyle_lambda_estimate,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=liquidity; production_scoring_eligible=true
+close_adjusted,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+close_unadjusted,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+open_unadjusted,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+high_unadjusted,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+low_unadjusted,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+volume_shares,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+vwap,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+gap_overnight_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+intraday_range_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+split_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=price; production_scoring_eligible=true
+ret_1d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_5d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_20d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_60d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_126d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_12m_1m,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_excess_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_market_relative_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_industry_relative_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_drawdown_max_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_sharpe_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+ret_sortino_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=return; production_scoring_eligible=true
+rsi_14d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+rsi_5d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+ma_50d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+ma_100d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+ma_200d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+ma_cross_50_200,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+distance_to_ma_50d_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+distance_to_ma_200d_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+macd_value,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+macd_signal,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+macd_histogram,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+bollinger_pct_b,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+bollinger_band_width,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+atr_14d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+breakout_52w_high_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+breakdown_52w_low_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+price_to_52w_high_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+price_to_52w_low_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+abnormal_volume_z,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+volume_price_confirmation_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+stochastic_k_14_3,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+stochastic_d_14_3,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+trend_state,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+vwap_distance_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=technical; production_scoring_eligible=true
+realized_vol_20d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+realized_vol_60d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+realized_vol_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+downside_vol_60d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+ewma_vol_20d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+iv_30d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+iv_60d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+iv_rank_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+iv_term_slope,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+vix_close,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+iv_skew_25d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+variance_premium,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+beta_market_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+idiosyncratic_vol_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=volatility; production_scoring_eligible=true
+revenue_growth_yoy_q,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+revenue_growth_qoq_sa,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+revenue_growth_3y_cagr,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+organic_revenue_growth_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+eps_growth_yoy_q,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+eps_growth_3y_cagr,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+ebitda_growth_yoy_q,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+ebit_growth_yoy_q,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+fcf_growth_yoy_q,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+fcf_growth_3y_cagr,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+book_value_growth_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+segment_revenue_growth_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+geography_revenue_growth_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+backlog_growth_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+guidance_revenue_growth_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+guidance_eps_growth_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_growth; production_scoring_eligible=true
+gross_margin_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+operating_margin_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+ebitda_margin_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+ebit_margin_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+net_margin_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+fcf_margin_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+gross_margin_expansion_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+operating_margin_expansion_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+ros_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+roic_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+roe_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+incremental_roic_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=fundamental_margin; production_scoring_eligible=true
+cfo_to_ni_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+fcf_to_ni_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+fcf_to_ebitda_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+dso_days,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+dio_days,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+dpo_days,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+ccc_days,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+working_capital_to_revenue,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+capex_to_revenue_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+capex_to_dna_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+cash_runway_months,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+free_cash_flow_yield_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+sbc_to_revenue_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+sbc_dilution_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=cash_flow; production_scoring_eligible=true
+net_debt_to_ebitda_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+debt_to_equity,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+total_debt_to_assets,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+interest_coverage_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+ebitda_to_interest_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+net_cash,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+cash_to_market_cap,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+current_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+quick_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+debt_maturity_1y_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+covenant_distance,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+off_balance_sheet_exposure,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+pension_underfunding,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+tangible_book_value,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+goodwill_to_assets,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+intangibles_to_assets,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=balance_sheet; production_scoring_eligible=true
+piotroski_f_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+mohanram_g_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+qmj_quality_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+sloan_accruals_zscore,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+ddi_accrual_quality,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+beneish_m_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=false
+restatement_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+auditor_change_recent_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+material_weakness_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+going_concern_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=accounting_quality; production_scoring_eligible=true
+pe_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+pe_ntm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+peg_ntm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+ev_ebitda_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+ev_ebitda_ntm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+ev_ebit_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+ev_sales_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+pb_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+pfcf_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+fcf_yield_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+earnings_yield_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+dividend_yield_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+buyback_yield_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+shareholder_yield_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+implied_growth_perpetual,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+implied_roic,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+implied_cost_of_capital,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+peer_multiple_zscore,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+peer_multiple_relative_to_history,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+margin_of_safety_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+valuation_gap_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+reverse_dcf_growth_required,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=valuation; production_scoring_eligible=true
+industry_concentration_hhi,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_cr4_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_cr8_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_growth_3y_cagr,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_profit_pool_share,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_lifecycle_stage,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_regulation_exposure_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_disruption_risk_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_substitution_risk,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+industry_pricing_power,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=industry; production_scoring_eligible=true
+market_share_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+market_share_change_1y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+market_share_change_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+peer_count,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+peer_similarity_avg,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+peer_similarity_min,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+five_forces_supplier_power,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+five_forces_buyer_power,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+five_forces_threat_of_entry,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+five_forces_threat_of_substitutes,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=competitive_position; production_scoring_eligible=false
+moat_score_qualitative,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+moat_source_intangibles_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+moat_source_switching_costs_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+moat_source_network_effects_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+moat_source_cost_advantage_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+moat_source_efficient_scale_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+moat_trend,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=moat; production_scoring_eligible=true
+ceo_tenure_years,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+ceo_pay_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+ceo_total_comp_usd,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+ceo_change_recent_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+cfo_change_recent_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+management_track_record_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+performance_metric_alignment_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+clawback_policy_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+hedging_prohibited_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+pledging_disclosed_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+management_guidance_credibility_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+founder_active_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=management; production_scoring_eligible=true
+board_size,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+board_independent_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+chairman_independent_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+lead_independent_director_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+audit_committee_independent_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+comp_committee_independent_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+nominating_committee_independent_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+staggered_board_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+dual_class_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+poison_pill_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+super_majority_for_mergers_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+voting_power_concentration,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+director_avg_tenure_years,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+related_party_transactions_count,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+auditor_tenure_years,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+activist_present_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+g_index,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=governance; production_scoring_eligible=true
+capex_intensity_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+r_and_d_to_revenue_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+buyback_yield_3y_avg,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+buyback_quality_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+dividend_payout_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+dividend_payout_to_fcf,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+m_a_intensity_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+m_a_value_creation_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+deleverage_rate_ttm,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+return_on_incremental_capital_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+cash_balance_to_market_cap,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+dividend_growth_3y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=capital_allocation; production_scoring_eligible=true
+beta_mkt,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_smb,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_hml,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_hml_devil,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_umd_mom,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_rmw,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_cma,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_qmj,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_bab,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+beta_liquidity,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+factor_residual_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+factor_score_composite,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+factor_decile_value,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+factor_decile_momentum,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+factor_decile_quality,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+factor_crowding_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=factor_exposure; production_scoring_eligible=true
+institutional_ownership_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+top10_institutional_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+top1_holder_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+holdings_concentration_hhi,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+transient_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+dedicated_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+quasi_indexer_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+insider_ownership_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+blockholder_count_5pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+etf_ownership_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+passive_ownership_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+insider_cluster_purchase_30d_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+insider_net_buy_value_90d_usd,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+activist_13d_recent_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=ownership; production_scoring_eligible=true
+short_interest_pct_float,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+short_interest_pct_outstanding,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+days_to_cover,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+short_interest_change_4w_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+threshold_security_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+fails_to_deliver_recent_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+borrow_fee_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+borrow_availability_status,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=short_interest; production_scoring_eligible=true
+options_open_interest,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+options_volume_30d_avg,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+put_call_ratio_volume,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+put_call_ratio_oi,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+volatility_spread_call_minus_put_iv,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+o_to_s_volume_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+delta_skew_25d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+realized_minus_implied_30d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+iv_event_premium,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+put_call_oi_imbalance,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=options_positioning; production_scoring_eligible=true
+earnings_surprise_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+revenue_surprise_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+margin_surprise_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+guidance_change_direction,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+revision_count_30d_up,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+revision_count_30d_down,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+revision_dispersion,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+abnormal_return_event_window_1d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+abnormal_return_event_window_3d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+deal_spread_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+deal_probability,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+days_to_close_estimate,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=event; production_scoring_eligible=true
+news_sentiment_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+news_polarity_lm_pos,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+news_polarity_lm_neg,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+news_polarity_lm_uncertainty,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+news_sentiment_count_30d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+search_volume_zscore_30d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+attention_pageview_zscore,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+social_mention_count_24h,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+social_sentiment_score,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+sentiment_divergence_news_social,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+meme_stock_alert_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+manipulation_alert_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=sentiment; production_scoring_eligible=false
+ust_2y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ust_10y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ust_30y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ust_2s10s_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ust_3m10y_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+real_rate_10y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+fed_funds_target,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+cpi_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+core_cpi_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+pce_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+core_pce_yoy,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+breakeven_5y5y,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+gdp_qoq_annualized,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ism_manufacturing_pmi,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ism_services_pmi,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+unemployment_rate,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+nonfarm_payrolls_change,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+vix_index,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+ig_oas_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+hy_oas_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=macro; production_scoring_eligible=true
+position_weight,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+active_weight,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+days_to_unwind_at_20pct_adv_portfolio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+risk_contribution_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+factor_exposure_total,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+tracking_error_total_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+tracking_error_factor_share_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+tracking_error_specific_share_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+beta_to_benchmark,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+drawdown_historical_max_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+var95_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+cvar95_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+effective_number_of_bets,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+turnover_annual_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+kelly_fraction_quarter_cap,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=portfolio; production_scoring_eligible=true
+expected_cost_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+expected_impact_bps_almgren,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+expected_alpha_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+expected_net_alpha_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+target_pct_adv,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+schedule_type,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+borrow_fee_bps_execution,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+expected_slippage_bps,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+impact_to_alpha_ratio,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+execution_schedule_horizon_min,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=execution; production_scoring_eligible=true
+var95_position_usd,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+cvar95_position_usd,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+position_drawdown_max_252d,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+stress_recession_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+stress_rate_shock_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+stress_credit_widening_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+liquidity_at_risk_pct,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+capacity_breach_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+crowding_warning_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+squeeze_risk_high_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+binary_event_within_30d_flag,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true
+data_quality_warning_count,attribute,equity_attribute_registry_seed,attribute,attribute,viza.core.strategy.attribute,family=risk; production_scoring_eligible=true

@@ -1,14 +1,16 @@
 import type {
+  AttributionEnsureLatestResponse,
+  AttributionJob,
   AttributionChartRange,
   AttributionChartResponse,
+  AttributionMethodology,
   AttributionRun,
   ExposureUpdateDecision,
   UniverseResponse,
 } from "./types";
 
-export async function getLatestAttribution(ticker: string): Promise<AttributionRun> {
-  const url = buildApiUrl("/attribution-runs/latest");
-  url.searchParams.set("ticker", ticker);
+export async function getAttributionMethodologies(): Promise<AttributionMethodology[]> {
+  const url = buildApiUrl("/attribution-methodologies");
 
   const response = await apiFetch(url);
   if (!response.ok) {
@@ -17,10 +19,34 @@ export async function getLatestAttribution(ticker: string): Promise<AttributionR
   return response.json();
 }
 
-export async function getAttributionRuns(ticker: string, limit = 25): Promise<AttributionRun[]> {
+export async function getLatestAttribution(
+  ticker: string,
+  methodology?: string,
+): Promise<AttributionRun> {
+  const url = buildApiUrl("/attribution-runs/latest");
+  url.searchParams.set("ticker", ticker);
+  if (methodology) {
+    url.searchParams.set("methodology", methodology);
+  }
+
+  const response = await apiFetch(url);
+  if (!response.ok) {
+    throw new Error(`API returned ${response.status}`);
+  }
+  return response.json();
+}
+
+export async function getAttributionRuns(
+  ticker: string,
+  limit = 25,
+  methodology?: string,
+): Promise<AttributionRun[]> {
   const url = buildApiUrl("/attribution-runs");
   url.searchParams.set("ticker", ticker);
   url.searchParams.set("limit", String(limit));
+  if (methodology) {
+    url.searchParams.set("methodology", methodology);
+  }
 
   const response = await apiFetch(url);
   if (!response.ok) {
@@ -42,10 +68,14 @@ export async function getAttributionRunById(runId: string): Promise<AttributionR
 export async function getAttributionChart(
   ticker: string,
   range: AttributionChartRange,
+  methodology?: string,
 ): Promise<AttributionChartResponse> {
   const url = buildApiUrl("/attribution-chart");
   url.searchParams.set("ticker", ticker);
   url.searchParams.set("range", range);
+  if (methodology) {
+    url.searchParams.set("methodology", methodology);
+  }
 
   const response = await apiFetch(url);
   if (!response.ok) {
@@ -64,6 +94,7 @@ export async function getUniverse(input: {
   order?: string;
   limit?: number;
   offset?: number;
+  methodology?: string;
 } = {}): Promise<UniverseResponse> {
   const url = buildApiUrl("/universe");
   for (const [key, value] of Object.entries(input)) {
@@ -71,6 +102,37 @@ export async function getUniverse(input: {
       url.searchParams.set(key, String(value));
     }
   }
+
+  const response = await apiFetch(url);
+  if (!response.ok) {
+    throw new Error(`API returned ${response.status}`);
+  }
+  return response.json();
+}
+
+export async function ensureLatestAttribution(input: {
+  ticker: string;
+  methodology: string;
+  cadence?: string;
+  range?: AttributionChartRange;
+}): Promise<AttributionEnsureLatestResponse> {
+  const url = buildApiUrl("/attribution-runs/ensure-latest");
+  url.searchParams.set("ticker", input.ticker);
+  url.searchParams.set("methodology", input.methodology);
+  url.searchParams.set("range", input.range ?? "1m");
+  if (input.cadence) {
+    url.searchParams.set("cadence", input.cadence);
+  }
+
+  const response = await apiFetch(url, { method: "POST" });
+  if (!response.ok) {
+    throw new Error(`API returned ${response.status}`);
+  }
+  return response.json();
+}
+
+export async function getAttributionJob(jobId: string): Promise<AttributionJob> {
+  const url = buildApiUrl(`/attribution-jobs/${jobId}`);
 
   const response = await apiFetch(url);
   if (!response.ok) {

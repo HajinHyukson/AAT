@@ -47,6 +47,7 @@ out/
 .vercel/
 *.tsbuildinfo
 next-env.d.ts
+apps/*/release/
 
 # --- Data / caches -----------------------------------------------------------
 .cache/
@@ -62,6 +63,16 @@ data/processed/
 # Pickled model artifacts (use S3 / artifact bucket instead)
 *.pkl
 *.joblib
+
+# --- VIZA equity text sentiment (Stage B) FinBERT model cache ----------------
+# FinBERT weights (~440MB) and tokenizer artifacts are large and reproducible
+# from the HuggingFace hub; never commit them. The default cache lives under
+# .cache/ (already ignored) but VIZA_FINBERT_CACHE_DIR may override the path.
+**/finbert_cache/
+**/finbert_models/
+**/models--ProsusAI--finbert/
+*.safetensors
+*.onnx
 
 # Prefect / Celery
 .prefect/

@@ -1,0 +1,3236 @@
+{
+  "$schema": "../equity_registry_shared_metadata.schema.json",
+  "registry_name": "equity_edge_types",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "registry_version": "v1",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+  "notes": "Edges are relationship primitives. Every record conforms to docs/equity_module/v0.1/equity_registry_shared_metadata.schema.json (object_family=edge_type). Endpoints (from_entity_type/to_entity_type) must resolve to records in equity_entity_types.json. Dynamic edges (ownership, peer membership, classification) carry as_of; static edges (share-class of company) carry created_at only.",
+  "records": [
+    {
+      "id": "company_issues_security",
+      "display_name": "Company issues Security",
+      "description": "Edge linking an operating company to an equity security it issues. Authoritative source is the issuer-of-record disclosure in registration filings.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§20.5",
+        "§18.9"
+      ],
+      "source_ids": [
+        "DA-016",
+        "B-008"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "company",
+        "equity_security"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "issuer_of_record_filing",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings",
+          "security_master"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities",
+        "edge_cardinality_documented"
+      ],
+      "failure_modes": [
+        "company_and_issuer_collapsed"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "company",
+        "to_entity_type": "equity_security",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "security_has_listing",
+      "display_name": "Security has Listing",
+      "description": "Edge from an equity_security to one of its exchange listings.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§20.5"
+      ],
+      "source_ids": [
+        "DA-007",
+        "B-008"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "equity_security",
+        "listing"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "exchange_listing_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "security_master"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities",
+        "delisting_event_emitted_when_status_changes"
+      ],
+      "failure_modes": [
+        "delisting_event_unhandled"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "equity_security",
+        "to_entity_type": "listing",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "primary_listing_flag"
+        ]
+      }
+    },
+    {
+      "id": "share_class_of_company",
+      "display_name": "Share Class of Company",
+      "description": "Edge from a share_class to the company whose equity rights it represents.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§20.4",
+        "§20.5"
+      ],
+      "source_ids": [
+        "DA-016",
+        "GOV-016"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "share_class",
+        "company"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "charter_or_amendment",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "share_class_lost_after_reclassification"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "share_class",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "supersedes_share_class_id"
+        ]
+      }
+    },
+    {
+      "id": "adr_of_underlying_security",
+      "display_name": "ADR of Underlying Security",
+      "description": "Edge from an ADR to its foreign underlying equity_security. Mandatory for ADR coverage.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§20.5"
+      ],
+      "source_ids": [
+        "DA-016"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "adr",
+        "equity_security"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "adr_registration",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "security_master",
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "adr_must_link_to_underlying_security"
+      ],
+      "failure_modes": [
+        "adr_disconnected_from_underlying"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "adr",
+        "to_entity_type": "equity_security",
+        "cardinality": "one_to_one",
+        "directionality": "directed",
+        "optional_attributes": [
+          "ratio_to_underlying",
+          "sponsoring_bank"
+        ]
+      }
+    },
+    {
+      "id": "company_belongs_to_industry",
+      "display_name": "Company belongs to Industry",
+      "description": "Sector/industry/subindustry classification edge. Vintaged because classifications drift; use as_of for backtests.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8",
+        "§8.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-011",
+        "I-012",
+        "I-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "company",
+        "industry",
+        "subindustry",
+        "sector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "macro_regime_equity_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "classification_provider_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "not_applicable",
+        "vintage_required": true,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "security_master",
+          "identifier_mapping"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "classification_vintage_preserved",
+        "industry_claim_requires_classification_evidence"
+      ],
+      "failure_modes": [
+        "classification_drift_silently_ignored"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "company",
+        "to_entity_type": "industry",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "classification_scheme",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "industry_belongs_to_sector",
+      "display_name": "Industry belongs to Sector",
+      "description": "Hierarchical edge from an industry to its parent sector.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-011",
+        "I-012"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "industry",
+        "sector"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "classification_scheme_doc",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "not_applicable",
+        "vintage_required": true,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "security_master"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "classification_scheme_change_overlooked"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "industry",
+        "to_entity_type": "sector",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "scheme"
+        ]
+      }
+    },
+    {
+      "id": "subindustry_belongs_to_industry",
+      "display_name": "Subindustry belongs to Industry",
+      "description": "Hierarchical edge from a subindustry to its parent industry.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-011"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "subindustry",
+        "industry"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "classification_scheme_doc",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "not_applicable",
+        "vintage_required": true,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "security_master"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "classification_scheme_change_overlooked"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "subindustry",
+        "to_entity_type": "industry",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "scheme"
+        ]
+      }
+    },
+    {
+      "id": "company_peer_of_company",
+      "display_name": "Company is Peer of Company",
+      "description": "Methodology-bound peer relationship between two companies (Bhojraj-Lee or Hoberg-Phillips). Carries similarity_score and methodology.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8",
+        "§8.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-013",
+        "I-014"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "company",
+        "peer_group"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "valuation_trap_detector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "peer_methodology_documentation",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": true,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "security_master",
+          "fundamentals_standardized"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "peer_set_requires_min_5_or_fallback_documented",
+        "peer_methodology_recorded"
+      ],
+      "failure_modes": [
+        "peer_drift_silently_ignored",
+        "peer_set_assumed_from_ticker_neighbors"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "company",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "undirected",
+        "optional_attributes": [
+          "similarity_score",
+          "methodology",
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "company_competes_with_company",
+      "display_name": "Company competes with Company",
+      "description": "Competitive relationship between two companies. Distinct from peer (peer is methodology-bound; competitor is operational).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8.3",
+        "§8.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-001",
+        "I-002",
+        "I-007"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "10k_item1_or_industry_doc",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "competitor_set_assumed_without_evidence"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "company",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "undirected",
+        "optional_attributes": [
+          "as_of",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "company_supplier_of_company",
+      "display_name": "Company is Supplier of Company",
+      "description": "Supply-chain edge: source company supplies destination company. Mirror of customer edge.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-002",
+        "F-013"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "10k_customer_supplier_disclosure",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "supply_chain_claim_without_evidence"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "company",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "revenue_concentration_pct",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "company_customer_of_company",
+      "display_name": "Company is Customer of Company",
+      "description": "Supply-chain edge: source company is a customer of destination company. Inverse of supplier edge.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§8.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "I-002",
+        "F-013"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "10k_customer_supplier_disclosure",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "customer_concentration_claim_without_evidence"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "company",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "revenue_concentration_pct",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "holder_owns_security",
+      "display_name": "Holder owns Security",
+      "description": "Filed ownership record (13F / 13D / 13G / Form 4). Always pinned to filing_accepted_at; 13F-derived edges must NOT be used as current positioning.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§14",
+        "§14.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "OW-022",
+        "OW-023",
+        "OW-024"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "holder",
+        "institutional_holder",
+        "beneficial_owner",
+        "insider",
+        "equity_security"
+      ],
+      "compatible_strategy_profiles": [
+        "activism_vulnerability_radar",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "filing_evidence",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "ownership_filings",
+          "insider_transactions"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "ownership_claim_requires_filing_ref",
+        "filing_13f_data_must_not_be_used_as_current_positioning"
+      ],
+      "failure_modes": [
+        "filing_13f_used_as_current_positioning",
+        "short_interest_interpolated_between_releases"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "holder",
+        "to_entity_type": "equity_security",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "shares",
+          "value_usd",
+          "pct_outstanding",
+          "filing_id_ref"
+        ]
+      }
+    },
+    {
+      "id": "insider_affiliated_with_company",
+      "display_name": "Insider affiliated with Company",
+      "description": "Section 16 reporting affiliation. Insider role disclosed in DEF 14A / Form 3.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§9",
+        "§9.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "GOV-011",
+        "GOV-012"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "insider",
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "insider_cluster_breakout",
+        "activism_vulnerability_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "form_3_or_proxy_disclosure",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "insider_transactions",
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "insider_affiliation_assumed_without_filing"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "insider",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "role",
+          "active_flag"
+        ]
+      }
+    },
+    {
+      "id": "executive_serves_company",
+      "display_name": "Executive serves Company",
+      "description": "Executive officer service relationship. Disclosed in DEF 14A and 8-K Item 5.02.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§9.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "GOV-011",
+        "GOV-018"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "executive",
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "activism_vulnerability_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "def_14a_or_8k_item_5_02",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "governance_claim_requires_proxy_or_filing_evidence"
+      ],
+      "failure_modes": [
+        "executive_tenure_state_drift"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "executive",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "title",
+          "compensation_record_ref"
+        ]
+      }
+    },
+    {
+      "id": "board_member_serves_company",
+      "display_name": "Board member serves Company",
+      "description": "Director / board member service relationship.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§9.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "GOV-011",
+        "GOV-016"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "board_member",
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "activism_vulnerability_radar",
+        "quality_value_long_only"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "def_14a",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "governance_claim_requires_proxy_or_filing_evidence"
+      ],
+      "failure_modes": [
+        "board_seat_drift_unhandled"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "board_member",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "independent",
+          "committees",
+          "compensation_record_ref"
+        ]
+      }
+    },
+    {
+      "id": "filing_discloses_event",
+      "display_name": "Filing discloses Event",
+      "description": "Filing-to-event linkage (8-K Items 1.01–9.01, 4.02 restatement, 5.02 departures, 13D, etc.). Authoritative timestamp for event availability.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§13",
+        "§13.4",
+        "§20.5"
+      ],
+      "source_ids": [
+        "EV-025",
+        "EV-026"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "filing",
+        "event"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum",
+        "post_earnings_drift_radar",
+        "merger_arbitrage_watchlist",
+        "event_risk_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "filing_record",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "event_must_link_to_at_least_one_entity"
+      ],
+      "failure_modes": [
+        "event_used_before_available_at"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "filing",
+        "to_entity_type": "event",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "item_code",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "event_affects_security",
+      "display_name": "Event affects Security",
+      "description": "Edge from an event to a security it materially affects. Many-to-many (one event can affect multiple securities; one security can have many events).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§3.13",
+        "§13.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "G-010",
+        "EV-003",
+        "EV-008"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "event",
+        "equity_security",
+        "company"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum",
+        "post_earnings_drift_radar",
+        "merger_arbitrage_watchlist",
+        "event_risk_monitor",
+        "rsi_swing_catalyst_confirmation"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "event_source_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "event_time",
+        "available_at_policy": "publication_time",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings",
+          "news_events",
+          "earnings_releases"
+        ],
+        "license_policy": "public_professional",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "conditional",
+        "marketplace_policy": "conditional",
+        "attribution_required": true,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "event_must_link_to_at_least_one_entity",
+        "event_must_carry_materiality_assessment"
+      ],
+      "failure_modes": [
+        "materiality_assumed_without_evidence"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "event",
+        "to_entity_type": "equity_security",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "materiality_score",
+          "abnormal_return_1d",
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "thesis_supported_by_evidence",
+      "display_name": "Thesis supported by Evidence",
+      "description": "Edge linking a thesis to supporting evidence (filings, transcripts, news, valuation models, etc.). Inverse exists as a contradiction edge in the insight engine.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§3.12",
+        "§20.5"
+      ],
+      "source_ids": [
+        "G-001",
+        "G-003",
+        "G-014"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "thesis",
+        "filing",
+        "financial_statement",
+        "press_release",
+        "news_document",
+        "transcript",
+        "valuation_model",
+        "user_memo"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "supporting_evidence_ref",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "thesis_must_link_to_entity_and_strategy_profile",
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "weak_evidence_presented_as_decision",
+        "contradictory_evidence_hidden_from_memo"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "thesis",
+        "to_entity_type": "filing",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "direction",
+          "weight",
+          "as_of",
+          "target_object_family",
+          "target_object_id"
+        ]
+      }
+    },
+    {
+      "id": "decision_uses_thesis",
+      "display_name": "Decision uses Thesis",
+      "description": "Decision-to-thesis linkage. A decision must reference at least one thesis (or explicit no-action rationale).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§3.5",
+        "§3.11",
+        "§20.5"
+      ],
+      "source_ids": [
+        "G-001",
+        "G-003"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "decision",
+        "thesis"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "earnings_revision_momentum",
+        "merger_arbitrage_watchlist",
+        "portfolio_risk_radar",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_ref",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "decision_has_evidence",
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "weak_evidence_presented_as_decision"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "decision",
+        "to_entity_type": "thesis",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "weight",
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "valuation_model_uses_assumption",
+      "display_name": "Valuation Model uses Assumption",
+      "description": "Edge from a valuation model to each of its declared assumptions. Required for sensitivity tables and reverse-DCF inversion.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§7.4",
+        "§20.5"
+      ],
+      "source_ids": [
+        "V-001",
+        "V-006"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "valuation_model",
+        "assumption"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "assumption_source",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "methodology_graph_hash"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "every_assumption_requires_evidence_or_explicit_default"
+      ],
+      "failure_modes": [
+        "unstated_discount_rate",
+        "opaque_fair_value"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "valuation_model",
+        "to_entity_type": "assumption",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "sensitivity_band",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "valuation_model_uses_scenario",
+      "display_name": "Valuation Model uses Scenario",
+      "description": "Edge from a valuation model to each scenario it evaluates (bull/base/bear, regime-specific, etc.).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§7.4",
+        "§20.5"
+      ],
+      "source_ids": [
+        "V-001",
+        "MA-024"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "valuation_model",
+        "scenario"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "macro_regime_equity_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "scenario_definition",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs"
+      ],
+      "source_quality_minimum": 3,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "scenario_probabilities_sum_to_one"
+      ],
+      "failure_modes": [
+        "scenario_assumed_without_probability"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "valuation_model",
+        "to_entity_type": "scenario",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "probability",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "portfolio_holds_position",
+      "display_name": "Portfolio holds Position",
+      "description": "Portfolio-to-position membership. User-private; never exported without explicit user action.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§11.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "PC-001",
+        "PC-021"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "position_record",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "position_must_link_to_portfolio_and_security"
+      ],
+      "failure_modes": [
+        "position_state_leaked_to_marketplace_draft"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "portfolio",
+        "to_entity_type": "position",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "weight"
+        ]
+      }
+    },
+    {
+      "id": "position_references_security",
+      "display_name": "Position references Security",
+      "description": "Position-to-security linkage. Required for portfolio valuation and risk decomposition.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§11.3",
+        "§20.5"
+      ],
+      "source_ids": [
+        "PC-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "position",
+        "equity_security"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "position_record",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "position_must_link_to_portfolio_and_security"
+      ],
+      "failure_modes": [
+        "security_id_drift_after_ticker_change"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "position",
+        "to_entity_type": "equity_security",
+        "cardinality": "one_to_one",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "macro_series_affects_sector",
+      "display_name": "Macro Series affects Sector",
+      "description": "Macro-to-sector sensitivity edge (rates → financials, oil → energy, etc.). Used for regime overlays.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§16",
+        "§16.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "MA-006",
+        "MA-014",
+        "MA-024"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "macro_series",
+        "sector",
+        "industry"
+      ],
+      "compatible_strategy_profiles": [
+        "macro_regime_equity_selector",
+        "dividend_sustainability_radar",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "macro_sensitivity_study",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "regulator_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": true,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "macro_official"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": true,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "macro_backtest_requires_vintaged_data"
+      ],
+      "failure_modes": [
+        "non_vintaged_macro_used_in_backtest",
+        "macro_overlay_dominates_signal"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "current_aat_pipeline_lacks_vintage",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "macro_series",
+        "to_entity_type": "sector",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "beta",
+          "as_of",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "id": "validation_record_validates_object",
+      "display_name": "Validation Record validates Object",
+      "description": "Polymorphic edge from a validation_record to any registered object (graph, node, attribute, event, insight, profile, output, package). Append-only.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§19",
+        "§19.2",
+        "§20.5"
+      ],
+      "source_ids": [
+        "P-013",
+        "P-014"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "validation_record",
+        "company",
+        "equity_security",
+        "filing",
+        "event",
+        "thesis",
+        "decision",
+        "recommendation",
+        "valuation_model",
+        "portfolio",
+        "position",
+        "package",
+        "audit_proof"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "validator_run_output",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "methodology_graph_hash",
+        "strategy_profile_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "validation_record_links_to_target_id",
+        "validation_ledger_append_only"
+      ],
+      "failure_modes": [
+        "validation_skipped",
+        "warnings_treated_as_passes"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "validation_record",
+        "to_entity_type": "audit_proof",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "target_object_family",
+          "target_object_id",
+          "status"
+        ]
+      }
+    },
+    {
+      "id": "recommendation_based_on_thesis",
+      "display_name": "Recommendation based on Thesis",
+      "description": "Edge from a recommendation to the thesis (or theses) it relies on. Required so recommendation_inconsistent_with_thesis rule can fire.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§5",
+        "§5.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "ANL-001",
+        "ANL-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "recommendation",
+        "thesis"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_ref",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "recommendation_inconsistent_with_thesis",
+        "non_advice_boundary_present"
+      ],
+      "failure_modes": [
+        "recommendation_without_thesis_link"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "recommendation",
+        "to_entity_type": "thesis",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "weight"
+        ]
+      }
+    },
+    {
+      "id": "analyst_provider_issues_estimate",
+      "display_name": "Analyst Provider issues Estimate",
+      "description": "Edge from an analyst provider to the estimate it published.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§13",
+        "§20.5"
+      ],
+      "source_ids": [
+        "ANL-016",
+        "EV-032"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "analyst_provider",
+        "analyst_estimate"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "provider_estimate_record",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "rights_state"
+      ],
+      "source_quality_minimum": 3,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "publication_time",
+        "available_at_policy": "vendor_publication_at",
+        "retrieved_at_policy": "vendor_retrieval_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "not_applicable",
+        "vintage_required": true,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "analyst_estimates"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "consensus_snapshot_pit_required"
+      ],
+      "failure_modes": [
+        "provider_load_time_used_as_available_at"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "analyst_provider",
+        "to_entity_type": "analyst_estimate",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "consensus_aggregates_estimates",
+      "display_name": "Consensus aggregates Estimates",
+      "description": "Edge from a consensus_snapshot to the individual estimates it aggregates.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§13.10",
+        "§7.11",
+        "§20.5"
+      ],
+      "source_ids": [
+        "ANL-016",
+        "EV-032",
+        "DA-011"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "consensus_snapshot",
+        "analyst_estimate"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum",
+        "post_earnings_drift_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "provider_aggregation_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "publication_time",
+        "available_at_policy": "vendor_publication_at",
+        "retrieved_at_policy": "vendor_retrieval_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "not_applicable",
+        "vintage_required": true,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "analyst_estimates"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "consensus_snapshot_pit_required"
+      ],
+      "failure_modes": [
+        "consensus_used_after_revision"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "consensus_snapshot",
+        "to_entity_type": "analyst_estimate",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "regulator_regulates_company",
+      "display_name": "Regulator regulates Company",
+      "description": "Authoritative regulator-to-company relationship (e.g., SEC regulates US issuers; FDA regulates drug developers).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§9",
+        "§13",
+        "§17",
+        "§20.5"
+      ],
+      "source_ids": [
+        "EV-025",
+        "EV-029",
+        "EV-030"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "regulator",
+        "company",
+        "issuer"
+      ],
+      "compatible_strategy_profiles": [
+        "event_risk_monitor",
+        "merger_arbitrage_watchlist",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "regulator_jurisdiction_doc",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "regulator_version",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "regulator_misattributed_to_jurisdiction"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "regulator",
+        "to_entity_type": "company",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "regime",
+          "as_of"
+        ]
+      }
+    },
+    {
+      "id": "audit_proof_proves_package",
+      "display_name": "Audit Proof proves Package",
+      "description": "Edge from an audit_proof to the `.viza` package it certifies (proof_checksum binding).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§30.3",
+        "§36.2",
+        "§20.5"
+      ],
+      "source_ids": [
+        "P-013",
+        "P-014"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "audit_proof",
+        "package"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "proof_checksum_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "proof_checksum_required_on_export"
+      ],
+      "failure_modes": [
+        "proof_checksum_missing"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "audit_proof",
+        "to_entity_type": "package",
+        "cardinality": "one_to_one",
+        "directionality": "directed",
+        "optional_attributes": [
+          "proof_checksum"
+        ]
+      }
+    },
+    {
+      "id": "connector_provides_evidence",
+      "display_name": "Connector provides Evidence",
+      "description": "Polymorphic edge from a configured connector to filings/transcripts/news/estimates/macro_vintage/etc. Records connector entitlement at ingestion time.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§18",
+        "§18.4",
+        "§18.10",
+        "§20.5"
+      ],
+      "source_ids": [
+        "DA-003",
+        "DA-009",
+        "DA-040"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "connector",
+        "filing",
+        "financial_statement",
+        "transcript",
+        "press_release",
+        "news_document",
+        "analyst_estimate",
+        "consensus_snapshot",
+        "rating_change",
+        "macro_series",
+        "macro_vintage"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_ingest_log",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "vendor_publication_at",
+        "available_at_policy": "vendor_publication_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "medium"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings",
+          "fundamentals_as_reported",
+          "fundamentals_standardized",
+          "news_events",
+          "transcripts",
+          "analyst_estimates",
+          "macro_official",
+          "ownership_filings",
+          "insider_transactions"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "production_connector_must_fail_closed_without_credentials",
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [
+        "requires_raw_redistribution_without_license"
+      ],
+      "family_specific": {
+        "from_entity_type": "connector",
+        "to_entity_type": "filing",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "ingested_at",
+          "rights_policy_id_ref",
+          "pit_policy_id_ref"
+        ]
+      }
+    },
+    {
+      "id": "data_quality_warning_about_observation",
+      "display_name": "Data Quality Warning about Observation",
+      "description": "Edge from a data_quality_warning to the target observation/entity it flags.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§18.12",
+        "§19",
+        "§20.5"
+      ],
+      "source_ids": [
+        "DA-040",
+        "FA-040"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "data_quality_warning",
+        "filing",
+        "financial_statement",
+        "event",
+        "analyst_estimate",
+        "consensus_snapshot",
+        "macro_series",
+        "macro_vintage"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "warning_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "computation_time",
+        "available_at_policy": "computation_time",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "warning_must_reference_target_id"
+      ],
+      "failure_modes": [
+        "cross_source_disagreement_silently_resolved"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "data_quality_warning",
+        "to_entity_type": "filing",
+        "cardinality": "one_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "target_object_family",
+          "target_object_id",
+          "severity"
+        ]
+      }
+    },
+    {
+      "id": "user_memo_authored_by_user",
+      "display_name": "User Memo authored by User",
+      "description": "Edge from a user_memo to its authoring user. Anchors privacy and retention policy.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "ANL-001"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "user_memo"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "user_authored_content",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "rights_state"
+      ],
+      "source_quality_minimum": 3,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "user_memo_leaked_to_marketplace_draft"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "user_memo",
+        "to_entity_type": "user_memo",
+        "cardinality": "one_to_one",
+        "directionality": "directed",
+        "optional_attributes": [
+          "author_user_id"
+        ]
+      }
+    },
+    {
+      "id": "watchlist_contains_entity",
+      "display_name": "Watchlist contains Entity",
+      "description": "Polymorphic edge from a watchlist to monitored entities (security/company/event/thesis).",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§3.21",
+        "§20.5"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-001"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "watchlist",
+        "equity_security",
+        "company",
+        "event",
+        "thesis"
+      ],
+      "compatible_strategy_profiles": [
+        "merger_arbitrage_watchlist",
+        "rsi_swing_catalyst_confirmation",
+        "event_risk_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "user_watchlist_record",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "rights_state"
+      ],
+      "source_quality_minimum": 3,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "edge_endpoints_resolve_to_registered_entities"
+      ],
+      "failure_modes": [
+        "watchlist_state_leaked_to_marketplace_draft"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "watchlist",
+        "to_entity_type": "equity_security",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "trigger_conditions"
+        ]
+      }
+    },
+    {
+      "id": "macro_vintage_versions_macro_series",
+      "display_name": "Macro Vintage versions Macro Series",
+      "description": "Edge from a vintage (as-of) record to its parent macro series. Each macro_series has one current row + N vintaged rows.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§16.10",
+        "§18.8",
+        "§20.5"
+      ],
+      "source_ids": [
+        "MA-001",
+        "DA-003"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "macro_vintage",
+        "macro_series"
+      ],
+      "compatible_strategy_profiles": [
+        "macro_regime_equity_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "alfred_vintage_record",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "release_date",
+        "available_at_policy": "release_date",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "regulator_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "not_applicable",
+        "vintage_required": true,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "macro_official"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": true,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "vintaged_macro_required_for_backtest"
+      ],
+      "failure_modes": [
+        "non_vintaged_macro_used_in_backtest"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "macro_vintage",
+        "to_entity_type": "macro_series",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "vintage_date",
+          "value"
+        ]
+      }
+    },
+    {
+      "id": "benchmark_tracks_index",
+      "display_name": "Benchmark tracks Index",
+      "description": "Edge from a strategy- or portfolio-bound benchmark to its underlying provider index. Vintaged because index composition changes.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§11.3",
+        "§14.5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "OW-028",
+        "EV-038",
+        "PC-021"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "benchmark",
+        "index"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar",
+        "earnings_revision_momentum",
+        "factor_neutral_quantamental_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "index_methodology_document",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "release_date",
+        "available_at_policy": "release_date",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "vintaged",
+        "model_version_policy": "model_release_required",
+        "vintage_required": true,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "index_membership"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "benchmark_required_for_relative_mandate"
+      ],
+      "failure_modes": [
+        "benchmark_drift_unhandled"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "benchmark",
+        "to_entity_type": "index",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "as_of",
+          "weight_methodology"
+        ]
+      }
+    },
+    {
+      "id": "package_contains_object",
+      "display_name": "Package contains Object",
+      "description": "Polymorphic edge from a `.viza` package to objects it carries (graph/output/evidence_refs/proofs). Marketplace_draft redacts restricted objects.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "edge_type",
+      "source_sections": [
+        "§1",
+        "§20.5",
+        "§27.2"
+      ],
+      "source_ids": [
+        "B-002",
+        "B-006"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "relationship",
+      "compatible_entity_types": [
+        "package",
+        "recommendation",
+        "thesis",
+        "valuation_model",
+        "validation_record",
+        "audit_proof",
+        "user_memo"
+      ],
+      "compatible_strategy_profiles": [],
+      "evidence_requirements": [
+        {
+          "evidence_type": "package_manifest_record",
+          "required": true,
+          "source_quality_minimum": 5
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "rights_state",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 5,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "marketplace_draft_must_redact_restricted_evidence"
+      ],
+      "failure_modes": [
+        "marketplace_draft_unredacted"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "from_entity_type": "package",
+        "to_entity_type": "audit_proof",
+        "cardinality": "many_to_many",
+        "directionality": "directed",
+        "optional_attributes": [
+          "target_object_family",
+          "target_object_id",
+          "redaction_state"
+        ]
+      }
+    }
+  ]
+}

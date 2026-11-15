@@ -49,9 +49,11 @@ def test_feedback_accepts_missing_driver_with_name(monkeypatch) -> None:
                 attribution_cutoff=datetime(2026, 1, 3, tzinfo=timezone.utc),
                 observed_return_bps=100,
                 unexplained_residual_bps=0,
+                methodology="legacy",
                 model_version="test",
                 data_version="test",
                 factor_basket_version="test",
+                cadence="daily",
                 created_at=datetime(2026, 1, 3, tzinfo=timezone.utc),
             )
 

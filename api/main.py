@@ -11,12 +11,16 @@ from fastapi import FastAPI
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from sqlalchemy import func, literal, select
+from sqlalchemy.dialects.postgresql import insert
 
 from api.schemas import (
     AttributionChartContributionPoint,
     AttributionChartPoint,
     AttributionChartPricePoint,
     AttributionChartResponse,
+    AttributionEnsureLatestResponse,
+    AttributionJobResponse,
+    AttributionMethodologyResponse,
     AttributionRunResponse,
     AnalystFeedbackRequest,
     AnalystFeedbackResponse,
@@ -31,6 +35,12 @@ from db.session import session_scope
 from engine.attribution.diagnostics import is_share_stable
 from engine.contracts import AttributionContribution, AttributionResult, ConfidenceLevel, DriverType, TimeWindow
 from engine.narrative import build_deterministic_narrative
+from jobs.attribution_methodologies import (
+    DEFAULT_ATTRIBUTION_METHODOLOGY,
+    VALID_ATTRIBUTION_METHODOLOGIES,
+    load_methodology,
+)
+from jobs.attribution_windowing import candidate_windows_for_range, missing_windows_for_range
 from jobs.faustcalc_common import DEFAULT_FAUSTCALC_UNIVERSE_NAME, DEFAULT_FAUSTCALC_UNIVERSE_VERSION
 
 app = FastAPI(title="Single-Stock Attribution Engine", version="0.1.0")
@@ -88,10 +98,41 @@ def version() -> dict[str, str]:
     return {"version": app.version}
 
 
+@app.get("/attribution-methodologies", response_model=list[AttributionMethodologyResponse])
+def attribution_methodologies(
+    include_archived: bool = Query(default=True),
+    prefer_compose_port: bool = Query(default=False),
+) -> list[AttributionMethodologyResponse]:
+    with session_scope(prefer_compose_port=prefer_compose_port) as session:
+        stmt = select(models.AttributionMethodology)
+        if not include_archived:
+            stmt = stmt.where(models.AttributionMethodology.status == "active")
+        rows = session.execute(
+            stmt.order_by(
+                models.AttributionMethodology.is_default.desc(),
+                models.AttributionMethodology.status.asc(),
+                models.AttributionMethodology.methodology.asc(),
+            )
+        ).scalars()
+        return [
+            AttributionMethodologyResponse(
+                methodology=row.methodology,
+                display_name=row.display_name,
+                status=row.status,
+                is_default=bool(row.is_default),
+                model_version=row.model_version,
+                factor_basket_version=row.factor_basket_version,
+                supported_cadences=list(row.supported_cadences or []),
+            )
+            for row in rows
+        ]
+
+
 @app.get("/attribution-chart", response_model=AttributionChartResponse)
 def attribution_chart(
     ticker: str,
     range_: str = Query(default="1m", alias="range", pattern="^(10d|1m|3m|6m|1y|max)$"),
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     prefer_compose_port: bool = Query(default=False),
 ) -> AttributionChartResponse:
     normalized_ticker = ticker.upper()
@@ -122,13 +163,14 @@ def attribution_chart(
             .where(models.PriceBar.event_time <= end)
             .order_by(models.PriceBar.event_time.asc(), models.PriceBar.timestamp_available.desc())
         ).scalars()
-        price_points = build_chart_price_points(list(price_rows))
+        price_points = build_chart_price_points(list(price_rows), cadence=cadence)
 
         run_rows = list(
             session.execute(
                 select(models.AttributionRun)
                 .where(models.AttributionRun.security_id == security.security_id)
                 .where(models.AttributionRun.cadence == cadence)
+                .where(models.AttributionRun.methodology == methodology)
                 .where(models.AttributionRun.window_end >= start)
                 .where(models.AttributionRun.window_end <= end)
                 .order_by(models.AttributionRun.window_end.asc(), models.AttributionRun.created_at.desc())
@@ -173,6 +215,7 @@ def universe(
     status: str | None = Query(default=None, pattern="^(available|missing)$"),
     universe_name: str | None = None,
     universe_version: str | None = None,
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     sort: str = Query(default="ticker"),
     order: str = Query(default="asc", pattern="^(asc|desc)$"),
     limit: int = Query(default=50, ge=1, le=250),
@@ -195,6 +238,7 @@ def universe(
             status=status,
             universe_name=universe_name,
             universe_version=universe_version,
+            methodology=methodology,
         )
         sort_column = sort_columns.get(sort, sort_columns["ticker"])
         ordered_sort = sort_column.desc().nullslast() if order == "desc" else sort_column.asc().nullslast()
@@ -213,6 +257,7 @@ def universe(
             status=status,
             universe_name=universe_name,
             universe_version=universe_version,
+            methodology=methodology,
         )
         latest_run_date = latest_universe_run_date(
             session=session,
@@ -223,6 +268,7 @@ def universe(
             status=status,
             universe_name=universe_name,
             universe_version=universe_version,
+            methodology=methodology,
         )
         return UniverseResponse(
             rows=[
@@ -252,6 +298,7 @@ def universe(
                         latest_observed_return_bps=row["latest_observed_return_bps"],
                         latest_price_change_usd=row["latest_price_change_usd"],
                     ),
+                    methodology=row["methodology"],
                     top_driver=row["top_driver"],
                     top_driver_confidence=row["top_driver_confidence"],
                     contribution_count=int(row["contribution_count"] or 0),
@@ -275,6 +322,7 @@ def universe(
 def latest_attribution_run(
     ticker: str,
     cadence: str = Query(default="daily", pattern="^(daily|weekly|monthly)$"),
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     prefer_compose_port: bool = Query(default=False),
 ) -> AttributionRunResponse:
     normalized_ticker = ticker.upper()
@@ -297,7 +345,8 @@ def latest_attribution_run(
             select(models.AttributionRun)
             .where(models.AttributionRun.security_id == security.security_id)
             .where(models.AttributionRun.cadence == cadence)
-            .order_by(models.AttributionRun.created_at.desc())
+            .where(models.AttributionRun.methodology == methodology)
+            .order_by(models.AttributionRun.window_end.desc(), models.AttributionRun.created_at.desc())
             .limit(1)
         ).scalar_one_or_none()
         if run is None:
@@ -310,17 +359,133 @@ def latest_attribution_run(
         )
 
 
+@app.post("/attribution-runs/ensure-latest", response_model=AttributionEnsureLatestResponse)
+def ensure_latest_attribution_run(
+    ticker: str,
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
+    cadence: str | None = Query(default=None, pattern="^(daily|weekly|monthly)$"),
+    range_: str = Query(default="1m", alias="range", pattern="^(10d|1m|3m|6m|1y|max)$"),
+    prefer_compose_port: bool = Query(default=False),
+) -> AttributionEnsureLatestResponse:
+    if methodology not in VALID_ATTRIBUTION_METHODOLOGIES:
+        raise HTTPException(status_code=400, detail="unsupported attribution methodology")
+    normalized_ticker = ticker.upper()
+    chart_range = range_.lower()
+    requested_cadence = cadence if isinstance(cadence, str) else None
+    resolved_cadence = requested_cadence or chart_cadence(chart_range)
+    with session_scope(prefer_compose_port=prefer_compose_port) as session:
+        security = find_security_or_404(session=session, ticker=normalized_ticker)
+        target_window_end = latest_price_event_time(
+            session=session,
+            security_id=security.security_id,
+        )
+        if target_window_end is None:
+            raise HTTPException(status_code=404, detail="price history not found")
+        latest_run = latest_run_for_security(
+            session=session,
+            security_id=security.security_id,
+            cadence=resolved_cadence,
+            methodology=methodology,
+        )
+
+        target_range_start = target_start_for_range(
+            session=session,
+            security_id=security.security_id,
+            chart_range=chart_range,
+            target_window_end=target_window_end,
+        )
+        lookback_start = target_range_start - timedelta(
+            days=methodology_lookback_days(session=session, methodology=methodology)
+        )
+        trading_dates = load_trading_dates_for_range(
+            session=session,
+            security_id=security.security_id,
+            start=lookback_start,
+            end=target_window_end,
+        )
+        candidate_windows = candidate_windows_for_range(
+            trading_dates=trading_dates,
+            cadence=resolved_cadence,
+            target_range_start=target_range_start,
+            target_range_end=target_window_end,
+        )
+        missing_windows = missing_windows_for_range(
+            session=session,
+            security_id=security.security_id,
+            methodology=methodology,
+            cadence=resolved_cadence,
+            trading_dates=trading_dates,
+            target_range_start=target_range_start,
+            target_range_end=target_window_end,
+            candidate_windows=candidate_windows,
+        )
+        latest_candidate_window_end = max(
+            (window.end for window in candidate_windows),
+            default=None,
+        )
+        latest_window_is_fresh = (
+            latest_candidate_window_end is None
+            or (latest_run is not None and latest_run.window_end >= latest_candidate_window_end)
+        )
+        if latest_run is not None and latest_window_is_fresh and not missing_windows:
+            return AttributionEnsureLatestResponse(
+                status="fresh",
+                run=build_attribution_response(
+                    session=session,
+                    run=latest_run,
+                    ticker=normalized_ticker,
+                ),
+                latest_existing_window_end=latest_run.window_end,
+                target_window_end=target_window_end,
+            )
+
+        job = enqueue_or_reuse_on_demand_job(
+            session=session,
+            security=security,
+            ticker=normalized_ticker,
+            methodology=methodology,
+            cadence=resolved_cadence,
+            target_range_start=target_range_start,
+            target_range_end=target_window_end,
+            latest_existing_window_end=latest_run.window_end if latest_run is not None else None,
+            target_window_end=target_window_end,
+        )
+        return AttributionEnsureLatestResponse(
+            status=job.status,
+            job_id=job.attribution_on_demand_job_id,
+            latest_existing_window_end=job.latest_existing_window_end,
+            target_window_end=job.target_window_end,
+        )
+
+
+@app.get("/attribution-jobs/{job_id}", response_model=AttributionJobResponse)
+def attribution_job(
+    job_id: UUID,
+    prefer_compose_port: bool = Query(default=False),
+) -> AttributionJobResponse:
+    with session_scope(prefer_compose_port=prefer_compose_port) as session:
+        job = session.get(models.AttributionOnDemandJob, job_id)
+        if job is None:
+            raise HTTPException(status_code=404, detail="attribution job not found")
+        return build_attribution_job_response(session=session, job=job)
+
+
 @app.get("/attribution-runs", response_model=list[AttributionRunResponse])
 def attribution_runs(
     ticker: str,
     cadence: str | None = Query(default=None, pattern="^(daily|weekly|monthly)$"),
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     limit: int = Query(default=25, ge=1, le=250),
     prefer_compose_port: bool = Query(default=False),
 ) -> list[AttributionRunResponse]:
     normalized_ticker = ticker.upper()
     with session_scope(prefer_compose_port=prefer_compose_port) as session:
         security = find_security_or_404(session=session, ticker=normalized_ticker)
-        stmt = select(models.AttributionRun).where(models.AttributionRun.security_id == security.security_id)
+        stmt = (
+            select(models.AttributionRun)
+            .where(models.AttributionRun.security_id == security.security_id)
+            .where(models.AttributionRun.methodology == methodology)
+        )
         if cadence is not None:
             stmt = stmt.where(models.AttributionRun.cadence == cadence)
         runs = session.execute(
@@ -349,6 +514,160 @@ def attribution_run_by_id(
             .where(models.SecurityTickerHistory.active_to.is_(None))
         ).scalar_one_or_none()
         return build_attribution_response(session=session, run=run, ticker=ticker or "")
+
+
+def latest_price_event_time(*, session, security_id: UUID) -> datetime | None:
+    return session.execute(
+        select(func.max(models.PriceBar.event_time)).where(models.PriceBar.security_id == security_id)
+    ).scalar_one_or_none()
+
+
+def latest_run_for_security(*, session, security_id: UUID, cadence: str, methodology: str):
+    return session.execute(
+        select(models.AttributionRun)
+        .where(models.AttributionRun.security_id == security_id)
+        .where(models.AttributionRun.cadence == cadence)
+        .where(models.AttributionRun.methodology == methodology)
+        .order_by(models.AttributionRun.window_end.desc(), models.AttributionRun.created_at.desc())
+        .limit(1)
+    ).scalar_one_or_none()
+
+
+def load_trading_dates_for_range(
+    *,
+    session,
+    security_id: UUID,
+    start: datetime,
+    end: datetime,
+) -> list[datetime]:
+    rows = session.execute(
+        select(models.PriceBar.event_time)
+        .distinct()
+        .where(models.PriceBar.security_id == security_id)
+        .where(models.PriceBar.event_time >= start)
+        .where(models.PriceBar.event_time <= end)
+        .order_by(models.PriceBar.event_time.asc())
+    )
+    return [row[0] for row in rows]
+
+
+def methodology_lookback_days(*, session, methodology: str) -> int:
+    methodology_row = load_methodology(session=session, methodology=methodology)
+    runner_config = methodology_row.runner_config if methodology_row is not None else {}
+    return int((runner_config or {}).get("lookback_days", 252))
+
+
+def target_start_for_range(
+    *,
+    session,
+    security_id: UUID,
+    chart_range: str,
+    target_window_end: datetime,
+) -> datetime:
+    if chart_range == "max":
+        start = session.execute(
+            select(func.min(models.PriceBar.event_time)).where(models.PriceBar.security_id == security_id)
+        ).scalar_one_or_none()
+        return start or target_window_end
+    return target_window_end - timedelta(days=CHART_RANGE_DAYS[chart_range])
+
+
+def enqueue_or_reuse_on_demand_job(
+    *,
+    session,
+    security: models.Security,
+    ticker: str,
+    methodology: str,
+    cadence: str,
+    target_range_start: datetime,
+    target_range_end: datetime,
+    latest_existing_window_end: datetime | None,
+    target_window_end: datetime,
+) -> models.AttributionOnDemandJob:
+    active_job = session.execute(
+        select(models.AttributionOnDemandJob)
+        .where(models.AttributionOnDemandJob.security_id == security.security_id)
+        .where(models.AttributionOnDemandJob.methodology == methodology)
+        .where(models.AttributionOnDemandJob.cadence == cadence)
+        .where(models.AttributionOnDemandJob.target_range_start == target_range_start)
+        .where(models.AttributionOnDemandJob.target_range_end == target_range_end)
+        .where(models.AttributionOnDemandJob.status.in_(("queued", "running")))
+        .order_by(models.AttributionOnDemandJob.created_at.asc())
+        .limit(1)
+    ).scalar_one_or_none()
+    if active_job is not None:
+        return active_job
+
+    now = datetime.now(timezone.utc)
+    job_id = uuid.uuid4()
+    stmt = insert(models.AttributionOnDemandJob).values(
+        attribution_on_demand_job_id=job_id,
+        security_id=security.security_id,
+        ticker=ticker,
+        methodology=methodology,
+        cadence=cadence,
+        target_range_start=target_range_start,
+        target_range_end=target_range_end,
+        latest_existing_window_end=latest_existing_window_end,
+        target_window_end=target_window_end,
+        status="queued",
+        expected_windows=0,
+        ran_windows=0,
+        skipped_windows=0,
+        latest_run_id=None,
+        error_payload=None,
+        created_at=now,
+        started_at=None,
+        finished_at=None,
+        updated_at=now,
+    )
+    stmt = stmt.on_conflict_do_nothing(
+        index_elements=[
+            models.AttributionOnDemandJob.security_id,
+            models.AttributionOnDemandJob.methodology,
+            models.AttributionOnDemandJob.cadence,
+            models.AttributionOnDemandJob.target_range_start,
+            models.AttributionOnDemandJob.target_range_end,
+        ],
+        index_where=models.AttributionOnDemandJob.status.in_(("queued", "running")),
+    ).returning(models.AttributionOnDemandJob.attribution_on_demand_job_id)
+    inserted_id = session.execute(stmt).scalar_one_or_none()
+    return session.get(models.AttributionOnDemandJob, inserted_id or job_id) or session.execute(
+        select(models.AttributionOnDemandJob)
+        .where(models.AttributionOnDemandJob.security_id == security.security_id)
+        .where(models.AttributionOnDemandJob.methodology == methodology)
+        .where(models.AttributionOnDemandJob.cadence == cadence)
+        .where(models.AttributionOnDemandJob.target_range_start == target_range_start)
+        .where(models.AttributionOnDemandJob.target_range_end == target_range_end)
+        .where(models.AttributionOnDemandJob.status.in_(("queued", "running")))
+        .limit(1)
+    ).scalar_one()
+
+
+def build_attribution_job_response(*, session, job: models.AttributionOnDemandJob) -> AttributionJobResponse:
+    run_response = None
+    if job.latest_run_id is not None:
+        run = session.get(models.AttributionRun, job.latest_run_id)
+        if run is not None:
+            run_response = build_attribution_response(session=session, run=run, ticker=job.ticker)
+    return AttributionJobResponse(
+        job_id=job.attribution_on_demand_job_id,
+        ticker=job.ticker,
+        security_id=job.security_id,
+        methodology=job.methodology,
+        cadence=job.cadence,
+        status=job.status,
+        target_range_start=job.target_range_start,
+        target_range_end=job.target_range_end,
+        latest_existing_window_end=job.latest_existing_window_end,
+        target_window_end=job.target_window_end,
+        expected_windows=int(job.expected_windows or 0),
+        ran_windows=int(job.ran_windows or 0),
+        skipped_windows=int(job.skipped_windows or 0),
+        latest_run_id=job.latest_run_id,
+        error_payload=job.error_payload,
+        run=run_response,
+    )
 
 
 def find_security_or_404(*, session, ticker: str) -> models.Security:
@@ -426,12 +745,18 @@ def chart_cadence(chart_range: str) -> str:
     return "weekly" if chart_range in {"6m", "1y", "max"} else "daily"
 
 
-def build_chart_price_points(price_bars: list[models.PriceBar]) -> list[AttributionChartPricePoint]:
+def build_chart_price_points(
+    price_bars: list[models.PriceBar],
+    *,
+    cadence: str = "daily",
+) -> list[AttributionChartPricePoint]:
     bars_by_date = {}
     for bar in price_bars:
         if bar.event_time not in bars_by_date:
             bars_by_date[bar.event_time] = bar
     bars = sorted(bars_by_date.values(), key=lambda item: item.event_time)
+    if cadence == "weekly":
+        bars = sample_weekly_price_bars(bars)
     if not bars:
         return []
     base_price = float(bars[0].adjusted_close)
@@ -443,6 +768,14 @@ def build_chart_price_points(price_bars: list[models.PriceBar]) -> list[Attribut
         )
         for bar in bars
     ]
+
+
+def sample_weekly_price_bars(price_bars: list[models.PriceBar]) -> list[models.PriceBar]:
+    bars_by_week = {}
+    for bar in price_bars:
+        iso = bar.event_time.isocalendar()
+        bars_by_week[(iso.year, iso.week)] = bar
+    return list(bars_by_week.values())
 
 
 def build_chart_attribution_points(
@@ -535,11 +868,13 @@ def build_universe_statement(
     status: str | None,
     universe_name: str = DEFAULT_FAUSTCALC_UNIVERSE_NAME,
     universe_version: str = DEFAULT_FAUSTCALC_UNIVERSE_VERSION,
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
 ):
     stmt = (
         select(
             models.SecurityAttributionSummary.ticker.label("ticker"),
             models.SecurityAttributionSummary.company_name.label("company_name"),
+            models.SecurityAttributionSummary.methodology.label("methodology"),
             models.SecurityAttributionSummary.security_id.label("security_id"),
             models.SecurityAttributionSummary.company_id.label("company_id"),
             models.SecurityAttributionSummary.exchange.label("exchange"),
@@ -557,6 +892,7 @@ def build_universe_statement(
         )
         .where(models.SecurityAttributionSummary.universe_name == universe_name)
         .where(models.SecurityAttributionSummary.universe_version == universe_version)
+        .where(models.SecurityAttributionSummary.methodology == methodology)
     )
     stmt = apply_universe_summary_filters(
         stmt=stmt,
@@ -624,6 +960,7 @@ def load_universe_options(
     status: str | None,
     universe_name: str,
     universe_version: str,
+    methodology: str,
 ) -> dict[str, list]:
     stmt = (
         select(
@@ -635,6 +972,7 @@ def load_universe_options(
         )
         .where(models.SecurityAttributionSummary.universe_name == universe_name)
         .where(models.SecurityAttributionSummary.universe_version == universe_version)
+        .where(models.SecurityAttributionSummary.methodology == methodology)
     )
     stmt = apply_universe_summary_filters(
         stmt=stmt,
@@ -658,11 +996,13 @@ def latest_universe_run_date(
     status: str | None,
     universe_name: str,
     universe_version: str,
+    methodology: str,
 ) -> datetime | None:
     stmt = (
         select(func.max(models.SecurityAttributionSummary.latest_window_end))
         .where(models.SecurityAttributionSummary.universe_name == universe_name)
         .where(models.SecurityAttributionSummary.universe_version == universe_version)
+        .where(models.SecurityAttributionSummary.methodology == methodology)
     )
     stmt = apply_universe_summary_filters(
         stmt=stmt,
@@ -696,6 +1036,7 @@ def build_attribution_response(
         attribution_cutoff=run.attribution_cutoff,
         observed_return_bps=float(run.observed_return_bps),
         unexplained_residual_bps=float(run.unexplained_residual_bps),
+        methodology=run.methodology,
         model_version=run.model_version,
         data_version=run.data_version,
         factor_basket_version=run.factor_basket_version,

@@ -1,0 +1,145 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "step": "equity_preview_run_persistence_and_replay",
+  "prior_step_proof_checksum": "2E50B1EC5574A24E3E0280838C08F6D4EC8A878157449F48EE4EDCFF9CD62B01",
+  "feature_flags": {
+    "VIZA_EQUITY_RUNTIME_HANDLERS_ENABLED": "false",
+    "VIZA_EQUITY_SEC_WEDGE_ENABLED": "false",
+    "VIZA_EQUITY_FMP_ENABLED": "false",
+    "VIZA_EQUITY_FRED_ENABLED": "false",
+    "VIZA_EQUITY_PREVIEW_PERSISTENCE_ENABLED": "false",
+    "VIZA_EQUITY_PREVIEW_REPLAY_REFRESH_ENABLED": "false"
+  },
+  "storage": {
+    "run_records_table_or_store": "existing local SQLite project store run_records plus equity_preview_runs",
+    "observation_store": "existing local SQLite project store observations via viza/observations.py",
+    "evidence_bundle_store": "equity_preview_evidence_bundles",
+    "validation_store": "equity_preview_report_records report_type=validation_report",
+    "rights_report_store": "equity_preview_report_records report_type=source_rights_report",
+    "package_redaction_store": "equity_preview_report_records report_type=package_redaction_preview"
+  },
+  "api_endpoints_added_or_modified": [
+    "POST /viza/equity/runtime-wedge/preview accepts persist_run and returns persistence metadata",
+    "GET /viza/equity/runtime-wedge/runs",
+    "GET /viza/equity/runtime-wedge/runs/{run_id}",
+    "POST /viza/equity/runtime-wedge/runs/{run_id}/replay"
+  ],
+  "ui_components_added_or_modified": [
+    "EquityRuntimePreviewPanel save-run toggle",
+    "EquityRuntimePreviewPanel recent run history",
+    "EquityRuntimePreviewPanel run detail viewer",
+    "EquityRuntimePreviewPanel replay from stored observations",
+    "EquityRuntimePreviewPanel replay with refresh feature gate"
+  ],
+  "runs_persisted_in_tests": 10,
+  "replays_from_stored_observations": 2,
+  "replays_with_refresh": 1,
+  "pit_summary": {
+    "sec": "Persisted observations include source_id, observed_at, available_at, retrieved_at, PIT_safe, and lookahead_risk.",
+    "fmp": "Persisted observations are dev_only_unconfirmed/export_blocked/marketplace_redacted unless production rights are confirmed.",
+    "fred": "Persisted observations remain latest-only/not true PIT-safe unless ALFRED-style vintage enforcement exists.",
+    "replay": "Replay from stored observations uses persisted records and does not refresh live SEC/FMP/FRED data."
+  },
+  "rights_redaction_summary": {
+    "sec_public": "public_official metadata and derived observations are persisted; bulk raw filing reproduction is avoided.",
+    "fmp": "dev_only_unconfirmed by default with export blocked and marketplace redacted.",
+    "fred": "public official macro context persists with latest-only PIT warning.",
+    "marketplace_draft": "restricted, unclear, user-private, or unconfirmed-license data remains redacted or blocked."
+  },
+  "validation_summary": {
+    "run_record": "Saved run contains module_id, profile_id, target, input, feature flags, connector modes, status, warnings, blocks, hashes, and proof checksum.",
+    "history": "Run list and run detail endpoints return persisted audit data.",
+    "replay": "Stored-observation replay creates a child run; refresh replay is blocked unless its flag is enabled.",
+    "non_advice_boundary": "Persisted detail and replay preview retain non-advice boundary."
+  },
+  "api_key_safety": {
+    "raw_keys_logged": false,
+    "raw_keys_serialized": false,
+    "generated_files_scanned": true,
+    "actual_env_secret_scan": {
+      "secret_values_checked": 2,
+      "scanned_files": 164,
+      "secret_matches": 0
+    },
+    "sentinel_keys_tested": true
+  },
+  "artifact_checksums": {
+    "viza/equity/persistence.py": "E3E5D364D4067460E68708FBB6DBDF6FAB69244C4B5F3EE25FB6AB1C08531B44",
+    "viza/equity/preview.py": "C8615D0DDCDCEA9415C7BDC0321B26F96AA242D082CB6F7D7E40E4DF90A300A8",
+    "viza/equity/config.py": "285D4C335363B8681FC221246C420DD30E914E6E5D7A4C91A67D7EB7C984A760",
+    "viza/service.py": "C43C881D119D4689FA7737DD5C74A91B987E70D272AD5114D94E57BB09FBD8C5",
+    "apps/viza-desktop/src/App.tsx": "B964301DF858E828129863E155C68D749F4B9589B435271956A481726F14D860",
+    "apps/viza-desktop/src/vizaEngineClient.ts": "44A5A9B886A49D20525B932E5CC54E3595A40376351CFF791C72D04D820A18CA",
+    "apps/viza-desktop/src/vizaGraph.ts": "4B581FA24D3C935F033873AD19D811A7DA98BEE9934C1B9C407F20B455A7BAA0",
+    "tests/unit/test_equity_preview_persistence.py": "ABF74E2DD412F79656D5E0DBBDBA3B883CB4D7AFB0E8B4F65E7AC4429C3D4042",
+    "apps/viza-desktop/test/equityPreviewPanel.test.mjs": "46D6F66FD1A38947562678F8C769C642531DDC072577A713DF38310B77DD49C5",
+    "env.example": "4ED7B4B4D7A5AAEAB66B915DFF384724D94DC804EA6907473DB07B01FE56E042"
+  },
+  "tests_run": [
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "12 passed in 5.65s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_module_loader.py tests\\unit\\test_equity_module_fixtures.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "10 passed in 0.66s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge_api.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "8 passed in 3.99s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_preview_persistence.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "8 passed in 8.42s"
+    },
+    {
+      "command": "python -m pytest tests\\unit tests\\lookahead_audit",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "346 passed in 125.85s"
+    },
+    {
+      "command": "node --test tests\\dashboard\\attribution-period-bars.test.mjs",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "2 passed in 126.3589ms; existing module-type warning emitted"
+    },
+    {
+      "command": "npm run typecheck",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:desktop",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "23 passed in 117.2155ms"
+    },
+    {
+      "command": "npx tsc --noEmit --project tsconfig.json",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\dashboard",
+      "result": "passed"
+    }
+  ],
+  "known_limitations": [
+    "not production-hardened",
+    "mocked preview remains the default test path",
+    "live external API tests are opt-in only",
+    "FMP production rights need legal/source-rights review",
+    "FRED true PIT backtesting needs ALFRED-style cutoff enforcement",
+    "ticker alias resolution through full security master remains future work unless already implemented",
+    "valuation and margin-of-safety output remains blocked or warned when market price is unavailable",
+    "quality_value_long_only remains the only fully wired equity profile",
+    "no personalized investment advice",
+    "no order routing",
+    "no monetized marketplace",
+    "Windows installer was not rebuilt in this persistence milestone"
+  ],
+  "next_backlog_items": [
+    "Second profile pilot: portfolio_risk_radar",
+    "Next packaged rebuild/smoke cycle should include the persistence endpoints and desktop history panel",
+    "Add durable diff visualization for replay_with_refresh once live refresh workflows are promoted beyond mock testing"
+  ]
+}

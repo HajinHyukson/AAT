@@ -26,6 +26,7 @@ type Params = {
   offset?: string;
   universe?: string;
   display?: string;
+  methodology?: string;
 };
 
 const SORT_LABELS: Record<string, string> = {
@@ -125,6 +126,7 @@ export function UniverseTable({
           <input type="hidden" name="limit" value={String(limit)} />
           <input type="hidden" name="universe" value={params.universe ?? ""} />
           <input type="hidden" name="display" value={params.display ?? ""} />
+          <input type="hidden" name="methodology" value={params.methodology ?? ""} />
           <button className="h-9 border border-steel bg-steel px-4 text-sm font-semibold text-white">
             Apply
           </button>

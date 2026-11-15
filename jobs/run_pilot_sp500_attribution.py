@@ -171,6 +171,7 @@ def completed_window_keys(*, session, security_id, cadence: str, methodology: st
         select(models.AttributionRun.window_start, models.AttributionRun.window_end)
         .where(models.AttributionRun.security_id == security_id)
         .where(models.AttributionRun.cadence == cadence)
+        .where(models.AttributionRun.methodology == methodology)
         .where(models.AttributionRun.model_version == model_version_for_methodology(methodology))
         .where(models.AttributionRun.factor_basket_version == factor_basket_version_for_methodology(methodology))
     )

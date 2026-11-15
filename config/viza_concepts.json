@@ -1,0 +1,251 @@
+{
+  "schema": "viza.concepts.v1",
+  "registry_version": "0.1.0",
+  "concept_scheme": "http://viza.local/concepts",
+  "description": "SKOS-shaped concept scheme covering taxonomies that were previously bare strings on registries (family fields, relationship families, command families and axes). Each concept has a stable IRI; display strings remain available as skos:prefLabel. The compliance report (VIZA_KR_COMPLIANCE_REPORT.md §1) makes the case for this file existing.",
+  "concepts": [
+    {
+      "iri": "viza:family/event/mna",
+      "skos_pref_label": "M&A",
+      "skos_alt_labels": ["mna", "mergers_and_acquisitions"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/analyst",
+      "skos_pref_label": "Analyst",
+      "skos_alt_labels": ["analyst"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/earnings",
+      "skos_pref_label": "Earnings",
+      "skos_alt_labels": ["earnings"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/insider",
+      "skos_pref_label": "Insider",
+      "skos_alt_labels": ["insider"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/market_activity",
+      "skos_pref_label": "Market Activity",
+      "skos_alt_labels": ["market_activity"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/regulatory",
+      "skos_pref_label": "Regulatory",
+      "skos_alt_labels": ["regulatory"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/filings",
+      "skos_pref_label": "Filings",
+      "skos_alt_labels": ["filings"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/management",
+      "skos_pref_label": "Management",
+      "skos_alt_labels": ["management"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/sentiment",
+      "skos_pref_label": "Sentiment",
+      "skos_alt_labels": ["sentiment"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event/contagion",
+      "skos_pref_label": "Contagion",
+      "skos_alt_labels": ["contagion"],
+      "skos_broader": ["viza:family/event"],
+      "domain": "event"
+    },
+    {
+      "iri": "viza:family/event",
+      "skos_pref_label": "Event Family",
+      "domain": "event"
+    },
+
+    {
+      "iri": "viza:family/relationship/event",
+      "skos_pref_label": "Event Relationship",
+      "skos_alt_labels": ["event"],
+      "skos_narrower": [
+        "viza:family/relationship/entity_to_event",
+        "viza:family/relationship/asset_to_event",
+        "viza:family/relationship/insight_to_event"
+      ],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/entity_to_event",
+      "skos_pref_label": "Entity → Event",
+      "skos_alt_labels": ["entity_to_event"],
+      "skos_broader": ["viza:family/relationship/event"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/asset_to_event",
+      "skos_pref_label": "Asset → Event",
+      "skos_alt_labels": ["asset_to_event"],
+      "skos_broader": ["viza:family/relationship/event"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight_to_event",
+      "skos_pref_label": "Insight → Event",
+      "skos_alt_labels": ["insight_to_event"],
+      "skos_broader": ["viza:family/relationship/event"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight",
+      "skos_pref_label": "Insight Relationship",
+      "skos_alt_labels": ["insight"],
+      "skos_narrower": [
+        "viza:family/relationship/entity_to_insight",
+        "viza:family/relationship/insight_to_event",
+        "viza:family/relationship/insight_to_attribute",
+        "viza:family/relationship/insight_to_strategy_profile",
+        "viza:family/relationship/insight_confirms_insight",
+        "viza:family/relationship/insight_conflicts_with_insight",
+        "viza:family/relationship/insight_invalidates_insight"
+      ],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/entity_to_insight",
+      "skos_pref_label": "Entity → Insight",
+      "skos_alt_labels": ["entity_to_insight"],
+      "skos_broader": ["viza:family/relationship/insight"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight_to_attribute",
+      "skos_pref_label": "Insight → Attribute",
+      "skos_alt_labels": ["insight_to_attribute"],
+      "skos_broader": ["viza:family/relationship/insight"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight_to_strategy_profile",
+      "skos_pref_label": "Insight → Strategy Profile",
+      "skos_alt_labels": ["insight_to_strategy_profile"],
+      "skos_broader": [
+        "viza:family/relationship/insight",
+        "viza:family/relationship/strategy_profile"
+      ],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight_confirms_insight",
+      "skos_pref_label": "Insight confirms Insight",
+      "skos_alt_labels": ["insight_confirms_insight"],
+      "skos_broader": ["viza:family/relationship/insight"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight_conflicts_with_insight",
+      "skos_pref_label": "Insight conflicts with Insight",
+      "skos_alt_labels": ["insight_conflicts_with_insight"],
+      "skos_broader": ["viza:family/relationship/insight"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/insight_invalidates_insight",
+      "skos_pref_label": "Insight invalidates Insight",
+      "skos_alt_labels": ["insight_invalidates_insight"],
+      "skos_broader": ["viza:family/relationship/insight"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/attribute",
+      "skos_pref_label": "Attribute Relationship",
+      "skos_alt_labels": ["attribute"],
+      "skos_narrower": [
+        "viza:family/relationship/entity_to_attribute",
+        "viza:family/relationship/insight_to_attribute"
+      ],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/entity_to_attribute",
+      "skos_pref_label": "Entity → Attribute",
+      "skos_alt_labels": ["entity_to_attribute"],
+      "skos_broader": ["viza:family/relationship/attribute"],
+      "domain": "relationship"
+    },
+    {
+      "iri": "viza:family/relationship/strategy_profile",
+      "skos_pref_label": "Strategy Profile Relationship",
+      "skos_alt_labels": ["strategy_profile"],
+      "skos_narrower": ["viza:family/relationship/insight_to_strategy_profile"],
+      "domain": "relationship"
+    },
+
+    {
+      "iri": "viza:family/command/position_entry",
+      "skos_pref_label": "Position Entry",
+      "skos_broader": ["viza:family/command/position_change"],
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/position_increase",
+      "skos_pref_label": "Position Increase",
+      "skos_broader": ["viza:family/command/position_change"],
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/position_maintain",
+      "skos_pref_label": "Position Maintain",
+      "skos_broader": ["viza:family/command/position_change"],
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/position_reduce",
+      "skos_pref_label": "Position Reduce",
+      "skos_broader": ["viza:family/command/position_change"],
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/position_exit",
+      "skos_pref_label": "Position Exit",
+      "skos_broader": ["viza:family/command/position_change"],
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/position_change",
+      "skos_pref_label": "Position Change",
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/monitoring",
+      "skos_pref_label": "Monitoring",
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/exclusion",
+      "skos_pref_label": "Exclusion",
+      "domain": "command"
+    },
+    {
+      "iri": "viza:family/command/system_veto",
+      "skos_pref_label": "System Veto",
+      "domain": "command"
+    }
+  ]
+}

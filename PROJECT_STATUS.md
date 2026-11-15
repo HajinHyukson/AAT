@@ -1,115 +1,135 @@
 # Project Status
 
-Last updated: 2026-05-05
+Last updated: 2026-05-20
 
 ## Current Snapshot
 
-The project is an executable MVP v0 scaffold with expanded attribution plumbing, not yet a production-complete attribution model.
+AAT is an executable alpha/MVP scaffold with real ingestion, attribution, persistence, API, dashboard, and backfill plumbing. It is not yet a production-complete attribution model.
 
-Detailed FaustCalc migration, data-content, server DB, and backfill progress notes now live in `docs/FAUSTCALC_DATA_IMPLEMENTATION_REPORT.md`.
+The current source of truth is split deliberately:
 
-Live-backfill development restrictions are documented in `docs/LIVE_BACKFILL_DEVELOPMENT_GUARDRAILS.md`. Until the server FaustCalc backfill completes, avoid schema migrations, DB-loading changes, and backfill-contract changes unless the job is stopped, backed up, and resumed deliberately.
+- `README.md`: operator-facing overview and commands.
+- `ARCHITECTURE.md`: implementation map and system boundaries.
+- `docs/attribution_methodology.md`: current contribution methodology and model limits.
+- `docs/FAUSTCALC_DATA_IMPLEMENTATION_REPORT.md`: FaustCalc data contents and live backfill state.
+- `docs/LIVE_BACKFILL_DEVELOPMENT_GUARDRAILS.md`: development restrictions while the server backfill is active.
 
 Current implemented surface:
 
 - Deterministic adjusted close-to-close return accounting.
 - French five-factor baseline attribution.
-- Expanded MVP mode for sector/industry proxy factors, custom peer baskets, return-based style evidence, FRED macro factors, and EDGAR event evidence.
+- Expanded MVP attribution for sector/industry proxy factors, peer baskets, macro factors, return-style evidence, and EDGAR event evidence.
+- Methodology registry for `legacy`, `residual_safety_v1`, and `hierarchical_market_first_v1`.
 - Explicit `unexplained_residual` on every attribution result.
+- Residual-share safety diagnostics that suppress unstable share percentages for small observed moves.
 - Point-in-time filtering through `timestamp_available <= attribution_cutoff`.
-- FastAPI endpoints and a Next.js dashboard with driver grouping, evidence payloads, CSV export, narrative display, run history, exposure decisions, and analyst feedback persistence.
-- Replay-style look-ahead audit helper, MVP proving backfill orchestration, and three-year historical universe backfill orchestration.
+- FastAPI endpoints for universe summaries, attribution runs, chart series, methodology selection, on-demand attribution jobs, exposure decisions, and analyst feedback.
+- Next.js dashboard with universe search/filtering, methodology selection, attribution detail loading, chart range updates, run history, driver table, evidence payloads, CSV export, exposure review, and feedback controls.
+- Replay-style look-ahead audit helper and tests.
+- MVP proving, historical universe, S&P 500 pilot, FaustCalc full-history, and on-demand attribution orchestration.
+- `viza.finance.equity_investment v0.1` registry artifacts are generated and loadable under `docs/equity_module/v0.1/`, with an additive `viza/equity` loader/validator, SEC quality-value first wedge, three profile pilots, and package/redaction fixtures.
+- `viza.finance.equity_investment v0.1` now has a feature-flagged SEC public first-wedge runtime path with optional FMP market snapshot support, optional FRED macro context, `quality_value_long_only` compatibility checks, non-advice output previews, validation reporting, source-rights reporting, and package-redaction preview behavior.
+- The VIZA Windows packaged desktop prototype now has a feature-flagged equity preview surface in the Electron result sidebar. It calls the local packaged FastAPI sidecar endpoint, uses mocked SEC-first preview fixtures by default, and displays target identity, SEC evidence, PIT state, rights state, validation state, source-rights state, package-redaction preview, and the non-advice boundary.
+- Equity preview runs can now be persisted, inspected, and replayed when `VIZA_EQUITY_PREVIEW_PERSISTENCE_ENABLED=true`. Persisted runs use the existing local project SQLite store plus normalized observation records, preserve PIT/rights/validation/package-redaction state, and support replay from stored observations without live connector calls. Refresh replay is explicit and gated by `VIZA_EQUITY_PREVIEW_REPLAY_REFRESH_ENABLED=true`.
+- VIZA MVP Candidate 0.1 is wired around the single SEC-first `quality_value_long_only` equity workflow: packaged desktop preview, save run, history/detail inspection, stored-observation replay, package-redaction preview, and `.viza` draft package preparation through the existing VIZA container/export infrastructure.
 
 Latest local verification:
 
 ```powershell
-python -m pytest tests/unit tests/lookahead_audit
+python -m pytest tests\unit tests\lookahead_audit
+node --test tests\dashboard\attribution-period-bars.test.mjs
+cd apps\viza-desktop
+npm run typecheck
+npm run test:desktop
+cd ..\..\dashboard
+npx tsc --noEmit --project tsconfig.json
 ```
 
-Result: 84 tests passed on 2026-05-05.
+Result on 2026-05-15:
+
+- Python: `350 passed`.
+- Dashboard Node test: `2 passed`.
+- VIZA desktop TypeScript typecheck: passed.
+- VIZA desktop helper tests: `23 passed`.
+- Dashboard TypeScript check: passed.
+- Windows packaged build/smoke: passed after rebuilding the updated sidecar and desktop package.
+- Node emitted a module-type warning for `dashboard/components/attribution-period-bars.ts`; the test still passed.
 
 Current production boundary:
 
 - FMP price data is development-only unless `FMP_PRODUCTION_LICENSE_CONFIRMED=true`.
-- Event rows and return-based style descriptors remain evidence-only unless a calibrated production factor return exists.
-- The model still needs real-data proving, residual reduction analysis, out-of-sample validation, confidence calibration, and production source/license confirmation.
+- FaustCalc/FMP-derived snapshot data remains development/proving data unless source rights are confirmed.
+- FRED and Kenneth French rows are not true point-in-time vintages in the current ingestion path; they are timestamped at ingestion time.
+- EDGAR event rows and return-based style descriptors are evidence-only unless a calibrated production contribution method exists.
+- Confidence labels are qualitative data/model-quality labels, not calibrated probabilities.
+- The model still needs residual reduction analysis, out-of-sample validation, confidence calibration, source/license confirmation, and production runbooks.
+- The equity module v0.1 artifacts are registry-seedable/loadable and fixture-tested only. Production hardening still requires legal/source-rights review, connector entitlement review, runtime handler integration, production validation, and a separate production review.
+- The equity runtime wedge, packaged desktop MVP workflow, preview persistence/replay history, and package-draft export are feature-flagged and mock-tested, not production-hardened. FMP output remains dev-only/export-blocked unless `FMP_PRODUCTION_LICENSE_CONFIRMED=true`; FRED output remains latest-only/not backtest-safe unless ALFRED-style vintage cutoff enforcement is implemented and tested.
 
 ## Milestone
 
-Current target: MVP v0 scaffold.
+Current target: finish and validate the MVP v0 scaffold while keeping the live FaustCalc backfill safe.
 
 ## Completed This Cycle
 
 - Converted the bootstrap docs into an executable Python scaffold.
-- Added typed contracts for price bars, factor inputs, contributions, and attribution results.
-- Added deterministic return accounting.
-- Added baseline factor attribution with residual reconciliation.
-- Added adapter licensing checks.
-- Added API health endpoint.
-- Added initial tests.
-- Added canonical database models and initial Alembic migration.
-- Added initial Kenneth French factor adapter parser.
-- Added Docker Compose configuration for local Postgres + TimescaleDB.
-- Added FMP historical price parser and ingestion CLI.
-- Added baseline attribution CLI for ingested price bars.
-- Added SEC EDGAR submissions parser and ingestion CLI.
-- Added latest attribution run API endpoint.
-- Added initial Next.js dashboard driver table.
-- Added French factor ingestion and market-factor baseline support in attribution runs.
-- Added structured EDGAR event features and conservative exposure update decisions.
-- Surfaced exposure update decisions in the dashboard.
-- Added initial look-ahead audit suite under `tests/lookahead_audit`.
-- Added idempotent attribution runs and daily/weekly/monthly batch attribution.
-- Added French five-factor baseline attribution.
-- Added historical attribution run API endpoints and dashboard run history.
-- Added expanded attribute metadata, sector/peer/style/macro/event scaffolding, and contribution evidence payloads.
-- Added curated 50-name MVP universe seed, sector/industry mappings, peer baskets, exposure gates, and entity resolver cases.
-- Added FRED macro ingestion, proxy factor-return construction, expanded MVP attribution mode, and daily MVP batch runner.
-- Added deterministic narrative generation, analyst feedback API persistence, dashboard evidence drawer, driver grouping, and CSV export.
-- Added replay-style look-ahead audit helper and command.
-- Added MVP proving backfill orchestration with dry-run support, price/factor/macro/event/backtest workflow, coverage reporting, and success threshold handling.
-- Added cadence-aware attribution runs, `backfill_run` audit records, and historical universe backfill orchestration for daily, weekly, and monthly expanded attribution runs.
-- Added FaustCalc staging models/migrations, feature-store and SEC filing import CLIs, SEC cleanup/dedupe logic, and FaustCalc migration tests.
-- Applied FaustCalc staging migration to the local compose database and imported the SEC filing snapshot: 2,009 deduped filings staged, 576 canonical events promoted, and 576 event features generated.
-- Imported the FaustCalc feature-store snapshot into staging and promoted 11,265,327 representable price rows into canonical `price_bar`; 2,520 staged price rows remain audit-only because they are outside canonical `price_bar` precision/range.
-- Confirmed attribution jobs run against the FaustCalc-augmented compose database; price loading now dedupes overlapping same-day sources by latest point-in-time-visible bar before return calculation.
-- Added FaustCalc active-US-equity universe membership, attribution backfill task progress, and frontend attribution summary tables plus supporting indexes.
-- Built the local `faustcalc_active_us_equities` universe from the compose database: 12,657 eligible active USD stock securities with FaustCalc price coverage.
-- Seeded generated FaustCalc sector/industry classifications, peer baskets, and macro exposure gates without overwriting curated MVP mappings.
-- Optimized `/universe` to query precomputed summaries with SQL pagination; local API response for `limit=50` is now under 1 second against 12,657 names.
-- Added resumable FaustCalc full-history attribution backfill orchestration and preloaded price/factor/macro series reuse for large attribution runs.
-- Added DB-backed progress output to the FaustCalc attribution backfill command, including completed task count out of the total task count.
-- Optimized the FaustCalc attribution backfill for local execution: reusable peer basket context avoids repeated peer price loads, tasks now checkpoint every window chunk, `--task-order expected-windows` runs the smallest positive-window tasks first, and `--status-only` prints tracker state without running work.
-- Fixed DB session pooling so repeated checkpoint sessions reuse a small shared SQLAlchemy pool instead of exhausting the local Postgres client limit.
-- Added distributed FaustCalc backfill coordination with Postgres advisory task locks, opt-in `--workers`, worker IDs, lock-miss progress reporting, and concurrency-safe attribution run upserts.
+- Added typed contracts for price bars, factor inputs, contributions, attribution results, factor observations, exposures, event taxonomy, event surprise, and contribution stages.
+- Added deterministic return accounting and baseline residual reconciliation.
+- Added adapter licensing checks and FMP production fail-closed policy.
+- Added canonical SQLAlchemy models and Alembic migrations for identity, prices, factors, macro, events, exposures, attribution, feedback, backfills, universes, summaries, on-demand jobs, and FaustCalc staging.
+- Added FMP, Kenneth French, FRED, SEC EDGAR, FaustCalc feature-store, and FaustCalc SEC filing ingestion paths.
+- Added curated 50-name MVP universe and static S&P 500 pilot universe workflows.
+- Added French five-factor, sector/industry proxy, peer basket, macro, style evidence, event evidence, residual-safety, and hierarchical market-first attribution paths.
+- Added deterministic narrative generation and conservative exposure-update review decisions.
+- Added idempotent daily, weekly, and monthly attribution run persistence.
+- Added FastAPI endpoints for attribution, universe, charting, methodologies, feedback, exposure decisions, and on-demand jobs.
+- Added Next.js dashboard support for universe access, methodology selection, attribution detail loading, charts, driver evidence, CSV export, run history, exposure review, and analyst feedback.
+- Added replay/look-ahead tests and dashboard chart-period tests.
+- Added FaustCalc staging, universe construction, generated mappings, resumable backfill tasks, checkpointing, status reporting, advisory locks, and optional distributed workers.
+- Added on-demand attribution worker support for web-triggered missing-window attribution.
 - Added KOSPI pilot Phase 1 (see `docs/ACQUIN_KOSPI_ADAPTER_DESIGN.md`): `acquin_*` staging tables and migration `20260609_0012`, read-only Acquin Railway snapshot import, placeholder-entity universe seeding, price promotion into `price_bar` (KRW) behind a continuity guard and the Acquin vintage policy, `kospi_market` proxy factor returns, evidence-only investor-flow inputs, a configurable market factor name in attribution runs, and `jobs.run_pilot_kospi_attribution` on the local `aat_pilot_kospi` database.
 
-## Where We Left Off
+## Current Operational State
 
-Local TimescaleDB runs on host port `55432` to avoid the existing Windows Postgres on `5432`. Use:
+Local TimescaleDB normally runs on host port `55432`:
 
 ```powershell
 docker compose up -d postgres
 .\scripts\run_alembic.ps1 upgrade head
 ```
 
-Next build step is running the FaustCalc universe attribution backfill in controlled batches and refreshing summaries afterward:
+The server FaustCalc backfill remains active and should be treated as a live production-like data job until it completes and a post-backfill backup is created.
 
-```powershell
-python -m jobs.run_faustcalc_attribution_backfill --prefer-compose-port --batch-size 200
-python -m jobs.refresh_attribution_summaries --prefer-compose-port
+Latest read-only status check from this development machine on 2026-05-12:
+
+```text
+backfill_run_id=a6b38bf6-ba13-4188-9dfe-b8e0e85dc47c
+tasks_completed=5912/37971
+tasks_finished=6067/37971
+pending=31903
+running=1
+skipped_tasks=153
+failed=2
+windows_ran=99294/7156478
+windows_skipped=0
+current_ticker=SRRE
+current_cadence=monthly
+current_windows=0/27
 ```
 
-The current local FaustCalc backfill run can be resumed with:
+The two failed tasks are monthly windows for `FSBN` and `TXGE`; both failed because extreme source-price/model outputs overflowed the current numeric precision. Treat these as data/model-quality defects to triage after preserving backfill progress.
+
+Current approved status check:
 
 ```powershell
-python -m jobs.run_faustcalc_attribution_backfill --prefer-compose-port --backfill-run-id a6b38bf6-ba13-4188-9dfe-b8e0e85dc47c --batch-size 200 --window-commit-size 25 --progress-every 10
+$env:DATABASE_URL="postgresql+psycopg://attribution:attribution@10.0.0.60:55432/attribution"
+python -m jobs.run_faustcalc_attribution_backfill --status-only
 ```
 
-Check progress without running work:
+Current approved server-local resume command:
 
-```powershell
-python -m jobs.run_faustcalc_attribution_backfill --prefer-compose-port --status-only
+```bash
+python -m jobs.run_faustcalc_attribution_backfill --prefer-compose-port --backfill-run-id a6b38bf6-ba13-4188-9dfe-b8e0e85dc47c --batch-size 200 --window-commit-size 25 --workers 1 --progress-every 10 --worker-id server-1
 ```
 
 KOSPI pilot (local-only, requires `ACQUIN_DB_URL` in `.env`):
@@ -128,8 +148,23 @@ windows -> summary refresh). The dashboard is Vercel-deployable against the pilo
 `AAT_DEFAULT_UNIVERSE_NAME=pilot_kospi_static`, `AAT_DEFAULT_UNIVERSE_VERSION=latest`, and
 `NEXT_PUBLIC_PRICE_CURRENCY=KRW`; see `docs/VERCEL_CLOUDFLARE_TUNNEL_DEPLOYMENT.md`.
 
+## Next Work
+
+1. Continue the FaustCalc backfill without schema, loader, or persisted-attribution contract changes.
+2. Triage the two failed monthly tasks after recording the current status and deciding whether to skip, cap, or repair the bad-source windows.
+3. Refresh `security_attribution_summary` after backfill completion.
+4. Validate `/universe`, chart, run-history, and detail-panel response times after summaries are refreshed.
+5. Spot-check representative tickers such as `AAPL`, `MSFT`, a thin-name winner, and a failed/edge-case ticker.
+6. Create a post-backfill server DB dump.
+7. Run residual-reduction and out-of-sample methodology evaluation before promoting any expanded factor or event methodology as production-grade.
+8. For `viza.finance.equity_investment v0.1`, next prepare an MVP user test, demo script, and installer handoff while preserving the current non-production-hardened boundary.
+9. Phases A, B, C.1, C.2, and **D** of `docs/VIZA_OUTPUT_RADAR_DECISIONS_PLAN.md` are landed and green — the decisions feature is **feature-complete**. Phase D landed 2026-05-20: backtesting evaluator (`viza/decisions_backtesting.py` + new HTTP endpoint + 7 tests), DecisionsPanel wired into App.tsx, SQLite migration helper closes the last open C.2 WARN, and `docs/VIZA_DECISIONS_STRUCTURAL_AUDIT.md` documents the 7-point structural audit with file:line references for every enforcement site. Release-readiness checklist updated with the Decisions section. Verification on 2026-05-20: 498 Python tests pass; 42 desktop tests pass; typecheck clean; 0 regressions. Public-release sign-off awaits marketing/help surfaces being authored (out of this repo). All historic phase detail follows.
+
+9b. Phases A, B, C.1, and C.2 of `docs/VIZA_OUTPUT_RADAR_DECISIONS_PLAN.md` were the precursors landed earlier the same day — the decisions feature is now feature-complete through Phase C. Phase C.2 (live-mode opt-in flow + live-mode code path) landed 2026-05-20 under the CEO directive to treat legal constraints as resolved. Defense-in-depth controls remain in place: (a) global engine env flag `VIZA_LIVE_MODE_ENABLED=true` required to activate live mode in any process; (b) per-profile versioned opt-in (`LiveModeOptIn`) with disclosure version `v1`; (c) strict per-rule `effective_from <= cutoff_timestamp` gate; (d) SQLite CHECK still rejects modes outside `(sandbox_replay, live)`. Verification: 488 Python tests pass (Phase C.1 baseline 482 + 6 new for live mode enforcement); 40 desktop tests pass (Phase B baseline 31 + 9 new for live-mode UI surface). Next-up items: App.tsx wiring of `DecisionsPanel` is still a small follow-up (component is built and tested standalone but not yet visible in the running app shell); Phase D (backtesting evaluator, marketing copy review, final structural-point audit, release-readiness sign-off) is now the remaining workstream on the plan. **Phase C is split**: C.1 (cooldown/dead-band, decision package-redaction, second module) shipped today with 482 unit+lookahead tests passing (Phase B baseline 468 + 14 new). **Phase C.2 (live-mode opt-in dialog + live-mode code path) is held for the legal memo** briefed in `docs/VIZA_DECISIONS_LEGAL_BRIEF.md` — the live-mode block is encoded at the type/runtime/DB layer and stays in place until the memo confirms the simulator frame survives a live run. Estimated coding time post-memo: ~5–10 minutes. Phase C.1 detail: `CooldownPolicy` sub-model on `DecisionRule` (additive); `PriorEmission` carrier + `_cooldown_suppresses` enforcement in `compile_decisions`; new `viza/decisions_redaction.py` with `white_box`/`output_only`/`marketplace_draft` modes + cross-mode block on `export_allowed=False`; new real-estate template proving module-agnostic abstraction. Remaining follow-ups: App.tsx wiring of `DecisionsPanel`, legal memo from counsel, Phase C.2 live-mode unlock once memo confirms. **Phase A**: `viza/decisions.py` (DecisionFrame, executor, store, replay), additive `DecisionRule` schema on `VizaStrategyProfile`, `output_radar_mode` helper, pilot rule on the RSI swing template, and `tests/lookahead_audit/test_decisions_pit.py` gate. **Phase B**: validation-ledger integration (`validation_record_for_decisions`, `emit_and_persist_decisions`), FastAPI endpoints (`GET /viza/runs/{run_id}/decisions`, `POST /viza/runs/{run_id}/decisions/replay`), end-to-end replay-from-stores integration test, and the decisions UI feature surface at `apps/viza-desktop/src/features/decisions/` (types, client, card, panel) with 8 desktop tests asserting non-advice language and sandbox framing. Plus `docs/VIZA_DECISIONS_LEGAL_BRIEF.md` for the lighter US + Korea legal pass (counsel engagement is scheduling-bound, ~2 weeks calendar). Verification: 468 unit + lookahead tests pass (Phase A 464 + Phase B 4); desktop typecheck clean; 31 desktop tests pass (23 baseline + 8 new). Remaining: App.tsx wiring of `DecisionsPanel` into the desktop layout (small follow-up; component is tested standalone), legal memo from counsel, and `viza-code-reviewer` sign-off on the full Phase B diff. Phase C picks up next: live-mode opt-in dialog, cooldown/debounce/dead-band, decision-aware package-redaction modes, and a second module's decision rule.
+
 Manual input likely needed soon:
 
-- Confirm the MVP production price-data source and license status. FMP remains development-only unless `FMP_PRODUCTION_LICENSE_CONFIRMED=true`.
-- Fill real values in `.env` for `FMP_API_KEY` and `EDGAR_USER_AGENT`. FRED CSV ingestion does not require a key.
+- Confirm the production price-data source and license status. FMP remains development-only unless `FMP_PRODUCTION_LICENSE_CONFIRMED=true`.
+- Decide how to handle extreme price/source anomalies that generate impossible returns or coefficient explosions.
+- Fill real values in `.env` for `FMP_API_KEY` and `EDGAR_USER_AGENT` when running local ingestion workflows. FRED CSV ingestion does not require a key.
 - Review open `acquin_validation_issue` continuity suspects (e.g. `204210`, `140910`) before trusting their KOSPI pilot attribution output.

@@ -1,0 +1,471 @@
+[
+  {
+    "output_view_id": "equity.strategy_fit_radar",
+    "label": "Strategy Fit Radar",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.insight_card",
+    "label": "Insight Card",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.investment_memo",
+    "label": "Investment Memo",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.thesis_tracker",
+    "label": "Thesis Tracker",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.watchlist",
+    "label": "Watchlist",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.valuation_matrix",
+    "label": "Valuation Matrix",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.factor_dashboard",
+    "label": "Factor Dashboard",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.event_catalyst_board",
+    "label": "Event Catalyst Board",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.risk_dashboard",
+    "label": "Risk Dashboard",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.trade_plan",
+    "label": "Trade Plan",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.portfolio_impact_report",
+    "label": "Portfolio Impact Report",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1",
+      "eq_profile_event_earnings_v1",
+      "eq_profile_merger_arb_v1",
+      "eq_profile_special_situations_v1",
+      "eq_profile_technical_execution_v1",
+      "eq_profile_macro_regime_v1",
+      "eq_profile_short_fundamental_v1",
+      "eq_profile_portfolio_risk_v1",
+      "eq_profile_sentiment_research_v1",
+      "eq_profile_research_watchlist_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice"
+  },
+  {
+    "output_view_id": "equity.source_rights_report",
+    "label": "Source Rights Report",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1",
+      "eq_profile_event_earnings_v1",
+      "eq_profile_merger_arb_v1",
+      "eq_profile_special_situations_v1",
+      "eq_profile_technical_execution_v1",
+      "eq_profile_macro_regime_v1",
+      "eq_profile_short_fundamental_v1",
+      "eq_profile_portfolio_risk_v1",
+      "eq_profile_sentiment_research_v1",
+      "eq_profile_research_watchlist_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "output_view_id": "equity.validation_report",
+    "label": "Validation Report",
+    "compatible_profiles": [
+      "eq_profile_long_value_v1",
+      "eq_profile_quality_compounder_v1",
+      "eq_profile_growth_surprise_v1",
+      "eq_profile_income_safety_v1",
+      "eq_profile_quant_factor_v1",
+      "eq_profile_quantamental_v1",
+      "eq_profile_event_earnings_v1",
+      "eq_profile_merger_arb_v1",
+      "eq_profile_special_situations_v1",
+      "eq_profile_technical_execution_v1",
+      "eq_profile_macro_regime_v1",
+      "eq_profile_short_fundamental_v1",
+      "eq_profile_portfolio_risk_v1",
+      "eq_profile_sentiment_research_v1",
+      "eq_profile_research_watchlist_v1"
+    ],
+    "sections": [
+      "summary",
+      "evidence",
+      "PIT_status",
+      "rights_status",
+      "validation_status",
+      "redactions"
+    ],
+    "required_evidence": [
+      "source_refs",
+      "method_ids",
+      "validation_rule_ids"
+    ],
+    "redaction_policy": "restrictive_policy_wins",
+    "PIT_status_display": true,
+    "rights_status_display": true,
+    "validation_status_display": true,
+    "validation_rules": [
+      "EQ_VAL_OUTPUT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  }
+]

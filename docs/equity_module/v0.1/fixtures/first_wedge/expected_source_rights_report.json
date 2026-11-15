@@ -1,0 +1,156 @@
+{
+  "view_id": "source_rights_report",
+  "view_family": "source_rights_report",
+  "fixture_id": "first_wedge_v0.1",
+  "rendered_for_run_id": "run_2025_11_15_first_wedge_v01",
+  "rendered_at": "2025-11-15T14:00:10Z",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "decision_id": "decision_exampleco_001",
+  "strategy_profile_id": "quality_value_long_only",
+
+  "sections": {
+    "header": {
+      "title": "Source Rights Report - ExampleCo Industrial first-wedge run",
+      "run_id": "run_2025_11_15_first_wedge_v01",
+      "module_version": "0.1.0"
+    },
+    "connector_roles": [
+      {
+        "connector_role": "sec_filings",
+        "provider": "SEC EDGAR",
+        "license_policy": "public_official",
+        "license_status": "public",
+        "production_status": "production_ready",
+        "used_in_run": true,
+        "evidence_refs_used": ["fixture_filing_001"]
+      },
+      {
+        "connector_role": "fundamentals_as_reported",
+        "provider": "SEC EDGAR XBRL",
+        "license_policy": "public_official",
+        "license_status": "public",
+        "production_status": "production_ready",
+        "used_in_run": true,
+        "evidence_refs_used": ["evidence_bundle_exampleco_001"]
+      },
+      {
+        "connector_role": "xbrl_facts",
+        "provider": "SEC EDGAR XBRL",
+        "license_policy": "public_official",
+        "license_status": "public",
+        "production_status": "production_ready",
+        "used_in_run": true,
+        "evidence_refs_used": ["evidence_bundle_exampleco_001"]
+      },
+      {
+        "connector_role": "security_master",
+        "provider": "public registry / NYSE listing public records",
+        "license_policy": "public_official",
+        "license_status": "public",
+        "production_status": "production_ready",
+        "used_in_run": true,
+        "evidence_refs_used": ["listing_nyse_exampleco_001"]
+      },
+      {
+        "connector_role": "licensed_estimates_connector",
+        "provider": "I/B/E/S / FactSet / Bloomberg",
+        "license_policy": "licensed_provider_required",
+        "license_status": "missing",
+        "production_status": "production_pending_license",
+        "used_in_run": false,
+        "behavior": "locked_placeholder_node",
+        "fallback_behavior": "open_locked_preserve_config",
+        "note": "Consensus estimates not used in this fixture. Any node referencing analyst_estimates / consensus_snapshot / rating_change opens as locked-preserve-config and dependent profiles downgrade to research_only."
+      },
+      {
+        "connector_role": "licensed_borrow_connector",
+        "provider": "S3 Partners / Markit / IB",
+        "license_policy": "licensed_provider_required",
+        "license_status": "missing",
+        "production_status": "production_pending_license",
+        "used_in_run": false,
+        "behavior": "locked_placeholder_node",
+        "fallback_behavior": "block_short_action_with_warning",
+        "note": "Borrow connector not used (long-only profile). Listed for completeness."
+      },
+      {
+        "connector_role": "licensed_options_connector",
+        "provider": "OPRA / CBOE",
+        "license_policy": "licensed_provider_required",
+        "license_status": "missing",
+        "production_status": "production_pending_license",
+        "used_in_run": false,
+        "behavior": "locked_placeholder_node",
+        "fallback_behavior": "open_locked_preserve_config",
+        "note": "Options connector not used."
+      }
+    ],
+    "rights_status": {
+      "public_official_objects": [
+        "fixture_filing_001",
+        "evidence_bundle_exampleco_001",
+        "co_exampleco_001",
+        "iss_exampleco_001",
+        "sec_exampleco_001",
+        "listing_nyse_exampleco_001"
+      ],
+      "internal_research_only_objects": [
+        "thesis_exampleco_qvalue_001",
+        "valuation_model_exampleco_dcf_001",
+        "valuation_model_exampleco_relative_001",
+        "decision_exampleco_001",
+        "validation_record_first_wedge_001",
+        "rights_policy_first_wedge_001"
+      ],
+      "restricted_or_unclear_objects": [],
+      "licensed_provider_required_objects_in_use": []
+    },
+    "redaction_requirements": [
+      {"object_id": "thesis_exampleco_qvalue_001", "redaction_required": true, "preserve_in_output": ["thesis_type", "horizon", "strategy_profile_id", "invalidation_conditions_count"], "redact_in_output": ["claim", "supporting_evidence_ids_raw_values", "primary_signals_values", "valuation_or_score_support"]},
+      {"object_id": "valuation_model_exampleco_dcf_001", "redaction_required": true, "preserve_in_output": ["method_family", "model_version", "validation.peer_consistency_check", "validation.reverse_dcf_check"], "redact_in_output": ["assumptions_values", "outputs.intrinsic_value_per_share", "sensitivity_table_values", "market_price", "valuation_gap_pct", "margin_of_safety_pct"]},
+      {"object_id": "valuation_model_exampleco_relative_001", "redaction_required": true, "preserve_in_output": ["method_family", "peer_set.methodology", "peer_set.peer_count"], "redact_in_output": ["peer_ids_placeholder", "metrics_values"]},
+      {"object_id": "decision_exampleco_001", "redaction_required": true, "preserve_in_output": ["decision_action_class", "strategy_profile_id", "horizon", "confidence.label", "pit_status.PIT_safe"], "redact_in_output": ["decision_rationale", "evidence_bundle_ids_raw_values", "thesis_ids_internal_state", "score_outputs_values"]},
+      {"object_id": "validation_record_first_wedge_001", "redaction_required": true, "preserve_in_output": ["status", "summary_counts", "warning_codes", "proof_checksum"], "redact_in_output": ["evidence_refs_raw_values"]}
+    ],
+    "export_restrictions": [
+      "Raw provider data export blocked (no licensed provider data used in this run).",
+      "Internal research artifacts (thesis, valuation_models, decision, validation_record) export blocked by default; user must explicitly upgrade with creator placeholder + non-advice acknowledgement for output_only export.",
+      "marketplace_draft export requires redaction of every internal_research_only object per the redaction_requirements list above."
+    ],
+    "marketplace_restrictions": [
+      "Monetized marketplace endpoints unsupported (production boundary no_monetized_marketplace).",
+      "marketplace_draft permitted only with redaction + creator placeholder + non-advice acknowledgement + compliance warnings.",
+      "If any restricted_or_unclear license source were used, marketplace_draft would be blocked entirely. None present in this fixture."
+    ],
+    "attribution_requirements": [
+      {"source_ref": "fixture_filing_001", "attribution_required": false, "note": "EDGAR filings are public_official; attribution recommended but not required."}
+    ],
+    "package_visibility_summary": {
+      "white_box": {"allowed": true, "redaction_required": false, "preserves": "full graph + all evidence + validation"},
+      "gray_box": {"allowed": true, "redaction_required": true, "preserves": "redacted graph + evidence + validation"},
+      "black_box": {"allowed": true, "redaction_required": true, "preserves": "output_only outputs + audit"},
+      "output_only": {"allowed": true, "redaction_required": true, "preserves": "rendered outputs + audit + proof_checksum"},
+      "preview": {"allowed": true, "redaction_required": true, "preserves": "sample sections"},
+      "marketplace_draft": {"allowed": true, "redaction_required": true, "preserves": "manifest + non_advice_boundary + creator placeholder + redacted outputs"}
+    }
+  },
+
+  "audit_render": {
+    "graph_hash": "computed_at_load_time",
+    "profile_hash": "computed_at_load_time",
+    "data_cutoff": "2025-11-15T14:00:00Z",
+    "validation_record_refs": ["validation_record_first_wedge_001"],
+    "proof_checksum": "computed_at_load_time"
+  },
+
+  "data_rights": {
+    "display_policy": "allowed",
+    "export_policy": "conditional",
+    "marketplace_policy": "redacted"
+  },
+
+  "non_advice_boundary": "This source-rights report describes packaging and licensing constraints only. The underlying analysis does not constitute investment advice. ExampleCo Industrial, Inc. is a fictional issuer used as a fixture.",
+
+  "summary": "Public-official sources (EDGAR filings + XBRL facts + listing record) are exportable and packageable. Internal research artifacts (thesis, valuation_models, decision, validation_record) require redaction in any exported or marketplace_draft package. No licensed provider data is used; licensed connectors are listed as locked placeholders with production_pending_license status. Marketplace monetization unsupported."
+}

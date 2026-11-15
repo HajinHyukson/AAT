@@ -1,0 +1,173 @@
+{
+  "schema_version": "viza_graph_v0",
+  "methodology_id": "sample-residual-momentum-event-radar-v0",
+  "name": "Residual Momentum Event Radar",
+  "description": "Demo methodology for Phase 0 schema validation and the first VIZA workflow.",
+  "created_at": "2026-05-12T00:00:00Z",
+  "updated_at": "2026-05-12T00:00:00Z",
+  "nodes": [
+    {
+      "id": "universe-1",
+      "type": "universe",
+      "position": {"x": 80, "y": 160},
+      "label": "Pilot S&P 500",
+      "config": {
+        "universe_name": "pilot_sp500_static",
+        "universe_version": "sp500_static_2026_05_06_v0"
+      }
+    },
+    {
+      "id": "attribute-momentum",
+      "type": "attribute",
+      "position": {"x": 320, "y": 60},
+      "label": "Momentum",
+      "config": {
+        "attribute_key": "momentum",
+        "lookback_days": 126,
+        "missing_data": "warn_and_exclude_from_score"
+      }
+    },
+    {
+      "id": "attribute-residual",
+      "type": "attribute",
+      "position": {"x": 320, "y": 180},
+      "label": "Unexplained Residual",
+      "config": {
+        "attribute_key": "unexplained_residual_bps",
+        "lookback_days": 1,
+        "missing_data": "warn_and_exclude_from_score"
+      }
+    },
+    {
+      "id": "attribute-event-materiality",
+      "type": "attribute",
+      "position": {"x": 320, "y": 300},
+      "label": "Event Materiality",
+      "config": {
+        "attribute_key": "event_materiality",
+        "lookback_days": 30,
+        "missing_data": "treat_as_zero"
+      }
+    },
+    {
+      "id": "transform-percentile-ranks",
+      "type": "transform",
+      "position": {"x": 560, "y": 180},
+      "label": "Percentile Ranks",
+      "config": {
+        "transform": "percentile_rank",
+        "direction": "higher_is_better"
+      }
+    },
+    {
+      "id": "score-1",
+      "type": "score",
+      "position": {"x": 800, "y": 180},
+      "label": "Weighted Score",
+      "config": {
+        "method": "weighted_sum",
+        "weights": {
+          "momentum": 0.4,
+          "unexplained_residual_bps": 0.4,
+          "event_materiality": 0.2
+        },
+        "missing_data": "renormalize_available_weights"
+      }
+    },
+    {
+      "id": "output-radar-1",
+      "type": "output_radar",
+      "position": {"x": 1040, "y": 140},
+      "label": "Top 25 Radar",
+      "config": {
+        "top_n": 25,
+        "sort": "descending",
+        "columns": [
+          "ticker",
+          "company_name",
+          "score",
+          "momentum",
+          "unexplained_residual_bps",
+          "event_materiality",
+          "sector",
+          "run_status"
+        ]
+      }
+    },
+    {
+      "id": "relationship-1",
+      "type": "relationship",
+      "position": {"x": 1040, "y": 320},
+      "label": "Relationship View",
+      "config": {
+        "relationships": [
+          "company_to_selected_attributes",
+          "company_to_sector",
+          "company_to_industry",
+          "company_to_peers",
+          "company_to_recent_event_evidence"
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-universe-momentum",
+      "source": "universe-1",
+      "target": "attribute-momentum",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-universe-residual",
+      "source": "universe-1",
+      "target": "attribute-residual",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-universe-event",
+      "source": "universe-1",
+      "target": "attribute-event-materiality",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-momentum-transform",
+      "source": "attribute-momentum",
+      "target": "transform-percentile-ranks",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-residual-transform",
+      "source": "attribute-residual",
+      "target": "transform-percentile-ranks",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-event-transform",
+      "source": "attribute-event-materiality",
+      "target": "transform-percentile-ranks",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-transform-score",
+      "source": "transform-percentile-ranks",
+      "target": "score-1",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-score-output",
+      "source": "score-1",
+      "target": "output-radar-1",
+      "type": "data_flow"
+    },
+    {
+      "id": "edge-output-relationship",
+      "source": "output-radar-1",
+      "target": "relationship-1",
+      "type": "relationship"
+    }
+  ],
+  "metadata": {
+    "phase": "phase_0",
+    "demo_story": "User designs a residual, momentum, and event-materiality radar from a blank canvas."
+  }
+}

@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viza.local/schemas/equity/v0.1/viza.module.manifest.v1.schema.json",
+  "title": "viza.module.manifest.v1",
+  "description": "VIZA module manifest contract. The manifest is the top-level discoverable document for a VIZA domain module; it lists registries, dependencies, capability flags, rights/PIT/validation policy, package modes, and production boundaries. Source: CLAUDE_EQUITY_MODULE.md §27.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "module_id",
+    "module_version",
+    "display_name",
+    "description",
+    "domain",
+    "release_state",
+    "baseline_reference",
+    "depends_on",
+    "optional_modules",
+    "registry_artifacts",
+    "entity_types",
+    "node_types",
+    "edge_types",
+    "attribute_families",
+    "event_families",
+    "insight_families",
+    "strategy_profiles",
+    "output_views",
+    "connector_roles",
+    "validation_rules",
+    "rights_policies",
+    "audit_requirements",
+    "package_visibility_modes",
+    "missing_module_behavior",
+    "production_boundaries",
+    "rights_policy",
+    "pit_policy",
+    "validation_policy"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema": { "const": "viza.module.manifest.v1" },
+    "module_id": {
+      "type": "string",
+      "pattern": "^viza\\.[a-z][a-z0-9_.]*$"
+    },
+    "module_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-z0-9.]+)?$"
+    },
+    "display_name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "domain": { "type": "string" },
+    "release_state": {
+      "type": "string",
+      "enum": ["alpha", "beta", "ga", "deprecated"]
+    },
+    "baseline_reference": { "type": "string" },
+    "depends_on": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["module_id", "version", "optional", "missing_behavior"],
+        "properties": {
+          "module_id": { "type": "string", "pattern": "^viza\\.[a-z][a-z0-9_.]*$" },
+          "version": { "type": "string" },
+          "optional": { "type": "boolean" },
+          "missing_behavior": {
+            "type": "string",
+            "enum": [
+              "block_module_load",
+              "degrade_gracefully",
+              "open_locked_preserve_config",
+              "warn_only"
+            ]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "optional_modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["module_id", "version", "missing_behavior"],
+        "properties": {
+          "module_id": { "type": "string", "pattern": "^viza\\.[a-z][a-z0-9_.]*$" },
+          "version": { "type": "string" },
+          "missing_behavior": {
+            "type": "string",
+            "enum": [
+              "degrade_gracefully",
+              "open_locked_preserve_config",
+              "warn_only"
+            ]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "registry_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_types",
+        "node_types",
+        "edge_types",
+        "attribute_registry_seed",
+        "event_registry_seed",
+        "insight_registry_seed",
+        "strategy_profiles",
+        "output_views",
+        "validation_rules",
+        "connector_requirements",
+        "source_rights_matrix",
+        "pit_matrix"
+      ],
+      "patternProperties": {
+        "^[a-z][a-z0-9_]*$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "schema", "sha256", "byte_size", "record_count"],
+          "properties": {
+            "path": { "type": "string" },
+            "schema": { "type": "string" },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "byte_size": { "type": "integer", "minimum": 0 },
+            "record_count": { "type": "integer", "minimum": 0 },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "artifact_checksums": {
+      "type": "object",
+      "description": "Concatenated SHA-256 of every registry_artifacts entry (manifest-level proof binding).",
+      "additionalProperties": false,
+      "required": ["combined_sha256", "manifest_self_sha256_placeholder"],
+      "properties": {
+        "combined_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "manifest_self_sha256_placeholder": { "type": "string" }
+      }
+    },
+    "entity_types": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "node_types": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "edge_types": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "attribute_families": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "event_families": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "insight_families": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "strategy_profiles": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "output_views": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "connector_roles": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "validation_rules": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "rights_policies": { "type": "array", "items": { "type": "string" } },
+    "audit_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "source_refs",
+          "pit_timestamps",
+          "rights_state",
+          "methodology_graph_hash",
+          "strategy_profile_hash",
+          "validation_record_ids",
+          "proof_checksum",
+          "connector_entitlement_record",
+          "human_review_record"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "package_visibility_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["white_box", "gray_box", "black_box", "output_only", "preview", "marketplace_draft"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "missing_module_behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default_node_behavior", "default_connector_behavior", "default_profile_behavior"],
+      "properties": {
+        "default_node_behavior": {
+          "type": "string",
+          "enum": ["open_locked_preserve_config", "block_import", "skip_silently"]
+        },
+        "default_connector_behavior": {
+          "type": "string",
+          "enum": [
+            "fail_closed",
+            "fall_back_to_public",
+            "open_locked_preserve_config"
+          ]
+        },
+        "default_profile_behavior": {
+          "type": "string",
+          "enum": [
+            "block_profile_use",
+            "degrade_to_research_only",
+            "warn_only"
+          ]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "production_boundaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["boundary_id", "description", "severity"],
+        "properties": {
+          "boundary_id": { "type": "string" },
+          "description": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warn", "block"]
+          },
+          "remediation": { "type": "string" },
+          "source_refs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "rights_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_license_policy",
+        "raw_provider_export",
+        "unknown_rights_default",
+        "marketplace_draft_default",
+        "fail_closed_on_missing_license"
+      ],
+      "properties": {
+        "default_license_policy": {
+          "type": "string",
+          "enum": [
+            "public_official",
+            "public_professional",
+            "academic_public",
+            "licensed_provider_required",
+            "user_entitled_provider",
+            "restricted_or_unclear",
+            "derived_only",
+            "internal_research_only",
+            "unknown"
+          ]
+        },
+        "raw_provider_export": {
+          "type": "string",
+          "enum": ["allowed", "conditional", "blocked"]
+        },
+        "unknown_rights_default": {
+          "type": "string",
+          "enum": ["allowed", "conditional", "blocked"]
+        },
+        "marketplace_draft_default": {
+          "type": "string",
+          "enum": ["allowed", "conditional", "redacted", "blocked"]
+        },
+        "fail_closed_on_missing_license": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "pit_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pit_required_for_backtest",
+        "vintage_required_for_macro",
+        "vintage_required_for_factor",
+        "13f_lag_acknowledged",
+        "short_interest_release_date_used"
+      ],
+      "properties": {
+        "pit_required_for_backtest": { "type": "boolean" },
+        "vintage_required_for_macro": { "type": "boolean" },
+        "vintage_required_for_factor": { "type": "boolean" },
+        "13f_lag_acknowledged": { "type": "boolean" },
+        "short_interest_release_date_used": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "validation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pit_required_for_backtest",
+        "rights_required_for_packages",
+        "human_review_required_for_fraud_legal_short",
+        "non_advice_boundary_required_for_recommendation_outputs",
+        "validation_levels"
+      ],
+      "properties": {
+        "pit_required_for_backtest": { "type": "boolean" },
+        "rights_required_for_packages": { "type": "boolean" },
+        "human_review_required_for_fraud_legal_short": { "type": "boolean" },
+        "non_advice_boundary_required_for_recommendation_outputs": { "type": "boolean" },
+        "validation_levels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema",
+              "data",
+              "PIT",
+              "rights",
+              "evidence",
+              "statistical",
+              "qualitative",
+              "portfolio",
+              "output",
+              "package"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "marketplace_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["monetized_marketplace_supported", "marketplace_draft_supported", "redaction_default", "creator_record_required", "non_advice_acknowledgement_required"],
+      "properties": {
+        "monetized_marketplace_supported": { "const": false },
+        "marketplace_draft_supported": { "type": "boolean" },
+        "redaction_default": { "type": "string" },
+        "creator_record_required": { "type": "boolean" },
+        "non_advice_acknowledgement_required": { "type": "boolean" }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["graph_schema", "attribute_registry_version", "supported_actions"],
+      "properties": {
+        "graph_schema": { "const": "viza_graph_v0" },
+        "attribute_registry_version": { "type": "string" },
+        "supported_actions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "release_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requires_engine_version": { "type": "string" },
+        "license": { "type": "string" },
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "shared_metadata_contract_ref": { "type": "string" },
+        "shared_metadata_contract_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "compatibility_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "additive_by_default": { "type": "boolean" },
+        "missing_node_policy": { "type": "string", "enum": ["open_locked_preserve_config", "block_import", "skip_silently"] },
+        "deprecation_window_minor_versions": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

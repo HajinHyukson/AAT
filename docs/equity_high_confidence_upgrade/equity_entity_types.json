@@ -1,0 +1,1738 @@
+[
+  {
+    "entity_type_id": "equity.company",
+    "label": "Company",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.security",
+    "label": "Security",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.common_stock",
+    "label": "Common Stock",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.listing",
+    "label": "Listing",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.exchange",
+    "label": "Exchange",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.share_class",
+    "label": "Share Class",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.ADR",
+    "label": "Adr",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.portfolio",
+    "label": "Portfolio",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.account",
+    "label": "Account",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.position",
+    "label": "Position",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.benchmark",
+    "label": "Benchmark",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.hedge",
+    "label": "Hedge",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.trade_intent",
+    "label": "Trade Intent",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.order_plan",
+    "label": "Order Plan",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.filing",
+    "label": "Filing",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.financial_statement",
+    "label": "Financial Statement",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.proxy_statement",
+    "label": "Proxy Statement",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.press_release",
+    "label": "Press Release",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.transcript",
+    "label": "Transcript",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.news_document",
+    "label": "News Document",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.source_record",
+    "label": "Source Record",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.evidence_bundle",
+    "label": "Evidence Bundle",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.thesis",
+    "label": "Thesis",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.decision",
+    "label": "Decision",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.scenario",
+    "label": "Scenario",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.assumption",
+    "label": "Assumption",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.validation_record",
+    "label": "Validation Record",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.rights_policy",
+    "label": "Rights Policy",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.event",
+    "label": "Event",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.catalyst",
+    "label": "Catalyst",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.earnings_event",
+    "label": "Earnings Event",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.MA_deal",
+    "label": "Ma Deal",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.spin_event",
+    "label": "Spin Event",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.activism_event",
+    "label": "Activism Event",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.regulatory_event",
+    "label": "Regulatory Event",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.insider_transaction",
+    "label": "Insider Transaction",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.analyst_estimate",
+    "label": "Analyst Estimate",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.rating_change",
+    "label": "Rating Change",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.target_price_record",
+    "label": "Target Price Record",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.institutional_holder",
+    "label": "Institutional Holder",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.beneficial_owner",
+    "label": "Beneficial Owner",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.insider",
+    "label": "Insider",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.board_member",
+    "label": "Board Member",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.executive",
+    "label": "Executive",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.compensation_plan",
+    "label": "Compensation Plan",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.industry",
+    "label": "Industry",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.sector",
+    "label": "Sector",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.peer_group",
+    "label": "Peer Group",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.competitor",
+    "label": "Competitor",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.supplier",
+    "label": "Supplier",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.customer",
+    "label": "Customer",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.macro_series",
+    "label": "Macro Series",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.macro_vintage",
+    "label": "Macro Vintage",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.rate_curve",
+    "label": "Rate Curve",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.commodity",
+    "label": "Commodity",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "entity_type_id": "equity.FX_pair",
+    "label": "Fx Pair",
+    "module": "viza.finance.equity_investment",
+    "core_primitive": "entity",
+    "required_identifiers": [
+      "viza_entity_id"
+    ],
+    "required_fields": [
+      "source_refs",
+      "rights_policy",
+      "PIT_policy"
+    ],
+    "relationships": [
+      "supports",
+      "belongs_to",
+      "observed_in"
+    ],
+    "default_rights_policy": "inherits_from_source",
+    "PIT_fields_required": true,
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "production_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_O0002"
+    ],
+    "validation_rules": [
+      "EQ_VAL_ENTITY_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  }
+]

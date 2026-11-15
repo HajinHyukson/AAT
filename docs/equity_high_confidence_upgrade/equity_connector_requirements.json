@@ -1,0 +1,146 @@
+[
+  {
+    "connector_role": "official_public_connector",
+    "data_categories": [
+      "SEC filings",
+      "FRED/ALFRED",
+      "FINRA public data"
+    ],
+    "entitlement_required": false,
+    "default_export_policy": "metadata_and_derived_allowed",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "connector_role": "licensed_market_data_connector",
+    "data_categories": [
+      "prices",
+      "intraday",
+      "options",
+      "borrow"
+    ],
+    "entitlement_required": true,
+    "default_export_policy": "blocked",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "connector_role": "licensed_fundamentals_connector",
+    "data_categories": [
+      "normalized fundamentals",
+      "estimates"
+    ],
+    "entitlement_required": true,
+    "default_export_policy": "blocked",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "connector_role": "licensed_text_connector",
+    "data_categories": [
+      "news",
+      "transcripts",
+      "social"
+    ],
+    "entitlement_required": true,
+    "default_export_policy": "blocked",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "connector_role": "licensed_risk_model_connector",
+    "data_categories": [
+      "factor risk models"
+    ],
+    "entitlement_required": true,
+    "default_export_policy": "blocked",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "connector_role": "user_document_connector",
+    "data_categories": [
+      "portfolio holdings",
+      "user uploads"
+    ],
+    "entitlement_required": false,
+    "default_export_policy": "metadata_and_derived_allowed",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  },
+  {
+    "connector_role": "derived_calculation_engine",
+    "data_categories": [
+      "ratios",
+      "scores",
+      "derived insights"
+    ],
+    "entitlement_required": false,
+    "default_export_policy": "metadata_and_derived_allowed",
+    "required_fields": [
+      "source_id",
+      "available_at",
+      "retrieved_at",
+      "rights_policy",
+      "source_version"
+    ],
+    "validation_rules": [
+      "EQ_VAL_CONNECTOR_001",
+      "EQ_VAL_RIGHTS_001"
+    ]
+  }
+]

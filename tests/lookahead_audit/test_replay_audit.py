@@ -20,9 +20,11 @@ def test_replay_audit_detects_future_available_contribution_evidence() -> None:
         attribution_cutoff=dt(2),
         observed_return_bps=100,
         unexplained_residual_bps=0,
+        methodology="legacy",
         model_version="test",
         data_version="test",
         factor_basket_version="test",
+        cadence="daily",
         created_at=dt(3),
     )
     contribution = models.AttributionContribution(

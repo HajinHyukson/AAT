@@ -25,10 +25,13 @@ dev = [
   "pytest>=8.2",
   "ruff>=0.5",
 ]
+release = [
+  "pyinstaller>=6.10",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["api*", "adapters*", "config*", "db*", "engine*", "jobs*"]
+include = ["api*", "adapters*", "config*", "db*", "engine*", "jobs*", "viza*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -27,6 +27,7 @@ class AttributionRunResponse(BaseModel):
     attribution_cutoff: datetime
     observed_return_bps: float
     unexplained_residual_bps: float
+    methodology: str
     model_version: str
     data_version: str
     factor_basket_version: str
@@ -81,6 +82,7 @@ class UniverseStockResponse(BaseModel):
     latest_residual_bps: float | None = None
     latest_price_change_usd: float | None = None
     latest_residual_usd: float | None = None
+    methodology: str
     top_driver: str | None = None
     top_driver_confidence: str | None = None
     contribution_count: int = 0
@@ -103,6 +105,43 @@ class UniverseResponse(BaseModel):
     sector_options: list[str] = Field(default_factory=list)
     industry_options: list[str] = Field(default_factory=list)
     exchange_options: list[str] = Field(default_factory=list)
+
+
+class AttributionMethodologyResponse(BaseModel):
+    methodology: str
+    display_name: str
+    status: str
+    is_default: bool
+    model_version: str
+    factor_basket_version: str
+    supported_cadences: list[str]
+
+
+class AttributionEnsureLatestResponse(BaseModel):
+    status: str
+    job_id: UUID | None = None
+    run: AttributionRunResponse | None = None
+    latest_existing_window_end: datetime | None = None
+    target_window_end: datetime | None = None
+
+
+class AttributionJobResponse(BaseModel):
+    job_id: UUID
+    ticker: str
+    security_id: UUID
+    methodology: str
+    cadence: str
+    status: str
+    target_range_start: datetime
+    target_range_end: datetime
+    latest_existing_window_end: datetime | None = None
+    target_window_end: datetime | None = None
+    expected_windows: int
+    ran_windows: int
+    skipped_windows: int
+    latest_run_id: UUID | None = None
+    error_payload: dict | None = None
+    run: AttributionRunResponse | None = None
 
 
 class ExposureUpdateDecisionResponse(BaseModel):

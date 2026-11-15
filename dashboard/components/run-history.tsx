@@ -3,10 +3,12 @@ import type { AttributionRun } from "@/lib/types";
 
 export function RunHistory({
   ticker,
+  methodology,
   runs,
   activeRunId,
 }: {
   ticker: string;
+  methodology: string;
   runs: AttributionRun[];
   activeRunId: string;
 }) {
@@ -21,7 +23,7 @@ export function RunHistory({
           return (
             <Link
               key={`${run.attribution_run_id}-${index}`}
-              href={`/?ticker=${ticker}&runId=${run.attribution_run_id}`}
+              href={`/?ticker=${ticker}&methodology=${methodology}&runId=${run.attribution_run_id}`}
               className={`grid grid-cols-[1fr_auto] gap-2 border-b border-line px-4 py-3 text-sm last:border-b-0 ${
                 active ? "bg-paper" : "bg-white hover:bg-paper"
               }`}

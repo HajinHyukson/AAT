@@ -1,0 +1,2665 @@
+{
+  "$schema": "../equity_registry_shared_metadata.schema.json",
+  "registry_name": "equity_output_views",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "registry_version": "v1",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+  "notes": "13 v0.1 output views: 10 from CLAUDE §26.3 + strategy_fit_insight_cards + relationship_graph + portfolio_impact_report. Each record conforms to docs/equity_module/v0.1/equity_registry_shared_metadata.schema.json (object_family=output_view). Recommendation views require non_advice_boundary; rights-restricted evidence is redacted by default; marketplace_draft outputs default to redacted.",
+  "records": [
+    {
+      "id": "equity_radar",
+      "display_name": "Equity Radar",
+      "description": "Equity Radar v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§3.21"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "earnings_revision_momentum",
+        "growth_at_reasonable_price",
+        "cheap_compounder",
+        "rsi_swing_catalyst_confirmation",
+        "post_earnings_drift_radar",
+        "insider_cluster_breakout",
+        "merger_arbitrage_watchlist",
+        "special_situations_monitor",
+        "activism_vulnerability_radar",
+        "factor_neutral_quantamental_selector",
+        "macro_regime_equity_selector",
+        "dividend_sustainability_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs",
+        "output_with_recommendation_without_invalidation_warn_or_block_by_profile"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "radar",
+        "required_sections": [
+          "header",
+          "profile_label",
+          "strategy_family_label",
+          "action",
+          "score",
+          "confidence_label",
+          "evidence_count",
+          "risk_flags",
+          "missing_confirmations",
+          "pit_summary",
+          "rights_summary",
+          "validation_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "contradictory_evidence_block"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": true,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "entity",
+          "action",
+          "score",
+          "confidence",
+          "risk_flag_count",
+          "evidence_count",
+          "pit_state",
+          "rights_state"
+        ],
+        "evidence_display_rules": [
+          "cite_top_evidence_per_signal",
+          "render_contradictory_evidence_block_when_present",
+          "redact_when_rights_restricted"
+        ],
+        "pit_display_rules": [
+          "render_pit_safe_or_warn_label",
+          "show_data_cutoff_in_footer"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_evidence",
+          "show_redaction_placeholder_with_attribution"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": true,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview",
+          "marketplace_draft"
+        ],
+        "output_view_id": "equity_radar"
+      }
+    },
+    {
+      "id": "investment_memo",
+      "display_name": "Investment Memo",
+      "description": "Investment Memo v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§5.4"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-001",
+        "ANL-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "short_red_flag_monitor",
+        "special_situations_monitor",
+        "activism_vulnerability_radar",
+        "dividend_sustainability_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs",
+        "output_with_recommendation_without_invalidation_warn_or_block_by_profile"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "memo",
+        "required_sections": [
+          "header",
+          "executive_summary",
+          "company_snapshot",
+          "business_model",
+          "industry_context",
+          "financial_analysis",
+          "valuation_support",
+          "thesis",
+          "catalysts",
+          "risks",
+          "invalidation_conditions",
+          "liquidity_float_review",
+          "management_governance",
+          "recommendation_logic",
+          "portfolio_context_note",
+          "evidence_appendix",
+          "pit_summary",
+          "rights_summary",
+          "validation_summary",
+          "open_questions",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "contradictory_evidence_block",
+          "scenarios",
+          "target_price_methodology"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": true,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "text_sections",
+          "evidence_citations",
+          "scenario_table",
+          "sensitivity_table",
+          "audit_footer"
+        ],
+        "evidence_display_rules": [
+          "cite_every_material_claim",
+          "render_contradictory_evidence_block",
+          "redact_with_attribution_when_restricted"
+        ],
+        "pit_display_rules": [
+          "show_data_cutoff_and_analysis_cutoff",
+          "warn_when_inputs_pit_unsafe"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_source_evidence",
+          "preserve_derived_summary_when_raw_blocked"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": true,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "black_box",
+          "output_only",
+          "preview",
+          "marketplace_draft"
+        ],
+        "output_view_id": "investment_memo"
+      }
+    },
+    {
+      "id": "trade_plan",
+      "display_name": "Trade Plan",
+      "description": "Trade Plan v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§12.5"
+      ],
+      "source_ids": [
+        "G-001",
+        "TE-001",
+        "TE-009"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "rsi_swing_catalyst_confirmation",
+        "post_earnings_drift_radar",
+        "insider_cluster_breakout",
+        "merger_arbitrage_watchlist",
+        "earnings_revision_momentum",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs",
+        "output_with_recommendation_without_invalidation_warn_or_block_by_profile"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "trade_plan",
+        "required_sections": [
+          "header",
+          "setup",
+          "action",
+          "entry_or_confirmation_conditions",
+          "risk_limits",
+          "invalidation",
+          "horizon",
+          "execution_plan",
+          "pit_summary",
+          "rights_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "execution_schedule_table",
+          "borrow_review",
+          "squeeze_risk_review"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "action_summary",
+          "entry_conditions",
+          "exit_conditions",
+          "risk_table",
+          "execution_schedule",
+          "borrow_status"
+        ],
+        "evidence_display_rules": [
+          "cite_supporting_signals",
+          "redact_provider_signals_when_rights_restricted"
+        ],
+        "pit_display_rules": [
+          "show_data_cutoff",
+          "warn_when_inputs_pit_unsafe"
+        ],
+        "rights_redaction_rules": [
+          "redact_provider_borrow_data_when_unlicensed",
+          "redact_provider_options_data_when_unlicensed"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": true,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "trade_plan"
+      }
+    },
+    {
+      "id": "watchlist",
+      "display_name": "Watchlist",
+      "description": "Watchlist v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§3.21"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "rsi_swing_catalyst_confirmation",
+        "merger_arbitrage_watchlist",
+        "insider_cluster_breakout",
+        "event_risk_monitor",
+        "special_situations_monitor",
+        "valuation_trap_detector",
+        "activism_vulnerability_radar",
+        "short_red_flag_monitor",
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "dividend_sustainability_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "watchlist",
+        "required_sections": [
+          "header",
+          "watch_reason",
+          "missing_confirmations",
+          "trigger_events",
+          "monitoring_cadence",
+          "pit_summary",
+          "rights_summary"
+        ],
+        "optional_sections": [
+          "non_advice_boundary"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": false,
+          "non_advice_boundary_required": false
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "blocked",
+          "marketplace_policy": "blocked"
+        },
+        "columns_or_panels": [
+          "entity",
+          "watch_reason",
+          "trigger_events",
+          "missing_confirmations",
+          "last_update",
+          "cadence"
+        ],
+        "evidence_display_rules": [
+          "cite_trigger_evidence",
+          "redact_when_rights_restricted"
+        ],
+        "pit_display_rules": [
+          "show_last_evidence_timestamp",
+          "warn_when_stale_beyond_cadence"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_evidence"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": false,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": false,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "watchlist"
+      }
+    },
+    {
+      "id": "risk_dashboard",
+      "display_name": "Risk Dashboard",
+      "description": "Risk Dashboard v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§11.9"
+      ],
+      "source_ids": [
+        "G-001",
+        "PC-001",
+        "PC-021"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar",
+        "merger_arbitrage_watchlist",
+        "macro_regime_equity_selector",
+        "short_red_flag_monitor",
+        "valuation_trap_detector",
+        "event_risk_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs",
+        "output_with_recommendation_without_invalidation_warn_or_block_by_profile"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "risk_dashboard",
+        "required_sections": [
+          "header",
+          "risk_gates",
+          "invalidations",
+          "evidence_changes",
+          "affected_positions",
+          "severity",
+          "pit_summary",
+          "rights_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "stress_test_table",
+          "exposure_attribution"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "blocked",
+          "marketplace_policy": "blocked"
+        },
+        "columns_or_panels": [
+          "risk_gate_status",
+          "invalidation_state",
+          "severity",
+          "affected_positions",
+          "exposure_attribution",
+          "stress_test_results"
+        ],
+        "evidence_display_rules": [
+          "cite_evidence_for_each_risk_flag"
+        ],
+        "pit_display_rules": [
+          "show_data_cutoff_per_input",
+          "warn_when_inputs_pit_unsafe"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_position_evidence",
+          "redact_provider_factor_model_when_unlicensed"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": true,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "risk_dashboard"
+      }
+    },
+    {
+      "id": "validation_report",
+      "display_name": "Validation Report",
+      "description": "Validation Report v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§19"
+      ],
+      "source_ids": [
+        "G-001",
+        "P-013",
+        "P-014"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "earnings_revision_momentum",
+        "factor_neutral_quantamental_selector",
+        "merger_arbitrage_watchlist",
+        "post_earnings_drift_radar",
+        "rsi_swing_catalyst_confirmation",
+        "macro_regime_equity_selector",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "validation_report",
+        "required_sections": [
+          "header",
+          "validation_records",
+          "graph_hash",
+          "profile_hash",
+          "data_cutoff",
+          "evidence_refs",
+          "pit_summary",
+          "rights_summary",
+          "warnings",
+          "statistical_summary",
+          "proof_checksum"
+        ],
+        "optional_sections": [
+          "downgrade_log_excerpt",
+          "rejection_log_excerpt"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": false
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "validation_records_table",
+          "graph_hash",
+          "profile_hash",
+          "data_cutoff",
+          "warnings",
+          "statistical_summary",
+          "proof_checksum"
+        ],
+        "evidence_display_rules": [
+          "link_every_validation_record_to_evidence_ref"
+        ],
+        "pit_display_rules": [
+          "show_data_cutoff",
+          "show_input_pit_states"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_evidence_in_attached_records"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": false,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview",
+          "marketplace_draft"
+        ],
+        "output_view_id": "validation_report"
+      }
+    },
+    {
+      "id": "source_rights_report",
+      "display_name": "Source Rights Report",
+      "description": "Source Rights Report v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§26.3",
+        "§18.5"
+      ],
+      "source_ids": [
+        "G-001",
+        "DA-007",
+        "DA-008"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "factor_neutral_quantamental_selector",
+        "earnings_revision_momentum",
+        "merger_arbitrage_watchlist",
+        "portfolio_risk_radar",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "source_rights_report",
+        "required_sections": [
+          "header",
+          "connector_roles",
+          "rights_status",
+          "redaction_requirements",
+          "export_restrictions",
+          "marketplace_restrictions",
+          "attribution_requirements",
+          "pit_summary"
+        ],
+        "optional_sections": [
+          "package_visibility_summary"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": false,
+          "non_advice_boundary_required": false
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "connector_role",
+          "license_policy",
+          "display_policy",
+          "export_policy",
+          "redistribution_policy",
+          "marketplace_policy",
+          "attribution_required",
+          "redaction_required",
+          "package_visibility_modes"
+        ],
+        "evidence_display_rules": [
+          "explicit_per_field_rights_state"
+        ],
+        "pit_display_rules": [
+          "render_rights_state_as_of_decision_timestamp",
+          "warn_when_license_status_drifted_since_capture"
+        ],
+        "rights_redaction_rules": [
+          "render_package_restrictions",
+          "highlight_blocked_exports_explicitly"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": false,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": false,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview",
+          "marketplace_draft"
+        ],
+        "output_view_id": "source_rights_report"
+      }
+    },
+    {
+      "id": "strategy_fit_insight_cards",
+      "display_name": "Strategy-Fit Insight Cards",
+      "description": "Strategy-Fit Insight Cards v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§3.21",
+        "§24"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "earnings_revision_momentum",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "merger_arbitrage_watchlist",
+        "short_red_flag_monitor",
+        "macro_regime_equity_selector",
+        "factor_neutral_quantamental_selector",
+        "rsi_swing_catalyst_confirmation",
+        "post_earnings_drift_radar",
+        "insider_cluster_breakout",
+        "special_situations_monitor",
+        "dividend_sustainability_radar",
+        "valuation_trap_detector",
+        "activism_vulnerability_radar",
+        "event_risk_monitor",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs",
+        "output_with_recommendation_without_invalidation_warn_or_block_by_profile"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "radar",
+        "required_sections": [
+          "header",
+          "insight_type",
+          "entity",
+          "profile_label",
+          "direction",
+          "evidence_refs",
+          "confirmations",
+          "invalidation_conditions",
+          "pit_summary",
+          "rights_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "contradictory_evidence_block"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": false,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": true,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "card_grid",
+          "insight_type_filter",
+          "profile_filter",
+          "evidence_links"
+        ],
+        "evidence_display_rules": [
+          "cite_primary_attribute_or_event_per_card",
+          "render_contradictory_evidence_block_when_present",
+          "redact_when_rights_restricted"
+        ],
+        "pit_display_rules": [
+          "show_evidence_pit_state_per_card"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_evidence",
+          "show_redaction_placeholder_with_attribution"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": false,
+        "invalidation_display_required": true,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview",
+          "marketplace_draft"
+        ],
+        "output_view_id": "strategy_fit_insight_cards"
+      }
+    },
+    {
+      "id": "relationship_graph",
+      "display_name": "Relationship Graph",
+      "description": "Visual relationship graph (peer / supplier / customer / owner / activist / event-affects) with PIT-aware edges.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§5",
+        "§20.5"
+      ],
+      "source_ids": [
+        "G-001",
+        "B-002"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "merger_arbitrage_watchlist",
+        "activism_vulnerability_radar",
+        "portfolio_risk_radar",
+        "insider_cluster_breakout",
+        "short_red_flag_monitor",
+        "special_situations_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "radar",
+        "required_sections": [
+          "header",
+          "graph_nodes",
+          "graph_edges",
+          "edge_family_filter",
+          "evidence_links",
+          "pit_summary",
+          "rights_summary"
+        ],
+        "optional_sections": [
+          "non_advice_boundary"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": false,
+          "non_advice_boundary_required": false
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "graph_canvas",
+          "edge_family_filter",
+          "min_edge_strength",
+          "entity_search",
+          "evidence_inspector"
+        ],
+        "evidence_display_rules": [
+          "surface_edge_family_and_confidence",
+          "expose_source_lineage_per_edge"
+        ],
+        "pit_display_rules": [
+          "render_edge_as_of_timestamp"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_edges_with_placeholder"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": false,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": false,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "relationship_graph"
+      }
+    },
+    {
+      "id": "portfolio_impact_report",
+      "display_name": "Portfolio Impact Report",
+      "description": "Portfolio Impact Report v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§11"
+      ],
+      "source_ids": [
+        "G-001",
+        "PC-001",
+        "PC-021"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar",
+        "factor_neutral_quantamental_selector",
+        "macro_regime_equity_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "risk_dashboard",
+        "required_sections": [
+          "header",
+          "candidate_position_impact",
+          "factor_exposure_delta",
+          "tracking_error_delta",
+          "liquidity_capacity_check",
+          "stress_test_table",
+          "pit_summary",
+          "rights_summary",
+          "validation_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "hedge_recommendation_table"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "blocked",
+          "marketplace_policy": "blocked"
+        },
+        "columns_or_panels": [
+          "before_after_weight",
+          "factor_exposure_delta_table",
+          "tracking_error_delta",
+          "liquidity_capacity",
+          "stress_results"
+        ],
+        "evidence_display_rules": [
+          "cite_inputs_per_metric"
+        ],
+        "pit_display_rules": [
+          "show_data_cutoff_per_input"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_position_evidence",
+          "redact_provider_factor_model_when_unlicensed"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "portfolio_impact_report"
+      }
+    },
+    {
+      "id": "analyst_scorecard",
+      "display_name": "Analyst Scorecard",
+      "description": "Analyst Scorecard v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§5.4"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "scorecard",
+        "required_sections": [
+          "header",
+          "workflow_dimension_status",
+          "completeness_status",
+          "evidence_coverage_pct",
+          "stale_section_count",
+          "pit_summary",
+          "rights_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "blocked",
+          "marketplace_policy": "blocked"
+        },
+        "columns_or_panels": [
+          "dimension_status_table",
+          "completeness_progress",
+          "stale_section_log"
+        ],
+        "evidence_display_rules": [
+          "report_pass_warning_blocked_per_dimension"
+        ],
+        "pit_display_rules": [
+          "surface_stale_section_age"
+        ],
+        "rights_redaction_rules": [
+          "redact_provider_evidence_when_unlicensed"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "analyst_scorecard"
+      }
+    },
+    {
+      "id": "thesis_tracker",
+      "display_name": "Thesis Tracker",
+      "description": "Thesis Tracker v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§5.4"
+      ],
+      "source_ids": [
+        "G-001",
+        "ANL-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "short_red_flag_monitor",
+        "merger_arbitrage_watchlist",
+        "special_situations_monitor",
+        "activism_vulnerability_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs",
+        "output_with_recommendation_without_invalidation_warn_or_block_by_profile"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "thesis_tracker",
+        "required_sections": [
+          "header",
+          "open_claims",
+          "catalysts",
+          "risks",
+          "monitoring_triggers",
+          "invalidation_state",
+          "last_update",
+          "pit_summary",
+          "rights_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "blocked",
+          "marketplace_policy": "blocked"
+        },
+        "columns_or_panels": [
+          "claims_table",
+          "catalyst_clock",
+          "monitoring_triggers",
+          "invalidation_state"
+        ],
+        "evidence_display_rules": [
+          "link_each_claim_to_evidence_chain"
+        ],
+        "pit_display_rules": [
+          "show_evidence_age_per_claim"
+        ],
+        "rights_redaction_rules": [
+          "redact_restricted_evidence_per_claim"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": true,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "thesis_tracker"
+      }
+    },
+    {
+      "id": "backtest_report",
+      "display_name": "Backtest Report",
+      "description": "Backtest Report v0.1 output view.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "§26",
+        "§19"
+      ],
+      "source_ids": [
+        "G-001",
+        "FA-040",
+        "P-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "factor_neutral_quantamental_selector",
+        "earnings_revision_momentum",
+        "post_earnings_drift_radar",
+        "rsi_swing_catalyst_confirmation",
+        "macro_regime_equity_selector",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "rendered_section_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "proof_checksum"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_view_must_match_schema",
+        "output_lacking_pit_or_rights_summary_blocked",
+        "output_with_unredacted_restricted_evidence_blocked",
+        "non_advice_boundary_text_required_on_recommendation_outputs"
+      ],
+      "failure_modes": [
+        "output_with_unredacted_restricted_evidence",
+        "non_advice_boundary_omitted",
+        "stale_pit_state_rendered_without_warn"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "view_family": "backtest_report",
+        "required_sections": [
+          "header",
+          "methodology_graph_hash",
+          "strategy_profile_hash",
+          "universe",
+          "period",
+          "costs",
+          "capacity",
+          "performance_stats",
+          "deflated_sharpe",
+          "walk_forward_folds",
+          "drawdown",
+          "regime_breakdown",
+          "validation_records",
+          "pit_summary",
+          "rights_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "sensitivity_table"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "citation_required": true,
+          "contradictory_evidence_block": false,
+          "redacted_placeholders": true
+        },
+        "audit_render": {
+          "graph_hash": true,
+          "profile_hash": true,
+          "data_cutoff": true,
+          "validation_record_refs": true,
+          "proof_checksum": true
+        },
+        "lifecycle": {
+          "versioned": true,
+          "shareable": true,
+          "package_eligible": true
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "columns_or_panels": [
+          "performance_stats",
+          "deflated_sharpe",
+          "walk_forward_folds",
+          "drawdown_chart",
+          "regime_breakdown",
+          "cost_attribution"
+        ],
+        "evidence_display_rules": [
+          "cite_attribute_inputs_and_costs"
+        ],
+        "pit_display_rules": [
+          "show_vintage_state_per_input",
+          "warn_when_inputs_pit_unsafe"
+        ],
+        "rights_redaction_rules": [
+          "redact_provider_input_values_when_unlicensed",
+          "preserve_derived_returns_when_inputs_blocked"
+        ],
+        "export_allowed_by_default": false,
+        "validation_summary_required_explicit": true,
+        "invalidation_display_required": false,
+        "non_advice_boundary_required_explicit": true,
+        "package_visibility_modes": [
+          "white_box",
+          "gray_box",
+          "output_only",
+          "preview"
+        ],
+        "output_view_id": "backtest_report"
+      }
+    },
+    {
+      "id": "event_catalyst_board",
+      "display_name": "Event Catalyst Board",
+      "description": "Board view for timestamped events, catalysts, credibility, materiality, PIT state, rights state, validation state, and invalidation triggers.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "S19",
+        "S18"
+      ],
+      "source_ids": [
+        "B-008",
+        "P-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum",
+        "post_earnings_drift_radar",
+        "special_situations_monitor",
+        "event_risk_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "validation_fixture",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_validation_summary_required",
+        "output_pit_summary_required",
+        "output_rights_summary_required",
+        "evidence_non_advice_boundary",
+        "EQ-VAL-011"
+      ],
+      "failure_modes": [
+        "restricted_data_unredacted",
+        "non_advice_boundary_missing"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "source_lineage_or_policy_gate_missing",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental",
+          "evidence_required": "source/PIT/rights/validation proof"
+        }
+      ],
+      "rejection_conditions": [
+        "requires_personalized_advice_output",
+        "requires_unlawful_data"
+      ],
+      "family_specific": {
+        "view_family": "equity_output",
+        "required_sections": [
+          "header",
+          "event_timeline",
+          "catalyst_state",
+          "source_credibility",
+          "materiality",
+          "invalidation_conditions",
+          "pit_summary",
+          "rights_summary",
+          "validation_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "open_questions",
+          "locked_connector_summary"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "source_refs_required": true,
+          "raw_restricted_text_export": "blocked"
+        },
+        "audit_render": {
+          "proof_checksum_required": true,
+          "validation_record_refs_required": true
+        },
+        "lifecycle": {
+          "status": "registry-seedable"
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "compatible_strategy_profiles": [
+          "earnings_revision_momentum",
+          "post_earnings_drift_radar",
+          "special_situations_monitor",
+          "event_risk_monitor"
+        ],
+        "redaction_policy": {
+          "marketplace_draft": "redact_restricted_unclear_and_user_private",
+          "output_only": "no_raw_restricted_provider_data"
+        }
+      }
+    },
+    {
+      "id": "valuation_matrix",
+      "display_name": "Valuation Matrix",
+      "description": "Valuation scenario and sensitivity view showing assumptions, ranges, evidence, PIT state, rights state, validation state, and non-advice boundary.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "S19",
+        "S18"
+      ],
+      "source_ids": [
+        "B-008",
+        "P-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "growth_at_reasonable_price",
+        "cheap_compounder",
+        "valuation_trap_detector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "validation_fixture",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_validation_summary_required",
+        "output_pit_summary_required",
+        "output_rights_summary_required",
+        "evidence_non_advice_boundary",
+        "EQ-VAL-011"
+      ],
+      "failure_modes": [
+        "restricted_data_unredacted",
+        "non_advice_boundary_missing"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "source_lineage_or_policy_gate_missing",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental",
+          "evidence_required": "source/PIT/rights/validation proof"
+        }
+      ],
+      "rejection_conditions": [
+        "requires_personalized_advice_output",
+        "requires_unlawful_data"
+      ],
+      "family_specific": {
+        "view_family": "equity_output",
+        "required_sections": [
+          "header",
+          "valuation_methods",
+          "assumptions",
+          "sensitivity_table",
+          "scenario_range",
+          "evidence_refs",
+          "pit_summary",
+          "rights_summary",
+          "validation_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "open_questions",
+          "locked_connector_summary"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "source_refs_required": true,
+          "raw_restricted_text_export": "blocked"
+        },
+        "audit_render": {
+          "proof_checksum_required": true,
+          "validation_record_refs_required": true
+        },
+        "lifecycle": {
+          "status": "registry-seedable"
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "compatible_strategy_profiles": [
+          "quality_value_long_only",
+          "growth_at_reasonable_price",
+          "cheap_compounder",
+          "valuation_trap_detector"
+        ],
+        "redaction_policy": {
+          "marketplace_draft": "redact_restricted_unclear_and_user_private",
+          "output_only": "no_raw_restricted_provider_data"
+        }
+      }
+    },
+    {
+      "id": "factor_exposure_report",
+      "display_name": "Factor Exposure Report",
+      "description": "Factor and risk exposure view for portfolio and security-level monitoring with PIT vintage warnings and source-rights redaction state.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "output_view",
+      "source_sections": [
+        "S19",
+        "S18"
+      ],
+      "source_ids": [
+        "B-008",
+        "P-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "output",
+      "extends_core_primitive": "output_radar",
+      "compatible_entity_types": [],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar",
+        "factor_neutral_quantamental_selector",
+        "macro_regime_equity_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "validation_fixture",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "pit_timestamps",
+        "rights_state",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "output_validation_summary_required",
+        "output_pit_summary_required",
+        "output_rights_summary_required",
+        "evidence_non_advice_boundary",
+        "EQ-VAL-011"
+      ],
+      "failure_modes": [
+        "restricted_data_unredacted",
+        "non_advice_boundary_missing"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "source_lineage_or_policy_gate_missing",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental",
+          "evidence_required": "source/PIT/rights/validation proof"
+        }
+      ],
+      "rejection_conditions": [
+        "requires_personalized_advice_output",
+        "requires_unlawful_data"
+      ],
+      "family_specific": {
+        "view_family": "equity_output",
+        "required_sections": [
+          "header",
+          "factor_exposures",
+          "risk_contributions",
+          "liquidity_capacity",
+          "pit_summary",
+          "rights_summary",
+          "validation_summary",
+          "non_advice_boundary"
+        ],
+        "optional_sections": [
+          "open_questions",
+          "locked_connector_summary"
+        ],
+        "binding": {
+          "strategy_profile_required": true,
+          "strategy_family_required": true,
+          "pit_summary_required": true,
+          "rights_summary_required": true,
+          "validation_summary_required": true,
+          "non_advice_boundary_required": true
+        },
+        "evidence_render": {
+          "source_refs_required": true,
+          "raw_restricted_text_export": "blocked"
+        },
+        "audit_render": {
+          "proof_checksum_required": true,
+          "validation_record_refs_required": true
+        },
+        "lifecycle": {
+          "status": "registry-seedable"
+        },
+        "data_rights": {
+          "display_policy": "allowed",
+          "export_policy": "conditional",
+          "marketplace_policy": "redacted"
+        },
+        "compatible_strategy_profiles": [
+          "portfolio_risk_radar",
+          "factor_neutral_quantamental_selector",
+          "macro_regime_equity_selector"
+        ],
+        "redaction_policy": {
+          "marketplace_draft": "redact_restricted_unclear_and_user_private",
+          "output_only": "no_raw_restricted_provider_data"
+        }
+      }
+    }
+  ]
+}

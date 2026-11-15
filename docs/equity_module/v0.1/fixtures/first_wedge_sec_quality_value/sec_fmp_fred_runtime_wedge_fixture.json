@@ -1,0 +1,49 @@
+{
+  "fixture_id": "sec_fmp_fred_runtime_wedge_mock_v0_1",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "profile_id": "quality_value_long_only",
+  "runtime_path": [
+    "SEC public submissions",
+    "SEC companyfacts / XBRL facts",
+    "SEC-derived fundamental attributes",
+    "optional FMP market snapshot",
+    "optional FRED macro context",
+    "quality_value_long_only compatibility",
+    "equity_radar preview",
+    "validation_report",
+    "source_rights_report",
+    "package_redaction_preview"
+  ],
+  "mock_target": {
+    "cik": "0000320193",
+    "ticker_alias": "AAPL",
+    "primary_key_policy": "CIK-backed internal VIZA IDs; ticker is alias only"
+  },
+  "expected_connector_labels": {
+    "sec_public": {
+      "license_policy": "public_official",
+      "PIT_safe": true,
+      "export_policy": "metadata_and_derived_allowed"
+    },
+    "fmp": {
+      "license_policy": "dev_only_unconfirmed",
+      "export_policy": "blocked",
+      "marketplace_policy": "redacted",
+      "production_scoring_eligible": false
+    },
+    "fred": {
+      "license_policy": "public_official",
+      "PIT_safe": false,
+      "pit_status": "latest_only_or_ingestion_timestamped"
+    }
+  },
+  "expected_package_modes": {
+    "white_box": "warn",
+    "output_only": "warn",
+    "marketplace_draft": "block"
+  },
+  "non_advice_boundary_required": true,
+  "secrets_serialized": false,
+  "live_external_calls_required": false
+}

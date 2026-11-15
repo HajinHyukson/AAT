@@ -1,0 +1,145 @@
+{
+  "schema": "viza.strategy_profile_templates.v1",
+  "template_version": "0.1.0",
+  "templates": [
+    {
+      "strategy_profile_id": "template-rsi-swing-catalyst-confirmation",
+      "display_name": "RSI Swing + Catalyst Confirmation",
+      "domain": "finance.securities",
+      "module_id": "viza.finance.securities",
+      "entity_types": ["security", "company"],
+      "universe_constraints": {
+        "country": "US",
+        "asset_class": "US_EQ",
+        "liquidity": "avoid_low_liquidity"
+      },
+      "holding_period": {"min": "2d", "max": "3w"},
+      "preferred_indicators": [
+        "rsi_14d",
+        "volume_spike",
+        "moving_average_reclaim",
+        "momentum"
+      ],
+      "catalyst_types": [
+        "acquisition_rumor",
+        "earnings_surprise",
+        "analyst_upgrade",
+        "insider_purchase"
+      ],
+      "required_confirmations": ["source_credibility", "volume_confirmation"],
+      "risk_limits": {
+        "avoid_low_liquidity": true,
+        "avoid_extreme_volatility": true,
+        "max_realized_volatility": 0.85
+      },
+      "output_preferences": {
+        "primary": "radar",
+        "secondary": ["insight_cards", "invalidation_conditions"]
+      },
+      "action_thresholds": {
+        "review": 0.45,
+        "watchlist": 0.6,
+        "high_conviction": 0.78
+      },
+      "evidence_requirements": {
+        "require_evidence_refs": true,
+        "require_point_in_time_safe": true,
+        "minimum_source_credibility": 0.5
+      },
+      "decision_rules": [
+        {
+          "schema": "viza.decision_rule.v1",
+          "rule_id": "rsi-deep-oversold-v1",
+          "label": "Deep oversold reading (RSI 14d ≤ 30)",
+          "enabled": true,
+          "trigger": {
+            "observation_predicates": [
+              {
+                "attribute_key": "rsi_14d",
+                "operator": "lte",
+                "threshold": 30.0
+              }
+            ]
+          },
+          "action_template": "Flag for analyst review: RSI 14-day reading is at or below 30, indicating a deep-oversold technical posture relative to the strategy's preferred indicators.",
+          "cooldown_policy": {},
+          "evidence_requirements": ["rsi_14d_observation"]
+        }
+      ]
+    },
+    {
+      "strategy_profile_id": "template-real-estate-acquisition-cap-rate-band",
+      "display_name": "Real Estate Acquisition — Cap Rate Band",
+      "domain": "real_estate.acquisition",
+      "module_id": "viza.real_estate_acquisition",
+      "entity_types": ["property", "deal"],
+      "universe_constraints": {
+        "country": "US",
+        "asset_class": "commercial_real_estate",
+        "deal_stage": "pre_loi"
+      },
+      "holding_period": {"min": "3y", "max": "10y"},
+      "preferred_indicators": [
+        "cap_rate_bps",
+        "vacancy_rate",
+        "noi_growth_yoy",
+        "rent_roll_concentration"
+      ],
+      "catalyst_types": [
+        "off_market_listing",
+        "owner_distress_signal",
+        "submarket_rent_inflection"
+      ],
+      "required_confirmations": ["rent_roll_received", "market_comps_collected"],
+      "risk_limits": {
+        "max_single_asset_loi_pct": 0.25,
+        "min_in_place_dscr": 1.25
+      },
+      "output_preferences": {
+        "primary": "decisions",
+        "secondary": ["underwriting_card", "comparable_set"]
+      },
+      "action_thresholds": {
+        "review": 0.5,
+        "deep_underwrite": 0.7,
+        "loi_candidate": 0.85
+      },
+      "evidence_requirements": {
+        "require_evidence_refs": true,
+        "require_point_in_time_safe": true,
+        "minimum_source_credibility": 0.5
+      },
+      "decision_rules": [
+        {
+          "schema": "viza.decision_rule.v1",
+          "rule_id": "cap-rate-low-vacancy-band-v1",
+          "label": "Cap rate at or above band with low vacancy",
+          "enabled": true,
+          "trigger": {
+            "observation_predicates": [
+              {
+                "attribute_key": "cap_rate_bps",
+                "operator": "gte",
+                "threshold": 700.0
+              },
+              {
+                "attribute_key": "vacancy_rate",
+                "operator": "lte",
+                "threshold": 0.08
+              }
+            ]
+          },
+          "action_template": "Flag for analyst review: cap rate is at or above the strategy's preferred band while vacancy remains within its tolerance — supports the strategy's preferred underwriting envelope.",
+          "cooldown_policy": {
+            "max_fires_per_entity_per_window": 1,
+            "window_seconds": 2592000
+          },
+          "evidence_requirements": [
+            "cap_rate_bps_observation",
+            "vacancy_rate_observation"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1886 @@
+{
+  "$schema": "../equity_registry_shared_metadata.schema.json",
+  "registry_name": "equity_connector_requirements",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "registry_version": "v1",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+  "notes": "Connector requirement records (object_family=connector_requirement). PROJECT_STATUS.md notes: FRED current ingest is latest-only / not vintaged; FMP market data is dev-only unless FMP_PRODUCTION_LICENSE_CONFIRMED=true. Licensed connectors ship as production_pending_license with documented fallback behaviour. Borrow / short / fraud paths carry human_review_required=true.",
+  "records": [
+    {
+      "id": "official_public_connector",
+      "display_name": "Official Public Connector (umbrella)",
+      "description": "Official Public Connector (umbrella)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§18.4",
+        "§18.5"
+      ],
+      "source_ids": [
+        "DA-001",
+        "DA-040"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "official_public_connector"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "viza.internal",
+        "credential_ref": "vault:credentials/official_public_connector",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "public_official"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "public_official_aggregate",
+          "identifier_mapping",
+          "factor_data"
+        ],
+        "required_for_nodes": [
+          "edgar_filings_intake",
+          "fundamentals_as_reported_connector",
+          "xbrl_facts_intake"
+        ],
+        "required_for_profiles": [
+          "quality_value_long_only",
+          "cheap_compounder",
+          "growth_at_reasonable_price"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "block_with_warning",
+        "production_status": "production_ready",
+        "connector_role_id": "official_public_connector"
+      }
+    },
+    {
+      "id": "sec_filings",
+      "display_name": "SEC EDGAR Filings",
+      "description": "SEC EDGAR Filings",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§18.4",
+        "§18.5"
+      ],
+      "source_ids": [
+        "DA-001",
+        "DA-034"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "earnings_revision_momentum",
+        "merger_arbitrage_watchlist",
+        "activism_vulnerability_radar",
+        "short_red_flag_monitor",
+        "cheap_compounder",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "SEC EDGAR",
+        "credential_ref": "vault:credentials/sec_filings",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "public_official"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "sec_filings",
+          "form_4",
+          "13f",
+          "13d",
+          "13g",
+          "def_14a",
+          "8k",
+          "10k",
+          "10q",
+          "edgar_filings_intake",
+          "insider_transactions",
+          "ownership_filings"
+        ],
+        "required_for_nodes": [
+          "edgar_filings_intake",
+          "fundamentals_as_reported_connector",
+          "insider_transaction_analyzer",
+          "ownership_intake"
+        ],
+        "required_for_profiles": [
+          "quality_value_long_only",
+          "earnings_revision_momentum",
+          "merger_arbitrage_watchlist",
+          "activism_vulnerability_radar",
+          "short_red_flag_monitor",
+          "cheap_compounder",
+          "growth_at_reasonable_price"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": false,
+        "fallback_behavior": "block_with_warning",
+        "production_status": "production_ready",
+        "connector_role_id": "sec_filings"
+      }
+    },
+    {
+      "id": "xbrl_facts",
+      "display_name": "EDGAR XBRL Facts",
+      "description": "EDGAR XBRL Facts",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§18.4"
+      ],
+      "source_ids": [
+        "DA-002"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "xbrl_facts"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "SEC EDGAR XBRL",
+        "credential_ref": "vault:credentials/xbrl_facts",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "public_official"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "xbrl_facts"
+        ],
+        "required_for_nodes": [
+          "xbrl_facts_intake",
+          "fundamental_snapshot"
+        ],
+        "required_for_profiles": [
+          "quality_value_long_only",
+          "cheap_compounder",
+          "growth_at_reasonable_price"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "fall_back_to_as_reported_text",
+        "production_status": "production_ready",
+        "connector_role_id": "xbrl_facts"
+      }
+    },
+    {
+      "id": "fred_macro",
+      "display_name": "FRED Macro (current snapshot)",
+      "description": "FRED current-snapshot connector. PROJECT_STATUS.md notes ingestion is timestamped at load, not vintaged. Use only for display / latest-only signals until ALFRED pipeline ships.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§16.10",
+        "§18.8"
+      ],
+      "source_ids": [
+        "MA-001"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "macro_regime_equity_selector",
+        "dividend_sustainability_radar",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "fred_macro"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "FRED (FRBSL)",
+        "credential_ref": "vault:credentials/fred_macro",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "public_official"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "macro_official_latest_only",
+          "macro_official"
+        ],
+        "required_for_nodes": [
+          "macro_snapshot_loader"
+        ],
+        "required_for_profiles": [
+          "macro_regime_equity_selector",
+          "dividend_sustainability_radar",
+          "portfolio_risk_radar"
+        ],
+        "pit_support_required": false,
+        "fallback_allowed": true,
+        "fallback_behavior": "latest_only_with_pit_warning",
+        "production_status": "production_pending_pit_pipeline",
+        "connector_role_id": "fred_macro"
+      }
+    },
+    {
+      "id": "alfred_macro_vintage",
+      "display_name": "ALFRED Macro Vintaged",
+      "description": "ALFRED vintaged macro connector. Required for PIT-safe macro backtests. Not yet implemented in AAT; treat as production_pending_pit_pipeline until shipped.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§16.10",
+        "§18.8"
+      ],
+      "source_ids": [
+        "MA-001",
+        "DA-003"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "macro_regime_equity_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "alfred_macro_vintage"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "ALFRED (FRBSL)",
+        "credential_ref": "vault:credentials/alfred_macro_vintage",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "public_official"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "macro_official_vintaged"
+        ],
+        "required_for_nodes": [
+          "macro_snapshot_loader"
+        ],
+        "required_for_profiles": [
+          "macro_regime_equity_selector"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": false,
+        "fallback_behavior": "block_with_warning",
+        "production_status": "production_pending_pit_pipeline",
+        "connector_role_id": "alfred_macro_vintage"
+      }
+    },
+    {
+      "id": "finra_short_interest",
+      "display_name": "FINRA Short Interest",
+      "description": "FINRA Short Interest",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§12.12",
+        "§14.9"
+      ],
+      "source_ids": [
+        "TE-030"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "short_red_flag_monitor",
+        "merger_arbitrage_watchlist",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "finra_short_interest"
+        ],
+        "license_policy": "public_official",
+        "query_policy": "allowed",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "attribution_required": false,
+        "retention_policy": "indefinite",
+        "redaction_required": false
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "FINRA",
+        "credential_ref": "vault:credentials/finra_short_interest",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "public_official"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "short_interest_finra",
+          "short_interest"
+        ],
+        "required_for_nodes": [
+          "short_interest_node",
+          "short_interest_calculator",
+          "days_to_cover_node"
+        ],
+        "required_for_profiles": [
+          "short_red_flag_monitor",
+          "merger_arbitrage_watchlist",
+          "portfolio_risk_radar"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": false,
+        "fallback_behavior": "block_with_warning",
+        "production_status": "production_ready",
+        "connector_role_id": "finra_short_interest"
+      }
+    },
+    {
+      "id": "licensed_market_data_connector",
+      "display_name": "Licensed Market Data (prices, real-time)",
+      "description": "Production market data. FMP is dev-only unless FMP_PRODUCTION_LICENSE_CONFIRMED=true. Real-time NYSE/Nasdaq feeds require exchange license.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§18.4",
+        "§12.12"
+      ],
+      "source_ids": [
+        "DA-007",
+        "DA-032"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "rsi_swing_catalyst_confirmation",
+        "post_earnings_drift_radar",
+        "earnings_revision_momentum",
+        "factor_neutral_quantamental_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_market_data_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "FMP / Polygon / NYSE / Nasdaq",
+        "credential_ref": "vault:credentials/licensed_market_data_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "prices_ohlcv_eod",
+          "prices_ohlcv_realtime",
+          "corporate_actions",
+          "prices_ohlcv",
+          "security_master"
+        ],
+        "required_for_nodes": [
+          "prices_ohlcv_connector_node",
+          "moving_average_node",
+          "rsi_node",
+          "abnormal_volume_node",
+          "breakout_breakdown_node"
+        ],
+        "required_for_profiles": [
+          "rsi_swing_catalyst_confirmation",
+          "post_earnings_drift_radar",
+          "earnings_revision_momentum",
+          "factor_neutral_quantamental_selector"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "fall_back_to_delayed_eod_public_when_available",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_market_data_connector"
+      }
+    },
+    {
+      "id": "licensed_fundamentals_connector",
+      "display_name": "Licensed Fundamentals (standardized)",
+      "description": "Licensed Fundamentals (standardized)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§6.10",
+        "§18.5"
+      ],
+      "source_ids": [
+        "DA-012",
+        "DA-013"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "growth_at_reasonable_price",
+        "cheap_compounder",
+        "dividend_sustainability_radar",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_fundamentals_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "Compustat / S&P CIQ / Refinitiv",
+        "credential_ref": "vault:credentials/licensed_fundamentals_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "fundamentals_standardized",
+          "fundamentals_as_reported"
+        ],
+        "required_for_nodes": [
+          "fundamentals_standardized_connector",
+          "fundamental_snapshot"
+        ],
+        "required_for_profiles": [
+          "quality_value_long_only",
+          "growth_at_reasonable_price",
+          "cheap_compounder",
+          "dividend_sustainability_radar",
+          "short_red_flag_monitor"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "fall_back_to_as_reported_xbrl",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_fundamentals_connector"
+      }
+    },
+    {
+      "id": "licensed_estimates_connector",
+      "display_name": "Licensed Estimates (I/B/E/S)",
+      "description": "Licensed Estimates (I/B/E/S)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§18.5",
+        "§13.4"
+      ],
+      "source_ids": [
+        "DA-011",
+        "EV-032"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum",
+        "post_earnings_drift_radar",
+        "growth_at_reasonable_price"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_estimates_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "I/B/E/S / FactSet / Bloomberg",
+        "credential_ref": "vault:credentials/licensed_estimates_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "analyst_estimates",
+          "consensus_snapshot",
+          "rating_change",
+          "analyst_ratings"
+        ],
+        "required_for_nodes": [
+          "revisions_aggregator",
+          "earnings_surprise_calculator",
+          "analyst_coverage_node"
+        ],
+        "required_for_profiles": [
+          "earnings_revision_momentum",
+          "post_earnings_drift_radar",
+          "growth_at_reasonable_price"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": false,
+        "fallback_behavior": "open_locked_preserve_config",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_estimates_connector"
+      }
+    },
+    {
+      "id": "licensed_text_connector",
+      "display_name": "Licensed Text (news / transcripts)",
+      "description": "Licensed Text (news / transcripts)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§13.4",
+        "§15"
+      ],
+      "source_ids": [
+        "DA-018",
+        "EV-031",
+        "EV-046"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum",
+        "event_risk_monitor",
+        "merger_arbitrage_watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_text_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "RavenPack / Reuters / Bloomberg / Refinitiv StreetEvents",
+        "credential_ref": "vault:credentials/licensed_text_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "news_provider",
+          "transcripts",
+          "news_events",
+          "attention_data",
+          "fund_flows",
+          "social_data"
+        ],
+        "required_for_nodes": [
+          "news_sentiment_intake",
+          "transcripts_connector",
+          "news_events_connector"
+        ],
+        "required_for_profiles": [
+          "earnings_revision_momentum",
+          "event_risk_monitor",
+          "merger_arbitrage_watchlist"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "fall_back_to_lm_dictionary_on_edgar",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_text_connector"
+      }
+    },
+    {
+      "id": "licensed_options_connector",
+      "display_name": "Licensed Options (OPRA)",
+      "description": "Licensed Options (OPRA)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§12.4",
+        "§14.10"
+      ],
+      "source_ids": [
+        "DA-005",
+        "DA-006"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "event_risk_monitor",
+        "merger_arbitrage_watchlist",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_options_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "OPRA / CBOE",
+        "credential_ref": "vault:credentials/licensed_options_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "options_opra",
+          "options"
+        ],
+        "required_for_nodes": [
+          "implied_volatility_node",
+          "put_call_ratio_node",
+          "volatility_spread_node",
+          "options_positioning_node"
+        ],
+        "required_for_profiles": [
+          "event_risk_monitor",
+          "merger_arbitrage_watchlist",
+          "short_red_flag_monitor"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": false,
+        "fallback_behavior": "open_locked_preserve_config",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_options_connector"
+      }
+    },
+    {
+      "id": "licensed_borrow_connector",
+      "display_name": "Licensed Borrow (S3 / Markit / IB)",
+      "description": "Licensed Borrow (S3 / Markit / IB)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§12.12",
+        "§14.10",
+        "§17.6"
+      ],
+      "source_ids": [
+        "DA-025",
+        "DA-026"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "short_red_flag_monitor",
+        "merger_arbitrage_watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_borrow_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "S3 Partners / Markit Securities Finance / IB",
+        "credential_ref": "vault:credentials/licensed_borrow_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "borrow_availability_cost"
+        ],
+        "required_for_nodes": [
+          "borrow_status_node",
+          "borrow_status_node_link",
+          "borrow_status_node_short_link"
+        ],
+        "required_for_profiles": [
+          "short_red_flag_monitor",
+          "merger_arbitrage_watchlist"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "block_short_action_with_warning",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_borrow_connector"
+      }
+    },
+    {
+      "id": "licensed_index_membership_connector",
+      "display_name": "Licensed Index Membership (S&P / MSCI / FTSE / Russell)",
+      "description": "Licensed Index Membership (S&P / MSCI / FTSE / Russell)",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§13.4",
+        "§14"
+      ],
+      "source_ids": [
+        "DA-027",
+        "DA-028",
+        "OW-028"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "special_situations_monitor",
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "licensed_index_membership_connector"
+        ],
+        "license_policy": "licensed_provider_required",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "conditional",
+        "export_policy": "conditional",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "S&P / MSCI / FTSE Russell",
+        "credential_ref": "vault:credentials/licensed_index_membership_connector",
+        "entitlement_metadata": {
+          "license_status": "pending",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "licensed_provider_required"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": true,
+        "data_types": [
+          "index_membership"
+        ],
+        "required_for_nodes": [
+          "index_membership_tracker",
+          "index_calendar_tracker"
+        ],
+        "required_for_profiles": [
+          "special_situations_monitor",
+          "portfolio_risk_radar"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "block_index_event_signals_with_warning",
+        "production_status": "production_pending_license",
+        "connector_role_id": "licensed_index_membership_connector"
+      }
+    },
+    {
+      "id": "user_document_connector",
+      "display_name": "User Document Upload",
+      "description": "User Document Upload",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§5",
+        "§20.3"
+      ],
+      "source_ids": [
+        "ANL-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "growth_at_reasonable_price",
+        "short_red_flag_monitor"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "user_document_connector"
+        ],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "viza.user_upload",
+        "credential_ref": "vault:credentials/user_document_connector",
+        "entitlement_metadata": {
+          "license_status": "user_entitled",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "internal_research_only"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "user_memo",
+          "user_research_memo",
+          "user_upload_pdf"
+        ],
+        "required_for_nodes": [
+          "thesis_writer",
+          "investment_memo_renderer",
+          "research_intake"
+        ],
+        "required_for_profiles": [
+          "quality_value_long_only",
+          "cheap_compounder",
+          "growth_at_reasonable_price",
+          "short_red_flag_monitor"
+        ],
+        "pit_support_required": false,
+        "fallback_allowed": true,
+        "fallback_behavior": "latest_only_user_state",
+        "production_status": "production_ready",
+        "connector_role_id": "user_document_connector"
+      }
+    },
+    {
+      "id": "user_portfolio_connector",
+      "display_name": "User Portfolio Upload",
+      "description": "User Portfolio Upload",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§11.3",
+        "§20.3"
+      ],
+      "source_ids": [
+        "PC-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "user_portfolio_connector"
+        ],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "viza.user_upload",
+        "credential_ref": "vault:credentials/user_portfolio_connector",
+        "entitlement_metadata": {
+          "license_status": "user_entitled",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "internal_research_only"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "user_portfolio_data"
+        ],
+        "required_for_nodes": [
+          "portfolio_context_loader",
+          "sizing_engine",
+          "tracking_error_calculator",
+          "risk_contribution_calculator"
+        ],
+        "required_for_profiles": [
+          "portfolio_risk_radar"
+        ],
+        "pit_support_required": false,
+        "fallback_allowed": true,
+        "fallback_behavior": "latest_only_user_state",
+        "production_status": "production_ready",
+        "connector_role_id": "user_portfolio_connector"
+      }
+    },
+    {
+      "id": "derived_calculation_engine",
+      "display_name": "Derived Calculation Engine",
+      "description": "Derived Calculation Engine",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "connector_requirement",
+      "source_sections": [
+        "§18.3",
+        "§19"
+      ],
+      "source_ids": [
+        "DA-040"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "entity",
+      "extends_core_primitive": "attribute",
+      "compatible_entity_types": [
+        "connector"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only",
+        "cheap_compounder",
+        "factor_neutral_quantamental_selector"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "connector_configuration_record",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "connector_entitlement_record",
+        "rights_state"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [
+          "derived_calculation_engine"
+        ],
+        "license_policy": "derived_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "conditional",
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "derived_value_policy": "allowed",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "redacted",
+        "attribution_required": true,
+        "retention_policy": "until_license_expires",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "rights_production_connector_fail_closed",
+        "rights_rights_policy_required",
+        "data_retrieved_at_required"
+      ],
+      "failure_modes": [
+        "production_run_with_missing_license",
+        "provider_load_time_used_as_available_at",
+        "rights_drift_silently"
+      ],
+      "downgrade_conditions": [],
+      "rejection_conditions": [],
+      "family_specific": {
+        "provider": "viza.runtime",
+        "credential_ref": "vault:credentials/derived_calculation_engine",
+        "entitlement_metadata": {
+          "license_status": "public",
+          "license_expires": null,
+          "seats_or_quota": null,
+          "product_class": "derived_only"
+        },
+        "rate_limits": {},
+        "retry_policy": {
+          "max_retries": 3,
+          "backoff": "exponential"
+        },
+        "production_required": false,
+        "data_types": [
+          "derived_attributes",
+          "scores",
+          "transforms"
+        ],
+        "required_for_nodes": [
+          "dcf_model_node",
+          "relative_valuation_node",
+          "factor_score_calculator",
+          "factor_residual_calculator",
+          "amihud_illiquidity_node",
+          "spread_estimator"
+        ],
+        "required_for_profiles": [
+          "quality_value_long_only",
+          "cheap_compounder",
+          "factor_neutral_quantamental_selector"
+        ],
+        "pit_support_required": true,
+        "fallback_allowed": true,
+        "fallback_behavior": "block_when_inputs_missing",
+        "production_status": "production_ready",
+        "connector_role_id": "derived_calculation_engine"
+      }
+    }
+  ]
+}

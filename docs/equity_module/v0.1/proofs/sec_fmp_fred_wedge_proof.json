@@ -1,0 +1,109 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "feature_flags": {
+    "VIZA_EQUITY_RUNTIME_HANDLERS_ENABLED": "default_false; tested_true_with_mock_config",
+    "VIZA_EQUITY_SEC_WEDGE_ENABLED": "default_false; tested_true_with_mock_config",
+    "VIZA_EQUITY_FMP_ENABLED": "default_false; tested_true_with_mock_config",
+    "VIZA_EQUITY_FRED_ENABLED": "default_false; tested_true_with_mock_config"
+  },
+  "connectors": {
+    "sec_public": {
+      "api_key_required": false,
+      "user_agent_required": true,
+      "rate_limit_rps": 5,
+      "mock_tests": true,
+      "live_tests_opt_in_only": true
+    },
+    "fmp": {
+      "api_key_env_present": true,
+      "key_value_logged": false,
+      "production_license_confirmed": false,
+      "rights_status": "dev_only_unconfirmed",
+      "export_policy": "blocked",
+      "marketplace_policy": "redacted"
+    },
+    "fred": {
+      "api_key_env_present": true,
+      "key_value_logged": false,
+      "vintage_enabled": false,
+      "pit_status": "latest_only_or_ingestion_timestamped",
+      "PIT_safe_for_backtest": false
+    }
+  },
+  "profile_tested": "quality_value_long_only",
+  "outputs_tested": [
+    "equity_radar",
+    "validation_report",
+    "source_rights_report",
+    "package_redaction_preview"
+  ],
+  "package_modes_tested": [
+    "white_box",
+    "output_only",
+    "marketplace_draft"
+  ],
+  "validation_summary": {
+    "mocked_runtime_unit_tests": "12 passed standalone; 22 passed with equity loader/fixture tests",
+    "repo_python_unit_and_lookahead": "325 passed",
+    "desktop_and_dashboard_checks": "passed",
+    "profile_compatibility": "pass_warn_block_paths_tested",
+    "invalid_manifest": "fails_closed"
+  },
+  "rights_redaction_summary": {
+    "sec_public": "metadata_and_derived_allowed",
+    "fmp_unconfirmed_license": "export_blocked_marketplace_redacted",
+    "unknown_or_restricted": "blocked_or_redacted",
+    "marketplace_draft": "non_monetized_redaction_preview"
+  },
+  "pit_summary": {
+    "sec_public": "accepted_at_available_is_PIT_labeled",
+    "sec_missing_accepted_at": "warn_not_backtest_safe",
+    "fred_current": "latest_only_or_ingestion_timestamped_not_backtest_safe",
+    "fmp_market_snapshot": "provider_timestamp_or_retrieved_at_not_vintaged"
+  },
+  "tests_run": [
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge.py -q",
+      "result": "12 passed in 5.60s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge.py tests\\unit\\test_equity_module_loader.py tests\\unit\\test_equity_module_fixtures.py -q",
+      "result": "22 passed in 5.95s"
+    },
+    {
+      "command": "python -m pytest tests\\unit tests\\lookahead_audit",
+      "result": "325 passed in 136.14s"
+    },
+    {
+      "command": "node --test tests\\dashboard\\attribution-period-bars.test.mjs",
+      "result": "2 passed in 117.4326ms; Node emitted existing MODULE_TYPELESS_PACKAGE_JSON warning"
+    },
+    {
+      "command": "npm run typecheck (workdir apps\\viza-desktop)",
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:desktop (workdir apps\\viza-desktop)",
+      "result": "18 passed in 109.6645ms"
+    },
+    {
+      "command": "npx tsc --noEmit --project tsconfig.json (workdir dashboard)",
+      "result": "passed"
+    }
+  ],
+  "known_limitations": [
+    "Runtime wedge is not production-hardened.",
+    "Live SEC/FMP/FRED tests are opt-in only and were not added to default CI.",
+    "FMP data remains dev-only unless production license is confirmed.",
+    "FRED macro context is not true PIT for backtests without ALFRED-style cutoff enforcement.",
+    "No full DCF, trading, analyst-estimate, options, borrow, transcript, social/news, or commercial risk-model path is implemented."
+  ],
+  "next_backlog_items": [
+    "EQ-RUNTIME-001 Add optional live SEC smoke test guarded by VIZA_EQUITY_LIVE_INTEGRATION_TESTS.",
+    "EQ-RUNTIME-002 Add UI/API endpoint wiring for the runtime preview if product workflow needs it.",
+    "EQ-RUNTIME-003 Implement ALFRED-style macro vintage cutoff enforcement before any macro backtest promotion.",
+    "EQ-RUNTIME-004 Complete legal/source-rights review before FMP production or marketplace use.",
+    "EQ-RUNTIME-005 Extend fixture coverage to ticker alias resolution through a real security master."
+  ]
+}

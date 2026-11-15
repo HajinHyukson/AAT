@@ -1,0 +1,3202 @@
+[
+  {
+    "node_type_id": "equity.node.equity_decision",
+    "label": "Equity Decision",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.equity_thesis",
+    "label": "Equity Thesis",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.evidence_bundle",
+    "label": "Evidence Bundle",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.signal_transform",
+    "label": "Signal Transform",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.catalyst_map",
+    "label": "Catalyst Map",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.confirmation_tracker",
+    "label": "Confirmation Tracker",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.invalidation_gate",
+    "label": "Invalidation Gate",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.scenario_tree",
+    "label": "Scenario Tree",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.strategy_profile_adapter",
+    "label": "Strategy Profile Adapter",
+    "family": "decision_grammar",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.research_intake",
+    "label": "Research Intake",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.company_snapshot",
+    "label": "Company Snapshot",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.business_model_map",
+    "label": "Business Model Map",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.industry_context",
+    "label": "Industry Context",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.recommendation_bridge",
+    "label": "Recommendation Bridge",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.analyst_memo_builder",
+    "label": "Analyst Memo Builder",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.analyst_scorecard",
+    "label": "Analyst Scorecard",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.thesis_tracker",
+    "label": "Thesis Tracker",
+    "family": "analyst_workflow",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.financial_statement_loader",
+    "label": "Financial Statement Loader",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.revenue_bridge",
+    "label": "Revenue Bridge",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.margin_bridge",
+    "label": "Margin Bridge",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.ROIC_calculator",
+    "label": "Roic Calculator",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.FCF_conversion",
+    "label": "Fcf Conversion",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.balance_sheet_strength",
+    "label": "Balance Sheet Strength",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.accrual_quality",
+    "label": "Accrual Quality",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.Piotroski_F_score",
+    "label": "Piotroski F Score",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.distress_risk",
+    "label": "Distress Risk",
+    "family": "fundamental_analysis",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.dcf_model",
+    "label": "Dcf Model",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.relative_valuation",
+    "label": "Relative Valuation",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.residual_income_model",
+    "label": "Residual Income Model",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.dividend_discount_model",
+    "label": "Dividend Discount Model",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.SOTP_model",
+    "label": "Sotp Model",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.NAV_model",
+    "label": "Nav Model",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.scenario_valuation",
+    "label": "Scenario Valuation",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.reverse_dcf",
+    "label": "Reverse Dcf",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.margin_of_safety_gate",
+    "label": "Margin Of Safety Gate",
+    "family": "valuation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_VALUATION_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.peer_group_builder",
+    "label": "Peer Group Builder",
+    "family": "industry_competitive",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.moat_assessment",
+    "label": "Moat Assessment",
+    "family": "industry_competitive",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.value_chain_map",
+    "label": "Value Chain Map",
+    "family": "industry_competitive",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.industry_regime",
+    "label": "Industry Regime",
+    "family": "industry_competitive",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.governance_scorecard",
+    "label": "Governance Scorecard",
+    "family": "governance_capital_allocation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.capital_allocation_history",
+    "label": "Capital Allocation History",
+    "family": "governance_capital_allocation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.insider_activity_monitor",
+    "label": "Insider Activity Monitor",
+    "family": "governance_capital_allocation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.activist_vulnerability",
+    "label": "Activist Vulnerability",
+    "family": "governance_capital_allocation",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.factor_model",
+    "label": "Factor Model",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.factor_exposure",
+    "label": "Factor Exposure",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.factor_ranker",
+    "label": "Factor Ranker",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.momentum_signal",
+    "label": "Momentum Signal",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.quality_signal",
+    "label": "Quality Signal",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.value_signal",
+    "label": "Value Signal",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.multiple_testing_gate",
+    "label": "Multiple Testing Gate",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.factor_decay_monitor",
+    "label": "Factor Decay Monitor",
+    "family": "factor_anomaly",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_STATS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.mandate_context",
+    "label": "Mandate Context",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.position_sizing",
+    "label": "Position Sizing",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.risk_decomposition",
+    "label": "Risk Decomposition",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.correlation_map",
+    "label": "Correlation Map",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.liquidity_capacity_gate",
+    "label": "Liquidity Capacity Gate",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.rebalance_planner",
+    "label": "Rebalance Planner",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.hedge_planner",
+    "label": "Hedge Planner",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.portfolio_impact",
+    "label": "Portfolio Impact",
+    "family": "portfolio_construction",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_PORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.trend_state",
+    "label": "Trend State",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.volatility_regime",
+    "label": "Volatility Regime",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.technical_signal",
+    "label": "Technical Signal",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.liquidity_gate",
+    "label": "Liquidity Gate",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.execution_plan",
+    "label": "Execution Plan",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.market_impact_estimator",
+    "label": "Market Impact Estimator",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.slippage_review",
+    "label": "Slippage Review",
+    "family": "technical_execution",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EXEC_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.event_detector",
+    "label": "Event Detector",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.event_materiality",
+    "label": "Event Materiality",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.earnings_event",
+    "label": "Earnings Event",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.guidance_event",
+    "label": "Guidance Event",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.MA_deal_monitor",
+    "label": "Ma Deal Monitor",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.spin_restructuring",
+    "label": "Spin Restructuring",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.event_study_validator",
+    "label": "Event Study Validator",
+    "family": "event_driven",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVENT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.13F_monitor",
+    "label": "13F Monitor",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.13D_13G_monitor",
+    "label": "13D 13G Monitor",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.short_interest_monitor",
+    "label": "Short Interest Monitor",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.borrow_squeeze_gate",
+    "label": "Borrow Squeeze Gate",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.options_positioning",
+    "label": "Options Positioning",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.index_ETF_flow",
+    "label": "Index Etf Flow",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.crowding_monitor",
+    "label": "Crowding Monitor",
+    "family": "ownership_flows",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.sentiment_signal",
+    "label": "Sentiment Signal",
+    "family": "behavioral_sentiment",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_TEXT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.attention_signal",
+    "label": "Attention Signal",
+    "family": "behavioral_sentiment",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_TEXT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.narrative_map",
+    "label": "Narrative Map",
+    "family": "behavioral_sentiment",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_TEXT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.rumor_quarantine",
+    "label": "Rumor Quarantine",
+    "family": "behavioral_sentiment",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_TEXT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.macro_regime_classifier",
+    "label": "Macro Regime Classifier",
+    "family": "macro_regime",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.rate_sensitivity",
+    "label": "Rate Sensitivity",
+    "family": "macro_regime",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.inflation_exposure",
+    "label": "Inflation Exposure",
+    "family": "macro_regime",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.FX_exposure",
+    "label": "Fx Exposure",
+    "family": "macro_regime",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.commodity_exposure",
+    "label": "Commodity Exposure",
+    "family": "macro_regime",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.credit_conditions",
+    "label": "Credit Conditions",
+    "family": "macro_regime",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.negative_thesis",
+    "label": "Negative Thesis",
+    "family": "short_negative",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_SHORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.accounting_red_flag",
+    "label": "Accounting Red Flag",
+    "family": "short_negative",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_SHORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.deterioration_monitor",
+    "label": "Deterioration Monitor",
+    "family": "short_negative",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_SHORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.short_invalidation_gate",
+    "label": "Short Invalidation Gate",
+    "family": "short_negative",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_SHORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.legal_language_review",
+    "label": "Legal Language Review",
+    "family": "short_negative",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_SHORT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.PIT_audit",
+    "label": "Pit Audit",
+    "family": "data_rights_pit",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.rights_audit",
+    "label": "Rights Audit",
+    "family": "data_rights_pit",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.validation_gate",
+    "label": "Validation Gate",
+    "family": "data_rights_pit",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.source_rights_report",
+    "label": "Source Rights Report",
+    "family": "data_rights_pit",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  },
+  {
+    "node_type_id": "equity.node.package_visibility_gate",
+    "label": "Package Visibility Gate",
+    "family": "data_rights_pit",
+    "module": "viza.finance.equity_investment",
+    "inputs": [
+      "source_record",
+      "observations",
+      "profile_context"
+    ],
+    "outputs": [
+      "attributes",
+      "events",
+      "insights",
+      "validation_records"
+    ],
+    "required_evidence": [
+      "source_refs"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001",
+      "EQ_VAL_EVIDENCE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate",
+    "source_ids": [
+      "EQ_SRC_O0001",
+      "EQ_SRC_P0001"
+    ]
+  }
+]

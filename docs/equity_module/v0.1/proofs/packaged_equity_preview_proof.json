@@ -1,0 +1,163 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "step": "packaged_windows_desktop_equity_preview",
+  "prior_step_proof_checksum": "AA0C11336F9D9026922E34BBAD511A083F53E7F471DF0198C09E5E6712D744D3",
+  "applicable_to_packaged_prototype": true,
+  "feature_flags": {
+    "VIZA_EQUITY_RUNTIME_HANDLERS_ENABLED": "false",
+    "VIZA_EQUITY_SEC_WEDGE_ENABLED": "false",
+    "VIZA_EQUITY_FMP_ENABLED": "false",
+    "VIZA_EQUITY_FRED_ENABLED": "false",
+    "VIZA_EQUITY_LIVE_INTEGRATION_TESTS": "false"
+  },
+  "packaged_paths": {
+    "sidecar_engine": "apps/viza-desktop/release/win-unpacked/resources/engine/viza-engine.exe",
+    "packaged_config": "apps/viza-desktop/release/win-unpacked/resources/engine/config",
+    "desktop_bridge": "apps/viza-desktop/src/vizaEngineClient.ts",
+    "ui_surface": "apps/viza-desktop/src/App.tsx",
+    "equity_runtime_resource": "apps/viza-desktop/release/win-unpacked/resources/engine/viza/equity/runtime.py",
+    "equity_preview_resource": "apps/viza-desktop/release/win-unpacked/resources/engine/viza/equity/preview.py",
+    "equity_docs_resource": "apps/viza-desktop/release/win-unpacked/resources/engine/docs/equity_module/v0.1"
+  },
+  "api_endpoints_added_or_verified": [
+    "GET /viza/equity/runtime-wedge/status",
+    "POST /viza/equity/runtime-wedge/preview"
+  ],
+  "ui_components_added_or_verified": [
+    "EquityRuntimePreviewPanel in apps/viza-desktop/src/App.tsx",
+    "Equity preview bridge functions in apps/viza-desktop/src/vizaEngineClient.ts",
+    "Equity preview response/request types in apps/viza-desktop/src/vizaGraph.ts"
+  ],
+  "preview_contract": {
+    "profile": "quality_value_long_only",
+    "package_modes": [
+      "white_box",
+      "output_only",
+      "marketplace_draft"
+    ],
+    "mock_fixture_default": true,
+    "live_connectors_opt_in_only": true
+  },
+  "artifact_checksums": {
+    "apps/viza-desktop/release/VIZA-0.1.0-win-x64.exe": "EE3C56A1704DFF24D4331BD47AA82812ACC29A4AD1844C4A440F248A1A7DDBA0",
+    "apps/viza-desktop/release/win-unpacked/resources/engine/viza/equity/preview.py": "85710A891D5E9FC57EA23BDFEA897C7EBCD2F3861737B304648A9C98D1C3B720",
+    "apps/viza-desktop/release/win-unpacked/resources/engine/viza/equity/runtime.py": "B37B1A134BE758956E684B68783FD5368314F87DFA99D47A69EC2C145C0AA189",
+    "apps/viza-desktop/release/win-unpacked/resources/engine/docs/equity_module/v0.1/registries/viza.finance.equity_investment.manifest.json": "F040A31590783CDBE64163A8FEC25C885F2148BC620BAB01245AD3BFA4D1F179",
+    "apps/viza-desktop/release/win-unpacked/resources/engine/docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/sec_fmp_fred_runtime_wedge_fixture.json": "3BF8E7753DED21F4E8C9CCBF2652EC555BCD227F1AF3669AB83940814DA2830E",
+    "apps/viza-desktop/src/App.tsx": "E9E689456F1E8A48A3A7989A4EDC7E3FD7FB30637EC902E73BF038151DAC73FA",
+    "viza/service.py": "2F724A6F7254340376711A51A30F194D1E61A587E9314F7AAEE2D3AC0EC2205E",
+    "viza/equity/preview.py": "85710A891D5E9FC57EA23BDFEA897C7EBCD2F3861737B304648A9C98D1C3B720"
+  },
+  "pit_summary": {
+    "sec": "accepted_at/available_at/retrieved_at visible in mocked preview response",
+    "fmp": "provider timestamp or retrieval timestamp only; dev-only unless production license confirmed",
+    "fred": "latest_only_or_ingestion_timestamped and not true PIT-safe unless ALFRED-style vintage enforcement is enabled"
+  },
+  "rights_redaction_summary": {
+    "sec_public": "metadata and derived values allowed with attribution; bulk raw filing reproduction avoided",
+    "fmp": "dev_only_unconfirmed by default; export blocked and marketplace_draft redacted/blocked",
+    "fred": "public official metadata/derived allowed with PIT warning",
+    "unknown_or_restricted": "export blocked and marketplace_draft redacted"
+  },
+  "validation_summary": {
+    "feature_flag_off": "POST preview returns disabled/403",
+    "feature_flag_on": "mocked SEC-first preview returns pass/warn/block contract",
+    "profile": "quality_value_long_only compatibility visible",
+    "non_advice_boundary": "included in API response and UI panel",
+    "package_redaction": "white_box/output_only/marketplace_draft contract exercised by tests and packaged smoke"
+  },
+  "packaged_smoke_summary": {
+    "command": "npm run smoke:package",
+    "working_directory": "apps/viza-desktop",
+    "result": "passed",
+    "notes": [
+      "Packaged sidecar starts and /health passes.",
+      "Existing packaged smoke endpoints and runtime job pass.",
+      "Equity preview endpoint is disabled when flags are off.",
+      "Equity preview endpoint is reachable when runtime/sec flags are on.",
+      "Mocked preview response includes PIT, rights, validation, redaction, audit, and non-advice fields.",
+      "Sentinel FMP/FRED key values did not appear in preview payload or sidecar stderr."
+    ]
+  },
+  "api_key_safety": {
+    "raw_keys_logged": false,
+    "raw_keys_serialized": false,
+    "raw_keys_packaged": false,
+    "generated_files_scanned": true,
+    "actual_env_secret_scan": {
+      "secret_values_checked": 2,
+      "scanned_files": 200,
+      "secret_matches": 0
+    }
+  },
+  "tests_run": [
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge_api.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "8 passed in 3.79s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_packaged_preview.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "5 passed in 3.29s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge.py tests\\unit\\test_equity_runtime_wedge_api.py tests\\unit\\test_equity_packaged_preview.py tests\\unit\\test_equity_module_loader.py tests\\unit\\test_equity_module_fixtures.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "35 passed in 12.50s"
+    },
+    {
+      "command": "python -m pytest tests\\unit tests\\lookahead_audit",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "338 passed in 126.13s"
+    },
+    {
+      "command": "npm run typecheck",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:desktop",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "22 passed; duration_ms 111.7453"
+    },
+    {
+      "command": "npm run package:win",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "passed after stopping stale release/win-unpacked sidecar process that held viza-engine.exe open"
+    },
+    {
+      "command": "npm run smoke:package",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "VIZA Windows package contents smoke passed"
+    },
+    {
+      "command": "node --test tests\\dashboard\\attribution-period-bars.test.mjs",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "2 passed with existing MODULE_TYPELESS_PACKAGE_JSON warning"
+    },
+    {
+      "command": "npx tsc --noEmit --project tsconfig.json",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\dashboard",
+      "result": "passed"
+    }
+  ],
+  "known_limitations": [
+    "not production-hardened",
+    "mocked preview path is the default",
+    "live external API tests are opt-in only",
+    "FMP production rights require legal/source-rights review",
+    "FRED true PIT backtesting requires ALFRED-style cutoff enforcement",
+    "ticker alias resolution through a full security master remains future work",
+    "valuation/margin-of-safety output remains warned or blocked when market price is unavailable",
+    "no personalized investment advice",
+    "no order routing",
+    "no monetized marketplace"
+  ],
+  "next_backlog_items": [
+    "Persist packaged preview runs into the local project store / observation store.",
+    "Add replayable audit history for packaged equity preview runs.",
+    "Add a full DOM-level packaged UI smoke harness when the desktop test stack gains a browser renderer."
+  ]
+}

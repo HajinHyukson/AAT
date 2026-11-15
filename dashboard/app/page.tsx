@@ -1,24 +1,17 @@
 import { Activity, Database, RefreshCw } from "lucide-react";
 import type { ReactNode } from "react";
-import { AttributionChart } from "@/components/attribution-chart";
-import { DriverTable } from "@/components/driver-table";
-import { ExposureDecisions } from "@/components/exposure-decisions";
-import { RunHistory } from "@/components/run-history";
+import { AttributionDetailLoader } from "@/components/attribution-detail-loader";
 import { UniverseTable } from "@/components/universe-table";
 import {
   getAttributionRunById,
   getAttributionRuns,
   getAttributionChart,
+  getAttributionMethodologies,
   getExposureUpdateDecisions,
   getLatestAttribution,
   getUniverse,
 } from "@/lib/api";
-import type {
-  AttributionChartResponse,
-  AttributionRun,
-  ExposureUpdateDecision,
-  UniverseResponse,
-} from "@/lib/types";
+import type { AttributionMethodology, UniverseResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +29,7 @@ type SearchParams = {
   offset?: string;
   universe?: string;
   display?: string;
+  methodology?: string;
 };
 
 export default async function Home({
@@ -44,8 +38,12 @@ export default async function Home({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
+  let methodologies: AttributionMethodology[];
+  let selectedMethodology: string;
   let universe: UniverseResponse;
   try {
+    methodologies = await getAttributionMethodologies();
+    selectedMethodology = selectedMethodologyId(methodologies, params.methodology);
     universe = await getUniverse({
       search: params.search,
       sector: params.sector,
@@ -56,6 +54,7 @@ export default async function Home({
       order: params.order ?? "asc",
       limit: numberParam(params.limit, 50),
       offset: numberParam(params.offset, 0),
+      methodology: selectedMethodology,
     });
   } catch (error) {
     return (
@@ -66,18 +65,25 @@ export default async function Home({
     universe.rows.find((stock) => stock.run_status === "available") ?? universe.rows[0] ?? null;
   const selectedTicker = (params.ticker ?? defaultStock?.ticker ?? "").toUpperCase();
   const selectedUniverseStock = universe.rows.find((stock) => stock.ticker === selectedTicker);
+  const paramsWithMethodology = { ...params, methodology: selectedMethodology };
 
-  const run = selectedTicker
-    ? await optionalRun(
-        params.runId ? getAttributionRunById(params.runId) : getLatestAttribution(selectedTicker),
-      )
+  const requestedRun = selectedTicker && params.runId
+    ? await optionalRun(getAttributionRunById(params.runId))
     : null;
+  const selectedRun =
+    requestedRun && runMatchesSelection(requestedRun, selectedTicker, selectedMethodology)
+      ? requestedRun
+      : null;
+  const run = selectedTicker
+    ? selectedRun ?? await optionalRun(getLatestAttribution(selectedTicker, selectedMethodology))
+    : null;
+  const selectedRunId = selectedRun ? params.runId : undefined;
   const [runHistory, exposureDecisions, chart] =
     run && selectedTicker
       ? await Promise.all([
-          optionalList(getAttributionRuns(selectedTicker, 20)),
+          optionalList(getAttributionRuns(selectedTicker, 20, selectedMethodology)),
           optionalList(getExposureUpdateDecisions(selectedTicker)),
-          optionalRun(getAttributionChart(selectedTicker, "1m")),
+          optionalRun(getAttributionChart(selectedTicker, "1m", selectedMethodology)),
         ])
       : [[], [], null];
 
@@ -108,24 +114,29 @@ export default async function Home({
               />
             </div>
           </div>
+          <MethodologySelector
+            methodologies={methodologies}
+            selectedMethodology={selectedMethodology}
+            params={params}
+          />
         </header>
 
         <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[minmax(680px,1fr)_minmax(460px,0.7fr)]">
           <div className="flex min-w-0 flex-col gap-3">
-            <UniverseTable universe={universe} params={params} selectedTicker={selectedTicker} />
+            <UniverseTable universe={universe} params={paramsWithMethodology} selectedTicker={selectedTicker} />
           </div>
 
           <aside className="flex min-w-0 flex-col gap-5 2xl:border-l 2xl:border-steel/30 2xl:pl-5">
-            {run ? (
-              <AttributionWorkspace
-                run={run}
-                runHistory={runHistory}
-                exposureDecisions={exposureDecisions}
-                chart={chart}
-              />
-            ) : (
-              <EmptyDetail ticker={selectedTicker} companyName={selectedUniverseStock?.company_name} />
-            )}
+            <AttributionDetailLoader
+              ticker={selectedTicker}
+              companyName={selectedUniverseStock?.company_name}
+              methodology={selectedMethodology}
+              selectedRunId={selectedRunId}
+              initialRun={run}
+              initialRunHistory={runHistory}
+              initialExposureDecisions={exposureDecisions}
+              initialChart={chart}
+            />
           </aside>
         </div>
       </section>
@@ -133,44 +144,49 @@ export default async function Home({
   );
 }
 
-function AttributionWorkspace({
-  run,
-  runHistory,
-  exposureDecisions,
-  chart,
+function MethodologySelector({
+  methodologies,
+  selectedMethodology,
+  params,
 }: {
-  run: AttributionRun;
-  runHistory: AttributionRun[];
-  exposureDecisions: ExposureUpdateDecision[];
-  chart: AttributionChartResponse | null;
+  methodologies: AttributionMethodology[];
+  selectedMethodology: string;
+  params: SearchParams;
 }) {
   return (
-    <>
-      <section className="border-y border-line bg-white">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line bg-paper px-4 py-3">
-          <div>
-            <h2 className="text-xl font-semibold">{run.ticker}</h2>
-            <p className="mt-1 text-sm text-steel">
-              {new Date(run.window_start).toLocaleDateString()} to{" "}
-              {new Date(run.window_end).toLocaleDateString()}
-            </p>
-          </div>
-          <div className="grid grid-cols-4 gap-4 text-right">
-            <Metric label="Move" value={`${run.observed_return_bps.toFixed(2)} bps`} />
-            <Metric label="Residual" value={`${run.unexplained_residual_bps.toFixed(2)} bps`} />
-            <Metric label="Cadence" value={run.cadence} />
-            <Metric label="Model" value={run.model_version} />
-          </div>
-        </div>
-      </section>
-      <AttributionChart ticker={run.ticker} initialChart={chart} />
-      <DriverTable run={run} />
-      <RunHistory ticker={run.ticker} runs={runHistory} activeRunId={run.attribution_run_id} />
-      <section className="flex flex-col gap-2">
-        <h2 className="text-base font-semibold">Exposure Review</h2>
-        <ExposureDecisions decisions={exposureDecisions} />
-      </section>
-    </>
+    <form className="mt-4 flex flex-wrap items-center gap-2">
+      <label className="text-xs uppercase text-steel" htmlFor="methodology">
+        Methodology
+      </label>
+      <select
+        id="methodology"
+        name="methodology"
+        defaultValue={selectedMethodology}
+        className="h-9 border border-line bg-white px-3 text-sm outline-none focus:border-steel"
+      >
+        {methodologies.map((item) => (
+          <option key={item.methodology} value={item.methodology}>
+            {item.display_name}
+            {item.status === "archived" ? " (archived)" : ""}
+          </option>
+        ))}
+      </select>
+      <input type="hidden" name="ticker" value={params.ticker ?? ""} />
+      <input type="hidden" name="search" value={params.search ?? ""} />
+      <input type="hidden" name="sector" value={params.sector ?? ""} />
+      <input type="hidden" name="industry" value={params.industry ?? ""} />
+      <input type="hidden" name="exchange" value={params.exchange ?? ""} />
+      <input type="hidden" name="status" value={params.status ?? ""} />
+      <input type="hidden" name="sort" value={params.sort ?? "ticker"} />
+      <input type="hidden" name="order" value={params.order ?? "asc"} />
+      <input type="hidden" name="limit" value={params.limit ?? "50"} />
+      <input type="hidden" name="offset" value="0" />
+      <input type="hidden" name="universe" value={params.universe ?? ""} />
+      <input type="hidden" name="display" value={params.display ?? ""} />
+      <button className="h-9 border border-steel bg-white px-3 text-sm font-semibold text-steel hover:bg-paper">
+        Apply
+      </button>
+    </form>
   );
 }
 
@@ -195,19 +211,6 @@ function ApiUnavailable({ message }: { message: string }) {
         </div>
       </section>
     </main>
-  );
-}
-
-function EmptyDetail({ ticker, companyName }: { ticker: string; companyName?: string }) {
-  return (
-    <section className="border-y border-line bg-white px-4 py-6">
-      <h2 className="text-lg font-semibold">{ticker || "No ticker selected"}</h2>
-      {companyName ? <p className="mt-1 text-sm text-steel">{companyName}</p> : null}
-      <p className="mt-4 text-sm text-steel">
-        No attribution run is available for this stock yet. It remains accessible in the universe,
-        and the detail panel will populate after a successful attribution run is persisted.
-      </p>
-    </section>
   );
 }
 
@@ -245,6 +248,21 @@ async function optionalList<T>(promise: Promise<T[]>): Promise<T[]> {
   } catch {
     return [];
   }
+}
+
+function runMatchesSelection(run: { ticker: string; methodology: string }, ticker: string, methodology: string) {
+  return run.ticker.toUpperCase() === ticker.toUpperCase() && run.methodology === methodology;
+}
+
+function selectedMethodologyId(methodologies: AttributionMethodology[], requested?: string) {
+  if (requested && methodologies.some((item) => item.methodology === requested)) {
+    return requested;
+  }
+  return (
+    methodologies.find((item) => item.is_default)?.methodology ??
+    methodologies.find((item) => item.status === "active")?.methodology ??
+    "residual_safety_v1"
+  );
 }
 
 function numberParam(value: string | undefined, fallback: number) {

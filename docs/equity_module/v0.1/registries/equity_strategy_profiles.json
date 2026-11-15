@@ -1,0 +1,4450 @@
+{
+  "$schema": "../equity_registry_shared_metadata.schema.json",
+  "registry_name": "equity_strategy_profiles",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "registry_version": "v1",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+  "notes": "17 v0.1 strategy profile templates per CLAUDE §25.3. Each record conforms to docs/equity_module/v0.1/equity_registry_shared_metadata.schema.json (object_family=strategy_profile). Licensed-data profiles (earnings_revision_momentum, post_earnings_drift_radar) ship as license_gated. Short-only directionality profiles ship with human_review_required=true and short/borrow/legal validation rules.",
+  "records": [
+    {
+      "id": "quality_value_long_only",
+      "display_name": "Quality Value Long-Only",
+      "description": "Quality Value Long-Only v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§4.4",
+        "§6",
+        "§7"
+      ],
+      "source_ids": [
+        "G-001",
+        "T-002",
+        "V-001",
+        "F-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "quality_value_long_only"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "roic_ttm",
+        "fcf_yield_ttm",
+        "moat_score_qualitative",
+        "margin_of_safety_pct",
+        "balance_sheet_health_composite"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "investment_memo",
+        "watchlist",
+        "validation_report",
+        "thesis_tracker",
+        "source_rights_report",
+        "valuation_matrix"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_moat_score_below_threshold",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_accounting_quality_red_flag",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_balance_sheet_fragility",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "quality_value",
+          "compounder"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "1y-5y",
+          "allowed_actions": [
+            "buy_candidate",
+            "hold",
+            "sell_candidate",
+            "watch",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "roic_ttm",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "fcf_yield_ttm",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "moat_score_qualitative",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "margin_of_safety_pct",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "balance_sheet_health_composite",
+            "weight": 0.5,
+            "required": true
+          }
+        ],
+        "required_confirmations": [
+          "cash_conversion_strength",
+          "governance_strong"
+        ],
+        "required_risk_gates": [
+          "balance_sheet_risk_gate",
+          "accounting_quality_red_flag",
+          "value_trap_warning_check",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "moat_narrowing",
+          "thesis_invalidated",
+          "balance_sheet_fragility",
+          "valuation_premium",
+          "accounting_quality_red_flag"
+        ],
+        "monitoring_cadence": "weekly_or_on_event",
+        "score_methodology": {
+          "composition": "zscore_sum",
+          "weights": [
+            {
+              "key": "roic_ttm",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "fcf_yield_ttm",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "moat_score_qualitative",
+              "weight": 0.5,
+              "cap": 0.2
+            },
+            {
+              "key": "margin_of_safety_pct",
+              "weight": 1.0,
+              "cap": 0.4
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [
+          "{\"insight\": \"valuation_discount\", \"interpretation\": \"primary signal\"}",
+          "{\"insight\": \"margin_of_safety_present\", \"interpretation\": \"primary signal\"}",
+          "{\"insight\": \"balance_sheet_fragility\", \"interpretation\": \"blocking gate\"}",
+          "{\"insight\": \"moat_narrowing\", \"interpretation\": \"risk flag\"}"
+        ],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "thesis_monitoring",
+          "lookback": "1y_thesis_review_cycle",
+          "min_observations": 4,
+          "monitoring_cadence": "weekly_or_on_event"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "roic_ttm",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "fcf_yield_ttm",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "moat_score_qualitative",
+              "weight": 0.5,
+              "cap": 0.2
+            },
+            {
+              "key": "margin_of_safety_pct",
+              "weight": 1.0,
+              "cap": 0.4
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_moat_score_below_threshold",
+          "downgrade_when_accounting_quality_red_flag",
+          "downgrade_when_balance_sheet_fragility"
+        ],
+        "rejection_rules": [
+          "reject_when_material_weakness_or_going_concern",
+          "reject_when_required_filing_evidence_missing",
+          "reject_when_non_advice_boundary_missing_on_outputs"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_restatement_recent",
+          "require_human_review_when_short_thesis_evidence_present"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "quality_value_long_only"
+      }
+    },
+    {
+      "id": "portfolio_risk_radar",
+      "display_name": "Portfolio Risk Radar",
+      "description": "Portfolio Risk Radar v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§11",
+        "§18"
+      ],
+      "source_ids": [
+        "G-001",
+        "PC-001",
+        "PC-005",
+        "PC-021"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "portfolio_risk_radar"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "position_weight",
+        "factor_exposure_total",
+        "days_to_unwind_at_20pct_adv_portfolio",
+        "tracking_error_total_bps",
+        "cvar95_pct"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "risk_dashboard",
+        "portfolio_impact_report",
+        "validation_report",
+        "source_rights_report",
+        "factor_exposure_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "size_action_requires_portfolio_context",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_data_quality_warning_open",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_factor_model_unavailable",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "portfolio_risk_radar"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "risk_monitoring",
+          "horizon": "continuous",
+          "allowed_actions": [
+            "watch",
+            "monitor",
+            "alert_only",
+            "hedge_candidate",
+            "size_adjustment",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": 200.0,
+          "directionality": "market_neutral"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 1000000.0,
+          "market_cap_band": "any",
+          "geography": [
+            "US",
+            "Global"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "position_weight",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "factor_exposure_total",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "days_to_unwind_at_20pct_adv_portfolio",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "tracking_error_total_bps",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "cvar95_pct",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "liquidity_capacity_checked"
+        ],
+        "required_risk_gates": [
+          "position_cap_gate",
+          "sector_industry_cap_gate",
+          "issuer_cap_gate",
+          "liquidity_capacity_gate",
+          "tracking_error_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "position_concentration_warning",
+          "sector_concentration_warning",
+          "liquidity_capacity_warning",
+          "tracking_error_breach",
+          "factor_overexposure_warning"
+        ],
+        "monitoring_cadence": "continuous",
+        "score_methodology": {
+          "composition": "risk_contribution_decomposition",
+          "weights": [],
+          "caps": []
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 3,
+          "requires_filing_evidence": false,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": false
+        },
+        "validation_window": {
+          "kind": "continuous",
+          "lookback": "60d",
+          "min_observations": 60,
+          "monitoring_cadence": "daily"
+        },
+        "score_weights": {
+          "weights": [],
+          "caps": []
+        },
+        "output_view_default": "risk_dashboard",
+        "downgrade_rules": [
+          "downgrade_when_data_quality_warning_open",
+          "downgrade_when_factor_model_unavailable"
+        ],
+        "rejection_rules": [
+          "reject_when_size_action_without_portfolio_context",
+          "reject_when_hedge_action_without_exposure_quantified"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_concentration_breach_critical",
+          "require_human_review_when_meme_stock_alert"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "portfolio_risk_radar"
+      }
+    },
+    {
+      "id": "earnings_revision_momentum",
+      "display_name": "Earnings Revision Momentum",
+      "description": "Earnings Revision Momentum v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§10",
+        "§13"
+      ],
+      "source_ids": [
+        "G-001",
+        "FA-021",
+        "ANL-009",
+        "EV-032"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "earnings_revision_momentum"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "revision_count_30d_up",
+        "earnings_surprise_pct",
+        "ret_12m_1m",
+        "analyst_target_price_change"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "trade_plan",
+        "watchlist",
+        "validation_report",
+        "event_catalyst_board",
+        "source_rights_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_consensus_data_unavailable",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_factor_crowding_high",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "momentum",
+          "event_driven"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "quarters",
+          "allowed_actions": [
+            "buy_candidate",
+            "hold",
+            "sell_candidate",
+            "watch",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": "sp500",
+          "tracking_error_budget_bps": 400.0,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 10000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "revision_count_30d_up",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "earnings_surprise_pct",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "ret_12m_1m",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "analyst_target_price_change",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "analyst_revision_momentum",
+          "earnings_beat_with_guidance_raise"
+        ],
+        "required_risk_gates": [
+          "liquidity_capacity_gate",
+          "factor_pit_gate",
+          "factor_crowding_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "earnings_miss_with_guidance_cut",
+          "estimate_revision_down",
+          "factor_signal_decayed",
+          "valuation_premium"
+        ],
+        "monitoring_cadence": "weekly",
+        "score_methodology": {
+          "composition": "zscore_sum",
+          "weights": [
+            {
+              "key": "revision_count_30d_up",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "earnings_surprise_pct",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "ret_12m_1m",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": true,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "walk_forward",
+          "lookback": "5y_with_oos_2y",
+          "min_observations": 240,
+          "monitoring_cadence": "weekly"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "revision_count_30d_up",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "earnings_surprise_pct",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "ret_12m_1m",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_consensus_data_unavailable",
+          "downgrade_when_factor_crowding_high"
+        ],
+        "rejection_rules": [
+          "reject_when_pit_consensus_not_available_for_backtest",
+          "reject_when_thin_analyst_coverage"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_short_thesis_present"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "earnings_revision_momentum"
+      }
+    },
+    {
+      "id": "growth_at_reasonable_price",
+      "display_name": "Growth at Reasonable Price (GARP)",
+      "description": "Growth at Reasonable Price (GARP) v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§6",
+        "§7"
+      ],
+      "source_ids": [
+        "G-001",
+        "F-001",
+        "V-001"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "growth_at_reasonable_price"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "revenue_growth_yoy_q",
+        "peg_ntm",
+        "operating_margin_expansion_yoy",
+        "revision_count_30d_up"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "investment_memo",
+        "watchlist",
+        "validation_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_peg_consensus_unavailable",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_growth_decelerating",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "garp",
+          "growth"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "quarters_to_years",
+          "allowed_actions": [
+            "buy_candidate",
+            "hold",
+            "sell_candidate",
+            "watch",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": "sp500_growth",
+          "tracking_error_budget_bps": 300.0,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "revenue_growth_yoy_q",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "peg_ntm",
+            "weight": 1.0,
+            "required": false
+          },
+          {
+            "signal_id": "operating_margin_expansion_yoy",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "revision_count_30d_up",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "revenue_growth_acceleration",
+          "margin_expansion_signal"
+        ],
+        "required_risk_gates": [
+          "balance_sheet_risk_gate",
+          "valuation_premium_check",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "revenue_growth_deceleration",
+          "valuation_premium",
+          "earnings_miss_with_guidance_cut"
+        ],
+        "monitoring_cadence": "weekly_or_on_event",
+        "score_methodology": {
+          "composition": "zscore_sum",
+          "weights": [
+            {
+              "key": "revenue_growth_yoy_q",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "peg_ntm",
+              "weight": 1.0,
+              "cap": 0.3
+            },
+            {
+              "key": "operating_margin_expansion_yoy",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "thesis_monitoring",
+          "lookback": "1y",
+          "min_observations": 4,
+          "monitoring_cadence": "weekly_or_on_event"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "revenue_growth_yoy_q",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "peg_ntm",
+              "weight": 1.0,
+              "cap": 0.3
+            },
+            {
+              "key": "operating_margin_expansion_yoy",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_peg_consensus_unavailable",
+          "downgrade_when_growth_decelerating"
+        ],
+        "rejection_rules": [
+          "reject_when_required_filing_evidence_missing"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_short_thesis_present"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "growth_at_reasonable_price"
+      }
+    },
+    {
+      "id": "cheap_compounder",
+      "display_name": "Cheap Compounder",
+      "description": "Cheap Compounder v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§7",
+        "§8"
+      ],
+      "source_ids": [
+        "G-001",
+        "T-002",
+        "V-001"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "cheap_compounder"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "roic_ttm",
+        "return_on_incremental_capital_3y",
+        "moat_score_qualitative",
+        "margin_of_safety_pct"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "investment_memo",
+        "watchlist",
+        "validation_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_moat_evidence_qualitative_only_without_durability_metric",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_incremental_roic_below_threshold",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "compounder",
+          "quality_value"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "multi_year",
+          "allowed_actions": [
+            "buy_candidate",
+            "hold",
+            "watch",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "roic_ttm",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "return_on_incremental_capital_3y",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "moat_score_qualitative",
+            "weight": 0.5,
+            "required": true
+          },
+          {
+            "signal_id": "margin_of_safety_pct",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "cash_conversion_strength",
+          "moat_widening",
+          "governance_strong"
+        ],
+        "required_risk_gates": [
+          "balance_sheet_risk_gate",
+          "accounting_quality_red_flag",
+          "value_trap_warning_check",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "moat_narrowing",
+          "fundamental_deterioration",
+          "balance_sheet_fragility"
+        ],
+        "monitoring_cadence": "monthly_or_on_event",
+        "score_methodology": {
+          "composition": "zscore_sum",
+          "weights": [
+            {
+              "key": "roic_ttm",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "return_on_incremental_capital_3y",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "moat_score_qualitative",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "thesis_monitoring",
+          "lookback": "3y",
+          "min_observations": 12,
+          "monitoring_cadence": "monthly_or_on_event"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "roic_ttm",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "return_on_incremental_capital_3y",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "moat_score_qualitative",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_moat_evidence_qualitative_only_without_durability_metric",
+          "downgrade_when_incremental_roic_below_threshold"
+        ],
+        "rejection_rules": [
+          "reject_when_required_filing_evidence_missing"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_short_thesis_present"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "cheap_compounder"
+      }
+    },
+    {
+      "id": "rsi_swing_catalyst_confirmation",
+      "display_name": "RSI Swing + Catalyst Confirmation",
+      "description": "RSI Swing + Catalyst Confirmation v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§12",
+        "§13"
+      ],
+      "source_ids": [
+        "G-001",
+        "TE-001",
+        "TE-002",
+        "EV-001"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "rsi_swing_catalyst_confirmation"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "rsi_14d",
+        "breakout_52w_high_flag",
+        "abnormal_volume_z"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "trade_plan",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 3
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required",
+        "short_action_without_borrow_review"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_no_catalyst_within_horizon",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_borrow_unavailable_for_short_action",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "technical_swing",
+          "event_driven"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "days_to_weeks",
+          "allowed_actions": [
+            "watch",
+            "buy_candidate",
+            "sell_candidate",
+            "alert_only",
+            "monitor",
+            "research_deeper"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_short"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 20000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "rsi_14d",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "breakout_52w_high_flag",
+            "weight": 1.0,
+            "required": false
+          },
+          {
+            "signal_id": "abnormal_volume_z",
+            "weight": 1.0,
+            "required": true
+          }
+        ],
+        "required_confirmations": [
+          "technical_setup_present",
+          "volume_price_confirmation_flag",
+          "catalyst_present_within_horizon"
+        ],
+        "required_risk_gates": [
+          "liquidity_capacity_gate",
+          "spread_gate",
+          "borrow_gate_for_short_side",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "technical_invalidation_triggered",
+          "catalyst_without_confirmation"
+        ],
+        "monitoring_cadence": "intraday_or_daily",
+        "score_methodology": {
+          "composition": "conviction_blend",
+          "weights": [
+            {
+              "key": "rsi_14d",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "breakout_52w_high_flag",
+              "weight": 0.3,
+              "cap": 0.3
+            },
+            {
+              "key": "abnormal_volume_z",
+              "weight": 0.3,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 3,
+          "requires_filing_evidence": false,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": false
+        },
+        "validation_window": {
+          "kind": "walk_forward",
+          "lookback": "3y",
+          "min_observations": 252,
+          "monitoring_cadence": "weekly"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "rsi_14d",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "breakout_52w_high_flag",
+              "weight": 0.3,
+              "cap": 0.3
+            },
+            {
+              "key": "abnormal_volume_z",
+              "weight": 0.3,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_no_catalyst_within_horizon",
+          "downgrade_when_borrow_unavailable_for_short_action"
+        ],
+        "rejection_rules": [
+          "reject_when_indicator_parameters_not_documented",
+          "reject_when_signal_without_confirmation_for_trade_plan"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_short_side_with_squeeze_risk"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "rsi_swing_catalyst_confirmation"
+      }
+    },
+    {
+      "id": "post_earnings_drift_radar",
+      "display_name": "Post-Earnings Drift Radar",
+      "description": "Post-Earnings Drift Radar v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§10",
+        "§13"
+      ],
+      "source_ids": [
+        "G-001",
+        "FA-020",
+        "EV-002"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "post_earnings_drift_radar"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "earnings_surprise_pct",
+        "abnormal_return_event_window_3d",
+        "revision_count_30d_up"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "trade_plan",
+        "validation_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required",
+        "short_action_without_borrow_review"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_drift_window_truncated_by_invalidation",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_consensus_data_unavailable",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "event_driven",
+          "momentum"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "weeks",
+          "allowed_actions": [
+            "buy_candidate",
+            "sell_candidate",
+            "watch",
+            "monitor",
+            "research_deeper"
+          ],
+          "benchmark_id": "sp500",
+          "tracking_error_budget_bps": 300.0,
+          "directionality": "long_short"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 10000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "earnings_surprise_pct",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "abnormal_return_event_window_3d",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "revision_count_30d_up",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "underreaction_detected",
+          "investor_inattention_setup"
+        ],
+        "required_risk_gates": [
+          "liquidity_capacity_gate",
+          "factor_pit_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "thesis_invalidated",
+          "earnings_miss_with_guidance_cut"
+        ],
+        "monitoring_cadence": "daily_during_drift_window",
+        "score_methodology": {
+          "composition": "zscore_sum",
+          "weights": [
+            {
+              "key": "earnings_surprise_pct",
+              "weight": 1.0,
+              "cap": 0.5
+            },
+            {
+              "key": "abnormal_return_event_window_3d",
+              "weight": 1.0,
+              "cap": 0.4
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": true,
+          "thesis_monitoring_required": false
+        },
+        "validation_window": {
+          "kind": "event_window",
+          "lookback": "[-1,+60]",
+          "min_observations": 100,
+          "monitoring_cadence": "daily_during_drift_window"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "earnings_surprise_pct",
+              "weight": 1.0,
+              "cap": 0.5
+            },
+            {
+              "key": "abnormal_return_event_window_3d",
+              "weight": 1.0,
+              "cap": 0.4
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_drift_window_truncated_by_invalidation",
+          "downgrade_when_consensus_data_unavailable"
+        ],
+        "rejection_rules": [
+          "reject_when_pit_consensus_not_available_for_backtest"
+        ],
+        "human_review_rules": [],
+        "non_advice_boundary_required": true,
+        "profile_id": "post_earnings_drift_radar"
+      }
+    },
+    {
+      "id": "insider_cluster_breakout",
+      "display_name": "Insider Cluster + Breakout",
+      "description": "Insider Cluster + Breakout v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§9",
+        "§12"
+      ],
+      "source_ids": [
+        "G-001",
+        "GOV-013",
+        "TE-002"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "insider_cluster_breakout"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "insider_cluster_purchase_30d_flag",
+        "breakout_52w_high_flag",
+        "abnormal_volume_z"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "trade_plan",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_insider_trades_are_10b5_1_only",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_manipulation_alert_active",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "event_driven",
+          "technical_swing",
+          "governance"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "weeks_to_months",
+          "allowed_actions": [
+            "buy_candidate",
+            "watch",
+            "monitor",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 2000000.0,
+          "market_cap_band": "small_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "insider_cluster_purchase_30d_flag",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "breakout_52w_high_flag",
+            "weight": 1.0,
+            "required": false
+          },
+          {
+            "signal_id": "abnormal_volume_z",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "insider_cluster_buying_signal",
+          "technical_setup_present"
+        ],
+        "required_risk_gates": [
+          "liquidity_capacity_gate",
+          "spread_gate",
+          "manipulation_alert_check",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "insider_heavy_selling_warning",
+          "technical_invalidation_triggered"
+        ],
+        "monitoring_cadence": "daily_during_breakout_window",
+        "score_methodology": {
+          "composition": "conviction_blend",
+          "weights": [
+            {
+              "key": "insider_cluster_purchase_30d_flag",
+              "weight": 1.0,
+              "cap": 0.5
+            },
+            {
+              "key": "breakout_52w_high_flag",
+              "weight": 1.0,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "walk_forward",
+          "lookback": "5y",
+          "min_observations": 252,
+          "monitoring_cadence": "weekly"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "insider_cluster_purchase_30d_flag",
+              "weight": 1.0,
+              "cap": 0.5
+            },
+            {
+              "key": "breakout_52w_high_flag",
+              "weight": 1.0,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_insider_trades_are_10b5_1_only",
+          "downgrade_when_manipulation_alert_active"
+        ],
+        "rejection_rules": [
+          "reject_when_form_4_evidence_missing"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_manipulation_alert_present"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "insider_cluster_breakout"
+      }
+    },
+    {
+      "id": "merger_arbitrage_watchlist",
+      "display_name": "Merger Arbitrage Watchlist",
+      "description": "Merger Arbitrage Watchlist v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§13",
+        "§4.4"
+      ],
+      "source_ids": [
+        "G-001",
+        "EV-008",
+        "EV-009"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "merger_arbitrage_watchlist"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "deal_spread_pct",
+        "deal_probability",
+        "days_to_close_estimate"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "trade_plan",
+        "equity_radar",
+        "risk_dashboard"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "size_action_requires_portfolio_context",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required",
+        "short_action_without_borrow_review"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_deal_terms_uncertain",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_regulatory_block_signaled",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "merger_arbitrage",
+          "event_driven"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "days_to_deal_close",
+          "allowed_actions": [
+            "buy_candidate",
+            "sell_candidate",
+            "watch",
+            "hedge_candidate",
+            "monitor",
+            "research_deeper",
+            "alert_only"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_short"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "any",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "deal_spread_pct",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "deal_probability",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "days_to_close_estimate",
+            "weight": 0.5,
+            "required": true
+          }
+        ],
+        "required_confirmations": [
+          "deal_spread_attractive",
+          "merger_arb_regulatory_clearance"
+        ],
+        "required_risk_gates": [
+          "liquidity_capacity_gate",
+          "deal_break_risk_gate",
+          "borrow_gate_for_short_side",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "mna_deal_break",
+          "deal_break_risk_high",
+          "mna_regulatory_block"
+        ],
+        "monitoring_cadence": "daily",
+        "score_methodology": {
+          "composition": "conviction_blend",
+          "weights": [
+            {
+              "key": "deal_spread_pct",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "deal_probability",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "days_to_close_estimate",
+              "weight": 0.2,
+              "cap": 0.2
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "event_window",
+          "lookback": "deal_announcement_to_close",
+          "min_observations": 50,
+          "monitoring_cadence": "daily"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "deal_spread_pct",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "deal_probability",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "days_to_close_estimate",
+              "weight": 0.2,
+              "cap": 0.2
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "trade_plan",
+        "downgrade_rules": [
+          "downgrade_when_deal_terms_uncertain",
+          "downgrade_when_regulatory_block_signaled"
+        ],
+        "rejection_rules": [
+          "reject_when_short_side_without_borrow_review"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_binary_regulatory_decision_pending"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "merger_arbitrage_watchlist"
+      }
+    },
+    {
+      "id": "special_situations_monitor",
+      "display_name": "Special Situations Monitor",
+      "description": "Special Situations Monitor v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§13"
+      ],
+      "source_ids": [
+        "G-001",
+        "EV-011",
+        "EV-017"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "special_situations_monitor"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "abnormal_return_event_window_3d",
+        "abnormal_volume_z"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "investment_memo",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required",
+        "short_action_without_borrow_review"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_complexity_understated",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "special_situations",
+          "event_driven"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "weeks_to_quarters",
+          "allowed_actions": [
+            "buy_candidate",
+            "watch",
+            "monitor",
+            "research_deeper",
+            "alert_only"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_short"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 2000000.0,
+          "market_cap_band": "any",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "abnormal_return_event_window_3d",
+            "weight": 1.0,
+            "required": false
+          },
+          {
+            "signal_id": "abnormal_volume_z",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "spinoff_forced_selling_observed",
+          "index_inclusion_premium_observed"
+        ],
+        "required_risk_gates": [
+          "liquidity_capacity_gate",
+          "complexity_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "thesis_invalidated",
+          "event_clock_expires_without_confirmation"
+        ],
+        "monitoring_cadence": "event_driven",
+        "score_methodology": {
+          "composition": "custom",
+          "weights": [
+            {
+              "key": "abnormal_return_event_window_3d",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "event_window",
+          "lookback": "[-30,+90]",
+          "min_observations": 50,
+          "monitoring_cadence": "event_driven"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "abnormal_return_event_window_3d",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_complexity_understated"
+        ],
+        "rejection_rules": [
+          "reject_when_required_filing_evidence_missing"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_distress_event_pending"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "special_situations_monitor"
+      }
+    },
+    {
+      "id": "short_red_flag_monitor",
+      "display_name": "Short Red-Flag Monitor",
+      "description": "Short Red-Flag Monitor v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§17"
+      ],
+      "source_ids": [
+        "G-001",
+        "SH-006",
+        "SH-018"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "short_red_flag_monitor"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "accounting_quality_score",
+        "balance_sheet_fragility_composite",
+        "valuation_premium",
+        "short_interest_pct_float"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "investment_memo",
+        "trade_plan",
+        "risk_dashboard"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": true,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required",
+        "short_action_without_borrow_review"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_borrow_cost_excessive",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_crowded_short_present",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "short_selling",
+          "risk_avoidance_monitor"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "days_to_years",
+          "allowed_actions": [
+            "short_candidate",
+            "watch",
+            "monitor",
+            "avoid",
+            "research_deeper",
+            "alert_only"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "short_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "any",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "accounting_quality_score",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "balance_sheet_fragility_composite",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "valuation_premium",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "short_interest_pct_float",
+            "weight": 0.5,
+            "required": true
+          }
+        ],
+        "required_confirmations": [
+          "distress_risk_elevated",
+          "fundamental_deterioration"
+        ],
+        "required_risk_gates": [
+          "borrow_gate",
+          "squeeze_risk_gate",
+          "threshold_security_gate",
+          "legal_review_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "short_thesis_invalidation_trigger_observed",
+          "earnings_beat_with_guidance_raise",
+          "buyback_below_intrinsic_value_creation"
+        ],
+        "monitoring_cadence": "daily",
+        "score_methodology": {
+          "composition": "conviction_blend",
+          "weights": [
+            {
+              "key": "accounting_quality_score",
+              "weight": 0.4,
+              "cap": 0.5
+            },
+            {
+              "key": "balance_sheet_fragility_composite",
+              "weight": 0.4,
+              "cap": 0.5
+            },
+            {
+              "key": "short_interest_pct_float",
+              "weight": 0.2,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": true,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "thesis_monitoring",
+          "lookback": "1y_with_cost_adjusted_backtest",
+          "min_observations": 100,
+          "monitoring_cadence": "daily"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "accounting_quality_score",
+              "weight": 0.4,
+              "cap": 0.5
+            },
+            {
+              "key": "balance_sheet_fragility_composite",
+              "weight": 0.4,
+              "cap": 0.5
+            },
+            {
+              "key": "short_interest_pct_float",
+              "weight": 0.2,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "investment_memo",
+        "downgrade_rules": [
+          "downgrade_when_borrow_cost_excessive",
+          "downgrade_when_crowded_short_present"
+        ],
+        "rejection_rules": [
+          "reject_when_borrow_unavailable",
+          "reject_when_threshold_security_listed",
+          "reject_when_fraud_language_without_legal_review_clear"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_fraud_language_proposed",
+          "require_human_review_when_threshold_security_listed",
+          "require_human_review_when_squeeze_risk_high"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "short_red_flag_monitor"
+      }
+    },
+    {
+      "id": "factor_neutral_quantamental_selector",
+      "display_name": "Factor-Neutral Quantamental Selector",
+      "description": "Factor-Neutral Quantamental Selector v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§10",
+        "§11"
+      ],
+      "source_ids": [
+        "G-001",
+        "FA-005",
+        "FA-009",
+        "FA-040"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "factor_neutral_quantamental_selector"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "factor_score_composite",
+        "factor_residual_252d",
+        "factor_decile_value",
+        "factor_decile_quality",
+        "factor_decile_momentum"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "validation_report",
+        "backtest_report",
+        "portfolio_impact_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "size_action_requires_portfolio_context",
+        "short_action_requires_borrow_review_record",
+        "short_action_requires_squeeze_risk_review",
+        "short_action_requires_legal_review_if_thesis_type_fraud_risk"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required",
+        "short_action_without_borrow_review"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_vintaged_pipeline_not_shipped",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_factor_decay_detected",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_factor_crowding_high",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "factor_statistical",
+          "quantamental",
+          "portfolio_risk"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "benchmark_relative",
+          "horizon": "weeks_to_months",
+          "allowed_actions": [
+            "buy_candidate",
+            "sell_candidate",
+            "size_adjustment",
+            "watch",
+            "research_deeper"
+          ],
+          "benchmark_id": "sp500",
+          "tracking_error_budget_bps": 400.0,
+          "directionality": "long_short"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 20000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "factor_score_composite",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "factor_residual_252d",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "factor_decile_value",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "factor_decile_quality",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "factor_decile_momentum",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "factor_signal_strong",
+          "factor_orthogonal_alpha"
+        ],
+        "required_risk_gates": [
+          "factor_pit_gate",
+          "factor_microcap_gate",
+          "factor_crowding_gate",
+          "factor_capacity_gate",
+          "factor_rights_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "factor_signal_decayed",
+          "factor_capacity_warning",
+          "vintage_unavailable_warning"
+        ],
+        "monitoring_cadence": "weekly",
+        "score_methodology": {
+          "composition": "factor_orthogonalized_zscore_sum",
+          "weights": [
+            {
+              "key": "factor_decile_value",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "factor_decile_momentum",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "factor_decile_quality",
+              "weight": 1.0,
+              "cap": 0.4
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            },
+            {
+              "sector_neutral": true
+            },
+            {
+              "size_neutral": true
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": false,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": true,
+          "thesis_monitoring_required": false
+        },
+        "validation_window": {
+          "kind": "walk_forward",
+          "lookback": "10y_with_oos_3y",
+          "min_observations": 1000,
+          "monitoring_cadence": "weekly"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "factor_decile_value",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "factor_decile_momentum",
+              "weight": 1.0,
+              "cap": 0.4
+            },
+            {
+              "key": "factor_decile_quality",
+              "weight": 1.0,
+              "cap": 0.4
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            },
+            {
+              "sector_neutral": true
+            },
+            {
+              "size_neutral": true
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_vintaged_pipeline_not_shipped",
+          "downgrade_when_factor_decay_detected",
+          "downgrade_when_factor_crowding_high"
+        ],
+        "rejection_rules": [
+          "reject_when_pit_safe_false_for_backtest",
+          "reject_when_microcap_only_evidence",
+          "reject_when_transaction_costs_omitted"
+        ],
+        "human_review_rules": [],
+        "non_advice_boundary_required": true,
+        "profile_id": "factor_neutral_quantamental_selector"
+      }
+    },
+    {
+      "id": "macro_regime_equity_selector",
+      "display_name": "Macro Regime Equity Selector",
+      "description": "Macro Regime Equity Selector v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§16"
+      ],
+      "source_ids": [
+        "G-001",
+        "MA-001",
+        "MA-024"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "macro_regime_equity_selector"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "sector_cycle_fit_match",
+        "rate_sensitivity_score",
+        "credit_widening_overlay"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "risk_dashboard",
+        "validation_report"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "size_action_requires_portfolio_context"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_alfred_vintage_unavailable_for_backtest",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_regime_classifier_uncertainty_high",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "macro",
+          "quality_value",
+          "sector_rotation"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "months_to_years",
+          "allowed_actions": [
+            "buy_candidate",
+            "sell_candidate",
+            "hedge_candidate",
+            "size_adjustment",
+            "watch",
+            "research_deeper"
+          ],
+          "benchmark_id": "sp500",
+          "tracking_error_budget_bps": 500.0,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 10000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "sector_cycle_fit_match",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "rate_sensitivity_score",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "credit_widening_overlay",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "sector_cycle_fit_match",
+          "macro_state_regime_observed"
+        ],
+        "required_risk_gates": [
+          "vintage_macro_gate",
+          "rate_shock_gate",
+          "credit_widening_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "recession_regime_overlay",
+          "rate_shock_overlay",
+          "credit_widening_overlay"
+        ],
+        "monitoring_cadence": "monthly",
+        "score_methodology": {
+          "composition": "custom",
+          "weights": [
+            {
+              "key": "sector_cycle_fit_match",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": false,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": true,
+          "deflated_sharpe_required": true,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "walk_forward",
+          "lookback": "20y_alfred_vintages_required",
+          "min_observations": 240,
+          "monitoring_cadence": "monthly"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "sector_cycle_fit_match",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_alfred_vintage_unavailable_for_backtest",
+          "downgrade_when_regime_classifier_uncertainty_high"
+        ],
+        "rejection_rules": [
+          "reject_when_non_vintaged_macro_used_in_backtest"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_recession_regime_overlay_active"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "macro_regime_equity_selector"
+      }
+    },
+    {
+      "id": "dividend_sustainability_radar",
+      "display_name": "Dividend Sustainability Radar",
+      "description": "Dividend Sustainability Radar v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§9.4"
+      ],
+      "source_ids": [
+        "G-001",
+        "GOV-007",
+        "GOV-008"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "dividend_sustainability_radar"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "dividend_yield_ttm",
+        "dividend_payout_to_fcf",
+        "interest_coverage_ttm",
+        "debt_maturity_1y_pct"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "investment_memo",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_payout_ratio_above_80pct_fcf",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_rate_shock_active",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "dividend_income",
+          "quality_value"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "income",
+          "horizon": "quarters_to_years",
+          "allowed_actions": [
+            "buy_candidate",
+            "hold",
+            "sell_candidate",
+            "watch",
+            "monitor",
+            "research_deeper",
+            "avoid"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "dividend_yield_ttm",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "dividend_payout_to_fcf",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "interest_coverage_ttm",
+            "weight": 0.5,
+            "required": true
+          },
+          {
+            "signal_id": "debt_maturity_1y_pct",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "dividend_unsustainable_warning_absent",
+          "balance_sheet_health_composite_pass"
+        ],
+        "required_risk_gates": [
+          "balance_sheet_risk_gate",
+          "rate_shock_gate",
+          "credit_widening_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "dividend_unsustainable_warning",
+          "balance_sheet_fragility",
+          "rate_shock_overlay"
+        ],
+        "monitoring_cadence": "quarterly_or_on_event",
+        "score_methodology": {
+          "composition": "conviction_blend",
+          "weights": [
+            {
+              "key": "dividend_yield_ttm",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "dividend_payout_to_fcf",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "interest_coverage_ttm",
+              "weight": 0.2,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "thesis_monitoring",
+          "lookback": "5y_with_dividend_action_backtest",
+          "min_observations": 20,
+          "monitoring_cadence": "quarterly_or_on_event"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "dividend_yield_ttm",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "dividend_payout_to_fcf",
+              "weight": 0.4,
+              "cap": 0.4
+            },
+            {
+              "key": "interest_coverage_ttm",
+              "weight": 0.2,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.4
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_payout_ratio_above_80pct_fcf",
+          "downgrade_when_rate_shock_active"
+        ],
+        "rejection_rules": [
+          "reject_when_required_filing_evidence_missing"
+        ],
+        "human_review_rules": [],
+        "non_advice_boundary_required": true,
+        "profile_id": "dividend_sustainability_radar"
+      }
+    },
+    {
+      "id": "activism_vulnerability_radar",
+      "display_name": "Activism Vulnerability Radar",
+      "description": "Activism Vulnerability Radar v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§9",
+        "§14"
+      ],
+      "source_ids": [
+        "G-001",
+        "GOV-005",
+        "OW-023"
+      ],
+      "confidence_label": "research_supported_experimental",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "activism_vulnerability_radar"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "governance_weak_composite",
+        "m_a_overpay_pattern",
+        "incentive_misalignment"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "equity_radar",
+        "investment_memo",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_control_structure_blocks_activism",
+          "from_label": "research_supported_experimental",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_governance_evidence_qualitative_only",
+          "from_label": "research_supported_experimental",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "activist_style"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "absolute_return",
+          "horizon": "months_to_years",
+          "allowed_actions": [
+            "buy_candidate",
+            "watch",
+            "monitor",
+            "research_deeper"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "long_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 5000000.0,
+          "market_cap_band": "mid_or_larger",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "governance_weak_composite",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "m_a_overpay_pattern",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "incentive_misalignment",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "activist_present_flag",
+          "activist_engagement_observed"
+        ],
+        "required_risk_gates": [
+          "control_structure_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "activist_withdrawal",
+          "board_entrenchment_defense_observed"
+        ],
+        "monitoring_cadence": "monthly_or_on_event",
+        "score_methodology": {
+          "composition": "custom",
+          "weights": [
+            {
+              "key": "governance_weak_composite",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": true,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "event_window",
+          "lookback": "[-90,+365]",
+          "min_observations": 50,
+          "monitoring_cadence": "monthly_or_on_event"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "governance_weak_composite",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "equity_radar",
+        "downgrade_rules": [
+          "downgrade_when_control_structure_blocks_activism",
+          "downgrade_when_governance_evidence_qualitative_only"
+        ],
+        "rejection_rules": [
+          "reject_when_13d_evidence_missing"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_legal_overhang_material"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "activism_vulnerability_radar"
+      }
+    },
+    {
+      "id": "valuation_trap_detector",
+      "display_name": "Valuation Trap Detector",
+      "description": "Valuation Trap Detector v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§7"
+      ],
+      "source_ids": [
+        "G-001",
+        "V-001"
+      ],
+      "confidence_label": "common_practice",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "valuation_trap_detector"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "pe_ttm",
+        "cfo_to_ni_ttm",
+        "net_debt_to_ebitda_ttm",
+        "moat_trend"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "risk_dashboard",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_thesis_recovery_evidence_emerges",
+          "from_label": "common_practice",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "risk_avoidance_monitor"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "risk_monitoring",
+          "horizon": "continuous",
+          "allowed_actions": [
+            "avoid",
+            "watch",
+            "monitor",
+            "alert_only",
+            "research_deeper"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "risk_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 2000000.0,
+          "market_cap_band": "any",
+          "geography": [
+            "US"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "pe_ttm",
+            "weight": 0.5,
+            "required": true
+          },
+          {
+            "signal_id": "cfo_to_ni_ttm",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "net_debt_to_ebitda_ttm",
+            "weight": 0.5,
+            "required": true
+          },
+          {
+            "signal_id": "moat_trend",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "fundamental_deterioration",
+          "balance_sheet_fragility"
+        ],
+        "required_risk_gates": [
+          "balance_sheet_risk_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "thesis_invalidated",
+          "valuation_discount_with_evidence_of_recovery"
+        ],
+        "monitoring_cadence": "weekly_or_on_event",
+        "score_methodology": {
+          "composition": "custom",
+          "weights": [
+            {
+              "key": "cfo_to_ni_ttm",
+              "weight": 1.0,
+              "cap": 0.5
+            },
+            {
+              "key": "net_debt_to_ebitda_ttm",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "continuous",
+          "lookback": "thesis_monitoring",
+          "min_observations": 4,
+          "monitoring_cadence": "weekly_or_on_event"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "cfo_to_ni_ttm",
+              "weight": 1.0,
+              "cap": 0.5
+            },
+            {
+              "key": "net_debt_to_ebitda_ttm",
+              "weight": 0.5,
+              "cap": 0.3
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "risk_dashboard",
+        "downgrade_rules": [
+          "downgrade_when_thesis_recovery_evidence_emerges"
+        ],
+        "rejection_rules": [],
+        "human_review_rules": [],
+        "non_advice_boundary_required": true,
+        "profile_id": "valuation_trap_detector"
+      }
+    },
+    {
+      "id": "event_risk_monitor",
+      "display_name": "Event Risk Monitor",
+      "description": "Event Risk Monitor v0.1 strategy profile.",
+      "module_id": "viza.finance.equity_investment",
+      "schema_version": "v1",
+      "object_family": "strategy_profile",
+      "source_sections": [
+        "§25",
+        "§25.3",
+        "§13",
+        "§17"
+      ],
+      "source_ids": [
+        "G-001",
+        "EV-001",
+        "EV-029",
+        "SH-018"
+      ],
+      "confidence_label": "high_confidence_core",
+      "status": "registry-seedable",
+      "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+      "core_primitive": "decision",
+      "extends_core_primitive": "score",
+      "compatible_entity_types": [
+        "equity_security",
+        "company",
+        "thesis",
+        "decision",
+        "portfolio",
+        "position"
+      ],
+      "compatible_strategy_profiles": [
+        "event_risk_monitor"
+      ],
+      "candidate_node_types": [
+        "strategy_profile_interpreter",
+        "action_mapper"
+      ],
+      "candidate_attribute_keys": [
+        "binary_event_within_30d_flag",
+        "regulatory_overhang_score",
+        "litigation_material_overhang_flag"
+      ],
+      "candidate_event_types": [],
+      "candidate_insight_types": [],
+      "output_views": [
+        "risk_dashboard",
+        "watchlist"
+      ],
+      "evidence_requirements": [
+        {
+          "evidence_type": "thesis_or_score_input_evidence",
+          "required": true,
+          "source_quality_minimum": 4
+        }
+      ],
+      "audit_requirements": [
+        "source_refs",
+        "strategy_profile_hash",
+        "methodology_graph_hash",
+        "validation_record_ids"
+      ],
+      "source_quality_minimum": 4,
+      "human_review_required": false,
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "model_run_id_required",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "connector_roles": [],
+        "license_policy": "internal_research_only",
+        "query_policy": "user_entitled",
+        "cache_policy": "allowed",
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "derived_value_policy": "conditional",
+        "redistribution_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "attribution_required": false,
+        "retention_policy": "delete_on_user_revocation",
+        "redaction_required": true
+      },
+      "validation_rules": [
+        "profile_must_have_strategy_family",
+        "profile_actions_must_match_mandate",
+        "profile_score_method_must_record_caps",
+        "profile_must_link_required_risk_gates",
+        "profile_must_link_invalidation_policy",
+        "profile_must_carry_evidence_standards",
+        "backtest_uses_only_attributes_with_pit_safe_true_when_profile_requires_pit_safe",
+        "size_action_requires_portfolio_context"
+      ],
+      "failure_modes": [
+        "profile_orphaned_from_strategy_family",
+        "score_method_without_caps",
+        "missing_invalidation_policy",
+        "pit_unsafe_attribute_used_when_pit_required"
+      ],
+      "downgrade_conditions": [
+        {
+          "condition": "downgrade_when_rumor_credibility_below_3",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        },
+        {
+          "condition": "downgrade_when_event_clock_expired",
+          "from_label": "high_confidence_core",
+          "to_label": "research_supported_experimental"
+        }
+      ],
+      "rejection_conditions": [],
+      "family_specific": {
+        "strategy_family_ids": [
+          "risk_avoidance_monitor",
+          "event_driven"
+        ],
+        "composition_rules": [],
+        "mandate": {
+          "objective": "risk_monitoring",
+          "horizon": "continuous",
+          "allowed_actions": [
+            "watch",
+            "monitor",
+            "alert_only",
+            "avoid",
+            "hedge_candidate",
+            "research_deeper"
+          ],
+          "benchmark_id": null,
+          "tracking_error_budget_bps": null,
+          "directionality": "risk_only"
+        },
+        "universe": {
+          "asset_class": "public_equity",
+          "liquidity_minimum_dollar": 1000000.0,
+          "market_cap_band": "any",
+          "geography": [
+            "US",
+            "Global"
+          ]
+        },
+        "preferred_signals": [
+          {
+            "signal_id": "binary_event_within_30d_flag",
+            "weight": 1.0,
+            "required": true
+          },
+          {
+            "signal_id": "regulatory_overhang_score",
+            "weight": 0.5,
+            "required": false
+          },
+          {
+            "signal_id": "litigation_material_overhang_flag",
+            "weight": 0.5,
+            "required": false
+          }
+        ],
+        "required_confirmations": [
+          "fda_binary_pending",
+          "regulatory_overhang",
+          "litigation_material_overhang"
+        ],
+        "required_risk_gates": [
+          "fda_binary_risk_gate",
+          "litigation_severity_gate",
+          "rumor_credibility_gate",
+          "non_advice_boundary"
+        ],
+        "invalidation_policy": [
+          "event_credibility_falls_below_threshold",
+          "event_clock_expires_without_confirmation"
+        ],
+        "monitoring_cadence": "daily",
+        "score_methodology": {
+          "composition": "custom",
+          "weights": [
+            {
+              "key": "binary_event_within_30d_flag",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "insight_translation_overrides": [],
+        "evidence_standards": {
+          "minimum_source_quality": 4,
+          "requires_filing_evidence": true,
+          "requires_pit_safe": true,
+          "requires_rights_safe": true
+        },
+        "validation_block": {
+          "out_of_sample_required": false,
+          "walk_forward_required": false,
+          "deflated_sharpe_required": false,
+          "thesis_monitoring_required": true
+        },
+        "validation_window": {
+          "kind": "continuous",
+          "lookback": "event_clock",
+          "min_observations": 1,
+          "monitoring_cadence": "daily"
+        },
+        "score_weights": {
+          "weights": [
+            {
+              "key": "binary_event_within_30d_flag",
+              "weight": 1.0,
+              "cap": 0.5
+            }
+          ],
+          "caps": [
+            {
+              "per_component_max_weight": 0.5
+            }
+          ]
+        },
+        "output_view_default": "risk_dashboard",
+        "downgrade_rules": [
+          "downgrade_when_rumor_credibility_below_3",
+          "downgrade_when_event_clock_expired"
+        ],
+        "rejection_rules": [
+          "reject_when_rumor_used_to_generate_action_beyond_watch"
+        ],
+        "human_review_rules": [
+          "require_human_review_when_binary_fda_or_regulatory_action_imminent"
+        ],
+        "non_advice_boundary_required": true,
+        "profile_id": "event_risk_monitor"
+      }
+    }
+  ]
+}

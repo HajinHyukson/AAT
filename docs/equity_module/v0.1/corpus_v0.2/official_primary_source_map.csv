@@ -1,0 +1,21 @@
+source_id,name,authority,jurisdiction,data_class,pit_treatment,access_mode,refresh_cadence,rights_class,weak_domain_tags,fallback_relevant,validation_rule
+F-001,SEC EDGAR 10-K filings,SEC,US,annual_report,filing_accepted_at + restated_periods_revisioned,EDGAR_API_or_FTP,real_time_after_filing,public_official,[],,
+F-002,SEC EDGAR 10-Q filings,SEC,US,quarterly_report,filing_accepted_at,EDGAR_API,real_time_after_filing,public_official,,,
+F-003,SEC EDGAR 8-K filings,SEC,US,material_event_disclosure,"filing_accepted_at; Items 2.02, 5.02, 7.01, 8.01 carry distinct signals",EDGAR_API,real_time,,,,
+F-013,SEC EDGAR XBRL facts,SEC,US,structured_financial_facts,fact_filed_at + period_end_at; revisions = restatements,EDGAR_API or financial-statement-data-sets,filing_aligned,,,,
+F-014,SEC EDGAR S-1 / IPO filings,SEC,,ipo_prospectus,filing_accepted_at,,,,,,
+OW-001,SEC EDGAR Form 4 (insider transactions),SEC,,insider_transaction,transaction_at vs filing_at; both must be modelled,,,public_official,[],,
+OW-022,SEC EDGAR 13F-HR (institutional holdings),SEC,,institutional_holdings,publication_at (45 days post-quarter); NEVER use as current positioning,,,public_official,,,filing_13f_data_must_not_be_used_as_current_positioning
+OW-023,SEC EDGAR 13D / 13G (activist + 5%+ owner),SEC,,activist_or_5pct_holder,filing_accepted_at; 10-day window for 13D triggers,,,public_official,,,
+GOV-001,SEC Regulation S-K (general),SEC,,regulatory_framework,version_at_filing_time,,,public_official,,,
+GOV-011,SEC Regulation FD,SEC,,regulatory_framework_fair_disclosure,applies_to_company_communications,,,public_official,,,
+MA-001,FRED macro current series,St. Louis Fed,,macro_current,latest_only_until_alfred_pipeline; PIT warning required,,,public_official,['alfred_macro_vintaged'],True,
+MA-002,FRED ALFRED real-time vintaged macro,St. Louis Fed,,macro_vintaged,vintage_date_per_observation; PIT-safe for backtest,,,public_official,['alfred_macro_vintaged'],,
+MA-003,BLS employment / CPI / PPI,BLS,,macro_official,publication_at; revisions = new vintages,,,public_official,,,
+SH-001,FINRA bi-weekly short interest,FINRA,,short_interest,publication_date; never use settlement_date as available_at,,,public_official,['options_borrow_etf_index_flows'],,short_interest_must_use_publication_date_for_available_at
+SH-006,Failures-to-deliver (SEC),SEC,,fail_to_deliver,publication_at; bi-weekly,,,public_official,['options_borrow_etf_index_flows'],,
+EV-001,Earnings release (8-K Item 2.02),SEC + company,,earnings_event,release_at; preceded_by_estimates,,,public_official,,,
+EV-025,Pre-announcement / preliminary results press release,company,,earnings_pre_announcement,press_release_at,,,public_official_company_release,,,
+EV-026,Earnings call transcript,company + transcript provider,,earnings_call_transcript,call_at; transcript publication may lag,,,mixed — company audio is public; transcript provider services often licensed,['licensed_data_connector_entitlement_reviews'],,
+GOV-012,FDA approval / PDUFA calendar,FDA,,regulatory_milestone,decision_date_or_pdufa_date,,,public_official,['sector_ontology_biotech'],,
+GOV-013,FERC orders + rate case dockets,FERC,,regulatory_proceeding,docket_filing_date,,,public_official,['sector_ontology_utilities'],,

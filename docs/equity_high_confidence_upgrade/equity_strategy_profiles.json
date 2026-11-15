@@ -1,0 +1,772 @@
+[
+  {
+    "profile_id": "eq_profile_long_value_v1",
+    "families": [
+      "EQF-LONG-VALUE"
+    ],
+    "horizon": "multi_year",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "valuation_matrix",
+      "investment_memo"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_quality_compounder_v1",
+    "families": [
+      "EQF-LONG-QUALITY"
+    ],
+    "horizon": "multi_year",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "quality_scorecard",
+      "investment_memo"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_growth_surprise_v1",
+    "families": [
+      "EQF-GROWTH"
+    ],
+    "horizon": "quarters",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "growth_bridge",
+      "catalyst_board"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_income_safety_v1",
+    "families": [
+      "EQF-INCOME"
+    ],
+    "horizon": "multi_year",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "income_safety_card"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_quant_factor_v1",
+    "families": [
+      "EQF-QUANT-FACTOR"
+    ],
+    "horizon": "monthly_rebalance",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "factor_dashboard"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_quantamental_v1",
+    "families": [
+      "EQF-QUANTAMENTAL"
+    ],
+    "horizon": "quarterly",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "strategy_fit_radar"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_event_earnings_v1",
+    "families": [
+      "EQF-EVENT-EARNINGS"
+    ],
+    "horizon": "days_to_quarters",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "event_catalyst_board"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_merger_arb_v1",
+    "families": [
+      "EQF-EVENT-MA"
+    ],
+    "horizon": "deal_life",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "deal_spread_memo"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_special_situations_v1",
+    "families": [
+      "EQF-EVENT-SPIN"
+    ],
+    "horizon": "months_to_years",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "special_sit_memo"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_technical_execution_v1",
+    "families": [
+      "EQF-TECH-MOMENTUM",
+      "EQF-EXECUTION"
+    ],
+    "horizon": "days_to_weeks",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "trade_plan"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_macro_regime_v1",
+    "families": [
+      "EQF-MACRO-REGIME"
+    ],
+    "horizon": "regime_cycle",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "regime_dashboard"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_short_fundamental_v1",
+    "families": [
+      "EQF-SHORT-FUNDAMENTAL"
+    ],
+    "horizon": "weeks_to_years",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "short_thesis_memo",
+      "risk_dashboard"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_portfolio_risk_v1",
+    "families": [
+      "EQF-RISK-OVERLAY"
+    ],
+    "horizon": "review_cycle",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "portfolio_impact_report"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_sentiment_research_v1",
+    "families": [
+      "EQF-SENTIMENT"
+    ],
+    "horizon": "days_to_quarters",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "narrative_monitor"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "profile_id": "eq_profile_research_watchlist_v1",
+    "families": [
+      "EQF-WATCHLIST"
+    ],
+    "horizon": "open",
+    "required_nodes": [
+      "evidence_bundle",
+      "PIT_audit",
+      "rights_audit",
+      "validation_gate"
+    ],
+    "required_gates": [
+      "PIT",
+      "rights",
+      "evidence",
+      "validation"
+    ],
+    "score_weights": {
+      "evidence": 0.35,
+      "method": 0.25,
+      "risk": 0.2,
+      "valuation_or_signal": 0.2
+    },
+    "action_thresholds": {
+      "research_deeper": 0.5,
+      "watch": 0.6,
+      "candidate_action": 0.75
+    },
+    "output_views": [
+      "watchlist"
+    ],
+    "PIT_requirements": [
+      "available_at",
+      "retrieved_at",
+      "source_version"
+    ],
+    "rights_requirements": [
+      "query",
+      "display",
+      "export",
+      "package"
+    ],
+    "validation_rules": [
+      "EQ_VAL_PROFILE_001",
+      "EQ_VAL_PIT_001",
+      "EQ_VAL_RIGHTS_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  }
+]

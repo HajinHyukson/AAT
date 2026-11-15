@@ -4,16 +4,25 @@ import { useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import {
   Area,
+  Bar,
   CartesianGrid,
   ComposedChart,
   Line,
   ReferenceArea,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import { getAttributionChart } from "@/lib/api";
+import { ensureLatestAttribution, getAttributionChart, getAttributionJob } from "@/lib/api";
+import {
+  PERIOD_BAR_RANGE_KEY,
+  buildPeriodBarRows,
+  buildPeriodYDomain,
+  periodContributionValue,
+} from "./attribution-period-bars";
+import type { PeriodBarRow } from "./attribution-period-bars";
 import type {
   AttributionChartPoint,
   AttributionChartRange,
@@ -101,11 +110,26 @@ type ChartBounds = {
   height: number;
 };
 
+type PeriodTooltipPayload = {
+  value?: number | string | [number, number];
+  payload?: PeriodBarRow;
+};
+
+type PeriodBarShapeProps = {
+  x?: number | string;
+  y?: number | string;
+  width?: number | string;
+  height?: number | string;
+  payload?: PeriodBarRow;
+};
+
 export function AttributionChart({
   ticker,
+  methodology,
   initialChart,
 }: {
   ticker: string;
+  methodology: string;
   initialChart: AttributionChartResponse | null;
 }) {
   const [chart, setChart] = useState<AttributionChartResponse | null>(initialChart);
@@ -122,6 +146,14 @@ export function AttributionChart({
     height: CHART_HEIGHT,
   });
   const chartFrameRef = useRef<HTMLDivElement | null>(null);
+  const requestIdRef = useRef(0);
+  const chartCacheRef = useRef<Map<string, AttributionChartResponse>>(
+    new Map(
+      initialChart
+        ? [[chartCacheKey(ticker, methodology, initialChart.range), initialChart]]
+        : [],
+    ),
+  );
 
   const chartRows = useMemo(() => buildChartRows(chart), [chart]);
   const rowByDate = useMemo(
@@ -134,19 +166,68 @@ export function AttributionChart({
     () => (chart && selection ? buildSelectionSummary(chart, selection.start, selection.end) : null),
     [chart, selection],
   );
+  const periodBarRows = useMemo(() => buildPeriodBarRows(chart), [chart]);
+  const periodYDomain = useMemo(
+    () => buildPeriodYDomain(periodBarRows),
+    [periodBarRows],
+  );
 
   async function selectRange(nextRange: AttributionChartRange) {
+    const requestId = requestIdRef.current + 1;
+    requestIdRef.current = requestId;
+    const cacheKey = chartCacheKey(ticker, methodology, nextRange);
+    const cachedChart = chartCacheRef.current.get(cacheKey);
+
     setRange(nextRange);
     setLoading(true);
-    setStatus("");
+    setStatus(preparingStatus(nextRange));
     setSelection(null);
     setHover(null);
+    if (cachedChart) {
+      setChart(cachedChart);
+    }
+
     try {
-      setChart(await getAttributionChart(ticker, nextRange));
+      const [existingChart, ensured] = await Promise.all([
+        optionalChart(getAttributionChart(ticker, nextRange, methodology)),
+        ensureLatestAttribution({ ticker, methodology, range: nextRange }),
+      ]);
+      if (!isCurrentChartRequest(requestIdRef, requestId)) {
+        return;
+      }
+      if (existingChart) {
+        chartCacheRef.current.set(cacheKey, existingChart);
+        setChart(existingChart);
+      }
+      if (ensured.job_id && (ensured.status === "queued" || ensured.status === "running")) {
+        setStatus(preparingStatus(nextRange));
+        const completed = await pollAttributionJob(
+          ensured.job_id,
+          () => !isCurrentChartRequest(requestIdRef, requestId),
+        );
+        if (!isCurrentChartRequest(requestIdRef, requestId)) {
+          return;
+        }
+        if (!completed) {
+          setStatus("Attribution update did not finish.");
+          return;
+        }
+        const refreshedChart = await getAttributionChart(ticker, nextRange, methodology);
+        if (!isCurrentChartRequest(requestIdRef, requestId)) {
+          return;
+        }
+        chartCacheRef.current.set(cacheKey, refreshedChart);
+        setChart(refreshedChart);
+      }
+      setStatus("");
     } catch {
-      setStatus("Chart data could not be loaded.");
+      if (isCurrentChartRequest(requestIdRef, requestId)) {
+        setStatus("Chart data could not be loaded.");
+      }
     } finally {
-      setLoading(false);
+      if (isCurrentChartRequest(requestIdRef, requestId)) {
+        setLoading(false);
+      }
     }
   }
 
@@ -305,6 +386,7 @@ export function AttributionChart({
                     stroke="none"
                     name={`${driver.replaceAll("_", " ")} positive`}
                     dot={false}
+                    isAnimationActive={false}
                     isRange
                   />
                 ))}
@@ -318,6 +400,7 @@ export function AttributionChart({
                     stroke="none"
                     name={`${driver.replaceAll("_", " ")} negative`}
                     dot={false}
+                    isAnimationActive={false}
                     isRange
                   />
                 ))}
@@ -348,6 +431,7 @@ export function AttributionChart({
                   strokeOpacity={0.75}
                   strokeWidth={2}
                   dot={false}
+                  isAnimationActive={false}
                 />
                 <ReferenceLine y={0} stroke="rgba(35,49,47,0.82)" strokeWidth={2} />
                 <Line
@@ -360,6 +444,7 @@ export function AttributionChart({
                   strokeLinejoin="round"
                   dot={false}
                   connectNulls
+                  isAnimationActive={false}
                 />
               </ComposedChart>
             </ResponsiveContainer>
@@ -381,7 +466,10 @@ export function AttributionChart({
 
         <div className="mt-3 flex flex-wrap items-start justify-between gap-3 border-t border-[rgba(93,74,42,0.12)] pt-3 text-sm">
           <div className="text-[#6b6256]">
-            {loading ? "Loading chart data..." : status || `${chart?.cadence ?? "daily"} attribution cadence`}
+            {status ||
+              (loading
+                ? "Loading chart data..."
+                : `${chart?.cadence ?? "daily"} attribution cadence`)}
           </div>
           {selectionSummary ? (
             <div className="max-w-[520px] text-right">
@@ -423,9 +511,220 @@ export function AttributionChart({
             ))}
           </div>
         ) : null}
+        <PeriodAttributionBarChart
+          rows={periodBarRows}
+          driverOrder={driverOrder}
+          yDomain={periodYDomain}
+          cadence={chart?.cadence ?? "daily"}
+        />
       </div>
     </section>
   );
+}
+
+function PeriodAttributionBarChart({
+  rows,
+  driverOrder,
+  yDomain,
+  cadence,
+}: {
+  rows: PeriodBarRow[];
+  driverOrder: string[];
+  yDomain: [number, number];
+  cadence: string;
+}) {
+  return (
+    <div className="mt-5 border-t border-[rgba(93,74,42,0.12)] pt-4">
+      <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <h4 className="text-sm font-semibold text-[#173f3a]">Period Attribution Bars</h4>
+          <p className="mt-1 text-xs text-[#6b6256]">
+            {cadence} price change and modeled drivers.
+          </p>
+        </div>
+      </div>
+      {rows.length ? (
+        <div className="h-[300px] min-h-[300px] w-full min-w-0 border border-[rgba(93,74,42,0.10)] bg-[#fffdf8]/72 px-1 py-2">
+          <ResponsiveContainer width="100%" height={300} minWidth={1} minHeight={1}>
+            <ComposedChart
+              data={rows}
+              margin={{ top: 14, right: 18, bottom: 8, left: 4 }}
+              barCategoryGap={0}
+              barGap={0}
+            >
+              <CartesianGrid stroke={THEME.grid} strokeDasharray="3 4" vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickFormatter={formatDateTick}
+                minTickGap={28}
+                height={X_AXIS_HEIGHT}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: THEME.muted, fontSize: 12 }}
+              />
+              <YAxis
+                domain={yDomain}
+                tickFormatter={(value) => formatAxisCurrency(Number(value))}
+                width={Y_AXIS_WIDTH}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: THEME.muted, fontSize: 12 }}
+              />
+              <Tooltip
+                cursor={{ fill: "rgba(23,63,58,0.08)" }}
+                content={(props) => (
+                  <PeriodTooltipContent
+                    active={props.active}
+                    payload={props.payload as unknown as readonly PeriodTooltipPayload[] | undefined}
+                    driverOrder={driverOrder}
+                  />
+                )}
+              />
+              <ReferenceLine y={0} stroke="rgba(35,49,47,0.82)" strokeWidth={1.5} />
+              <Bar
+                dataKey={PERIOD_BAR_RANGE_KEY}
+                fill="transparent"
+                stroke="none"
+                isAnimationActive={false}
+                shape={(props) => <FloatingPeriodBarShape {...(props as PeriodBarShapeProps)} />}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      ) : (
+        <div className="border border-[rgba(93,74,42,0.12)] bg-[#f5f0e7]/70 px-4 py-6 text-sm text-[#6b6256]">
+          No attribution rows in this range.
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FloatingPeriodBarShape({
+  x: rawX,
+  y: rawY,
+  width: rawWidth,
+  height: rawHeight,
+  payload,
+}: PeriodBarShapeProps) {
+  const x = pixelNumber(rawX);
+  const y = pixelNumber(rawY);
+  const width = pixelNumber(rawWidth);
+  const height = pixelNumber(rawHeight);
+  if (!payload || width <= 0 || height <= 0) {
+    return null;
+  }
+  const [rangeBottom, rangeTop] = payload.bar_draw_range_usd;
+  const rangeSpan = rangeTop - rangeBottom;
+  if (rangeSpan <= NEAR_ZERO_PCT) {
+    return null;
+  }
+  const yFor = (value: number) => y + ((rangeTop - value) / rangeSpan) * height;
+  const bodyTopY = yFor(payload.bar_top_usd);
+  const bodyBottomY = yFor(payload.bar_bottom_usd);
+  const bodyY = Math.min(bodyTopY, bodyBottomY);
+  const bodyHeight = Math.max(1, Math.abs(bodyBottomY - bodyTopY));
+  const segmentInset = Math.min(1.5, width * 0.08);
+  const segmentX = x + segmentInset;
+  const segmentWidth = Math.max(0, width - segmentInset * 2);
+  const startY = yFor(payload.bar_start_edge_usd);
+  const endY = yFor(payload.bar_end_edge_usd);
+
+  return (
+    <g>
+      <rect
+        x={x}
+        y={bodyY}
+        width={width}
+        height={bodyHeight}
+        fill={periodBodyFill(payload.direction)}
+        stroke="rgba(35,49,47,0.20)"
+        strokeWidth={0.5}
+      />
+      {payload.__segments.map((segment, index) => {
+        const segmentTopY = yFor(segment.y1);
+        const segmentBottomY = yFor(segment.y0);
+        const segmentY = Math.min(segmentTopY, segmentBottomY);
+        const segmentHeight = Math.max(1, Math.abs(segmentBottomY - segmentTopY));
+        return (
+          <rect
+            key={`${payload.date}-${segment.driver}-${index}`}
+            x={segmentX}
+            y={segmentY}
+            width={segmentWidth}
+            height={segmentHeight}
+            fill={driverColor(segment.driver)}
+            fillOpacity={0.88}
+          />
+        );
+      })}
+      <line
+        x1={x}
+        x2={x + width}
+        y1={startY}
+        y2={startY}
+        stroke="rgba(35,49,47,0.30)"
+        strokeWidth={0.8}
+      />
+      <line
+        x1={x}
+        x2={x + width}
+        y1={endY}
+        y2={endY}
+        stroke="rgba(35,49,47,0.78)"
+        strokeWidth={1.15}
+      />
+    </g>
+  );
+}
+
+function chartCacheKey(ticker: string, methodology: string, range: AttributionChartRange) {
+  return `${ticker}:${methodology}:${range}`;
+}
+
+function preparingStatus(range: AttributionChartRange) {
+  return chartCadenceForRange(range) === "weekly"
+    ? "Preparing weekly attribution"
+    : "Preparing daily attribution";
+}
+
+function chartCadenceForRange(range: AttributionChartRange) {
+  return range === "6m" || range === "1y" || range === "max" ? "weekly" : "daily";
+}
+
+function isCurrentChartRequest(ref: { current: number }, requestId: number) {
+  return ref.current === requestId;
+}
+
+async function optionalChart(
+  promise: Promise<AttributionChartResponse>,
+): Promise<AttributionChartResponse | null> {
+  try {
+    return await promise;
+  } catch {
+    return null;
+  }
+}
+
+async function pollAttributionJob(jobId: string, isCancelled: () => boolean) {
+  for (let attempt = 0; attempt < 90; attempt += 1) {
+    if (isCancelled()) {
+      return false;
+    }
+    await sleep(1500);
+    const job = await getAttributionJob(jobId);
+    if (job.status === "completed") {
+      return true;
+    }
+    if (job.status === "failed" || job.status === "skipped") {
+      return false;
+    }
+  }
+  return false;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
 function buildChartRows(chart: AttributionChartResponse | null): ChartRow[] {
@@ -747,6 +1046,66 @@ function numberValue(value: ChartRowValue | undefined) {
   return typeof value === "number" ? value : null;
 }
 
+function PeriodTooltipContent({
+  active,
+  payload,
+  driverOrder,
+}: {
+  active?: boolean;
+  payload?: readonly PeriodTooltipPayload[];
+  driverOrder: string[];
+}) {
+  if (!active || !payload?.length) {
+    return null;
+  }
+  const row = payload[0]?.payload;
+  if (!row) {
+    return null;
+  }
+  const drivers = driverOrder
+    .map((driver) => ({
+      driver,
+      value: periodContributionValue(row, driver),
+    }))
+    .filter((item) => Math.abs(item.value) > NEAR_ZERO_PCT)
+    .sort((left, right) => Math.abs(right.value) - Math.abs(left.value));
+
+  return (
+    <div className="max-w-[280px] border border-[rgba(93,74,42,0.16)] bg-[#fffdf8]/95 px-3 py-2 text-xs shadow-[0_18px_36px_rgba(18,38,34,0.14)]">
+      <div className="flex items-center justify-between gap-4">
+        <span className="font-semibold text-[#173f3a]">{formatDateTick(row.date)}</span>
+        <span className="text-[10px] font-semibold uppercase text-[#6b6256]">%</span>
+      </div>
+      <div className="mt-1 text-[#23312f]">
+        Price change: {formatSignedPercent(row.price_change_pct, 2)}
+      </div>
+      <div className="mt-1 text-[#23312f]">
+        Close: {row.close_price_usd === null ? "n/a" : formatCurrency(row.close_price_usd)}
+      </div>
+      <div className="mt-2 space-y-1">
+        {drivers.map((item) => (
+          <div
+            key={item.driver}
+            className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-[#23312f]"
+          >
+            <span
+              className="h-2.5 w-2.5"
+              style={{ backgroundColor: driverColor(item.driver) }}
+            />
+            <span className="truncate">{item.driver.replaceAll("_", " ")}</span>
+            <span
+              className="tabular-nums"
+              style={{ color: item.value < 0 ? "#a33b42" : "#2f7a62" }}
+            >
+              {formatSignedPercent(item.value, 2)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function formatPriceChange(row: ChartRow, displayMode: DisplayMode) {
   if (displayMode === "usd") {
     return typeof row.price_change_usd === "number" ? formatSignedCurrency(row.price_change_usd) : "n/a";
@@ -760,6 +1119,10 @@ function formatShare(value: number | null) {
   return value === null ? "n/a" : `${formatSignedNumber(value, 1)}%`;
 }
 
+function formatSignedPercent(value: number, digits: number) {
+  return `${formatSignedNumber(value, digits)}%`;
+}
+
 function formatSignedNumber(value: number, digits: number) {
   const sign = value > 0 ? "+" : "";
   return `${sign}${value.toFixed(digits)}`;
@@ -768,6 +1131,35 @@ function formatSignedNumber(value: number, digits: number) {
 function formatSignedCurrency(value: number) {
   const sign = value > 0 ? "+" : value < 0 ? "-" : "";
   return `${sign}$${Math.abs(value).toFixed(2)}`;
+}
+
+function formatCurrency(value: number) {
+  return `$${value.toFixed(2)}`;
+}
+
+function formatAxisCurrency(value: number) {
+  return `$${value.toFixed(value >= 100 ? 0 : 1)}`;
+}
+
+function periodBodyFill(direction: PeriodBarRow["direction"]) {
+  if (direction === "positive") {
+    return "rgba(47,122,98,0.16)";
+  }
+  if (direction === "negative") {
+    return "rgba(163,59,66,0.16)";
+  }
+  return "rgba(107,98,86,0.14)";
+}
+
+function pixelNumber(value: number | string | undefined) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
 }
 
 function clamp(value: number, min: number, max: number) {

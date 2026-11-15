@@ -1,10 +1,5 @@
-# Compliance Checklist
+# Moved: Compliance Checklist
 
-Before any pilot or production run:
+Research file: [viza_research/aat_foundation/compliance_checklist.md](viza_research/aat_foundation/compliance_checklist.md).
 
-- `.env` is not committed.
-- No unlicensed production adapter is enabled.
-- Every attribution feature has `event_time`, `ingestion_time`, and `timestamp_available`.
-- Backtests filter on `timestamp_available <= attribution_cutoff`.
-- Every output includes `unexplained_residual`.
-- Narrative generation, once implemented, uses only structured engine output.
+Agent entry point: [00_AGENT_START_HERE.md](00_AGENT_START_HERE.md).

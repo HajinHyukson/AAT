@@ -1,0 +1,31 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.6.5-high-confidence-handoff",
+  "display_name": "VIZA Equity Investment",
+  "status": "full_high_confidence_research_corpus_status_6_5",
+  "depends_on": [
+    "viza.core.strategy",
+    "viza.finance.securities"
+  ],
+  "optional_modules": [
+    "viza.aat.attribute_analysis"
+  ],
+  "registry_artifacts": {
+    "entity_types": "equity_entity_types.json",
+    "node_types": "equity_node_types.json",
+    "edge_types": "equity_edge_types.json",
+    "attributes": "equity_attribute_registry_seed.csv",
+    "events": "equity_event_registry_seed.json",
+    "insights": "equity_insight_registry_seed.json",
+    "strategy_profiles": "equity_strategy_profiles.json",
+    "output_views": "equity_output_views.json",
+    "validation_rules": "equity_validation_rules.json",
+    "connector_requirements": "equity_connector_requirements.json"
+  },
+  "package_policy": {
+    "marketplace": "future_review_mode_only",
+    "raw_provider_export_default": "blocked",
+    "unknown_rights_export_default": "blocked",
+    "human_review_required_for_legal_or_fraud_claims": true
+  }
+}

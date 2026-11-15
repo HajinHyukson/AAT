@@ -24,6 +24,7 @@ def test_canonical_tables_exist() -> None:
         "event_surprise",
         "company_exposure",
         "exposure_update_decision",
+        "attribution_methodology",
         "attribution_run",
         "attribution_contribution",
         "analyst_feedback",
@@ -31,6 +32,7 @@ def test_canonical_tables_exist() -> None:
         "model_universe_member",
         "attribution_backfill_task",
         "security_attribution_summary",
+        "attribution_on_demand_job",
         "faustcalc_import_run",
         "faustcalc_validation_issue",
         "faustcalc_asset",
@@ -60,10 +62,25 @@ def test_attribution_run_tracks_cadence_in_unique_key() -> None:
         "security_id",
         "window_start",
         "window_end",
-        "model_version",
-        "factor_basket_version",
         "cadence",
+        "methodology",
     ) in unique_columns
+
+
+def test_methodology_specific_summary_and_on_demand_tables() -> None:
+    summary = Base.metadata.tables["security_attribution_summary"]
+    summary_unique_columns = {
+        tuple(constraint.columns.keys())
+        for constraint in summary.constraints
+        if constraint.name == "uq_security_attribution_summary_universe"
+    }
+    job = Base.metadata.tables["attribution_on_demand_job"]
+
+    assert "methodology" in summary.columns
+    assert ("universe_name", "universe_version", "methodology", "security_id") in summary_unique_columns
+    assert "methodology" in job.columns
+    assert "target_range_start" in job.columns
+    assert "target_range_end" in job.columns
 
 
 def test_timestamped_tables_have_point_in_time_columns() -> None:

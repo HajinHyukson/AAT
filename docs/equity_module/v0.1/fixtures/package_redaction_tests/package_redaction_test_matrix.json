@@ -1,0 +1,381 @@
+{
+  "$schema": "../../equity_registry_shared_metadata.schema.json",
+  "test_matrix_id": "package_redaction_v0.1",
+  "test_matrix_description": "Package + redaction test matrix for viza.finance.equity_investment v0.1. Combines 9 mixed-data sample objects (covering every license_policy class) with 6 package modes (white_box, gray_box, black_box, output_only, preview, marketplace_draft) for 54 per-cell expected behaviours, plus 5 integration scenarios that bundle multiple data types into one package and assert composite behavior.",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "created_from": "CLAUDE_EQUITY_MODULE.md@v0.1-research-baseline",
+  "test_run_id": "run_package_redaction_v0_1_canonical",
+  "test_decision_timestamp": "2025-11-15T14:00:00Z",
+
+  "sample_data_objects": {
+    "d01_edgar_filing_metadata": {
+      "data_id": "d01_edgar_filing_metadata",
+      "display_name": "Public EDGAR filing metadata (10-K accession + filing_accepted_at)",
+      "category": "public_filing_metadata",
+      "example_payload": {"form_type": "10-K", "accession_no": "0009999999-25-000001", "filing_accepted_at": "2025-02-15T16:30:00Z", "company_id": "co_exampleco_001"},
+      "license_policy": "public_official",
+      "connector_role": "sec_filings",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d02_derived_ratios_from_edgar": {
+      "data_id": "d02_derived_ratios_from_edgar",
+      "display_name": "Derived ratios computed from public EDGAR XBRL facts",
+      "category": "derived_attribute",
+      "example_payload": {"roic_ttm": 0.180, "fcf_yield_ttm": 0.0648, "net_debt_to_ebitda_ttm": 1.80, "cfo_to_ni_ttm": 1.143, "computation_method": "viza.equity.derived_calculation_engine@0.1.0"},
+      "license_policy": "derived_only",
+      "connector_role": "derived_calculation_engine",
+      "pit_safe": true,
+      "derived_from": ["d01_edgar_filing_metadata"]
+    },
+    "d03_fred_macro_current": {
+      "data_id": "d03_fred_macro_current",
+      "display_name": "Public FRED macro current snapshot (latest_only, NOT vintaged)",
+      "category": "public_macro_latest_only",
+      "example_payload": {"series_id": "UST10Y", "value": 0.0425, "release_date": "2025-11-14", "vintage_required_for_backtest": true, "current_aat_status": "ingest_timestamp_only"},
+      "license_policy": "public_official",
+      "connector_role": "fred_macro",
+      "pit_safe": "latest_only_until_alfred_pipeline",
+      "derived_from": null
+    },
+    "d04_alfred_macro_vintaged": {
+      "data_id": "d04_alfred_macro_vintaged",
+      "display_name": "ALFRED-style vintaged macro series (PIT-safe for backtest)",
+      "category": "public_macro_vintaged",
+      "example_payload": {"series_id": "UST10Y", "value": 0.0420, "release_date": "2025-08-15", "vintage_date": "2025-08-15", "data_version_policy": "vintaged"},
+      "license_policy": "public_official",
+      "connector_role": "alfred_macro_vintage",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d05_finra_short_interest": {
+      "data_id": "d05_finra_short_interest",
+      "display_name": "FINRA bi-weekly short interest (publication_date PIT)",
+      "category": "public_regulator_release",
+      "example_payload": {"security_id": "sec_exampleco_001", "settlement_date": "2025-10-31", "publication_date": "2025-11-08", "short_interest_pct_float": 0.082, "days_to_cover": 4.1},
+      "license_policy": "public_official",
+      "connector_role": "finra_short_interest",
+      "pit_safe": true,
+      "derived_from": null,
+      "must_use_publication_date_for_available_at": true
+    },
+    "d06_licensed_market_data": {
+      "data_id": "d06_licensed_market_data",
+      "display_name": "Licensed market data placeholder (FMP / Polygon / NYSE real-time)",
+      "category": "licensed_provider",
+      "example_payload": {"security_id": "sec_exampleco_001", "close_unadjusted": 48.75, "volume_shares": 1850000, "provider": "FMP", "license_status_in_test": "missing"},
+      "license_policy": "licensed_provider_required",
+      "connector_role": "licensed_market_data_connector",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d07_licensed_analyst_estimates": {
+      "data_id": "d07_licensed_analyst_estimates",
+      "display_name": "Licensed analyst estimates placeholder (I/B/E/S consensus)",
+      "category": "licensed_provider",
+      "example_payload": {"security_id": "sec_exampleco_001", "metric": "consensus_eps_q4_2025", "value": 1.04, "as_of": "2025-11-14", "provider": "I/B/E/S", "license_status_in_test": "missing"},
+      "license_policy": "licensed_provider_required",
+      "connector_role": "licensed_estimates_connector",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d08_licensed_transcript_news": {
+      "data_id": "d08_licensed_transcript_news",
+      "display_name": "Licensed transcript / news placeholder (Refinitiv / RavenPack)",
+      "category": "licensed_provider",
+      "example_payload": {"document_id": "transcript_2025q3_exampleco", "publication_at": "2025-10-22T14:00:00Z", "provider": "Refinitiv StreetEvents", "license_status_in_test": "missing", "raw_text_excerpt_redacted": true},
+      "license_policy": "licensed_provider_required",
+      "connector_role": "licensed_text_connector",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d09_user_portfolio_holdings": {
+      "data_id": "d09_user_portfolio_holdings",
+      "display_name": "User-private synthetic portfolio holdings",
+      "category": "user_private",
+      "example_payload": {"portfolio_id": "portfolio_synthetic_user_001", "nav_usd": 10000000.0, "position_count": 5, "owner_user_id": "user_pilot_001"},
+      "license_policy": "internal_research_only",
+      "connector_role": "user_portfolio_connector",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d10_user_document_memo": {
+      "data_id": "d10_user_document_memo",
+      "display_name": "User-authored document / memo (private)",
+      "category": "user_private",
+      "example_payload": {"memo_id": "user_memo_001", "author_user_id": "user_pilot_001", "created_at": "2025-11-15T13:30:00Z", "title": "ExampleCo notes", "body_redacted": true},
+      "license_policy": "internal_research_only",
+      "connector_role": "user_document_connector",
+      "pit_safe": true,
+      "derived_from": null
+    },
+    "d11_raw_social_news_unclear_rights": {
+      "data_id": "d11_raw_social_news_unclear_rights",
+      "display_name": "Raw social/news text with unclear rights (platform TOS-restricted)",
+      "category": "restricted_or_unclear",
+      "example_payload": {"post_id": "twt-9999999", "platform": "x_twitter", "published_at": "2025-11-14T10:15:00Z", "raw_text_redacted_by_default": true, "rights_status": "platform_tos_restricted"},
+      "license_policy": "restricted_or_unclear",
+      "connector_role": "licensed_text_connector",
+      "pit_safe": "latest_only",
+      "derived_from": null
+    }
+  },
+
+  "package_modes": ["white_box", "gray_box", "black_box", "output_only", "preview", "marketplace_draft"],
+
+  "per_cell_test_matrix": [
+    {"test_case_id": "tc_d01_white_box",        "data_id": "d01_edgar_filing_metadata",       "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official metadata may display + export without redaction in white_box (creator-only)"}},
+    {"test_case_id": "tc_d01_gray_box",         "data_id": "d01_edgar_filing_metadata",       "package_mode": "gray_box",         "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official, attribution preserved"}},
+    {"test_case_id": "tc_d01_black_box",        "data_id": "d01_edgar_filing_metadata",       "package_mode": "black_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official, included as evidence reference"}},
+    {"test_case_id": "tc_d01_output_only",      "data_id": "d01_edgar_filing_metadata",       "package_mode": "output_only",      "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official, included as evidence reference"}},
+    {"test_case_id": "tc_d01_preview",          "data_id": "d01_edgar_filing_metadata",       "package_mode": "preview",          "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official summary metadata permitted in preview"}},
+    {"test_case_id": "tc_d01_marketplace_draft","data_id": "d01_edgar_filing_metadata",       "package_mode": "marketplace_draft","expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official metadata permitted; raw long-form filing TEXT remains paraphrase-only at module rule level"}},
+
+    {"test_case_id": "tc_d02_white_box",        "data_id": "d02_derived_ratios_from_edgar",   "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "derived from public_official inputs; derived_value_policy=allowed under derived_only license"}},
+    {"test_case_id": "tc_d02_gray_box",         "data_id": "d02_derived_ratios_from_edgar",   "package_mode": "gray_box",         "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "derived_only with public inputs"}},
+    {"test_case_id": "tc_d02_black_box",        "data_id": "d02_derived_ratios_from_edgar",   "package_mode": "black_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "derived attribute exposed; methodology blinded"}},
+    {"test_case_id": "tc_d02_output_only",      "data_id": "d02_derived_ratios_from_edgar",   "package_mode": "output_only",      "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "derived attribute permitted in outputs"}},
+    {"test_case_id": "tc_d02_preview",          "data_id": "d02_derived_ratios_from_edgar",   "package_mode": "preview",          "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "derived sample permitted"}},
+    {"test_case_id": "tc_d02_marketplace_draft","data_id": "d02_derived_ratios_from_edgar",   "package_mode": "marketplace_draft","expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "derived attribute inherits public_official inputs; allowed with attribution"}},
+
+    {"test_case_id": "tc_d03_white_box",        "data_id": "d03_fred_macro_current",          "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official; PIT WARNING attached (latest_only_not_backtest_safe)"}},
+    {"test_case_id": "tc_d03_gray_box",         "data_id": "d03_fred_macro_current",          "package_mode": "gray_box",         "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official with PIT warning"}},
+    {"test_case_id": "tc_d03_black_box",        "data_id": "d03_fred_macro_current",          "package_mode": "black_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "included with PIT warning"}},
+    {"test_case_id": "tc_d03_output_only",      "data_id": "d03_fred_macro_current",          "package_mode": "output_only",      "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "included with PIT warning"}},
+    {"test_case_id": "tc_d03_preview",          "data_id": "d03_fred_macro_current",          "package_mode": "preview",          "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "included as sample"}},
+    {"test_case_id": "tc_d03_marketplace_draft","data_id": "d03_fred_macro_current",          "package_mode": "marketplace_draft","expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official; PIT warning must accompany"}},
+
+    {"test_case_id": "tc_d04_white_box",        "data_id": "d04_alfred_macro_vintaged",       "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official vintaged; backtest-safe"}},
+    {"test_case_id": "tc_d04_gray_box",         "data_id": "d04_alfred_macro_vintaged",       "package_mode": "gray_box",         "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official vintaged"}},
+    {"test_case_id": "tc_d04_black_box",        "data_id": "d04_alfred_macro_vintaged",       "package_mode": "black_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official vintaged"}},
+    {"test_case_id": "tc_d04_output_only",      "data_id": "d04_alfred_macro_vintaged",       "package_mode": "output_only",      "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official vintaged"}},
+    {"test_case_id": "tc_d04_preview",          "data_id": "d04_alfred_macro_vintaged",       "package_mode": "preview",          "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public sample"}},
+    {"test_case_id": "tc_d04_marketplace_draft","data_id": "d04_alfred_macro_vintaged",       "package_mode": "marketplace_draft","expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official vintaged; attribution recommended"}},
+
+    {"test_case_id": "tc_d05_white_box",        "data_id": "d05_finra_short_interest",        "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "FINRA bi-weekly is public_official; publication_date used as available_at"}},
+    {"test_case_id": "tc_d05_gray_box",         "data_id": "d05_finra_short_interest",        "package_mode": "gray_box",         "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official"}},
+    {"test_case_id": "tc_d05_black_box",        "data_id": "d05_finra_short_interest",        "package_mode": "black_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official"}},
+    {"test_case_id": "tc_d05_output_only",      "data_id": "d05_finra_short_interest",        "package_mode": "output_only",      "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official"}},
+    {"test_case_id": "tc_d05_preview",          "data_id": "d05_finra_short_interest",        "package_mode": "preview",          "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public sample"}},
+    {"test_case_id": "tc_d05_marketplace_draft","data_id": "d05_finra_short_interest",        "package_mode": "marketplace_draft","expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "public_official; PUBLICATION date used (never interpolated)"}},
+
+    {"test_case_id": "tc_d06_white_box",        "data_id": "d06_licensed_market_data",        "package_mode": "white_box",        "expected": {"included": false, "redacted": false, "blocked": false, "entitlement_locked": true,  "reason": "license_status=missing in test; node opens locked-preserve-config; fail-closed"}},
+    {"test_case_id": "tc_d06_gray_box",         "data_id": "d06_licensed_market_data",        "package_mode": "gray_box",         "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "licensed_provider_required: redact raw values; preserve attribution shell"}},
+    {"test_case_id": "tc_d06_black_box",        "data_id": "d06_licensed_market_data",        "package_mode": "black_box",        "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "redacted; derived values only if explicit"}},
+    {"test_case_id": "tc_d06_output_only",      "data_id": "d06_licensed_market_data",        "package_mode": "output_only",      "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "raw values redacted; derived included only via derived_value_policy"}},
+    {"test_case_id": "tc_d06_preview",          "data_id": "d06_licensed_market_data",        "package_mode": "preview",          "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "redacted preview"}},
+    {"test_case_id": "tc_d06_marketplace_draft","data_id": "d06_licensed_market_data",        "package_mode": "marketplace_draft","expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "licensed_provider_required raw values are redacted in marketplace_draft"}},
+
+    {"test_case_id": "tc_d07_white_box",        "data_id": "d07_licensed_analyst_estimates",  "package_mode": "white_box",        "expected": {"included": false, "redacted": false, "blocked": false, "entitlement_locked": true,  "reason": "license_status=missing; consensus node opens locked"}},
+    {"test_case_id": "tc_d07_gray_box",         "data_id": "d07_licensed_analyst_estimates",  "package_mode": "gray_box",         "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "estimates raw values redacted"}},
+    {"test_case_id": "tc_d07_black_box",        "data_id": "d07_licensed_analyst_estimates",  "package_mode": "black_box",        "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "estimates raw values redacted"}},
+    {"test_case_id": "tc_d07_output_only",      "data_id": "d07_licensed_analyst_estimates",  "package_mode": "output_only",      "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "estimates raw values redacted"}},
+    {"test_case_id": "tc_d07_preview",          "data_id": "d07_licensed_analyst_estimates",  "package_mode": "preview",          "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "estimates redacted"}},
+    {"test_case_id": "tc_d07_marketplace_draft","data_id": "d07_licensed_analyst_estimates",  "package_mode": "marketplace_draft","expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "I/B/E/S consensus values redacted in marketplace_draft"}},
+
+    {"test_case_id": "tc_d08_white_box",        "data_id": "d08_licensed_transcript_news",    "package_mode": "white_box",        "expected": {"included": false, "redacted": false, "blocked": false, "entitlement_locked": true,  "reason": "license_status=missing; transcript node opens locked"}},
+    {"test_case_id": "tc_d08_gray_box",         "data_id": "d08_licensed_transcript_news",    "package_mode": "gray_box",         "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "transcript raw text redacted; derived sentiment may persist"}},
+    {"test_case_id": "tc_d08_black_box",        "data_id": "d08_licensed_transcript_news",    "package_mode": "black_box",        "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "transcript raw text redacted"}},
+    {"test_case_id": "tc_d08_output_only",      "data_id": "d08_licensed_transcript_news",    "package_mode": "output_only",      "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "transcript raw text redacted"}},
+    {"test_case_id": "tc_d08_preview",          "data_id": "d08_licensed_transcript_news",    "package_mode": "preview",          "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "transcript redacted"}},
+    {"test_case_id": "tc_d08_marketplace_draft","data_id": "d08_licensed_transcript_news",    "package_mode": "marketplace_draft","expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": true,  "reason": "transcript raw text REDACTED in marketplace_draft; reproduction limited to paraphrase"}},
+
+    {"test_case_id": "tc_d09_white_box",        "data_id": "d09_user_portfolio_holdings",     "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "user owns the data; white_box is creator-only"}},
+    {"test_case_id": "tc_d09_gray_box",         "data_id": "d09_user_portfolio_holdings",     "package_mode": "gray_box",         "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "redact to aggregates (count, NAV bucket) outside creator session"}},
+    {"test_case_id": "tc_d09_black_box",        "data_id": "d09_user_portfolio_holdings",     "package_mode": "black_box",        "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "redact to aggregates only"}},
+    {"test_case_id": "tc_d09_output_only",      "data_id": "d09_user_portfolio_holdings",     "package_mode": "output_only",      "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "redact to aggregates only"}},
+    {"test_case_id": "tc_d09_preview",          "data_id": "d09_user_portfolio_holdings",     "package_mode": "preview",          "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "preview shows position_count + non_advice_boundary only"}},
+    {"test_case_id": "tc_d09_marketplace_draft","data_id": "d09_user_portfolio_holdings",     "package_mode": "marketplace_draft","expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "user-private holdings BLOCKED entirely in marketplace_draft (never published)"}},
+
+    {"test_case_id": "tc_d10_white_box",        "data_id": "d10_user_document_memo",          "package_mode": "white_box",        "expected": {"included": true,  "redacted": false, "blocked": false, "entitlement_locked": false, "reason": "user owns memo; white_box creator-only"}},
+    {"test_case_id": "tc_d10_gray_box",         "data_id": "d10_user_document_memo",          "package_mode": "gray_box",         "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "memo body redacted; title shown as placeholder"}},
+    {"test_case_id": "tc_d10_black_box",        "data_id": "d10_user_document_memo",          "package_mode": "black_box",        "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "memo body redacted"}},
+    {"test_case_id": "tc_d10_output_only",      "data_id": "d10_user_document_memo",          "package_mode": "output_only",      "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "memo body redacted"}},
+    {"test_case_id": "tc_d10_preview",          "data_id": "d10_user_document_memo",          "package_mode": "preview",          "expected": {"included": false, "redacted": true,  "blocked": false, "entitlement_locked": false, "reason": "redacted"}},
+    {"test_case_id": "tc_d10_marketplace_draft","data_id": "d10_user_document_memo",          "package_mode": "marketplace_draft","expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "user-private memo BLOCKED in marketplace_draft (never published without explicit user upgrade)"}},
+
+    {"test_case_id": "tc_d11_white_box",        "data_id": "d11_raw_social_news_unclear_rights","package_mode": "white_box",      "expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "restricted_or_unclear rights -> export BLOCKED even in white_box for SECONDARY consumers; raw_text never displayed"}},
+    {"test_case_id": "tc_d11_gray_box",         "data_id": "d11_raw_social_news_unclear_rights","package_mode": "gray_box",       "expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "unclear rights -> block"}},
+    {"test_case_id": "tc_d11_black_box",        "data_id": "d11_raw_social_news_unclear_rights","package_mode": "black_box",      "expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "unclear rights -> block"}},
+    {"test_case_id": "tc_d11_output_only",      "data_id": "d11_raw_social_news_unclear_rights","package_mode": "output_only",    "expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "unclear rights -> block"}},
+    {"test_case_id": "tc_d11_preview",          "data_id": "d11_raw_social_news_unclear_rights","package_mode": "preview",        "expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "unclear rights -> block"}},
+    {"test_case_id": "tc_d11_marketplace_draft","data_id": "d11_raw_social_news_unclear_rights","package_mode": "marketplace_draft","expected": {"included": false, "redacted": false, "blocked": true,  "entitlement_locked": false, "reason": "restricted_or_unclear rights -> marketplace BLOCKED; package export blocked entirely if present"}}
+  ],
+
+  "integration_scenarios": [
+    {
+      "scenario_id": "is01_successful_public_only_package",
+      "description": "Public-only successful package: combine d01, d02, d04, d05 (EDGAR + derived ratios + ALFRED + FINRA short interest). Build all 6 modes; expect all to succeed with no blocked exports.",
+      "input_data_ids": ["d01_edgar_filing_metadata", "d02_derived_ratios_from_edgar", "d04_alfred_macro_vintaged", "d05_finra_short_interest"],
+      "modes_to_build": ["white_box", "gray_box", "black_box", "output_only", "preview", "marketplace_draft"],
+      "expected_outcomes": {
+        "white_box":         {"status": "built", "blocked_exports": 0, "redacted_objects": 0, "entitlement_locked_objects": 0},
+        "gray_box":          {"status": "built", "blocked_exports": 0, "redacted_objects": 0, "entitlement_locked_objects": 0},
+        "black_box":         {"status": "built", "blocked_exports": 0, "redacted_objects": 0, "entitlement_locked_objects": 0},
+        "output_only":       {"status": "built", "blocked_exports": 0, "redacted_objects": 0, "entitlement_locked_objects": 0},
+        "preview":           {"status": "built", "blocked_exports": 0, "redacted_objects": 0, "entitlement_locked_objects": 0},
+        "marketplace_draft": {"status": "built", "blocked_exports": 0, "redacted_objects": 0, "entitlement_locked_objects": 0}
+      },
+      "non_advice_boundary_required": true,
+      "validation_proof_required": true,
+      "audit_hashes_required": true
+    },
+    {
+      "scenario_id": "is02_blocked_export_unclear_rights",
+      "description": "Package contains d11 raw social/news with restricted_or_unclear rights. Every package mode BLOCKS export of d11. Other data in the bundle proceeds; the package emits a blocked-export warning and refuses to bundle d11 raw values.",
+      "input_data_ids": ["d01_edgar_filing_metadata", "d11_raw_social_news_unclear_rights"],
+      "modes_to_build": ["white_box", "gray_box", "black_box", "output_only", "preview", "marketplace_draft"],
+      "expected_outcomes": {
+        "white_box":         {"status": "built_with_block", "blocked_exports": 1, "blocked_ids": ["d11_raw_social_news_unclear_rights"]},
+        "gray_box":          {"status": "built_with_block", "blocked_exports": 1, "blocked_ids": ["d11_raw_social_news_unclear_rights"]},
+        "black_box":         {"status": "built_with_block", "blocked_exports": 1, "blocked_ids": ["d11_raw_social_news_unclear_rights"]},
+        "output_only":       {"status": "built_with_block", "blocked_exports": 1, "blocked_ids": ["d11_raw_social_news_unclear_rights"]},
+        "preview":           {"status": "built_with_block", "blocked_exports": 1, "blocked_ids": ["d11_raw_social_news_unclear_rights"]},
+        "marketplace_draft": {"status": "blocked_entirely",  "blocked_exports": 1, "blocked_ids": ["d11_raw_social_news_unclear_rights"], "note": "marketplace_draft refuses export when restricted_or_unclear license source is present and not redactable/replaceable"}
+      },
+      "expected_warning_codes": ["restricted_or_unclear_rights_blocks_export", "marketplace_draft_refused_due_to_restricted_source"]
+    },
+    {
+      "scenario_id": "is03_entitlement_locked_licensed_data",
+      "description": "Package contains licensed data (d06 market data, d07 estimates, d08 transcripts) with license_status=missing. Every package mode entitlement-locks the licensed sources; raw values are redacted in shared modes; marketplace_draft redacts raw + permits derived attribution shell.",
+      "input_data_ids": ["d01_edgar_filing_metadata", "d06_licensed_market_data", "d07_licensed_analyst_estimates", "d08_licensed_transcript_news"],
+      "modes_to_build": ["white_box", "gray_box", "black_box", "output_only", "preview", "marketplace_draft"],
+      "expected_outcomes": {
+        "white_box":         {"status": "built", "entitlement_locked_objects": 3, "redacted_objects": 0, "blocked_exports": 0, "note": "licensed nodes open as locked-preserve-config; creator workspace shows the locked-shell with no data"},
+        "gray_box":          {"status": "built", "entitlement_locked_objects": 3, "redacted_objects": 3, "blocked_exports": 0},
+        "black_box":         {"status": "built", "entitlement_locked_objects": 3, "redacted_objects": 3, "blocked_exports": 0},
+        "output_only":       {"status": "built", "entitlement_locked_objects": 3, "redacted_objects": 3, "blocked_exports": 0},
+        "preview":           {"status": "built", "entitlement_locked_objects": 3, "redacted_objects": 3, "blocked_exports": 0},
+        "marketplace_draft": {"status": "built", "entitlement_locked_objects": 3, "redacted_objects": 3, "blocked_exports": 0, "note": "marketplace_draft REDACTS raw values; preserves attribution shell + non-advice boundary"}
+      },
+      "expected_warning_codes": ["licensed_provider_required_redacted_in_marketplace", "entitlement_missing_for_licensed_connector"]
+    },
+    {
+      "scenario_id": "is04_user_private_blocked_in_marketplace",
+      "description": "Package contains user-private data (d09 portfolio + d10 memo). User-private data EXPORTS only with explicit user opt-in in non-marketplace modes; marketplace_draft BLOCKS entirely.",
+      "input_data_ids": ["d09_user_portfolio_holdings", "d10_user_document_memo", "d01_edgar_filing_metadata"],
+      "modes_to_build": ["white_box", "gray_box", "black_box", "output_only", "preview", "marketplace_draft"],
+      "expected_outcomes": {
+        "white_box":         {"status": "built", "user_private_objects_included": 2, "user_private_objects_redacted": 0, "user_private_objects_blocked": 0, "note": "creator-only mode; user owns the data"},
+        "gray_box":          {"status": "built", "user_private_objects_included": 0, "user_private_objects_redacted": 2, "user_private_objects_blocked": 0},
+        "black_box":         {"status": "built", "user_private_objects_included": 0, "user_private_objects_redacted": 2, "user_private_objects_blocked": 0},
+        "output_only":       {"status": "built", "user_private_objects_included": 0, "user_private_objects_redacted": 2, "user_private_objects_blocked": 0},
+        "preview":           {"status": "built", "user_private_objects_included": 0, "user_private_objects_redacted": 2, "user_private_objects_blocked": 0},
+        "marketplace_draft": {"status": "built_or_block", "user_private_objects_included": 0, "user_private_objects_redacted": 0, "user_private_objects_blocked": 2, "user_private_blocked_ids": ["d09_user_portfolio_holdings", "d10_user_document_memo"], "note": "marketplace_draft BLOCKS user-private data entirely; only public data + non-advice boundary surface"}
+      },
+      "expected_warning_codes": ["user_private_data_blocked_in_marketplace_draft", "user_private_data_redacted_in_shared_modes"]
+    },
+    {
+      "scenario_id": "is05_redacted_marketplace_draft_mixed",
+      "description": "Mixed-data marketplace_draft canonical case: all 11 data types present. Expected behaviour is the union of per-cell rules: public sources included with attribution; derived included with attribution; licensed sources redacted; user-private BLOCKED; restricted/unclear BLOCKED (refuses the whole package or surfaces a blocked-export error). This is the worst-case integration test for marketplace_draft.",
+      "input_data_ids": ["d01_edgar_filing_metadata", "d02_derived_ratios_from_edgar", "d03_fred_macro_current", "d04_alfred_macro_vintaged", "d05_finra_short_interest", "d06_licensed_market_data", "d07_licensed_analyst_estimates", "d08_licensed_transcript_news", "d09_user_portfolio_holdings", "d10_user_document_memo", "d11_raw_social_news_unclear_rights"],
+      "modes_to_build": ["marketplace_draft"],
+      "expected_outcomes": {
+        "marketplace_draft": {
+          "status": "blocked_entirely_due_to_restricted_source",
+          "blocked_exports": 1,
+          "blocked_ids": ["d11_raw_social_news_unclear_rights"],
+          "user_private_objects_blocked": 2,
+          "user_private_blocked_ids": ["d09_user_portfolio_holdings", "d10_user_document_memo"],
+          "licensed_objects_redacted_if_built": 3,
+          "licensed_redacted_ids_if_built": ["d06_licensed_market_data", "d07_licensed_analyst_estimates", "d08_licensed_transcript_news"],
+          "public_objects_preserved_if_built": 5,
+          "public_preserved_ids_if_built": ["d01_edgar_filing_metadata", "d02_derived_ratios_from_edgar", "d03_fred_macro_current", "d04_alfred_macro_vintaged", "d05_finra_short_interest"],
+          "remediation": "Remove d11 (restricted/unclear source) and reattempt the build. After d11 removal, expected outcome is 'built' with 3 redacted licensed objects + 2 blocked user-private objects + 5 preserved public objects."
+        }
+      },
+      "expected_warning_codes": ["restricted_or_unclear_rights_blocks_export", "marketplace_draft_refused_due_to_restricted_source", "user_private_data_blocked_in_marketplace_draft", "licensed_provider_required_redacted_in_marketplace"]
+    }
+  ],
+
+  "per_mode_required_sections": {
+    "white_box": {
+      "included_sections": ["full methodology graph", "all evidence including licensed (if entitlement present)", "validation_record", "audit_proof", "rights_summary", "pit_summary"],
+      "redacted_sections": [],
+      "entitlement_locked_sections": ["licensed objects when license_status=missing"],
+      "external_references": ["registry_artifacts manifest (full)"],
+      "validation_proof_required": true,
+      "source_rights_summary_required": true,
+      "audit_hashes_required": ["methodology_graph_hash", "strategy_profile_hash", "evidence_checksum", "proof_checksum"],
+      "non_advice_boundary_required": true,
+      "export_block_triggers": ["restricted_or_unclear license sources to secondary consumers", "ticker as primary key", "monetized marketplace endpoint reference"]
+    },
+    "gray_box": {
+      "included_sections": ["methodology graph (node-type + edge-type level)", "public evidence", "validation_record summary", "audit_proof"],
+      "redacted_sections": ["internal_research_only objects to aggregates", "licensed raw values"],
+      "entitlement_locked_sections": ["licensed objects to attribution shell"],
+      "external_references": ["registry_artifacts manifest (public artifacts visible)"],
+      "validation_proof_required": true,
+      "source_rights_summary_required": true,
+      "audit_hashes_required": ["methodology_graph_hash", "strategy_profile_hash", "proof_checksum"],
+      "non_advice_boundary_required": true,
+      "export_block_triggers": ["restricted_or_unclear license sources"]
+    },
+    "black_box": {
+      "included_sections": ["rendered output_only views", "audit_proof"],
+      "redacted_sections": ["methodology graph (blinded)", "internal_research_only details"],
+      "entitlement_locked_sections": ["licensed raw values"],
+      "external_references": ["registry_artifacts manifest only"],
+      "validation_proof_required": true,
+      "source_rights_summary_required": true,
+      "audit_hashes_required": ["proof_checksum"],
+      "non_advice_boundary_required": true,
+      "export_block_triggers": ["restricted_or_unclear license sources"]
+    },
+    "output_only": {
+      "included_sections": ["rendered outputs (equity_radar / investment_memo / trade_plan / risk_dashboard / validation_report / source_rights_report)", "audit_proof"],
+      "redacted_sections": ["methodology absent", "internal_research_only redacted", "licensed raw redacted"],
+      "entitlement_locked_sections": ["licensed objects"],
+      "external_references": ["non_advice_boundary"],
+      "validation_proof_required": true,
+      "source_rights_summary_required": true,
+      "audit_hashes_required": ["proof_checksum"],
+      "non_advice_boundary_required": true,
+      "export_block_triggers": ["restricted_or_unclear license sources"]
+    },
+    "preview": {
+      "included_sections": ["equity_radar sample (top-3 risk_flags + action_class + non_advice_boundary)", "proof_checksum"],
+      "redacted_sections": ["methodology absent", "outputs minimised"],
+      "entitlement_locked_sections": ["licensed objects"],
+      "external_references": ["non_advice_boundary"],
+      "validation_proof_required": false,
+      "source_rights_summary_required": false,
+      "audit_hashes_required": ["proof_checksum"],
+      "non_advice_boundary_required": true,
+      "export_block_triggers": ["restricted_or_unclear license sources"]
+    },
+    "marketplace_draft": {
+      "included_sections": ["manifest", "public_official entities", "redacted rendered outputs", "audit_proof", "non_advice_boundary", "creator_record", "compliance_warnings"],
+      "redacted_sections": ["internal_research_only entities to placeholders", "licensed raw values", "user-private data BLOCKED entirely"],
+      "entitlement_locked_sections": ["licensed objects (attribution shell only)"],
+      "external_references": ["manifest sha256 + combined_artifact_sha256"],
+      "validation_proof_required": true,
+      "source_rights_summary_required": true,
+      "audit_hashes_required": ["methodology_graph_hash", "strategy_profile_hash", "evidence_checksum", "proof_checksum"],
+      "non_advice_boundary_required": true,
+      "export_block_triggers": ["restricted_or_unclear license sources -> refuse", "user-private data -> block entirely", "monetized marketplace endpoint -> block", "ticker as primary key -> block"]
+    }
+  },
+
+  "test_requirements_coverage": {
+    "unknown_rights_block_export": {"covered_by": ["tc_d11_*", "is02_blocked_export_unclear_rights", "is05_redacted_marketplace_draft_mixed"]},
+    "restricted_raw_redacted_in_marketplace_draft": {"covered_by": ["tc_d06_marketplace_draft", "tc_d07_marketplace_draft", "tc_d08_marketplace_draft", "is03_entitlement_locked_licensed_data"]},
+    "user_private_no_export_unless_explicit": {"covered_by": ["tc_d09_*", "tc_d10_*", "is04_user_private_blocked_in_marketplace"]},
+    "licensed_provider_entitlement_locked": {"covered_by": ["tc_d06_*", "tc_d07_*", "tc_d08_*", "is03_entitlement_locked_licensed_data"]},
+    "derived_values_inherit_most_restrictive": {"covered_by": ["tc_d02_*", "is01_successful_public_only_package"]},
+    "public_metadata_displayable_raw_text_limited": {"covered_by": ["tc_d01_*", "tc_d04_*", "tc_d05_*"]},
+    "package_proof_includes_rights_and_pit_summary": {"covered_by": ["per_mode_required_sections.audit_hashes_required + source_rights_summary_required"]}
+  },
+
+  "acceptance_criteria_coverage": {
+    "tests_cover_each_package_mode": {"satisfied_by": "per_cell_test_matrix exercises every (data_type, mode) pair for all 6 modes = 66 cells; integration scenarios additionally bundle modes."},
+    "at_least_one_blocked_export_case": {"satisfied_by": ["is02_blocked_export_unclear_rights", "is05_redacted_marketplace_draft_mixed", "tc_d11_white_box", "tc_d11_gray_box", "tc_d11_black_box", "tc_d11_output_only", "tc_d11_preview", "tc_d11_marketplace_draft"]},
+    "at_least_one_entitlement_locked_case": {"satisfied_by": ["is03_entitlement_locked_licensed_data", "tc_d06_*", "tc_d07_*", "tc_d08_*"]},
+    "at_least_one_redacted_marketplace_draft_case": {"satisfied_by": ["tc_d06_marketplace_draft", "tc_d07_marketplace_draft", "tc_d08_marketplace_draft", "is03_entitlement_locked_licensed_data.marketplace_draft", "is05_redacted_marketplace_draft_mixed"]},
+    "one_successful_public_only_package": {"satisfied_by": "is01_successful_public_only_package (all 6 modes succeed with 0 blocked / 0 redacted / 0 entitlement-locked)"}
+  },
+
+  "non_advice_boundary": "This package + redaction test matrix renders sample data behaviour under the equity module v0.1. It does NOT constitute investment advice. All issuer / portfolio / user identities are fictional. ExampleCo Industrial, Inc. and any other placeholder identities are illustrative only. Past performance does not predict future results."
+}

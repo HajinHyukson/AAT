@@ -18,9 +18,8 @@ from engine.contracts import (
     PriceBar as EnginePriceBar,
     TimeWindow,
 )
-from jobs.advisory_locks import advisory_lock_key
 from engine.events.taxonomy import classify_event
-from engine.factors.baseline import RESIDUAL_SAFETY_MODEL_VERSION, build_factor_baseline_result
+from engine.factors.baseline import build_factor_baseline_result
 from engine.factors.french_model import FRENCH_FACTOR_NAMES, build_french_factor_inputs
 from engine.factors.hierarchical_model import (
     HierarchicalFactorSpec,
@@ -37,19 +36,20 @@ from engine.factors.peer_model import PeerWeight, build_peer_basket_returns, bui
 from engine.factors.sector_model import build_sector_factor_inputs
 from engine.factors.style_model import build_return_style_descriptors, descriptors_to_exposures
 from engine.returns.accounting import close_to_close_return_bps
-
-
-METHODOLOGY_LEGACY = "legacy"
-METHODOLOGY_RESIDUAL_SAFETY = "residual_safety_v1"
-METHODOLOGY_HIERARCHICAL_MARKET_FIRST = "hierarchical_market_first_v1"
-VALID_ATTRIBUTION_METHODOLOGIES = (
+from jobs.advisory_locks import advisory_lock_key
+from jobs.attribution_methodologies import (
+    HIERARCHICAL_BASELINE_MODEL_VERSION,
+    HIERARCHICAL_FACTOR_BASKET_VERSION,
+    DEFAULT_ATTRIBUTION_METHODOLOGY,
+    METHODOLOGY_HIERARCHICAL_MARKET_FIRST,
     METHODOLOGY_LEGACY,
     METHODOLOGY_RESIDUAL_SAFETY,
-    METHODOLOGY_HIERARCHICAL_MARKET_FIRST,
+    RESIDUAL_SAFETY_FACTOR_BASKET_VERSION,
+    RESIDUAL_SAFETY_MODEL_VERSION,
+    VALID_ATTRIBUTION_METHODOLOGIES,
+    factor_basket_version_for_methodology,
+    model_version_for_methodology,
 )
-HIERARCHICAL_BASELINE_MODEL_VERSION = "factor-baseline-hierarchical-market-v1"
-HIERARCHICAL_FACTOR_BASKET_VERSION = "mvp_expanded_hierarchical_market_v1"
-RESIDUAL_SAFETY_FACTOR_BASKET_VERSION = "mvp_expanded_residual_safety_v1"
 DEFAULT_MARKET_FACTOR_NAME = "Mkt-RF"
 
 
@@ -79,7 +79,11 @@ def main() -> None:
     parser.add_argument("--use-expanded-mvp", action="store_true")
     parser.add_argument("--include-event-evidence", action="store_true")
     parser.add_argument("--lookback-days", type=int, default=60)
-    parser.add_argument("--methodology", choices=VALID_ATTRIBUTION_METHODOLOGIES, default=METHODOLOGY_LEGACY)
+    parser.add_argument(
+        "--methodology",
+        choices=VALID_ATTRIBUTION_METHODOLOGIES,
+        default=DEFAULT_ATTRIBUTION_METHODOLOGY,
+    )
     parser.add_argument("--prefer-compose-port", action="store_true")
     args = parser.parse_args()
 
@@ -131,7 +135,7 @@ def run_attribution_for_ticker(
     preloaded_factor_returns_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_peer_context: ActivePeerContext | None = None,
-    methodology: str = METHODOLOGY_LEGACY,
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     market_factor_name: str = DEFAULT_MARKET_FACTOR_NAME,
     extra_factor_inputs: list[FactorContributionInput] | None = None,
 ):
@@ -173,7 +177,7 @@ def run_attribution_for_security(
     preloaded_factor_returns_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_macro_values_by_name: dict[str, dict[datetime, float]] | None = None,
     preloaded_peer_context: ActivePeerContext | None = None,
-    methodology: str = METHODOLOGY_LEGACY,
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     market_factor_name: str = DEFAULT_MARKET_FACTOR_NAME,
     extra_factor_inputs: list[FactorContributionInput] | None = None,
 ):
@@ -213,13 +217,7 @@ def run_attribution_for_security(
     french_factor_returns_by_name: dict[str, dict[datetime, float]] = {}
     if use_expanded_mvp:
         use_french_factors = True
-        factor_basket_version = (
-            HIERARCHICAL_FACTOR_BASKET_VERSION
-            if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST
-            else RESIDUAL_SAFETY_FACTOR_BASKET_VERSION
-            if methodology == METHODOLOGY_RESIDUAL_SAFETY
-            else "mvp_expanded_v0"
-        )
+        factor_basket_version = factor_basket_version_for_methodology(methodology)
 
     if use_french_factors:
         french_factor_returns_by_name = factor_returns_for_window(
@@ -374,17 +372,12 @@ def run_attribution_for_security(
         share_policy=METHODOLOGY_RESIDUAL_SAFETY
         if methodology in {METHODOLOGY_RESIDUAL_SAFETY, METHODOLOGY_HIERARCHICAL_MARKET_FIRST}
         else METHODOLOGY_LEGACY,
-        model_version=(
-            HIERARCHICAL_BASELINE_MODEL_VERSION
-            if methodology == METHODOLOGY_HIERARCHICAL_MARKET_FIRST
-            else RESIDUAL_SAFETY_MODEL_VERSION
-            if methodology == METHODOLOGY_RESIDUAL_SAFETY
-            else "factor-baseline-v0"
-        ),
+        model_version=model_version_for_methodology(methodology),
     )
     persist_attribution_result(
         session=session,
         result=result,
+        methodology=methodology,
         factor_basket_version=factor_basket_version,
         cadence=cadence,
     )
@@ -1041,18 +1034,20 @@ def persist_attribution_result(
     *,
     session,
     result,
+    methodology: str = METHODOLOGY_LEGACY,
     factor_basket_version: str = "none",
     cadence: str = "daily",
 ) -> models.AttributionRun:
     if cadence not in {"daily", "weekly", "monthly"}:
         raise ValueError(f"unsupported attribution cadence {cadence}")
+    if methodology not in VALID_ATTRIBUTION_METHODOLOGIES:
+        raise ValueError(f"unsupported attribution methodology {methodology}")
     created_at = datetime.now(timezone.utc)
     lock_key = attribution_run_advisory_lock_key(
         security_id=result.security_id,
         window_start=result.window.start,
         window_end=result.window.end,
-        model_version=result.model_version,
-        factor_basket_version=factor_basket_version,
+        methodology=methodology,
         cadence=cadence,
     )
     session.execute(select(func.pg_advisory_xact_lock(lock_key)))
@@ -1064,6 +1059,7 @@ def persist_attribution_result(
         attribution_cutoff=result.attribution_cutoff,
         observed_return_bps=result.observed_return_bps,
         unexplained_residual_bps=result.unexplained_residual_bps,
+        methodology=methodology,
         model_version=result.model_version,
         data_version="local-dev",
         factor_basket_version=factor_basket_version,
@@ -1076,6 +1072,8 @@ def persist_attribution_result(
             "attribution_cutoff": stmt.excluded.attribution_cutoff,
             "observed_return_bps": stmt.excluded.observed_return_bps,
             "unexplained_residual_bps": stmt.excluded.unexplained_residual_bps,
+            "model_version": stmt.excluded.model_version,
+            "factor_basket_version": stmt.excluded.factor_basket_version,
             "data_version": stmt.excluded.data_version,
             "created_at": stmt.excluded.created_at,
         },
@@ -1111,6 +1109,7 @@ def persist_attribution_result(
         attribution_cutoff=result.attribution_cutoff,
         observed_return_bps=result.observed_return_bps,
         unexplained_residual_bps=result.unexplained_residual_bps,
+        methodology=methodology,
         model_version=result.model_version,
         data_version="local-dev",
         factor_basket_version=factor_basket_version,
@@ -1125,14 +1124,13 @@ def attribution_run_advisory_lock_key(
     security_id: uuid.UUID,
     window_start: datetime,
     window_end: datetime,
-    model_version: str,
-    factor_basket_version: str,
+    methodology: str,
     cadence: str,
 ) -> int:
     return advisory_lock_key(
         "aat:attribution_run:"
         f"{security_id}:{window_start.isoformat()}:{window_end.isoformat()}:"
-        f"{model_version}:{factor_basket_version}:{cadence}"
+        f"{methodology}:{cadence}"
     )
 
 

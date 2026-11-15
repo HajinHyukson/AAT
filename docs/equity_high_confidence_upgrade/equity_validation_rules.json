@@ -1,0 +1,322 @@
+[
+  {
+    "rule_id": "EQ_VAL_SCHEMA_001",
+    "validation_level": "schema",
+    "target_type": "all",
+    "description": "Required IDs, module, source refs, and version fields exist.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_PIT_001",
+    "validation_level": "PIT",
+    "target_type": "data_dependent_object",
+    "description": "available_at <= decision_timestamp for all evidence.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_PIT_002",
+    "validation_level": "PIT",
+    "target_type": "historical_test",
+    "description": "Vintage/revision policy present for revised data.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_RIGHTS_001",
+    "validation_level": "rights",
+    "target_type": "output_or_package",
+    "description": "Rights policy permits intended display/export/package.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_RIGHTS_002",
+    "validation_level": "rights",
+    "target_type": "mixed_source_output",
+    "description": "Restrictive rights policy wins and redaction is recorded.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_EVIDENCE_001",
+    "validation_level": "evidence",
+    "target_type": "thesis_or_insight",
+    "description": "Evidence bundle links source_ids and confidence labels.",
+    "severity": "warning",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_VALUATION_001",
+    "validation_level": "valuation",
+    "target_type": "valuation_node",
+    "description": "Sensitivity, assumptions, and terminal value checks present.",
+    "severity": "warning",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_STATS_001",
+    "validation_level": "statistical",
+    "target_type": "factor_signal",
+    "description": "OOS/walk-forward/cost/liquidity/multiple-testing checks present.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_EVENT_001",
+    "validation_level": "event",
+    "target_type": "event_driven_method",
+    "description": "Event timestamp, lifecycle, source credibility, stale/cancelled state present.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_EXEC_001",
+    "validation_level": "execution",
+    "target_type": "execution_method",
+    "description": "Slippage, spread, liquidity, and order timing checks present.",
+    "severity": "warning",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_PORT_001",
+    "validation_level": "portfolio",
+    "target_type": "portfolio_action",
+    "description": "Mandate, risk budget, concentration, and liquidity gates present.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_SHORT_001",
+    "validation_level": "short",
+    "target_type": "short_thesis",
+    "description": "Borrow, squeeze, asymmetry, legal/human review gates present.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_TEXT_001",
+    "validation_level": "text",
+    "target_type": "sentiment_or_narrative",
+    "description": "Publication timestamp, source credibility, raw-text rights, model version present.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_GOV_001",
+    "validation_level": "governance",
+    "target_type": "governance_claim",
+    "description": "Proxy/filing evidence and human review for sensitive claims.",
+    "severity": "warning",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_OUTPUT_001",
+    "validation_level": "output",
+    "target_type": "output_view",
+    "description": "Claims link to evidence and redaction status is visible.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_PROFILE_001",
+    "validation_level": "profile",
+    "target_type": "strategy_profile",
+    "description": "Profile declares gates, invalidation, outputs, and validation rules.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_ENTITY_001",
+    "validation_level": "entity",
+    "target_type": "entity_type",
+    "description": "Identifiers, lifecycle, and source lineage policy present.",
+    "severity": "warning",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_CONNECTOR_001",
+    "validation_level": "connector",
+    "target_type": "connector_requirement",
+    "description": "Connector role declares entitlement and rights behavior.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_PACKAGE_001",
+    "validation_level": "package",
+    "target_type": "viza_package",
+    "description": "Package manifest contains checksums, rights report, redactions, validation status.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  },
+  {
+    "rule_id": "EQ_VAL_HUMAN_001",
+    "validation_level": "human_review",
+    "target_type": "legal_or_fraud_claim",
+    "description": "Fraud/legal/advice-sensitive language requires human review.",
+    "severity": "block",
+    "required_inputs": [
+      "source_refs",
+      "PIT_policy",
+      "rights_policy",
+      "validation_status"
+    ],
+    "pass_condition": "Required fields present and no block condition triggered.",
+    "fail_condition": "Missing required control or prohibited output behavior.",
+    "confidence_impact": "Block or downgrade confidence when failed."
+  }
+]

@@ -1,0 +1,848 @@
+{
+  "$schema": "../../equity_registry_shared_metadata.schema.json",
+  "fixture_id": "earnings_revision_momentum_pilot_v0.1",
+  "fixture_description": "End-to-end pilot fixture for the earnings_revision_momentum strategy profile. Demonstrates two paths: (A) license-gated with I/B/E/S consensus opened as a locked placeholder (fail-closed: profile downgrades to research_only); (B) public-data fallback radar that uses EDGAR earnings releases + management guidance press releases to compute a guidance_surprise instead of a consensus_surprise. Same fictional issuer (ExampleCo Industrial, Inc.) as the first_wedge fixture, viewed under a different profile lens to confirm strategy-profile dependency in CLAUDE §3.9.",
+  "fixture_purpose": "Confirm that a license-gated profile fails closed (no silent fallback to bad data) AND that an explicit public-data fallback radar can ship without the licensed connector. Confirm PIT discipline: consensus PIT vintage required when license is present; guidance-surprise fallback uses 8-K Item 2.02 timestamps only.",
+  "fixture_release_state": "alpha",
+  "fixture_baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "fixture_module_id": "viza.finance.equity_investment",
+  "fixture_module_version": "0.1.0",
+  "fixture_run_id": "run_2025_11_15_earnings_revision_momentum_v01",
+  "fixture_decision_timestamp": "2025-11-15T14:00:00Z",
+  "fixture_strategy_profile_id": "earnings_revision_momentum",
+  "fixture_strategy_profile_hash_placeholder": "computed_at_load_time_from_profile_record",
+  "fixture_methodology_graph_hash_placeholder": "computed_at_load_time_from_graph",
+  "entities": {
+    "company": {
+      "id": "co_exampleco_001",
+      "object_family": "company",
+      "display_name": "ExampleCo Industrial, Inc.",
+      "description": "Reuse of the fictional issuer from first_wedge. Same identity, different profile lens.",
+      "identifiers": {
+        "company_id": "co_exampleco_001",
+        "cik": "0009999999",
+        "lei": "EXAMPLECO9999999999LEI"
+      },
+      "immutable_keys": [
+        "company_id"
+      ],
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "license_policy": "public_official",
+        "connector_roles": [
+          "sec_filings"
+        ],
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "redaction_required": false
+      }
+    },
+    "equity_security": {
+      "id": "sec_exampleco_001",
+      "object_family": "equity_security",
+      "display_name": "ExampleCo Industrial Common",
+      "identifiers": {
+        "security_id": "sec_exampleco_001",
+        "figi": "BBG000FIXTURE99",
+        "cusip": "999999999",
+        "isin": "US9999999999",
+        "ticker_display": "EXAMPLE.US"
+      },
+      "immutable_keys": [
+        "security_id"
+      ],
+      "company_id_ref": "co_exampleco_001",
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "license_policy": "public_official",
+        "connector_roles": [
+          "sec_filings",
+          "security_master"
+        ],
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "redaction_required": false
+      }
+    },
+    "filing_8k_earnings": {
+      "id": "filing_2025q3_exampleco_8k_2_02",
+      "object_family": "filing",
+      "display_name": "ExampleCo 8-K Item 2.02 (Q3 2025 Results)",
+      "description": "Fictional Q3 2025 earnings release filed on 8-K Item 2.02. Used as the public-data anchor for the guidance-surprise computation in Path B.",
+      "form_type": "8-K",
+      "item_code": "2.02",
+      "accession_no": "0009999999-25-000010",
+      "fiscal_period": {
+        "fiscal_period_id": "fp_exampleco_q3_2025",
+        "fiscal_year_end": "2025-09-30",
+        "period_kind": "fiscal_quarter"
+      },
+      "company_id_ref": "co_exampleco_001",
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low",
+        "observed_at": "2025-10-22T08:00:00Z",
+        "available_at": "2025-10-22T08:00:00Z"
+      },
+      "rights": {
+        "license_policy": "public_official",
+        "connector_roles": [
+          "sec_filings",
+          "edgar_filings_intake",
+          "earnings_releases"
+        ],
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "redaction_required": false
+      }
+    },
+    "filing_press_release_prior_guidance": {
+      "id": "press_release_2025q2_guidance",
+      "object_family": "press_release",
+      "display_name": "ExampleCo Q2 2025 Press Release w/ Q3 Guidance",
+      "description": "Fictional Q2 press release issued 2025-07-25 carrying management Q3 EPS guidance midpoint of $0.92.",
+      "company_id_ref": "co_exampleco_001",
+      "wire_id": "wire-9999-q2-2025",
+      "pit": {
+        "observed_at_policy": "publication_time",
+        "available_at_policy": "publication_time",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "provider_version",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low",
+        "observed_at": "2025-07-25T08:00:00Z",
+        "available_at": "2025-07-25T08:00:00Z"
+      },
+      "rights": {
+        "license_policy": "public_professional",
+        "connector_roles": [
+          "company_press_releases"
+        ],
+        "display_policy": "allowed",
+        "export_policy": "conditional",
+        "marketplace_policy": "conditional",
+        "redaction_required": false,
+        "attribution_required": true
+      }
+    },
+    "evidence_bundle_path_b_public": {
+      "id": "evidence_bundle_path_b_public_only",
+      "object_family": "evidence_bundle",
+      "description": "Path B public-only evidence: Q3 reported EPS from 8-K Item 2.02 + Q3 guidance midpoint from prior-quarter press release.",
+      "items": [
+        {
+          "evidence_id": "ev_q3_reported_eps",
+          "source_ref": "filing_2025q3_exampleco_8k_2_02",
+          "metric": "eps_diluted_q3",
+          "value": 0.98,
+          "unit": "usd"
+        },
+        {
+          "evidence_id": "ev_q3_reported_revenue",
+          "source_ref": "filing_2025q3_exampleco_8k_2_02",
+          "metric": "revenue_q3",
+          "value": 485.0,
+          "unit": "usd_mm"
+        },
+        {
+          "evidence_id": "ev_q3_guidance_midpoint_eps",
+          "source_ref": "press_release_2025q2_guidance",
+          "metric": "guidance_eps_midpoint_q3",
+          "value": 0.92,
+          "unit": "usd"
+        },
+        {
+          "evidence_id": "ev_q3_guidance_midpoint_revenue",
+          "source_ref": "press_release_2025q2_guidance",
+          "metric": "guidance_revenue_midpoint_q3",
+          "value": 470.0,
+          "unit": "usd_mm"
+        }
+      ],
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "license_policy": "public_official",
+        "connector_roles": [
+          "sec_filings",
+          "earnings_releases",
+          "company_press_releases"
+        ],
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "redaction_required": false
+      }
+    },
+    "validation_record": {
+      "id": "validation_record_earnings_revision_pilot_001",
+      "object_family": "validation_record",
+      "schema": "viza.equity.validation_record.v1",
+      "target_object_type": "decision",
+      "target_object_id": "decision_earnings_revision_pilot_001",
+      "data_cutoff": "2025-11-15T14:00:00Z",
+      "status": "passed_with_path_b_fallback",
+      "confidence_label": "common_practice",
+      "validator_version": "viza.equity.validation_engine@0.1.0_fixture",
+      "evidence_refs": [
+        "filing_2025q3_exampleco_8k_2_02",
+        "press_release_2025q2_guidance"
+      ],
+      "proof_checksum_placeholder": "computed_at_load_time"
+    },
+    "rights_policy": {
+      "id": "rights_policy_earnings_revision_pilot_001",
+      "object_family": "rights_policy",
+      "description": "Path A would invoke licensed_estimates_connector with license_status=missing → fail-closed; Path B (active) uses public sources only.",
+      "rights_state": {
+        "public_official_sources": [
+          "filing_2025q3_exampleco_8k_2_02",
+          "evidence_bundle_path_b_public_only",
+          "co_exampleco_001",
+          "sec_exampleco_001"
+        ],
+        "public_professional_sources": [
+          "press_release_2025q2_guidance"
+        ],
+        "internal_research_only_objects": [
+          "validation_record_earnings_revision_pilot_001",
+          "decision_earnings_revision_pilot_001"
+        ],
+        "locked_provider_data": [
+          {
+            "data_type": "consensus_estimates",
+            "connector_role": "licensed_estimates_connector",
+            "license_status": "missing",
+            "behavior": "fail_closed_for_path_a",
+            "fallback_path_b_active": true
+          }
+        ]
+      },
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "user_upload_at",
+        "source_version_policy": "not_applicable",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "license_policy": "internal_research_only",
+        "connector_roles": [],
+        "display_policy": "allowed",
+        "export_policy": "blocked",
+        "marketplace_policy": "blocked",
+        "redaction_required": true
+      }
+    }
+  },
+  "path_a_license_gated": {
+    "path_id": "path_a_license_gated",
+    "description": "Full license-gated path using I/B/E/S consensus. In this fixture, license_status=missing for licensed_estimates_connector, so this path opens as a locked placeholder.",
+    "primary_inputs": [
+      "consensus_eps_q3_estimate",
+      "consensus_revenue_q3_estimate",
+      "revision_count_30d_up",
+      "revision_count_30d_down",
+      "revision_dispersion"
+    ],
+    "connector_required": "licensed_estimates_connector",
+    "license_status": "missing",
+    "fail_closed_behavior": {
+      "query_policy": "blocked",
+      "node_runtime_status_for_dependent_nodes": "open_locked_preserve_config",
+      "profile_runtime_status": "research_only",
+      "node_set_locked": [
+        "revisions_aggregator",
+        "earnings_surprise_calculator_consensus_variant",
+        "analyst_coverage_node",
+        "analyst_rating_change_intake"
+      ],
+      "user_facing_warning": "earnings_revision_momentum requires I/B/E/S consensus connector entitlement. The license is not configured. The license-gated path is locked. Fallback (Path B) runs against public EDGAR + management-guidance data."
+    },
+    "validation_outcome": "blocked_with_explicit_warning_no_silent_fallback_to_bad_data",
+    "non_advice_boundary": "If activated, output_views would carry the same non-advice boundary as Path B."
+  },
+  "path_b_public_fallback": {
+    "path_id": "path_b_public_fallback",
+    "description": "Public-data fallback: compute guidance_surprise using Q3 reported EPS from 8-K Item 2.02 vs Q3 guidance midpoint from prior Q2 press release. Strictly inferior to consensus-based revision momentum, but PIT-safe and rights-clear.",
+    "primary_inputs": [
+      "eps_diluted_q3",
+      "guidance_eps_midpoint_q3",
+      "revenue_q3",
+      "guidance_revenue_midpoint_q3"
+    ],
+    "computed_attributes": [
+      {
+        "attribute_id": "attr_guidance_surprise_eps_pct",
+        "attribute_key": "guidance_surprise_eps_pct_path_b_fallback",
+        "value": 0.0652,
+        "unit": "pct_pct",
+        "evidence_refs": [
+          "ev_q3_reported_eps",
+          "ev_q3_guidance_midpoint_eps"
+        ],
+        "computation_method": "(reported_eps - guidance_midpoint) / guidance_midpoint",
+        "pit": {
+          "observed_at_policy": "filing_accepted_at",
+          "available_at_policy": "filing_accepted_at",
+          "vintage_required": false,
+          "lookahead_risk": "low"
+        },
+        "rights": {
+          "license_policy": "public_official"
+        }
+      },
+      {
+        "attribute_id": "attr_guidance_surprise_revenue_pct",
+        "attribute_key": "guidance_surprise_revenue_pct_path_b_fallback",
+        "value": 0.0319,
+        "unit": "pct_pct",
+        "evidence_refs": [
+          "ev_q3_reported_revenue",
+          "ev_q3_guidance_midpoint_revenue"
+        ],
+        "computation_method": "(reported_revenue - guidance_revenue_midpoint) / guidance_revenue_midpoint",
+        "pit": {
+          "observed_at_policy": "filing_accepted_at",
+          "available_at_policy": "filing_accepted_at",
+          "vintage_required": false,
+          "lookahead_risk": "low"
+        },
+        "rights": {
+          "license_policy": "public_official"
+        }
+      },
+      {
+        "attribute_id": "attr_abnormal_return_event_window_3d",
+        "attribute_key": "abnormal_return_event_window_3d",
+        "value": 0.041,
+        "unit": "pct_pct",
+        "evidence_refs": [
+          "filing_2025q3_exampleco_8k_2_02"
+        ],
+        "pit": {
+          "observed_at_policy": "event_time",
+          "available_at_policy": "publication_time",
+          "vintage_required": false,
+          "lookahead_risk": "low"
+        },
+        "rights": {
+          "license_policy": "public_professional"
+        }
+      }
+    ],
+    "connector_required": "sec_filings + earnings_releases + company_press_releases",
+    "license_status_for_required_connectors": "public",
+    "validation_outcome": "passed_with_path_b_fallback_warning",
+    "warnings": [
+      {
+        "code": "consensus_connector_unavailable_using_public_guidance_fallback",
+        "severity": "warn",
+        "scope": "profile_path_selection",
+        "message": "I/B/E/S consensus connector unavailable; using EDGAR earnings + management guidance fallback. Result is informationally inferior to consensus-based revision momentum (no analyst-revision-count, dispersion, or target-price-change signals). Profile downgrades to common_practice.",
+        "remediation": "Acquire I/B/E/S license and activate path_a_license_gated; runtime auto-switches when license_status=confirmed."
+      }
+    ]
+  },
+  "sample_graph": {
+    "graph_id": "graph_earnings_revision_momentum_pilot_001",
+    "schema": "viza_graph_v0",
+    "domain": "viza.finance.equity_investment",
+    "strategy_profile_id": "earnings_revision_momentum",
+    "active_path": "path_b_public_fallback",
+    "nodes": [
+      {
+        "node_id": "n_universe",
+        "node_type": "universe_loader",
+        "extends_core_primitive": "universe"
+      },
+      {
+        "node_id": "n_security_resolver",
+        "node_type": "security_resolver",
+        "extends_core_primitive": "attribute"
+      },
+      {
+        "node_id": "n_edgar_filings_intake",
+        "node_type": "edgar_filings_intake",
+        "extends_core_primitive": "event"
+      },
+      {
+        "node_id": "n_earnings_surprise_calculator_consensus_variant",
+        "node_type": "earnings_surprise_calculator",
+        "extends_core_primitive": "transform",
+        "runtime_status": "open_locked_preserve_config",
+        "locked_reason": "consensus connector license missing"
+      },
+      {
+        "node_id": "n_revisions_aggregator",
+        "node_type": "revisions_aggregator",
+        "extends_core_primitive": "transform",
+        "runtime_status": "open_locked_preserve_config",
+        "locked_reason": "consensus connector license missing"
+      },
+      {
+        "node_id": "n_guidance_surprise_calculator",
+        "node_type": "earnings_surprise_calculator",
+        "extends_core_primitive": "transform",
+        "config": {
+          "variant": "guidance_fallback",
+          "reported_source": "8k_item_2_02",
+          "expectation_source": "prior_quarter_press_release_guidance_midpoint"
+        }
+      },
+      {
+        "node_id": "n_abnormal_return_event_window",
+        "node_type": "event_materiality_estimator",
+        "extends_core_primitive": "score"
+      },
+      {
+        "node_id": "n_pit_validator",
+        "node_type": "pit_validator",
+        "extends_core_primitive": "transform"
+      },
+      {
+        "node_id": "n_rights_validator",
+        "node_type": "rights_validator",
+        "extends_core_primitive": "transform"
+      },
+      {
+        "node_id": "n_evidence_validator",
+        "node_type": "evidence_validator",
+        "extends_core_primitive": "transform"
+      },
+      {
+        "node_id": "n_action_mapper",
+        "node_type": "action_mapper",
+        "extends_core_primitive": "score"
+      },
+      {
+        "node_id": "n_equity_radar",
+        "node_type": "equity_radar_renderer",
+        "extends_core_primitive": "output_radar"
+      },
+      {
+        "node_id": "n_trade_plan",
+        "node_type": "trade_plan_renderer",
+        "extends_core_primitive": "output_radar"
+      },
+      {
+        "node_id": "n_watchlist",
+        "node_type": "watchlist_renderer",
+        "extends_core_primitive": "output_radar"
+      },
+      {
+        "node_id": "n_validation_report",
+        "node_type": "validation_report_renderer",
+        "extends_core_primitive": "output_radar"
+      },
+      {
+        "node_id": "n_source_rights_report",
+        "node_type": "source_rights_report_renderer",
+        "extends_core_primitive": "output_radar"
+      },
+      {
+        "node_id": "n_event_catalyst_board",
+        "node_type": "event_catalyst_board_renderer",
+        "extends_core_primitive": "output_radar"
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "e1",
+        "from": "n_universe",
+        "to": "n_security_resolver",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e2",
+        "from": "n_security_resolver",
+        "to": "n_edgar_filings_intake",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e3",
+        "from": "n_edgar_filings_intake",
+        "to": "n_guidance_surprise_calculator",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e4",
+        "from": "n_edgar_filings_intake",
+        "to": "n_abnormal_return_event_window",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e5",
+        "from": "n_guidance_surprise_calculator",
+        "to": "n_pit_validator",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e6",
+        "from": "n_guidance_surprise_calculator",
+        "to": "n_rights_validator",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e7",
+        "from": "n_guidance_surprise_calculator",
+        "to": "n_evidence_validator",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e8",
+        "from": "n_pit_validator",
+        "to": "n_action_mapper",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e9",
+        "from": "n_rights_validator",
+        "to": "n_action_mapper",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e10",
+        "from": "n_evidence_validator",
+        "to": "n_action_mapper",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e11",
+        "from": "n_abnormal_return_event_window",
+        "to": "n_action_mapper",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e12",
+        "from": "n_action_mapper",
+        "to": "n_equity_radar",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e13",
+        "from": "n_action_mapper",
+        "to": "n_trade_plan",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e14",
+        "from": "n_action_mapper",
+        "to": "n_watchlist",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e15",
+        "from": "n_evidence_validator",
+        "to": "n_validation_report",
+        "type": "data_flow"
+      },
+      {
+        "edge_id": "e16",
+        "from": "n_rights_validator",
+        "to": "n_source_rights_report",
+        "type": "data_flow"
+      }
+    ]
+  },
+  "required_entities": [
+    "company",
+    "equity_security",
+    "filing",
+    "press_release",
+    "evidence_bundle",
+    "decision",
+    "validation_record",
+    "rights_policy"
+  ],
+  "required_attributes": [
+    "guidance_surprise_eps_pct_path_b_fallback",
+    "guidance_surprise_revenue_pct_path_b_fallback",
+    "abnormal_return_event_window_3d",
+    "earnings_surprise_pct (locked under path_a)",
+    "revision_count_30d_up (locked under path_a)",
+    "revision_dispersion (locked under path_a)"
+  ],
+  "required_events": [
+    "earnings_release",
+    "earnings_surprise_positive",
+    "guidance_issued",
+    "estimate_revision_up (locked under path_a)",
+    "decision_created",
+    "decision_updated"
+  ],
+  "required_insights": [
+    "earnings_beat_with_guidance_raise (path B uses guidance-based variant)",
+    "analyst_revision_momentum (locked under path_a)",
+    "underreaction_detected",
+    "thesis_supported"
+  ],
+  "required_output_views": [
+    "equity_radar",
+    "trade_plan",
+    "watchlist",
+    "validation_report",
+    "source_rights_report",
+    "event_catalyst_board"
+  ],
+  "required_validation_rules": [
+    "data_source_id_required",
+    "data_observed_at_required",
+    "data_available_at_required",
+    "data_retrieved_at_required",
+    "data_no_ticker_as_primary_key",
+    "pit_no_lookahead",
+    "rights_rights_policy_required",
+    "rights_restricted_no_export",
+    "rights_production_connector_fail_closed",
+    "evidence_event_requires_source_credibility_and_timestamp",
+    "evidence_non_advice_boundary",
+    "output_validation_summary_required",
+    "output_pit_summary_required",
+    "output_rights_summary_required",
+    "output_invalidation_display_for_recommendations",
+    "package_marketplace_draft_redact_restricted",
+    "package_proof_checksum_required",
+    "package_no_monetized_endpoints"
+  ],
+  "pit_report": {
+    "PIT_safe": true,
+    "lookahead_risk": "low",
+    "earliest_input_available_at": "2025-07-25T08:00:00Z",
+    "latest_input_available_at": "2025-10-22T08:00:00Z",
+    "decision_timestamp": "2025-11-15T14:00:00Z",
+    "ordering_check": "press_release (2025-07-25) precedes 8-K Item 2.02 (2025-10-22) which precedes decision (2025-11-15). Earnings surprise computed from Q3 reported EPS ($0.98) vs Q3 guidance midpoint ($0.92) issued in Q2 press release.",
+    "vintage_warnings": [],
+    "vintage_blockers": [],
+    "notes": "Path B is fully PIT-safe because every input is event-time-pinned and every available_at precedes decision_timestamp. Path A (license-gated consensus) would require I/B/E/S vendor PIT records; that path is locked in this fixture."
+  },
+  "source_rights_report": {
+    "edgar_8k_item_2_02": {
+      "license_policy": "public_official",
+      "connector_role": "sec_filings",
+      "behavior": "include"
+    },
+    "company_press_release": {
+      "license_policy": "public_professional",
+      "connector_role": "company_press_releases",
+      "behavior": "include_with_attribution"
+    },
+    "licensed_estimates_consensus": {
+      "license_policy": "licensed_provider_required",
+      "connector_role": "licensed_estimates_connector",
+      "license_status": "missing",
+      "behavior": "fail_closed_with_locked_placeholder",
+      "fallback_active": "path_b_public_fallback"
+    },
+    "internal_research_artifacts": {
+      "objects": [
+        "validation_record_earnings_revision_pilot_001",
+        "decision_earnings_revision_pilot_001",
+        "rights_policy_earnings_revision_pilot_001"
+      ],
+      "license_policy": "internal_research_only",
+      "behavior": "export_blocked_marketplace_blocked_redaction_required"
+    }
+  },
+  "expected_warnings": [
+    {
+      "code": "consensus_connector_unavailable_using_public_guidance_fallback",
+      "severity": "warn",
+      "scope": "profile_path_selection",
+      "remediation": "Acquire I/B/E/S license to activate Path A."
+    },
+    {
+      "code": "guidance_surprise_inferior_to_consensus_surprise",
+      "severity": "info",
+      "scope": "signal_quality",
+      "remediation": "Path B signal is informational only; do not promote to high_confidence_core without consensus triangulation."
+    },
+    {
+      "code": "licensed_path_a_locked_no_silent_fallback_to_bad_data",
+      "severity": "info",
+      "scope": "fail_closed_compliance",
+      "remediation": "License-gated nodes are locked-preserve-config (not silently replaced). This is the correct fail-closed behavior."
+    },
+    {
+      "code": "abnormal_return_inputs_use_public_professional_prices",
+      "severity": "info",
+      "scope": "prices_input",
+      "remediation": "Public delayed-EOD prices are sufficient for event-window CAR. If activated for live trading, upgrade to licensed real-time feed."
+    }
+  ],
+  "package_behavior": {
+    "white_box": {
+      "allowed": true,
+      "redaction_required": false,
+      "contains_full": [
+        "graph",
+        "evidence_bundle_path_b_public_only",
+        "validation_record",
+        "audit_proof",
+        "locked_node_metadata_for_path_a"
+      ],
+      "intended_audience": "creator_only"
+    },
+    "output_only": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "rendered_outputs": [
+          "equity_radar",
+          "trade_plan",
+          "watchlist",
+          "validation_report",
+          "source_rights_report"
+        ],
+        "evidence_handling": "public-official evidence preserved; internal research artifacts redacted",
+        "non_advice_boundary": "present"
+      },
+      "preserves_aggregates": [
+        "guidance_surprise_eps_pct",
+        "guidance_surprise_revenue_pct",
+        "abnormal_return_event_window_3d",
+        "validation_status"
+      ]
+    },
+    "marketplace_draft": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "absent (creator may upgrade with documented redaction)",
+        "registry_artifacts": "manifest only",
+        "rendered_outputs": {
+          "equity_radar": "action_class + score_band + confidence_label + risk_flag_count + non_advice_boundary",
+          "trade_plan": "action_class + entry_conditions_summary + invalidation_count + non_advice_boundary",
+          "watchlist": "monitored_entities + trigger_events + non_advice_boundary",
+          "validation_report": "summary_counts + warning_codes + proof_checksum",
+          "source_rights_report": "full"
+        },
+        "creator_record": "creator_placeholder + non_advice_acknowledgement_signed",
+        "compliance_warnings": [
+          "not_investment_advice",
+          "fictional_fixture_identity",
+          "fallback_path_b_in_use_inferior_to_consensus_path"
+        ]
+      },
+      "redaction_targets": [
+        "decision_earnings_revision_pilot_001.decision_rationale",
+        "decision_earnings_revision_pilot_001.score_outputs_values",
+        "evidence_bundle_path_b_public_only.items[*].value",
+        "validation_record_earnings_revision_pilot_001.evidence_refs_raw_values"
+      ],
+      "blocked_targets_if_violated": [
+        "any_consensus_provider_raw_value_exposed -> block_export (Path A artifacts are locked-preserve-config; if leaked into a package, hard-block)",
+        "ticker_used_as_primary_key_anywhere -> block_export",
+        "monetized_marketplace_endpoint_reference -> block_export"
+      ],
+      "marketplace_endpoint_supported": false
+    }
+  },
+  "test_cases": [
+    {
+      "id": "tc_path_b_loads",
+      "description": "Path B (public fallback) graph loads and renders outputs without I/B/E/S consensus connector.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_path_a_locked_no_silent_fallback",
+      "description": "Path A nodes opened as open_locked_preserve_config; no silent fallback to bad data.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_pit_path_b",
+      "description": "All Path B inputs available_at <= decision_timestamp; press release precedes 8-K Item 2.02 precedes decision.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_no_ticker_as_primary_key",
+      "description": "All cross-references use security_id, not ticker.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_consensus_connector_unavailable_warning",
+      "description": "Warning emitted: consensus_connector_unavailable_using_public_guidance_fallback.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_fail_closed_compliance",
+      "description": "Path A licensed connector fails closed (query_policy=blocked); no fallback to incorrect or stale consensus data.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_guidance_surprise_computation",
+      "description": "guidance_surprise_eps_pct = (0.98 - 0.92) / 0.92 = 6.52%; guidance_surprise_revenue_pct = (485 - 470) / 470 = 3.19%.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_non_advice_boundary",
+      "description": "Every output view declares non_advice_boundary present.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_marketplace_draft_redaction",
+      "description": "marketplace_draft redacts decision rationale + evidence raw values + internal artifacts.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_no_monetized_marketplace",
+      "description": "marketplace_endpoint_supported false.",
+      "expected_result": "pass"
+    },
+    {
+      "id": "tc_stable_hash",
+      "description": "Re-running verifier produces identical SHA-256 across all artifacts.",
+      "expected_result": "pass"
+    }
+  ],
+  "expected_validation_summary": {
+    "pass": 18,
+    "warn": 1,
+    "fail": 0,
+    "not_applicable": 24,
+    "block": 0,
+    "total": 43,
+    "active_path": "path_b_public_fallback"
+  },
+  "non_advice_boundary": "This pilot fixture renders earnings_revision_momentum outputs using a public-data fallback (EDGAR + press-release guidance). It does NOT constitute investment advice, a recommendation, or solicitation. ExampleCo Industrial, Inc. is fictional. The license-gated consensus path is locked in this fixture; activating it requires an I/B/E/S license + entitlement record. Past performance does not predict future results."
+}

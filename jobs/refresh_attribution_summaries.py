@@ -15,6 +15,7 @@ from jobs.faustcalc_common import (
     DEFAULT_FAUSTCALC_UNIVERSE_VERSION,
     stable_uuid,
 )
+from jobs.attribution_methodologies import DEFAULT_ATTRIBUTION_METHODOLOGY
 
 
 @dataclass
@@ -37,6 +38,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Refresh frontend-ready attribution summaries")
     parser.add_argument("--universe-name", default=DEFAULT_FAUSTCALC_UNIVERSE_NAME)
     parser.add_argument("--universe-version", default=DEFAULT_FAUSTCALC_UNIVERSE_VERSION)
+    parser.add_argument("--methodology", default=DEFAULT_ATTRIBUTION_METHODOLOGY)
     parser.add_argument("--ticker", action="append", help="Limit refresh to one ticker; may be repeated")
     parser.add_argument("--limit", type=int, help="Maximum members to refresh")
     parser.add_argument("--prefer-compose-port", action="store_true")
@@ -47,6 +49,7 @@ def main() -> None:
             session=session,
             universe_name=args.universe_name,
             universe_version=args.universe_version,
+            methodology=args.methodology,
             tickers=tuple(args.ticker or ()),
             limit=args.limit,
         )
@@ -58,6 +61,7 @@ def refresh_attribution_summaries(
     session,
     universe_name: str = DEFAULT_FAUSTCALC_UNIVERSE_NAME,
     universe_version: str = DEFAULT_FAUSTCALC_UNIVERSE_VERSION,
+    methodology: str = DEFAULT_ATTRIBUTION_METHODOLOGY,
     tickers: tuple[str, ...] = (),
     limit: int | None = None,
 ) -> SummaryRefreshReport:
@@ -87,6 +91,7 @@ def refresh_attribution_summaries(
             member=member,
             security=security,
             company=company,
+            methodology=methodology,
         )
         upsert_summary_row(session=session, summary=summary)
         report.refreshed += 1
@@ -98,10 +103,10 @@ def refresh_attribution_summaries(
     return report
 
 
-def build_summary_row(*, session, member, security, company) -> dict:
+def build_summary_row(*, session, member, security, company, methodology: str) -> dict:
     refreshed_at = datetime.now(timezone.utc)
     classification = latest_classification(session=session, security_id=security.security_id)
-    run = latest_daily_run(session=session, security_id=security.security_id)
+    run = latest_daily_run(session=session, security_id=security.security_id, methodology=methodology)
     contribution_count = 0
     evidence_count = 0
     top_driver = None
@@ -147,10 +152,11 @@ def build_summary_row(*, session, member, security, company) -> dict:
 
     return {
         "security_attribution_summary_id": stable_uuid(
-            f"security-summary:{member.universe_name}:{member.universe_version}:{member.security_id}"
+            f"security-summary:{member.universe_name}:{member.universe_version}:{methodology}:{member.security_id}"
         ),
         "universe_name": member.universe_name,
         "universe_version": member.universe_version,
+        "methodology": methodology,
         "security_id": member.security_id,
         "ticker": member.ticker,
         "company_id": security.company_id,
@@ -206,11 +212,12 @@ def latest_classification(*, session, security_id):
     ).scalar_one_or_none()
 
 
-def latest_daily_run(*, session, security_id):
+def latest_daily_run(*, session, security_id, methodology: str):
     return session.execute(
         select(models.AttributionRun)
         .where(models.AttributionRun.security_id == security_id)
         .where(models.AttributionRun.cadence == "daily")
+        .where(models.AttributionRun.methodology == methodology)
         .order_by(models.AttributionRun.window_end.desc(), models.AttributionRun.created_at.desc())
         .limit(1)
     ).scalar_one_or_none()

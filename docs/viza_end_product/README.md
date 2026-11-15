@@ -1,0 +1,24 @@
+# VIZA End Product
+
+This folder describes where VIZA is going. Use these files for product intent, target behavior, compliance posture, and release criteria.
+
+## Suggested Reading Order
+
+1. [VIZA_PRODUCT_SPEC.md](VIZA_PRODUCT_SPEC.md)
+2. [VIZA_KR_COMPLIANCE_REPORT.md](VIZA_KR_COMPLIANCE_REPORT.md)
+3. [VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md](VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md)
+4. [VIZA_OUTPUT_RADAR_DECISIONS_PLAN.md](VIZA_OUTPUT_RADAR_DECISIONS_PLAN.md)
+5. [VIZA_RELEASE_READINESS_CHECKLIST.md](VIZA_RELEASE_READINESS_CHECKLIST.md)
+
+## Supporting Product Docs
+
+- [VIZA_DECISIONS_LEGAL_BRIEF.md](VIZA_DECISIONS_LEGAL_BRIEF.md)
+- [VIZA_DECISIONS_STRUCTURAL_AUDIT.md](VIZA_DECISIONS_STRUCTURAL_AUDIT.md)
+- [VIZA_COMPATIBILITY_POLICY.md](VIZA_COMPATIBILITY_POLICY.md)
+- [VIZA_PHASE_16_BASELINE_LOCK.md](VIZA_PHASE_16_BASELINE_LOCK.md)
+- [VIZA_PACKAGING.md](VIZA_PACKAGING.md)
+- [VIZA_ATTRIBUTE_IMPLEMENTATION_CHECKLIST.md](VIZA_ATTRIBUTE_IMPLEMENTATION_CHECKLIST.md)
+
+## Agent Note
+
+This folder overrides the legacy VIZA product/prototype plans in `viza_research/legacy_plans/` unless a newer changelog entry explicitly says otherwise.

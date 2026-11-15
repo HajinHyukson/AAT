@@ -1,0 +1,120 @@
+{
+  "view_id": "validation_report",
+  "view_family": "validation_report",
+  "fixture_id": "first_wedge_v0.1",
+  "rendered_for_run_id": "run_2025_11_15_first_wedge_v01",
+  "rendered_at": "2025-11-15T14:00:05Z",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "decision_id": "decision_exampleco_001",
+  "strategy_profile_id": "quality_value_long_only",
+  "data_cutoff": "2025-11-15T14:00:00Z",
+
+  "sections": {
+    "header": {
+      "title": "Validation Report - ExampleCo Industrial first-wedge run",
+      "run_id": "run_2025_11_15_first_wedge_v01",
+      "module_version": "0.1.0",
+      "baseline_reference": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening"
+    },
+    "validation_records": {
+      "summary_counts": {"pass": 21, "warn": 2, "fail": 0, "not_applicable": 22, "block": 0, "total": 43},
+      "rule_results_by_level": {
+        "schema":      {"pass": 5, "warn": 0, "fail": 0, "not_applicable": 0},
+        "data":        {"pass": 5, "warn": 0, "fail": 0, "not_applicable": 0},
+        "PIT":         {"pass": 1, "warn": 0, "fail": 0, "not_applicable": 5},
+        "rights":      {"pass": 2, "warn": 0, "fail": 0, "not_applicable": 2},
+        "evidence":    {"pass": 3, "warn": 0, "fail": 0, "not_applicable": 2},
+        "statistical": {"pass": 0, "warn": 0, "fail": 0, "not_applicable": 5},
+        "qualitative": {"pass": 0, "warn": 0, "fail": 0, "not_applicable": 3},
+        "portfolio":   {"pass": 0, "warn": 0, "fail": 0, "not_applicable": 3},
+        "output":      {"pass": 4, "warn": 0, "fail": 0, "not_applicable": 0},
+        "package":     {"pass": 3, "warn": 0, "fail": 0, "not_applicable": 0}
+      }
+    },
+    "graph_hash": "computed_at_load_time_from_methodology_graph",
+    "profile_hash": "computed_at_load_time_from_strategy_profile_record",
+    "data_cutoff": "2025-11-15T14:00:00Z",
+    "evidence_refs": [
+      "fixture_filing_001",
+      "ev_filing_001_revenue",
+      "ev_filing_001_op_inc",
+      "ev_filing_001_fcf",
+      "ev_filing_001_net_debt",
+      "ev_filing_001_invested_capital",
+      "ev_filing_001_cfo",
+      "ev_filing_001_net_income"
+    ],
+    "pit_summary": {
+      "PIT_safe": true,
+      "lookahead_risk": "low",
+      "earliest_input_available_at": "2025-02-15T16:30:00Z",
+      "latest_input_available_at": "2025-11-15T13:55:00Z",
+      "decision_timestamp": "2025-11-15T14:00:00Z",
+      "warning_codes": ["pit_latest_only_not_backtest_safe_factor_attribution_unused_in_this_run"],
+      "notes": "Filing-based attributes pinned to filing_accepted_at 2025-02-15. Computed attributes (P/E, FCF yield, margin of safety) pinned to decision_timestamp. No revised-data leakage. Factor attribution not used in this fixture; if added, AAT submodule + ALFRED vintaged macro/factor pipeline must ship first."
+    },
+    "rights_summary": {
+      "public_official_objects": ["fixture_filing_001", "evidence_bundle_exampleco_001", "co_exampleco_001", "iss_exampleco_001", "sec_exampleco_001", "listing_nyse_exampleco_001"],
+      "internal_research_only_objects": ["thesis_exampleco_qvalue_001", "valuation_model_exampleco_dcf_001", "valuation_model_exampleco_relative_001", "decision_exampleco_001", "validation_record_first_wedge_001", "rights_policy_first_wedge_001"],
+      "redaction_required_count": 6,
+      "export_blocked_count": 6,
+      "marketplace_blocked_count": 6,
+      "attribution_required_count": 0,
+      "license_unknown_or_restricted_count": 0,
+      "warnings": []
+    },
+    "warnings": [
+      {
+        "code": "pit_latest_only_not_backtest_safe_factor_attribution_unused_in_this_run",
+        "severity": "info",
+        "scope": "factor_and_macro_inputs_not_used",
+        "message": "Factor / macro inputs are not used in this fixture run. If a future variant adds factor attribution or macro overlay, AAT submodule + ALFRED vintaged pipeline must ship before pit_safe label can be raised above latest_only for those inputs.",
+        "source_refs": ["PROJECT_STATUS.md", "§10.17", "§16.10"]
+      },
+      {
+        "code": "qualitative_moat_evidence_only",
+        "severity": "warn",
+        "scope": "thesis_confidence_downgrade",
+        "message": "Moat score is qualitative (narrow_widening); the thesis ships at confidence_label=common_practice instead of high_confidence_core. Promote to high_confidence_core only with quantitative ROIC durability evidence and triangulated peer data.",
+        "source_refs": ["§8.4", "§22.13"]
+      }
+    ],
+    "statistical_summary": {
+      "applicable": false,
+      "reason": "Quality-value long-only profile does not require statistical validation (deflated Sharpe / OOS / walk-forward) per equity_strategy_profiles.json. Statistical validation applies to factor / event-driven / momentum profiles.",
+      "deflated_sharpe": null,
+      "walk_forward_folds": null,
+      "oos_period": null,
+      "transaction_costs_applied": null,
+      "capacity_estimate": null
+    },
+    "proof_checksum": "computed_at_load_time_from_canonical_json_sha256_of_fixture_plus_run_id"
+  },
+
+  "audit_render": {
+    "graph_hash": "computed_at_load_time",
+    "profile_hash": "computed_at_load_time",
+    "data_cutoff": "2025-11-15T14:00:00Z",
+    "validation_record_refs": ["validation_record_first_wedge_001"],
+    "proof_checksum": "computed_at_load_time"
+  },
+
+  "data_rights": {
+    "display_policy": "allowed",
+    "export_policy": "conditional",
+    "marketplace_policy": "redacted",
+    "marketplace_draft_redactions": [
+      "thesis_claim",
+      "valuation_assumptions_values",
+      "valuation_intrinsic_value_per_share",
+      "decision_rationale",
+      "evidence_bundle_raw_metric_values_below_aggregation_threshold"
+    ]
+  },
+
+  "non_advice_boundary": "This validation report is research output only, not investment advice. The fixture does not represent any real issuer; ExampleCo Industrial, Inc. is fictional. Past performance does not predict future results.",
+
+  "result": "passed",
+  "summary": "All 21 applicable validation rules passed; 22 rules were not applicable to this profile; 2 informational/warn-level diagnostics emitted (qualitative moat evidence; factor attribution unused). 0 failures. 0 blocks. Validation status: passed at confidence_label=high_confidence_core for the validation record."
+}

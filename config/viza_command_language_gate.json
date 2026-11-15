@@ -1,0 +1,39 @@
+{
+  "schema": "viza.command_language_gate.v1",
+  "registry_version": "0.1.0",
+  "description": "Whitelist of UI components that are permitted to render command-language strings (BUY_TO_OPEN, ADD_LONG, TRIM_LONG, SELL_TO_CLOSE, etc.). The desktop test suite scans the rendered DOM and asserts that no node outside these components contains command words. See VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md §1.1 Phase 27 'Language gate'.",
+  "whitelisted_component_display_names": [
+    "DecisionCommandCard",
+    "BlockedCommandCard",
+    "WatchCommandCard",
+    "DecisionCommandList",
+    "DecisionsPanel",
+    "RadarItemDecisionGroup"
+  ],
+  "command_words_to_gate": [
+    "BUY_TO_OPEN",
+    "BUY_OPEN",
+    "ADD_LONG",
+    "SCALE_IN_LONG",
+    "HOLD",
+    "TRIM_LONG",
+    "REDUCE_LONG",
+    "SELL_TO_CLOSE",
+    "LIQUIDATE_LONG",
+    "BLOCK_ACTION",
+    "BLOCK_EXPORT",
+    "WATCH_CLOSELY",
+    "AVOID",
+    "DO_NOT_BUY"
+  ],
+  "always_blocked_phrases": [
+    "buy AAPL now",
+    "sell now",
+    "act now",
+    "recommended trade today",
+    "guaranteed return",
+    "trade today",
+    "place order"
+  ],
+  "boundary_note": "Command words are sanctioned ONLY inside simulation/live-mode cards that carry the mode badge, the sandbox/live audit chain, and the 'execution routing: none' disclosure. Free-text prose anywhere else must not contain them."
+}

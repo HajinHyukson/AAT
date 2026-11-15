@@ -1,0 +1,64 @@
+appId: com.aat.viza
+productName: VIZA
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+asar: true
+copyright: Copyright 2026 AAT
+directories:
+  output: release
+  buildResources: packaging
+extraMetadata:
+  description: Local-first visual research methodology sandbox.
+  author:
+    name: AAT
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+extraResources:
+  - from: ../../viza
+    to: engine/viza
+    filter:
+      - "**/*"
+      - "!__pycache__/**"
+      - "!*.pyc"
+  - from: ../../config
+    to: engine/config
+    filter:
+      - viza_*.json
+      - viza_modules/**/*.json
+      - mvp_universe.json
+      - pilot_sp500_universe.json
+  - from: packaging/engine/viza-engine
+    to: engine/viza-engine
+mac:
+  category: public.app-category.finance
+  entitlements: packaging/entitlements.mac.plist
+  entitlementsInherit: packaging/entitlements.mac.inherit.plist
+  gatekeeperAssess: false
+  hardenedRuntime: true
+  minimumSystemVersion: "12.0.0"
+  notarize: true
+  strictVerify: true
+  type: distribution
+  binaries:
+    - Contents/Resources/engine/viza-engine
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+dmg:
+  sign: false
+  title: ${productName} ${version}
+  contents:
+    - x: 130
+      y: 220
+      type: file
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications

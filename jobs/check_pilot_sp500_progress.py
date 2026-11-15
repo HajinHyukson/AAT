@@ -248,6 +248,7 @@ def load_methodology_progress(
         cadences=[
             load_cadence_progress(
                 session=session,
+                methodology=methodology,
                 model_version=model_version,
                 universe_version=universe_version,
                 cadence=cadence,
@@ -261,6 +262,7 @@ def load_methodology_progress(
 def load_cadence_progress(
     *,
     session,
+    methodology: str,
     model_version: str,
     universe_version: str,
     cadence: str,
@@ -271,6 +273,7 @@ def load_cadence_progress(
         .join(models.ModelUniverseMember, models.ModelUniverseMember.security_id == models.AttributionRun.security_id)
         .where(models.ModelUniverseMember.universe_name == PILOT_UNIVERSE_NAME)
         .where(models.ModelUniverseMember.universe_version == universe_version)
+        .where(models.AttributionRun.methodology == methodology)
         .where(models.AttributionRun.model_version == model_version)
         .where(models.AttributionRun.cadence == cadence)
     )

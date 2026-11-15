@@ -1,0 +1,1487 @@
+[
+  {
+    "event_type_id": "equity.event.research_initiated",
+    "label": "Research Initiated",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.thesis_created",
+    "label": "Thesis Created",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.evidence_added",
+    "label": "Evidence Added",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.decision_changed",
+    "label": "Decision Changed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.invalidation_triggered",
+    "label": "Invalidation Triggered",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.memo_stale",
+    "label": "Memo Stale",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.10K_filed",
+    "label": "10K Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.10Q_filed",
+    "label": "10Q Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.8K_filed",
+    "label": "8K Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.proxy_filed",
+    "label": "Proxy Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.S1_filed",
+    "label": "S1 Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.amended_filing_filed",
+    "label": "Amended Filing Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.restatement_filed",
+    "label": "Restatement Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.earnings_reported",
+    "label": "Earnings Reported",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.earnings_surprise_detected",
+    "label": "Earnings Surprise Detected",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.guidance_issued",
+    "label": "Guidance Issued",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.guidance_raised",
+    "label": "Guidance Raised",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.guidance_lowered",
+    "label": "Guidance Lowered",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.guidance_withdrawn",
+    "label": "Guidance Withdrawn",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.rating_changed",
+    "label": "Rating Changed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.target_price_changed",
+    "label": "Target Price Changed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.estimate_revised",
+    "label": "Estimate Revised",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.coverage_initiated",
+    "label": "Coverage Initiated",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.buyback_authorized",
+    "label": "Buyback Authorized",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.dividend_increased",
+    "label": "Dividend Increased",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.dividend_cut",
+    "label": "Dividend Cut",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.debt_issued",
+    "label": "Debt Issued",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.equity_issued",
+    "label": "Equity Issued",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.MA_announced",
+    "label": "Ma Announced",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.MA_terms_updated",
+    "label": "Ma Terms Updated",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.MA_completed",
+    "label": "Ma Completed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.MA_terminated",
+    "label": "Ma Terminated",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.spin_announced",
+    "label": "Spin Announced",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.spin_completed",
+    "label": "Spin Completed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.activist_13d_filed",
+    "label": "Activist 13D Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.proxy_contest_started",
+    "label": "Proxy Contest Started",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.13F_filed",
+    "label": "13F Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.13D_filed",
+    "label": "13D Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.13G_filed",
+    "label": "13G Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.insider_buy_filed",
+    "label": "Insider Buy Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.insider_sell_filed",
+    "label": "Insider Sell Filed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.price_breakout",
+    "label": "Price Breakout",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.volume_spike",
+    "label": "Volume Spike",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.volatility_spike",
+    "label": "Volatility Spike",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.liquidity_deteriorated",
+    "label": "Liquidity Deteriorated",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.trading_halt",
+    "label": "Trading Halt",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.short_sale_restriction",
+    "label": "Short Sale Restriction",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.rate_decision",
+    "label": "Rate Decision",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.inflation_release",
+    "label": "Inflation Release",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.credit_spread_shock",
+    "label": "Credit Spread Shock",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.regulatory_action",
+    "label": "Regulatory Action",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.litigation_event",
+    "label": "Litigation Event",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.validation_failed",
+    "label": "Validation Failed",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.rights_export_blocked",
+    "label": "Rights Export Blocked",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "event_type_id": "equity.event.package_redacted",
+    "label": "Package Redacted",
+    "lifecycle_states": [
+      "announced",
+      "filed",
+      "updated",
+      "occurred",
+      "completed",
+      "cancelled",
+      "stale"
+    ],
+    "required_timestamps": [
+      "occurred_at",
+      "available_at",
+      "retrieved_at"
+    ],
+    "source_required": true,
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVENT_001",
+      "EQ_VAL_PIT_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  }
+]

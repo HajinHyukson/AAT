@@ -7,5 +7,6 @@ Current probes:
 - Feature-like database tables expose `event_time`, `ingestion_time`, and `timestamp_available`.
 - Future-available price bars are excluded from deterministic return accounting.
 - Future-available factor inputs are excluded from attribution.
+- Replay audit helpers detect future-available contribution evidence payloads.
 
-Later MVP hardening should add replay audits against persisted historical attribution runs.
+Later MVP hardening should run replay audits against persisted historical attribution runs from a real backfill sample.

@@ -16,6 +16,7 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -453,6 +454,30 @@ class ExposureUpdateDecision(Base):
     )
 
 
+class AttributionMethodology(Base):
+    __tablename__ = "attribution_methodology"
+
+    methodology: Mapped[str] = mapped_column(String(64), primary_key=True)
+    display_name: Mapped[str] = mapped_column(String(128), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    is_default: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    model_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    factor_basket_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    supported_cadences: Mapped[list] = mapped_column(JSONB, nullable=False)
+    runner_config: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    created_at: Mapped[datetime] = utc_datetime()
+    updated_at: Mapped[datetime] = utc_datetime()
+
+    __table_args__ = (
+        CheckConstraint("status IN ('active', 'archived')", name="ck_attribution_methodology_status"),
+        Index(
+            "ix_attribution_methodology_default",
+            "is_default",
+            postgresql_where=text("is_default IS TRUE"),
+        ),
+    )
+
+
 class AttributionRun(Base):
     __tablename__ = "attribution_run"
 
@@ -465,6 +490,9 @@ class AttributionRun(Base):
     attribution_cutoff: Mapped[datetime] = utc_datetime()
     observed_return_bps: Mapped[float] = mapped_column(Numeric(18, 6), nullable=False)
     unexplained_residual_bps: Mapped[float] = mapped_column(Numeric(18, 6), nullable=False)
+    methodology: Mapped[str] = mapped_column(
+        String(64), ForeignKey("attribution_methodology.methodology"), nullable=False
+    )
     model_version: Mapped[str] = mapped_column(String(64), nullable=False)
     data_version: Mapped[str] = mapped_column(String(64), nullable=False)
     factor_basket_version: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -479,12 +507,19 @@ class AttributionRun(Base):
             "security_id",
             "window_start",
             "window_end",
-            "model_version",
-            "factor_basket_version",
             "cadence",
+            "methodology",
             name="uq_attribution_run_window_model",
         ),
         CheckConstraint("cadence IN ('daily', 'weekly', 'monthly')", name="ck_attribution_run_cadence"),
+        Index(
+            "ix_attribution_run_security_methodology_latest",
+            "security_id",
+            "methodology",
+            "cadence",
+            "window_end",
+            "created_at",
+        ),
     )
 
 
@@ -645,6 +680,9 @@ class SecurityAttributionSummary(Base):
     security_attribution_summary_id: Mapped[uuid.UUID] = uuid_pk()
     universe_name: Mapped[str] = mapped_column(String(128), nullable=False)
     universe_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    methodology: Mapped[str] = mapped_column(
+        String(64), ForeignKey("attribution_methodology.methodology"), nullable=False
+    )
     security_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("security.security_id"), nullable=False
     )
@@ -679,6 +717,7 @@ class SecurityAttributionSummary(Base):
         UniqueConstraint(
             "universe_name",
             "universe_version",
+            "methodology",
             "security_id",
             name="uq_security_attribution_summary_universe",
         ),
@@ -686,11 +725,62 @@ class SecurityAttributionSummary(Base):
             "ix_security_attribution_summary_universe_status",
             "universe_name",
             "universe_version",
+            "methodology",
             "run_status",
             "ticker",
         ),
-        Index("ix_security_attribution_summary_latest", "universe_name", "latest_window_end"),
+        Index("ix_security_attribution_summary_latest", "universe_name", "methodology", "latest_window_end"),
         CheckConstraint("run_status IN ('available', 'missing')", name="ck_security_attr_summary_status"),
+    )
+
+
+class AttributionOnDemandJob(Base):
+    __tablename__ = "attribution_on_demand_job"
+
+    attribution_on_demand_job_id: Mapped[uuid.UUID] = uuid_pk()
+    security_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("security.security_id"), nullable=False
+    )
+    ticker: Mapped[str] = mapped_column(String(32), nullable=False)
+    methodology: Mapped[str] = mapped_column(
+        String(64), ForeignKey("attribution_methodology.methodology"), nullable=False
+    )
+    cadence: Mapped[str] = mapped_column(String(16), nullable=False)
+    target_range_start: Mapped[datetime] = utc_datetime()
+    target_range_end: Mapped[datetime] = utc_datetime()
+    latest_existing_window_end: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    target_window_end: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    expected_windows: Mapped[int] = mapped_column(nullable=False, default=0)
+    ran_windows: Mapped[int] = mapped_column(nullable=False, default=0)
+    skipped_windows: Mapped[int] = mapped_column(nullable=False, default=0)
+    latest_run_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("attribution_run.attribution_run_id")
+    )
+    error_payload: Mapped[dict | None] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = utc_datetime()
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    updated_at: Mapped[datetime] = utc_datetime()
+
+    __table_args__ = (
+        CheckConstraint("cadence IN ('daily', 'weekly', 'monthly')", name="ck_on_demand_job_cadence"),
+        CheckConstraint(
+            "status IN ('queued', 'running', 'completed', 'failed', 'skipped')",
+            name="ck_on_demand_job_status",
+        ),
+        Index("ix_on_demand_job_status_created", "status", "created_at"),
+        Index("ix_on_demand_job_security_methodology", "security_id", "methodology", "cadence"),
+        Index(
+            "uq_on_demand_job_active_request",
+            "security_id",
+            "methodology",
+            "cadence",
+            "target_range_start",
+            "target_range_end",
+            unique=True,
+            postgresql_where=text("status IN ('queued', 'running')"),
+        ),
     )
 
 

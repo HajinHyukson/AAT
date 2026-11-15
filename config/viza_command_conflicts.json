@@ -1,0 +1,54 @@
+{
+  "schema": "viza.command_conflicts.v1",
+  "registry_version": "0.1.0",
+  "description": "Attack edges between command concepts. Used by the minimal Phase-27 argumentation gate (BLOCK_ACTION defeats every PositionCommand on the same target) and by the Phase-31 ASPIC+ evaluator (preference-resolved grounded extension over all attack edges). See VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md §2.7.",
+  "conflicts": [
+    {
+      "left_command_iri": "viza:cmd/block_action",
+      "right_command_iri": "*",
+      "relation": "defeats_unconditionally",
+      "scope": "same_target",
+      "rationale": "System veto. A BLOCK_ACTION on a target means PIT/rights/validation/live-mode preconditions failed and no position command may stand."
+    },
+    {
+      "left_command_iri": "viza:cmd/avoid",
+      "right_command_iri": "viza:cmd/buy_to_open",
+      "relation": "attacks",
+      "scope": "same_target",
+      "preference_basis": "command_confidence * source_credibility",
+      "rationale": "Strategy-level exclusion contradicts position entry."
+    },
+    {
+      "left_command_iri": "viza:cmd/avoid",
+      "right_command_iri": "viza:cmd/add_long",
+      "relation": "attacks",
+      "scope": "same_target",
+      "preference_basis": "command_confidence * source_credibility",
+      "rationale": "Strategy-level exclusion contradicts increasing long exposure."
+    },
+    {
+      "left_command_iri": "viza:cmd/sell_to_close",
+      "right_command_iri": "viza:cmd/add_long",
+      "relation": "attacks",
+      "scope": "same_target",
+      "preference_basis": "command_confidence * source_credibility",
+      "rationale": "Exit and increase cannot both stand for the same long position."
+    },
+    {
+      "left_command_iri": "viza:cmd/sell_to_close",
+      "right_command_iri": "viza:cmd/buy_to_open",
+      "relation": "attacks",
+      "scope": "same_target",
+      "preference_basis": "command_confidence * source_credibility",
+      "rationale": "Exit and entry cannot both stand for the same target at the same cutoff."
+    },
+    {
+      "left_command_iri": "viza:cmd/trim_long",
+      "right_command_iri": "viza:cmd/add_long",
+      "relation": "attacks",
+      "scope": "same_target",
+      "preference_basis": "command_confidence * source_credibility",
+      "rationale": "Reducing and increasing the same position contradict."
+    }
+  ]
+}

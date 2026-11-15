@@ -1,0 +1,151 @@
+{
+  "fixture_id": "first_wedge_v0.1",
+  "run_id": "run_2025_11_15_first_wedge_v01",
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "description": "Expected packaging behaviour per .viza package mode. The first-wedge run intentionally exercises all 3 user-listed modes (white_box, output_only, marketplace_draft) plus 3 additional Phase-30/35 modes (gray_box, black_box, preview) for completeness.",
+  "package_modes": {
+    "white_box": {
+      "allowed": true,
+      "redaction_required": false,
+      "contains": {
+        "methodology_graph": "full",
+        "node_palette": "full",
+        "registry_artifacts": "all 12 referenced via manifest",
+        "entities": "all (company, issuer, equity_security, listing, filing, evidence_bundle, thesis, valuation_models, decision, validation_record, rights_policy)",
+        "attributes": "all 15 attribute records with raw values + computation methods",
+        "events": "all 5 lifecycle events",
+        "insights": "all 7 insights with full evidence chains and per-profile interpretations",
+        "validation_record": "validation_record_first_wedge_001 (full)",
+        "rights_policy": "rights_policy_first_wedge_001 (full)",
+        "audit_proof": "methodology_graph_hash + strategy_profile_hash + evidence_checksum + proof_checksum",
+        "non_advice_boundary": "present in every output_view"
+      },
+      "exposes_internal_research_only_content": true,
+      "intended_audience": "creator only / personal research workspace",
+      "validation_status_required": "passed_or_warn",
+      "marketplace_compatible": false
+    },
+    "gray_box": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "redacted to node-type-and-edge-type level (no internal config payloads)",
+        "registry_artifacts": "manifest only + public_official artifact paths",
+        "entities": "public_official entities (company, issuer, equity_security, listing, filing, evidence_bundle) preserved; internal_research_only entities (thesis, valuation_models, decision) shown as redacted placeholders with attribution + invalidation summary",
+        "attributes": "filing-derived attributes preserved with raw values; computed valuation attributes (margin_of_safety_pct, valuation_gap_pct) shown as bands not exact numbers",
+        "validation_record": "passed/warn/fail counts + warning codes preserved; raw rule_results table redacted",
+        "audit_proof": "preserved (hashes + proof_checksum)",
+        "non_advice_boundary": "present"
+      },
+      "exposes_internal_research_only_content": false,
+      "intended_audience": "trusted reviewer who has read-only entitlement",
+      "validation_status_required": "passed_or_warn",
+      "marketplace_compatible": "redacted_only"
+    },
+    "black_box": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "blinded - rendered as opaque computational box",
+        "registry_artifacts": "manifest only",
+        "outputs": "equity_radar + investment_memo + validation_report + source_rights_report (rendered, with all internal_research_only sections redacted)",
+        "audit_proof": "preserved (hashes + proof_checksum)",
+        "non_advice_boundary": "present"
+      },
+      "exposes_internal_research_only_content": false,
+      "intended_audience": "downstream consumer who needs the result but not the method",
+      "validation_status_required": "passed",
+      "marketplace_compatible": "redacted_only"
+    },
+    "output_only": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "absent",
+        "registry_artifacts": "absent",
+        "entities": "only those referenced in the rendered outputs (security identity + listing for the radar / memo header)",
+        "outputs": "equity_radar + investment_memo + validation_report + source_rights_report (rendered, with all internal_research_only sections redacted; thesis claim shown as 1-line summary; valuation values shown as ranges; decision rationale redacted)",
+        "audit_proof": "preserved (hashes + proof_checksum)",
+        "non_advice_boundary": "present in every output_view"
+      },
+      "exposes_internal_research_only_content": false,
+      "intended_audience": "exchange recipient who wants results + audit",
+      "validation_status_required": "passed",
+      "marketplace_compatible": "redacted_only"
+    },
+    "preview": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "absent",
+        "outputs": "equity_radar sample (top-3 risk_flags + action class + non_advice_boundary)",
+        "audit_proof": "proof_checksum only",
+        "non_advice_boundary": "present"
+      },
+      "intended_audience": "discovery / before-import preview",
+      "validation_status_required": "passed",
+      "marketplace_compatible": true
+    },
+    "marketplace_draft": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "absent (creator may upgrade if redaction is documented)",
+        "registry_artifacts": "manifest only with public_official artifacts visible",
+        "entities": "public_official entities only (company display_name, sector, industry, listing); internal_research_only entities REDACTED as placeholders with attribution + invalidation summary only",
+        "outputs": {
+          "equity_radar": "action_class + score band + confidence_label + risk_flag_count + non_advice_boundary",
+          "investment_memo": "header + non_advice_boundary + executive_summary_1_line + thesis_redacted + risks_summary + invalidation_conditions_count + open_questions",
+          "validation_report": "summary_counts + warning_codes + proof_checksum",
+          "source_rights_report": "full (this report IS the rights view)"
+        },
+        "audit_proof": "preserved (hashes + proof_checksum + creator_record + non_advice_acknowledgement)",
+        "non_advice_boundary": "REQUIRED on every section",
+        "creator_record": "creator_placeholder + non_advice_acknowledgement_signed",
+        "compliance_warnings": [
+          "not_investment_advice",
+          "source_rights_review_required",
+          "statistical_validation_required_for_production",
+          "fictional_fixture_identity"
+        ]
+      },
+      "redaction_targets": [
+        "thesis_exampleco_qvalue_001.claim",
+        "thesis_exampleco_qvalue_001.supporting_evidence_ids_raw_values",
+        "thesis_exampleco_qvalue_001.primary_signals_values",
+        "valuation_model_exampleco_dcf_001.assumptions_values",
+        "valuation_model_exampleco_dcf_001.outputs.intrinsic_value_per_share",
+        "valuation_model_exampleco_dcf_001.sensitivity_table_values",
+        "valuation_model_exampleco_dcf_001.market_price",
+        "valuation_model_exampleco_dcf_001.valuation_gap_pct",
+        "valuation_model_exampleco_dcf_001.margin_of_safety_pct",
+        "valuation_model_exampleco_relative_001.peer_ids_placeholder",
+        "valuation_model_exampleco_relative_001.metrics_values",
+        "decision_exampleco_001.decision_rationale",
+        "decision_exampleco_001.evidence_bundle_ids_raw_values",
+        "decision_exampleco_001.score_outputs_values",
+        "validation_record_first_wedge_001.evidence_refs_raw_values"
+      ],
+      "blocked_targets_if_violated": [
+        "monetized_marketplace_endpoint_reference -> block_export",
+        "restricted_or_unclear_license_source_present -> block_export",
+        "ticker_used_as_primary_key_anywhere -> block_export"
+      ],
+      "validation_status_required": "passed_with_no_block_severity_failures",
+      "marketplace_endpoint_supported": false,
+      "intended_audience": "creator review / future exchange recipient (not monetized)"
+    }
+  },
+  "package_acceptance_checks": [
+    {"check": "white_box never exposes restricted_or_unclear license sources", "result": "pass", "note": "no restricted_or_unclear sources present in this fixture"},
+    {"check": "gray_box redacts internal_research_only entities", "result": "pass"},
+    {"check": "black_box / output_only / preview redact methodology_graph", "result": "pass"},
+    {"check": "marketplace_draft redacts every internal_research_only entity field listed in redaction_targets", "result": "pass"},
+    {"check": "marketplace_draft preserves non_advice_boundary on every section", "result": "pass"},
+    {"check": "marketplace_draft preserves proof_checksum + creator_record + non_advice_acknowledgement", "result": "pass"},
+    {"check": "no_monetized_marketplace endpoint referenced in any package", "result": "pass"},
+    {"check": "ticker_never_primary_key in any exported package", "result": "pass"}
+  ],
+  "non_advice_boundary": "These package outputs are research artefacts produced against fictional fixture data. They do not constitute investment advice. ExampleCo Industrial, Inc. is fictional; no real issuer is represented."
+}

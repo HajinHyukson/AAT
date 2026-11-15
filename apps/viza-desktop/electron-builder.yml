@@ -1,0 +1,71 @@
+appId: com.aat.viza
+productName: VIZA
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+asar: true
+copyright: Copyright 2026 AAT
+directories:
+  output: release
+  buildResources: packaging
+extraMetadata:
+  description: Local-first visual research methodology sandbox.
+  author:
+    name: AAT
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+extraResources:
+  - from: ../../viza
+    to: engine/viza
+    filter:
+      - "**/*"
+      - "!__pycache__/**"
+      - "!*.pyc"
+  - from: ../../config
+    to: engine/config
+    filter:
+      - viza_*.json
+      - viza_modules/**/*.json
+      - mvp_universe.json
+      - pilot_sp500_universe.json
+  - from: ../../docs/equity_module/v0.1
+    to: engine/docs/equity_module/v0.1
+    filter:
+      - registries/**/*
+      - schemas/**/*
+      - fixtures/first_wedge_sec_quality_value/sec_fmp_fred_runtime_wedge_fixture.json
+      - proofs/sec_fmp_fred_wedge_proof.json
+      - reports/sec_fmp_fred_runtime_wedge_report.md
+  - from: packaging/engine
+    to: engine
+    filter:
+      - viza-engine*
+win:
+  executableName: VIZA
+  requestedExecutionLevel: asInvoker
+  signAndEditExecutable: false
+  target:
+    - target: dir
+      arch:
+        - x64
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+mac:
+  category: public.app-category.finance
+  entitlements: packaging/entitlements.mac.plist
+  entitlementsInherit: packaging/entitlements.mac.inherit.plist
+  gatekeeperAssess: false
+  hardenedRuntime: true
+  target:
+    - target: dir
+      arch:
+        - x64
+        - arm64

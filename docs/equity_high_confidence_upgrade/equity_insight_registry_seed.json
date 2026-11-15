@@ -1,0 +1,886 @@
+[
+  {
+    "insight_type_id": "equity.insight.thesis_strengthened",
+    "label": "Thesis Strengthened",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.thesis_weakened",
+    "label": "Thesis Weakened",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.evidence_gap",
+    "label": "Evidence Gap",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.profile_conflict",
+    "label": "Profile Conflict",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.confirmation_observed",
+    "label": "Confirmation Observed",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.invalidation_observed",
+    "label": "Invalidation Observed",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.growth_accelerating",
+    "label": "Growth Accelerating",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.margin_expansion_confirmed",
+    "label": "Margin Expansion Confirmed",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.cash_conversion_weak",
+    "label": "Cash Conversion Weak",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.balance_sheet_risk_high",
+    "label": "Balance Sheet Risk High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.accounting_quality_low",
+    "label": "Accounting Quality Low",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.distress_risk_high",
+    "label": "Distress Risk High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.undervalued_by_base_case",
+    "label": "Undervalued By Base Case",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.overvalued_by_base_case",
+    "label": "Overvalued By Base Case",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.margin_of_safety_insufficient",
+    "label": "Margin Of Safety Insufficient",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.reverse_dcf_expectations_high",
+    "label": "Reverse Dcf Expectations High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.valuation_sensitive_to_terminal_value",
+    "label": "Valuation Sensitive To Terminal Value",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.moat_supported",
+    "label": "Moat Supported",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.moat_eroding",
+    "label": "Moat Eroding",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.industry_tailwind",
+    "label": "Industry Tailwind",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.industry_headwind",
+    "label": "Industry Headwind",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.governance_entrenchment_risk",
+    "label": "Governance Entrenchment Risk",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.capital_allocation_accretive",
+    "label": "Capital Allocation Accretive",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.factor_supports_thesis",
+    "label": "Factor Supports Thesis",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.factor_conflicts_with_thesis",
+    "label": "Factor Conflicts With Thesis",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.momentum_positive",
+    "label": "Momentum Positive",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.factor_crowding_high",
+    "label": "Factor Crowding High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.multiple_testing_warning",
+    "label": "Multiple Testing Warning",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.portfolio_fit_positive",
+    "label": "Portfolio Fit Positive",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.position_too_large",
+    "label": "Position Too Large",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.risk_budget_breached",
+    "label": "Risk Budget Breached",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.liquidity_capacity_low",
+    "label": "Liquidity Capacity Low",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.hedge_needed",
+    "label": "Hedge Needed",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.catalyst_pending",
+    "label": "Catalyst Pending",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.event_material_positive",
+    "label": "Event Material Positive",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.event_material_negative",
+    "label": "Event Material Negative",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_short_fundamental_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.short_interest_high",
+    "label": "Short Interest High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.activist_pressure_rising",
+    "label": "Activist Pressure Rising",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.ownership_crowding_high",
+    "label": "Ownership Crowding High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.sentiment_extreme_positive",
+    "label": "Sentiment Extreme Positive",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.sentiment_extreme_negative",
+    "label": "Sentiment Extreme Negative",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_short_fundamental_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.narrative_shift_detected",
+    "label": "Narrative Shift Detected",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.macro_regime_supportive",
+    "label": "Macro Regime Supportive",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.macro_regime_adverse",
+    "label": "Macro Regime Adverse",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.negative_thesis_supported",
+    "label": "Negative Thesis Supported",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_short_fundamental_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.squeeze_risk_high",
+    "label": "Squeeze Risk High",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_short_fundamental_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.PIT_safe",
+    "label": "Pit Safe",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.lookahead_risk",
+    "label": "Lookahead Risk",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.rights_export_blocked",
+    "label": "Rights Export Blocked",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.connector_missing",
+    "label": "Connector Missing",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.human_review_required",
+    "label": "Human Review Required",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "common_practice",
+    "implementation_readiness_label": "research_candidate"
+  },
+  {
+    "insight_type_id": "equity.insight.validation_failed",
+    "label": "Validation Failed",
+    "direction": "mixed",
+    "evidence_required": true,
+    "compatible_strategy_profiles": [
+      "eq_profile_long_value_v1"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_EVIDENCE_001",
+      "EQ_VAL_PROFILE_001"
+    ],
+    "confidence_label": "high_confidence_core",
+    "implementation_readiness_label": "research_candidate"
+  }
+]

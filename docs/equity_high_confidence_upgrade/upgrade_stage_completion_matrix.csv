@@ -1,0 +1,6 @@
+stage,name,status,reason
+A,Corpus expansion,accepted,Minimum source targets reached and extraction files generated; strong targets remain deferred.
+B,Extraction and mapping,accepted,"Method, VIZA mapping, traceability, saturation, and rejection artifacts generated."
+C,"PIT, rights, validation",accepted,"PIT matrix, source-rights matrix, validation rules, and method validation matrix generated."
+D,Registry artifact generation,accepted,Concrete JSON/CSV registry artifacts and manifest generated with static QA checks.
+E,Fixtures and review,partial,Fixture specs and expected test results generated; runtime execution not performed in this pass.

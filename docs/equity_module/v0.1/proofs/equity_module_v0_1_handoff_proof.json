@@ -1,0 +1,192 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "artifact_paths": [
+    "docs/equity_module/v0.1/registries/equity_PIT_matrix.csv",
+    "docs/equity_module/v0.1/registries/equity_attribute_registry_seed.csv",
+    "docs/equity_module/v0.1/registries/equity_connector_requirements.json",
+    "docs/equity_module/v0.1/registries/equity_edge_types.json",
+    "docs/equity_module/v0.1/registries/equity_entity_types.json",
+    "docs/equity_module/v0.1/registries/equity_event_registry_seed.json",
+    "docs/equity_module/v0.1/registries/equity_insight_registry_seed.json",
+    "docs/equity_module/v0.1/registries/equity_node_types.json",
+    "docs/equity_module/v0.1/registries/equity_output_views.json",
+    "docs/equity_module/v0.1/registries/equity_rejection_and_downgrade_log.csv",
+    "docs/equity_module/v0.1/registries/equity_research_traceability_matrix.csv",
+    "docs/equity_module/v0.1/registries/equity_source_rights_matrix.csv",
+    "docs/equity_module/v0.1/registries/equity_strategy_profiles.json",
+    "docs/equity_module/v0.1/registries/equity_validation_rules.json",
+    "docs/equity_module/v0.1/registries/viza.finance.equity_investment.manifest.json"
+  ],
+  "artifact_checksums": {
+    "docs/equity_module/v0.1/registries/equity_attribute_registry_seed.csv": "0dec21110c4be9f0b6b1e55ba0369fa22629e70ceeea7cf4d08f07894d8c4fd6",
+    "docs/equity_module/v0.1/registries/equity_connector_requirements.json": "b5347068461a18230ed43d9b14bcb7aa408cd68ea34e984edcfcf7166cd3a55d",
+    "docs/equity_module/v0.1/registries/equity_edge_types.json": "fbd1e77fe6af91c3bb50b01078b1c8c27e1880de4a1d026eeea949911cfa778b",
+    "docs/equity_module/v0.1/registries/equity_entity_types.json": "fcf1a2a4cf44790e7d5d13095c2263ce81b9cd293081db35705f7529b134e407",
+    "docs/equity_module/v0.1/registries/equity_event_registry_seed.json": "0408b9b6b0997b101d7dd76ef020e76bdf29d1c9c606794d3e5e976ace194ad3",
+    "docs/equity_module/v0.1/registries/equity_insight_registry_seed.json": "74b1d1268bee986b2a36626e24dac9f251c36fb8075f57a7370818679629524c",
+    "docs/equity_module/v0.1/registries/equity_node_types.json": "82a8cb92d1efe6426436469d57f5e1a3a05599e18160a9dbce23c864dd391dc0",
+    "docs/equity_module/v0.1/registries/equity_output_views.json": "58da985ca7fe9cf8d54c36b197e702797917e4feb10cec2fc09a28cf7d24e678",
+    "docs/equity_module/v0.1/registries/equity_PIT_matrix.csv": "15622a39f5351d7b8f0f6807e75a694e0d8add39d821b3755222022d6221285b",
+    "docs/equity_module/v0.1/registries/equity_rejection_and_downgrade_log.csv": "64e20c9a57bb6e729b9d4f66da5a2514bbd9b92dff0015deec8cb61b92027380",
+    "docs/equity_module/v0.1/registries/equity_research_traceability_matrix.csv": "4ae9d030d773153187ce3a0641ea80ddeb9c85394d09c6e519dfc9ea4f00ed0f",
+    "docs/equity_module/v0.1/registries/equity_source_rights_matrix.csv": "eef825046b5100b85620ae30901ee44b86163858afd2aeb2e4ad387490088375",
+    "docs/equity_module/v0.1/registries/equity_strategy_profiles.json": "889f64df5f15209d60f98375c2fec6c0841283ed7d740e69d63e423333c427ce",
+    "docs/equity_module/v0.1/registries/equity_validation_rules.json": "2dd92fab83a5c4644ea75cf5db6e7556cbe1572821df21639ac168c610c00daa",
+    "docs/equity_module/v0.1/registries/viza.finance.equity_investment.manifest.json": "f040a31590783cdbe64163a8fec25c885f2148bc620bab01245ad3bfa4d1f179"
+  },
+  "fixture_paths": [
+    "docs/equity_module/v0.1/fixtures/PILOTS_README.md",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/_findings_cache.json",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/apply_patches.py",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/audit_recalibrate.py",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/equity_rejection_and_downgrade_log.csv",
+    "docs/equity_module/v0.1/fixtures/earnings_revision_momentum_pilot/fixture.json",
+    "docs/equity_module/v0.1/fixtures/earnings_revision_momentum_pilot/verify_fixture.py",
+    "docs/equity_module/v0.1/fixtures/first_wedge/README.md",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_memo_skeleton.md",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_package_behavior.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_source_rights_report.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_validation_report.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge/fixture.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge/verify_fixture.py",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/README.md",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_memo_skeleton.md",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_package_behavior.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_source_rights_report.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_validation_report.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/fixture.json",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/verify_fixture.py",
+    "docs/equity_module/v0.1/fixtures/generate_attribute_and_pit_matrix.py",
+    "docs/equity_module/v0.1/fixtures/generate_event_and_insight_registries.py",
+    "docs/equity_module/v0.1/fixtures/generate_module_manifest.py",
+    "docs/equity_module/v0.1/fixtures/generate_node_types.py",
+    "docs/equity_module/v0.1/fixtures/generate_strategy_profiles_and_output_views.py",
+    "docs/equity_module/v0.1/fixtures/generate_validation_connector_rights.py",
+    "docs/equity_module/v0.1/fixtures/package_redaction_tests/README.md",
+    "docs/equity_module/v0.1/fixtures/package_redaction_tests/package_redaction_test_matrix.json",
+    "docs/equity_module/v0.1/fixtures/package_redaction_tests/verify_package_redaction.py",
+    "docs/equity_module/v0.1/fixtures/portfolio_risk_radar_pilot/fixture.json",
+    "docs/equity_module/v0.1/fixtures/portfolio_risk_radar_pilot/verify_fixture.py",
+    "docs/equity_module/v0.1/fixtures/run_all_pilots.py"
+  ],
+  "fixture_result_hashes": {
+    "docs/equity_module/v0.1/fixtures/PILOTS_README.md": "e6658335464ba24a7e291d421e394d0a1bbe5b7185d812dbbf10a0e71753206c",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/_findings_cache.json": "f6cab729c1409467932b7802b501257653ddf62978465b75496e3113cf2113a6",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/apply_patches.py": "d56767ed44dce679da676a63b4e62e4bfa3eb25620eb1e0797828be3983548f1",
+    "docs/equity_module/v0.1/fixtures/confidence_recalibration/audit_recalibrate.py": "6113f1cf63f122878cff6762fdb80fd96db409d59a2c7f6f05ecf08e3e5af3e1",
+    "docs/equity_module/v0.1/fixtures/earnings_revision_momentum_pilot/fixture.json": "d9d8dd4898e949ad33c34a2c56a452ca66678536f3d1f96de673683a185bcfd3",
+    "docs/equity_module/v0.1/fixtures/earnings_revision_momentum_pilot/verify_fixture.py": "b35431dccccdb0447aa34e6e17686bdc712cb5dbfaf24be4ab02c4fbbf48703a",
+    "docs/equity_module/v0.1/fixtures/first_wedge/README.md": "39234e92047a566dc08f7f08aa6a0034b0ea59603f1c84c1bd3dfd664c0304d5",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_memo_skeleton.md": "276fe8767b1a3195f370e75eb61262ac90dfb7bea6dd2c985575f3322d45eaf4",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_package_behavior.json": "161b7a3cccc2e0164cabf348485754ed0bf701a584a3b9b43b566ec4f95d3bd0",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_source_rights_report.json": "2044524bda0c00e04f704f86c7805d1a93aa01340a889cdff83128b6bf62b835",
+    "docs/equity_module/v0.1/fixtures/first_wedge/expected_validation_report.json": "513c3aab2e1d12cb8aeb0341e160c9ed980759ff6c5e9086ad03aba2402381e1",
+    "docs/equity_module/v0.1/fixtures/first_wedge/fixture.json": "c36f4b68377bc678b266331bbf49434aa6a74af93193124a41e58b8815a77c44",
+    "docs/equity_module/v0.1/fixtures/first_wedge/verify_fixture.py": "5e731cc5a96f026add60ab594bdc8feb62283a1226aca83200830f246a9aff72",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/README.md": "39234e92047a566dc08f7f08aa6a0034b0ea59603f1c84c1bd3dfd664c0304d5",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_memo_skeleton.md": "276fe8767b1a3195f370e75eb61262ac90dfb7bea6dd2c985575f3322d45eaf4",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_package_behavior.json": "161b7a3cccc2e0164cabf348485754ed0bf701a584a3b9b43b566ec4f95d3bd0",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_source_rights_report.json": "2044524bda0c00e04f704f86c7805d1a93aa01340a889cdff83128b6bf62b835",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/expected_validation_report.json": "513c3aab2e1d12cb8aeb0341e160c9ed980759ff6c5e9086ad03aba2402381e1",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/fixture.json": "2f0dc4c3af018111862bb5a32eac00d5bc9f75317416cdc88204c19c54b76387",
+    "docs/equity_module/v0.1/fixtures/first_wedge_sec_quality_value/verify_fixture.py": "5e731cc5a96f026add60ab594bdc8feb62283a1226aca83200830f246a9aff72",
+    "docs/equity_module/v0.1/fixtures/generate_attribute_and_pit_matrix.py": "c1c50ecfece91a27d2accb028f297d903e7a8ffa7d68440e9f7e399a68127e01",
+    "docs/equity_module/v0.1/fixtures/generate_event_and_insight_registries.py": "e9e6076ca5285a2e1d6adc195506d0a4fcef0ccfc1cff4fcac92e061376d1745",
+    "docs/equity_module/v0.1/fixtures/generate_module_manifest.py": "a1da0f03876772185413cade9fc24f51e578041b8a57263355c660a58eb3e00d",
+    "docs/equity_module/v0.1/fixtures/generate_node_types.py": "d15af82991dcebfad76766ec9489fdc75330ca42a79cf2b94da42a8e3aa1d29e",
+    "docs/equity_module/v0.1/fixtures/generate_strategy_profiles_and_output_views.py": "4126844aed8f7b68b4141a01efe9e55e145333fe4f3396307903f67739b8ca36",
+    "docs/equity_module/v0.1/fixtures/generate_validation_connector_rights.py": "78cb6d52ec69c742da77e2ae7cd3790f426d0cef117e660ae5d16df6939c6053",
+    "docs/equity_module/v0.1/fixtures/package_redaction_tests/README.md": "3ba6567462c3f72844037bb65e9ff802e19a6583bfe11999ced83e54025f19ce",
+    "docs/equity_module/v0.1/fixtures/package_redaction_tests/package_redaction_test_matrix.json": "945c2e0c8b637b37066770b173676551554872f6d4055069ad1e84ad0cda932a",
+    "docs/equity_module/v0.1/fixtures/package_redaction_tests/verify_package_redaction.py": "084f390ba5d1372e1d3e582fe49adad9ef8083eb00d5c9e20fe2b14d1bc4c754",
+    "docs/equity_module/v0.1/fixtures/portfolio_risk_radar_pilot/fixture.json": "a2ce33f6054a71c16e4a57b9cca99ebaf61f3bc848bd861f52144a0a513442e9",
+    "docs/equity_module/v0.1/fixtures/portfolio_risk_radar_pilot/verify_fixture.py": "4ae6219e82e82f41b6cef915fc2b6aa179b09180292a3a12758b2eb8558e0120",
+    "docs/equity_module/v0.1/fixtures/run_all_pilots.py": "1f6c79ec835a1f29808f941c58106bcba834e456eb3691a02d5a02d9c043e6b7"
+  },
+  "validation_summary": {
+    "registry_loader": "pass",
+    "focused_equity_tests": {
+      "command": "python -m pytest tests\\unit\\test_equity_module_loader.py tests\\unit\\test_equity_module_fixtures.py",
+      "result": "10 passed in 0.53s"
+    },
+    "full_python_unit_lookahead": {
+      "command": "python -m pytest tests\\unit tests\\lookahead_audit",
+      "result": "313 passed in 170.25s (0:02:50)"
+    },
+    "dashboard_node": {
+      "command": "node --test tests\\dashboard\\attribution-period-bars.test.mjs",
+      "result": "2 passed; existing MODULE_TYPELESS_PACKAGE_JSON warning emitted"
+    },
+    "desktop_typecheck": {
+      "command": "cd apps\\viza-desktop; npm run typecheck",
+      "result": "passed"
+    },
+    "desktop_helpers": {
+      "command": "cd apps\\viza-desktop; npm run test:desktop",
+      "result": "18 passed"
+    },
+    "dashboard_typecheck": {
+      "command": "cd dashboard; npx tsc --noEmit --project tsconfig.json",
+      "result": "passed"
+    },
+    "fixture_verifiers": {
+      "first_wedge_sec_quality_value": "passed",
+      "portfolio_risk_radar": "passed",
+      "earnings_revision_momentum": "passed",
+      "package_redaction_matrix": "passed"
+    },
+    "validation_rules": "EQ-VAL-001 through EQ-VAL-012 present and loadable",
+    "profiles": [
+      "quality_value_long_only",
+      "portfolio_risk_radar",
+      "earnings_revision_momentum"
+    ]
+  },
+  "rights_redaction_summary": {
+    "unknown_rights": "blocked",
+    "restricted_raw_provider_data": "blocked_or_redacted",
+    "licensed_data": "entitlement_locked",
+    "user_private_data": "blocked_by_default_outside_creator_white_box",
+    "marketplace_draft": "redacted_non_monetized",
+    "public_only_package": "succeeds",
+    "restricted_or_unclear_rights": "blocked",
+    "licensed_connector_missing": "entitlement_locked",
+    "user_private_portfolio": "blocked_by_default_outside_creator_white_box",
+    "mixed_public_licensed_private_marketplace_draft": "blocked_or_redacted_per_matrix"
+  },
+  "PIT_summary": {
+    "SEC_filing_facts": "filing_accepted_at / available_at",
+    "13F": "lagged_not_current",
+    "short_interest": "publication_date_availability",
+    "macro": "ALFRED-style vintages required for backtests",
+    "current_FRED_Kenneth_French": "latest/current until vintage pipeline exists",
+    "registry_validator": "pass",
+    "first_wedge_no_lookahead": "pass",
+    "profile_pilots": "pass_or_warn_closed"
+  },
+  "known_limitations": [
+    "Artifacts are registry-seedable and loader-validated; full runtime graph handlers remain future work.",
+    "No production legal/source-rights review has been completed.",
+    "No connector entitlement review has been completed.",
+    "Marketplace remains draft and non-monetized.",
+    "Validation rule stubs make registry references loadable; production runtime predicates require implementation before production hardening."
+  ],
+  "locked_or_license_gated_components": [
+    "licensed_market_data_connector",
+    "licensed_fundamentals_connector",
+    "licensed_estimates_connector",
+    "licensed_text_connector",
+    "licensed_options_connector",
+    "licensed_borrow_connector",
+    "licensed_index_membership_connector"
+  ],
+  "next_backlog_items": [
+    "EQ-P0-001",
+    "EQ-P0-003",
+    "EQ-P0-008",
+    "EQ-P1-002",
+    "EQ-P1-010"
+  ]
+}

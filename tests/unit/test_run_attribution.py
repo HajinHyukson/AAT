@@ -50,6 +50,7 @@ def test_persist_attribution_result_writes_run_and_contributions() -> None:
 
     assert run.security_id == security_id
     assert run.attribution_run_id == session.run_id
+    assert run.methodology == "legacy"
     assert run.cadence == "daily"
     contribution = session.items[-1]
     assert contribution.driver == DriverType.UNEXPLAINED_RESIDUAL.value
@@ -72,6 +73,7 @@ def test_persist_attribution_result_replaces_existing_cadence_run() -> None:
     run = persist_attribution_result(session=session, result=result, cadence="weekly")
 
     assert run.attribution_run_id == session.run_id
+    assert run.methodology == "legacy"
     assert run.cadence == "weekly"
     assert run.observed_return_bps == 100
     assert any(statement.__class__.__name__ == "Delete" for statement in session.executed)
@@ -190,6 +192,7 @@ def build_existing_run(*, security_id):
             "security_id": security_id,
             "window_start": datetime(2026, 1, 2, tzinfo=timezone.utc),
             "window_end": datetime(2026, 1, 9, tzinfo=timezone.utc),
+            "methodology": "legacy",
             "model_version": "factor-baseline-v0",
             "factor_basket_version": "mvp_expanded_v0",
             "cadence": "weekly",

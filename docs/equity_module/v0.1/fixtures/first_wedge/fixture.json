@@ -1,0 +1,440 @@
+{
+  "$schema": "../../equity_registry_shared_metadata.schema.json",
+  "fixture_id": "first_wedge_v0.1",
+  "fixture_description": "End-to-end fixture for viza.finance.equity_investment v0.1: public SEC filing -> fundamental attributes -> valuation/thesis -> insight -> strategy profile (quality_value_long_only) -> output -> validation -> package rights report. Uses a fictional company (ExampleCo Industrial, Inc., placeholder CIK 0009999999) to avoid representing any real issuer. All data is public/public-official or explicitly marked as locked.",
+  "fixture_purpose": "Demonstrate the canonical happy path of the equity module while exercising every CLAUDE.md project rule: immutable IDs (never ticker), PIT fields, rights fields, unexplained_residual, factor-before-event, non-advice boundary, marketplace_draft redaction.",
+  "fixture_release_state": "alpha",
+  "fixture_baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "fixture_module_id": "viza.finance.equity_investment",
+  "fixture_module_version": "0.1.0",
+  "fixture_run_id": "run_2025_11_15_first_wedge_v01",
+  "fixture_decision_timestamp": "2025-11-15T14:00:00Z",
+  "fixture_strategy_profile_id": "quality_value_long_only",
+  "fixture_strategy_profile_hash_placeholder": "computed_at_load_time_from_profile_record",
+  "fixture_methodology_graph_hash_placeholder": "computed_at_load_time_from_graph",
+
+  "entities": {
+    "company": {
+      "id": "co_exampleco_001",
+      "object_family": "company",
+      "display_name": "ExampleCo Industrial, Inc.",
+      "description": "Fictional industrial-machinery company used solely as a fixture; no real-issuer identity is represented.",
+      "module_id": "viza.finance.equity_investment",
+      "identifiers": {"company_id": "co_exampleco_001", "cik": "0009999999", "lei": "EXAMPLECO9999999999LEI"},
+      "immutable_keys": ["company_id"],
+      "sector_id": "sector_industrials",
+      "industry_id": "industry_capital_goods",
+      "subindustry_id": "subindustry_industrial_machinery",
+      "country": "US",
+      "currency_listing": "USD",
+      "lifecycle_state": "active",
+      "pit": {
+        "observed_at_policy": "creation_time_only",
+        "available_at_policy": "creation_time_only",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "latest_revisable",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low"
+      },
+      "rights": {
+        "license_policy": "public_official",
+        "connector_roles": ["sec_filings"],
+        "display_policy": "allowed",
+        "export_policy": "allowed",
+        "marketplace_policy": "allowed",
+        "redaction_required": false
+      },
+      "source_refs": ["fixture_filing_001"]
+    },
+    "issuer": {
+      "id": "iss_exampleco_001",
+      "object_family": "issuer",
+      "display_name": "ExampleCo Industrial, Inc. (Issuer)",
+      "description": "Legal issuer of ExampleCo securities (fictional).",
+      "identifiers": {"issuer_id": "iss_exampleco_001", "lei": "EXAMPLECO9999999999LEI", "cik": "0009999999"},
+      "immutable_keys": ["issuer_id"],
+      "company_id_ref": "co_exampleco_001",
+      "lifecycle_state": "active",
+      "pit": {"observed_at_policy": "creation_time_only", "available_at_policy": "creation_time_only", "retrieved_at_policy": "connector_ingest_at", "source_version_policy": "filing_amendment_chain", "data_version_policy": "latest_revisable", "model_version_policy": "not_applicable", "vintage_required": false, "lookahead_risk": "low"},
+      "rights": {"license_policy": "public_official", "connector_roles": ["sec_filings"], "display_policy": "allowed", "export_policy": "allowed", "marketplace_policy": "allowed", "redaction_required": false},
+      "source_refs": ["fixture_filing_001"]
+    },
+    "equity_security": {
+      "id": "sec_exampleco_001",
+      "object_family": "equity_security",
+      "display_name": "ExampleCo Industrial Common Stock",
+      "description": "Single class common stock of ExampleCo Industrial, Inc. (fictional).",
+      "identifiers": {
+        "security_id": "sec_exampleco_001",
+        "figi": "BBG000FIXTURE99",
+        "cusip": "999999999",
+        "isin": "US9999999999",
+        "ticker_display": "EXAMPLE.US"
+      },
+      "immutable_keys": ["security_id"],
+      "company_id_ref": "co_exampleco_001",
+      "issuer_id_ref": "iss_exampleco_001",
+      "share_class_id_ref": "share_class_common",
+      "listing_id_ref": "listing_nyse_exampleco_001",
+      "lifecycle_state": "active",
+      "pit": {"observed_at_policy": "creation_time_only", "available_at_policy": "creation_time_only", "retrieved_at_policy": "connector_ingest_at", "source_version_policy": "provider_version", "data_version_policy": "latest_revisable", "model_version_policy": "not_applicable", "vintage_required": false, "lookahead_risk": "low"},
+      "rights": {"license_policy": "public_official", "connector_roles": ["sec_filings", "security_master"], "display_policy": "allowed", "export_policy": "allowed", "marketplace_policy": "allowed", "redaction_required": false},
+      "source_refs": ["fixture_filing_001"]
+    },
+    "listing": {
+      "id": "listing_nyse_exampleco_001",
+      "object_family": "listing",
+      "display_name": "ExampleCo / NYSE Common",
+      "exchange": "NYSE",
+      "listing_currency": "USD",
+      "primary_listing_flag": true,
+      "listing_start": "2010-01-15",
+      "listing_status": "active",
+      "security_id_ref": "sec_exampleco_001",
+      "pit": {"observed_at_policy": "creation_time_only", "available_at_policy": "creation_time_only", "retrieved_at_policy": "connector_ingest_at", "source_version_policy": "provider_version", "data_version_policy": "latest_revisable", "model_version_policy": "not_applicable", "vintage_required": false, "lookahead_risk": "low"},
+      "rights": {"license_policy": "public_official", "connector_roles": ["security_master"], "display_policy": "allowed", "export_policy": "allowed", "marketplace_policy": "allowed", "redaction_required": false}
+    },
+    "filing": {
+      "id": "fixture_filing_001",
+      "object_family": "filing",
+      "display_name": "ExampleCo 10-K (FY 2024)",
+      "description": "Fictional 10-K filing used as fixture evidence; structure mirrors EDGAR 10-K conventions but no real filing is represented.",
+      "form_type": "10-K",
+      "accession_no": "0009999999-25-000001",
+      "filing_id": "fixture_filing_001",
+      "company_id_ref": "co_exampleco_001",
+      "issuer_id_ref": "iss_exampleco_001",
+      "fiscal_period": {
+        "fiscal_period_id": "fp_exampleco_fy2024",
+        "fiscal_year_end": "2024-12-31",
+        "period_kind": "fiscal_year",
+        "filing_form": "10-K"
+      },
+      "amendment_chain_ref": null,
+      "pit": {
+        "observed_at_policy": "filing_accepted_at",
+        "available_at_policy": "filing_accepted_at",
+        "retrieved_at_policy": "connector_ingest_at",
+        "source_version_policy": "filing_amendment_chain",
+        "data_version_policy": "event_pit",
+        "model_version_policy": "not_applicable",
+        "vintage_required": false,
+        "lookahead_risk": "low",
+        "observed_at": "2025-02-15T16:30:00Z",
+        "available_at": "2025-02-15T16:30:00Z"
+      },
+      "rights": {"license_policy": "public_official", "connector_roles": ["sec_filings", "edgar_filings_intake"], "display_policy": "allowed", "export_policy": "allowed", "marketplace_policy": "allowed", "redaction_required": false},
+      "source_refs": ["edgar://0009999999/0009999999-25-000001"]
+    },
+    "evidence_bundle": {
+      "id": "evidence_bundle_exampleco_001",
+      "object_family": "evidence_bundle",
+      "description": "Evidence bundle assembled for the quality_value_long_only thesis on ExampleCo. All evidence is public-official (EDGAR).",
+      "items": [
+        {"evidence_id": "ev_filing_001_revenue", "source_ref": "fixture_filing_001", "filing_section": "income_statement", "metric": "revenue_ttm", "value": 1850.0, "unit": "usd_mm"},
+        {"evidence_id": "ev_filing_001_op_inc", "source_ref": "fixture_filing_001", "filing_section": "income_statement", "metric": "operating_income_ttm", "value": 333.0, "unit": "usd_mm"},
+        {"evidence_id": "ev_filing_001_fcf", "source_ref": "fixture_filing_001", "filing_section": "cash_flow", "metric": "free_cash_flow_ttm", "value": 222.0, "unit": "usd_mm"},
+        {"evidence_id": "ev_filing_001_net_debt", "source_ref": "fixture_filing_001", "filing_section": "balance_sheet", "metric": "net_debt", "value": 720.0, "unit": "usd_mm"},
+        {"evidence_id": "ev_filing_001_invested_capital", "source_ref": "fixture_filing_001", "filing_section": "balance_sheet", "metric": "invested_capital", "value": 1850.0, "unit": "usd_mm"},
+        {"evidence_id": "ev_filing_001_cfo", "source_ref": "fixture_filing_001", "filing_section": "cash_flow", "metric": "cash_from_operations_ttm", "value": 280.0, "unit": "usd_mm"},
+        {"evidence_id": "ev_filing_001_net_income", "source_ref": "fixture_filing_001", "filing_section": "income_statement", "metric": "net_income_ttm", "value": 245.0, "unit": "usd_mm"}
+      ],
+      "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "retrieved_at_policy": "connector_ingest_at", "source_version_policy": "filing_amendment_chain", "data_version_policy": "event_pit", "model_version_policy": "not_applicable", "vintage_required": false, "lookahead_risk": "low"},
+      "rights": {"license_policy": "public_official", "connector_roles": ["sec_filings", "fundamentals_as_reported", "xbrl_facts"], "display_policy": "allowed", "export_policy": "allowed", "marketplace_policy": "allowed", "redaction_required": false}
+    },
+    "thesis": {
+      "id": "thesis_exampleco_qvalue_001",
+      "object_family": "thesis",
+      "schema": "viza.equity.thesis.v1",
+      "target_entity_id": "sec_exampleco_001",
+      "strategy_profile_id": "quality_value_long_only",
+      "thesis_type": "long",
+      "claim": "ExampleCo demonstrates quality-value characteristics: ROIC ~18% with stable margin expansion, FCF conversion above 90% of net income, leverage 1.8x net debt / EBITDA, trading at ~14x P/E versus peer median ~18x with a computed margin of safety of ~25%.",
+      "decision_question": "Is ExampleCo a quality compounder available at a reasonable discount to intrinsic value?",
+      "horizon": "1y-5y",
+      "supporting_evidence_ids": ["ev_filing_001_revenue", "ev_filing_001_op_inc", "ev_filing_001_fcf", "ev_filing_001_net_debt", "ev_filing_001_invested_capital", "ev_filing_001_cfo", "ev_filing_001_net_income"],
+      "contradictory_evidence_ids": [],
+      "primary_signals": ["roic_ttm", "fcf_yield_ttm", "moat_score_qualitative", "margin_of_safety_pct"],
+      "catalysts": [],
+      "confirmations_required": ["cash_conversion_strength", "governance_strong"],
+      "risk_gates": ["balance_sheet_risk_gate", "accounting_quality_red_flag_check", "value_trap_warning_check"],
+      "assumptions": ["assumption_growth_3pct_perpetuity", "assumption_wacc_8pct", "assumption_terminal_multiple_15x"],
+      "valuation_or_score_support": ["valuation_model_exampleco_dcf_001", "valuation_model_exampleco_relative_001"],
+      "portfolio_context_required": false,
+      "invalidation_conditions": [
+        "moat_narrowing_observed",
+        "cash_conversion_breaks_below_70pct",
+        "leverage_above_3x_net_debt_ebitda",
+        "valuation_premium_above_peer_median",
+        "accounting_quality_red_flag_severity_high"
+      ],
+      "monitoring_triggers": ["next_10q_filing", "next_10k_filing", "8k_item_4_02_restatement"],
+      "source_rights_requirements": ["public_official_only"],
+      "PIT_requirements": ["all_inputs_available_at_leq_decision_timestamp"],
+      "confidence_label": "common_practice",
+      "open_questions": ["pending_consensus_estimate_integration_when_license_confirmed"]
+    },
+    "valuation_model_dcf": {
+      "id": "valuation_model_exampleco_dcf_001",
+      "object_family": "valuation_model",
+      "schema": "viza.equity.valuation_model.v1",
+      "method_family": "dcf",
+      "target_entity_id": "sec_exampleco_001",
+      "model_version": "v0.1.0_fixture",
+      "assumptions": [
+        {"assumption_id": "assumption_growth_3pct_perpetuity", "name": "perpetual_growth_rate", "value": 0.03, "unit": "pct_pct", "source_type": "model_default", "evidence_refs": ["fixture_filing_001"], "sensitivity_band": {"low": 0.02, "base": 0.03, "high": 0.04}},
+        {"assumption_id": "assumption_wacc_8pct", "name": "discount_rate", "value": 0.08, "unit": "pct_pct", "source_type": "model_default", "evidence_refs": [], "sensitivity_band": {"low": 0.07, "base": 0.08, "high": 0.09}},
+        {"assumption_id": "assumption_terminal_multiple_15x", "name": "terminal_multiple", "value": 15.0, "unit": "x", "source_type": "model_default", "evidence_refs": [], "sensitivity_band": {"low": 13.0, "base": 15.0, "high": 17.0}}
+      ],
+      "horizon_years": 10,
+      "terminal_method": "gordon",
+      "outputs": {
+        "intrinsic_value_per_share": 65.0,
+        "value_range": {"low": 55.0, "base": 65.0, "high": 78.0}
+      },
+      "sensitivity_table": [
+        {"wacc": 0.07, "g": 0.02, "intrinsic_value": 70.0},
+        {"wacc": 0.07, "g": 0.03, "intrinsic_value": 78.0},
+        {"wacc": 0.08, "g": 0.02, "intrinsic_value": 58.0},
+        {"wacc": 0.08, "g": 0.03, "intrinsic_value": 65.0},
+        {"wacc": 0.09, "g": 0.02, "intrinsic_value": 48.0},
+        {"wacc": 0.09, "g": 0.03, "intrinsic_value": 55.0}
+      ],
+      "market_price": 48.75,
+      "valuation_gap_pct": 0.3333,
+      "margin_of_safety_pct": 0.2500,
+      "validation": {"reverse_dcf_check": true, "peer_consistency_check": true, "asset_floor_check": false},
+      "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "retrieved_at_policy": "user_upload_at", "source_version_policy": "not_applicable", "data_version_policy": "vintaged", "model_version_policy": "model_run_id_required", "vintage_required": true, "lookahead_risk": "low"},
+      "rights": {"license_policy": "internal_research_only", "connector_roles": [], "display_policy": "allowed", "export_policy": "blocked", "marketplace_policy": "blocked", "redaction_required": true},
+      "confidence_label": "common_practice"
+    },
+    "valuation_model_relative": {
+      "id": "valuation_model_exampleco_relative_001",
+      "object_family": "valuation_model",
+      "schema": "viza.equity.valuation_model.v1",
+      "method_family": "relative",
+      "target_entity_id": "sec_exampleco_001",
+      "model_version": "v0.1.0_fixture",
+      "assumptions": [
+        {"assumption_id": "assumption_peer_methodology", "name": "peer_methodology", "value": "bhojraj_lee_size_profitability_growth_deciles", "unit": "text", "source_type": "model_default", "evidence_refs": ["fixture_filing_001"]}
+      ],
+      "peer_set": {
+        "methodology": "bhojraj_lee_size_profitability_growth_deciles",
+        "peer_count": 7,
+        "peer_ids_placeholder": ["peer_001", "peer_002", "peer_003", "peer_004", "peer_005", "peer_006", "peer_007"],
+        "selection_evidence": "industry_capital_goods + size_decile_4 + roic_decile_8 + growth_decile_5"
+      },
+      "metrics": {
+        "subject_pe_ttm": 14.0,
+        "peer_pe_median": 18.0,
+        "peer_pe_zscore_subject": -1.10,
+        "subject_ev_ebitda_ttm": 9.5,
+        "peer_ev_ebitda_median": 11.5
+      },
+      "outputs": {"valuation_gap_pct": 0.2857, "peer_underhang_flag": true},
+      "validation": {"peer_set_min_5_check": true, "peer_methodology_documented": true},
+      "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "retrieved_at_policy": "connector_ingest_at", "source_version_policy": "filing_amendment_chain", "data_version_policy": "vintaged", "model_version_policy": "model_run_id_required", "vintage_required": true, "lookahead_risk": "low"},
+      "rights": {"license_policy": "internal_research_only", "connector_roles": ["fundamentals_as_reported"], "display_policy": "allowed", "export_policy": "blocked", "marketplace_policy": "blocked", "redaction_required": true},
+      "confidence_label": "common_practice"
+    },
+    "decision": {
+      "id": "decision_exampleco_001",
+      "object_family": "decision",
+      "schema": "viza.equity.decision.v1",
+      "decision_id": "decision_exampleco_001",
+      "run_id": "run_2025_11_15_first_wedge_v01",
+      "module_id": "viza.finance.equity_investment",
+      "strategy_profile_id": "quality_value_long_only",
+      "decision_timestamp": "2025-11-15T14:00:00Z",
+      "target_entity": {"entity_id": "sec_exampleco_001", "entity_type": "equity_security"},
+      "mandate_context": {"objective": "absolute_return", "horizon": "1y-5y", "allowed_actions": ["buy_candidate", "hold", "sell_candidate", "watch", "research_deeper", "avoid"], "directionality": "long_only"},
+      "portfolio_context": null,
+      "evidence_bundle_ids": ["evidence_bundle_exampleco_001"],
+      "signal_ids": ["signal_roic_ttm", "signal_fcf_yield_ttm", "signal_margin_of_safety_pct", "signal_balance_sheet_health"],
+      "thesis_ids": ["thesis_exampleco_qvalue_001"],
+      "catalyst_event_ids": [],
+      "confirmation_ids": ["confirmation_cash_conversion_strength", "confirmation_governance_strong_placeholder"],
+      "risk_gate_results": [
+        {"gate": "balance_sheet_risk_gate", "result": "pass", "evidence_refs": ["ev_filing_001_net_debt"]},
+        {"gate": "accounting_quality_red_flag_check", "result": "pass", "evidence_refs": ["ev_filing_001_cfo", "ev_filing_001_net_income"]},
+        {"gate": "value_trap_warning_check", "result": "pass", "evidence_refs": ["ev_filing_001_fcf"]}
+      ],
+      "score_outputs": [
+        {"score": "quality_value_composite", "value": 1.42, "decile": 8, "method": "zscore_sum_with_caps"}
+      ],
+      "invalidation_conditions": [
+        "moat_narrowing_observed",
+        "cash_conversion_breaks_below_70pct",
+        "leverage_above_3x_net_debt_ebitda",
+        "valuation_premium_above_peer_median"
+      ],
+      "decision_action": "buy_candidate",
+      "decision_rationale": "ROIC ~18% with margin expansion, FCF conversion >90%, leverage 1.8x, peer P/E discount of ~22%, computed margin of safety ~25%, all risk gates pass.",
+      "confidence": {
+        "label": "common_practice",
+        "drivers": ["valuation_discount", "margin_of_safety_present", "cash_conversion_strength", "moat_widening"],
+        "downgrade_reasons": ["pending_consensus_estimate_license", "qualitative_moat_evidence_only"]
+      },
+      "output_views": ["equity_radar", "investment_memo", "validation_report", "source_rights_report"],
+      "pit_status": {
+        "PIT_safe": true,
+        "lookahead_risk": "low",
+        "availability_notes": "Decision timestamp 2025-11-15 is 9 months after filing_accepted_at 2025-02-15. Every scoring input has available_at <= decision_timestamp."
+      },
+      "rights_status": {
+        "display_allowed": "yes",
+        "export_allowed": "conditional",
+        "marketplace_allowed": "redacted",
+        "redaction_required": true
+      },
+      "audit": {
+        "methodology_graph_hash_placeholder": "computed_at_load_time",
+        "strategy_profile_hash_placeholder": "computed_at_load_time",
+        "evidence_checksum_placeholder": "computed_at_load_time",
+        "source_refs": ["fixture_filing_001"],
+        "validation_record_ids": ["validation_record_first_wedge_001"]
+      }
+    },
+    "validation_record": {
+      "id": "validation_record_first_wedge_001",
+      "object_family": "validation_record",
+      "schema": "viza.equity.validation_record.v1",
+      "validation_record_id": "validation_record_first_wedge_001",
+      "run_id": "run_2025_11_15_first_wedge_v01",
+      "target_object_type": "decision",
+      "target_object_id": "decision_exampleco_001",
+      "methodology_graph_hash_placeholder": "computed_at_load_time",
+      "strategy_profile_hash_placeholder": "computed_at_load_time",
+      "data_cutoff": "2025-11-15T14:00:00Z",
+      "checks": [
+        {"rule_id": "schema_graph_schema_supported", "result": "pass"},
+        {"rule_id": "schema_node_types_in_palette", "result": "pass"},
+        {"rule_id": "schema_edge_types_in_palette", "result": "pass"},
+        {"rule_id": "schema_no_cycles_in_data_flow", "result": "pass"},
+        {"rule_id": "schema_output_radar_reachable", "result": "pass"},
+        {"rule_id": "data_source_id_required", "result": "pass"},
+        {"rule_id": "data_observed_at_required", "result": "pass"},
+        {"rule_id": "data_available_at_required", "result": "pass"},
+        {"rule_id": "data_retrieved_at_required", "result": "pass"},
+        {"rule_id": "data_no_ticker_as_primary_key", "result": "pass"},
+        {"rule_id": "pit_no_lookahead", "result": "pass"},
+        {"rule_id": "pit_vintage_required_for_backtest", "result": "not_applicable"},
+        {"rule_id": "pit_restatement_revintage_required", "result": "not_applicable"},
+        {"rule_id": "pit_thirteenf_lag", "result": "not_applicable"},
+        {"rule_id": "pit_short_interest_publication_date", "result": "not_applicable"},
+        {"rule_id": "pit_alfred_macro_required_for_backtest", "result": "not_applicable"},
+        {"rule_id": "rights_rights_policy_required", "result": "pass"},
+        {"rule_id": "rights_restricted_no_export", "result": "pass"},
+        {"rule_id": "rights_production_connector_fail_closed", "result": "not_applicable"},
+        {"rule_id": "rights_unclear_defaults_restrictive", "result": "not_applicable"},
+        {"rule_id": "evidence_thesis_requires_evidence_horizon_invalidation", "result": "pass"},
+        {"rule_id": "evidence_valuation_requires_assumptions_and_sensitivity", "result": "pass"},
+        {"rule_id": "evidence_event_requires_source_credibility_and_timestamp", "result": "not_applicable"},
+        {"rule_id": "evidence_rumor_no_direct_action", "result": "not_applicable"},
+        {"rule_id": "evidence_non_advice_boundary", "result": "pass"},
+        {"rule_id": "statistical_factor_oos_required", "result": "not_applicable"},
+        {"rule_id": "statistical_factor_costs_required", "result": "not_applicable"},
+        {"rule_id": "statistical_factor_liquidity_capacity_required", "result": "not_applicable"},
+        {"rule_id": "statistical_deflated_sharpe_required", "result": "not_applicable"},
+        {"rule_id": "statistical_survivorship_bias_required", "result": "not_applicable"},
+        {"rule_id": "qualitative_human_review_fraud_legal_short", "result": "not_applicable"},
+        {"rule_id": "qualitative_short_action_requires_borrow_and_squeeze_review", "result": "not_applicable"},
+        {"rule_id": "qualitative_sentiment_social_credibility_review", "result": "not_applicable"},
+        {"rule_id": "portfolio_sizing_requires_portfolio_context", "result": "not_applicable", "note": "decision.decision_action=buy_candidate without portfolio_context; sizing handled downstream."},
+        {"rule_id": "portfolio_caps_enforced", "result": "not_applicable"},
+        {"rule_id": "portfolio_tracking_error_budget", "result": "not_applicable"},
+        {"rule_id": "output_validation_summary_required", "result": "pass"},
+        {"rule_id": "output_pit_summary_required", "result": "pass"},
+        {"rule_id": "output_rights_summary_required", "result": "pass"},
+        {"rule_id": "output_invalidation_display_for_recommendations", "result": "pass"},
+        {"rule_id": "package_marketplace_draft_redact_restricted", "result": "pass"},
+        {"rule_id": "package_proof_checksum_required", "result": "pass"},
+        {"rule_id": "package_no_monetized_endpoints", "result": "pass"}
+      ],
+      "warnings": [
+        {"code": "pit_latest_only_not_backtest_safe", "scope": "factor_attribution_unused_in_this_run", "severity": "info", "message": "Factor / macro inputs not used in this fixture; if a future variant adds factor attribution, AAT submodule + ALFRED vintaged pipeline must ship first."},
+        {"code": "qualitative_moat_evidence_only", "scope": "thesis_confidence_downgrade", "severity": "warn", "message": "Moat score is qualitative; quantitative ROIC durability evidence supports common_practice confidence, not high_confidence_core."}
+      ],
+      "failures": [],
+      "status": "passed",
+      "confidence_label": "high_confidence_core",
+      "created_at": "2025-11-15T14:00:01Z",
+      "validator_version": "viza.equity.validation_engine@0.1.0_fixture",
+      "evidence_refs": ["fixture_filing_001"],
+      "proof_checksum_placeholder": "computed_at_load_time_from_run_id_plus_artifact_shas"
+    },
+    "rights_policy": {
+      "id": "rights_policy_first_wedge_001",
+      "object_family": "rights_policy",
+      "description": "Effective rights policy for the first-wedge run. Public-official sources (EDGAR) carry full display/export/marketplace. Internal-research artifacts (valuation_model, thesis, decision, validation_record) default to export blocked + marketplace blocked + redaction_required=true.",
+      "rights_state": {
+        "public_official_sources": ["fixture_filing_001", "evidence_bundle_exampleco_001", "co_exampleco_001", "iss_exampleco_001", "sec_exampleco_001"],
+        "internal_research_only_objects": ["thesis_exampleco_qvalue_001", "valuation_model_exampleco_dcf_001", "valuation_model_exampleco_relative_001", "decision_exampleco_001", "validation_record_first_wedge_001"],
+        "locked_provider_data": [
+          {"data_type": "consensus_estimates", "connector_role": "licensed_estimates_connector", "license_status": "missing", "behavior": "locked_placeholder_node", "note": "consensus inputs not used in this fixture; node opens as locked-placeholder if added"}
+        ],
+        "attribution_required_sources": []
+      },
+      "pit": {"observed_at_policy": "creation_time_only", "available_at_policy": "creation_time_only", "retrieved_at_policy": "user_upload_at", "source_version_policy": "not_applicable", "data_version_policy": "latest_revisable", "model_version_policy": "not_applicable", "vintage_required": false, "lookahead_risk": "low"},
+      "rights": {"license_policy": "internal_research_only", "connector_roles": [], "display_policy": "allowed", "export_policy": "blocked", "marketplace_policy": "blocked", "redaction_required": true}
+    }
+  },
+
+  "attributes": [
+    {"attribute_id": "attr_revenue_growth_yoy_q", "attribute_key": "revenue_growth_yoy_q", "value": 0.082, "unit": "pct_pct", "evidence_refs": ["ev_filing_001_revenue"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_gross_margin_ttm", "attribute_key": "gross_margin_ttm", "value": 0.385, "unit": "pct_pct", "evidence_refs": ["ev_filing_001_revenue", "ev_filing_001_op_inc"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_operating_margin_ttm", "attribute_key": "operating_margin_ttm", "value": 0.180, "unit": "pct_pct", "evidence_refs": ["ev_filing_001_op_inc", "ev_filing_001_revenue"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_fcf_margin_ttm", "attribute_key": "fcf_margin_ttm", "value": 0.120, "unit": "pct_pct", "evidence_refs": ["ev_filing_001_fcf", "ev_filing_001_revenue"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_roic_ttm", "attribute_key": "roic_ttm", "value": 0.180, "unit": "pct_pct", "evidence_refs": ["ev_filing_001_op_inc", "ev_filing_001_invested_capital"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_net_debt_to_ebitda_ttm", "attribute_key": "net_debt_to_ebitda_ttm", "value": 1.80, "unit": "x", "evidence_refs": ["ev_filing_001_net_debt", "ev_filing_001_op_inc"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_cfo_to_ni_ttm", "attribute_key": "cfo_to_ni_ttm", "value": 1.143, "unit": "ratio", "evidence_refs": ["ev_filing_001_cfo", "ev_filing_001_net_income"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_fcf_to_ni_ttm", "attribute_key": "fcf_to_ni_ttm", "value": 0.906, "unit": "ratio", "evidence_refs": ["ev_filing_001_fcf", "ev_filing_001_net_income"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_pe_ttm", "attribute_key": "pe_ttm", "value": 14.0, "unit": "x", "evidence_refs": ["ev_filing_001_net_income"], "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core", "computation_method": "market_price_at_decision_timestamp_div_eps_ttm_from_filing"},
+    {"attribute_id": "attr_fcf_yield_ttm", "attribute_key": "fcf_yield_ttm", "value": 0.0648, "unit": "pct_pct", "evidence_refs": ["ev_filing_001_fcf"], "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "public_official"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_margin_of_safety_pct", "attribute_key": "margin_of_safety_pct", "value": 0.25, "unit": "pct_pct", "evidence_refs": ["valuation_model_exampleco_dcf_001"], "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "vintage_required": true, "lookahead_risk": "low"}, "rights": {"license_policy": "internal_research_only"}, "confidence_label": "common_practice", "computation_method": "(intrinsic_value_per_share - market_price) / intrinsic_value_per_share"},
+    {"attribute_id": "attr_valuation_gap_pct", "attribute_key": "valuation_gap_pct", "value": 0.3333, "unit": "pct_pct", "evidence_refs": ["valuation_model_exampleco_dcf_001"], "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "vintage_required": true, "lookahead_risk": "low"}, "rights": {"license_policy": "internal_research_only"}, "confidence_label": "common_practice"},
+    {"attribute_id": "attr_moat_score_qualitative", "attribute_key": "moat_score_qualitative", "value": "narrow_widening", "unit": "enum", "evidence_refs": ["ev_filing_001_op_inc", "ev_filing_001_invested_capital"], "pit": {"observed_at_policy": "filing_accepted_at", "available_at_policy": "filing_accepted_at", "vintage_required": false, "lookahead_risk": "medium"}, "rights": {"license_policy": "public_official"}, "confidence_label": "common_practice", "computation_method": "qualitative_classification_supported_by_roic_durability_evidence"},
+    {"attribute_id": "attr_pit_status", "attribute_key": "PIT_safe_flag", "value": true, "unit": "bool", "evidence_refs": [], "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "internal_research_only"}, "confidence_label": "high_confidence_core"},
+    {"attribute_id": "attr_rights_status", "attribute_key": "rights_export_status", "value": "conditional", "unit": "enum", "evidence_refs": [], "pit": {"observed_at_policy": "computation_time", "available_at_policy": "computation_time", "vintage_required": false, "lookahead_risk": "low"}, "rights": {"license_policy": "internal_research_only"}, "confidence_label": "high_confidence_core"}
+  ],
+
+  "events": [
+    {"event_id": "evt_filing_received_001", "event_type": "earnings_release", "display_name": "ExampleCo 10-K Received", "observed_at": "2025-02-15T16:30:00Z", "available_at": "2025-02-15T16:30:00Z", "source_credibility": 5, "materiality": "high", "affects_entities": ["sec_exampleco_001", "co_exampleco_001"], "evidence_refs": ["fixture_filing_001"], "rights": {"license_policy": "public_official"}},
+    {"event_id": "evt_thesis_created_001", "event_type": "thesis_created", "display_name": "Thesis Created", "observed_at": "2025-11-15T13:55:00Z", "available_at": "2025-11-15T13:55:00Z", "source_credibility": 5, "materiality": "medium", "affects_entities": ["thesis_exampleco_qvalue_001"], "evidence_refs": ["evidence_bundle_exampleco_001"], "rights": {"license_policy": "internal_research_only"}},
+    {"event_id": "evt_validation_completed_001", "event_type": "decision_created", "display_name": "Validation Completed", "observed_at": "2025-11-15T14:00:01Z", "available_at": "2025-11-15T14:00:01Z", "source_credibility": 5, "materiality": "high", "affects_entities": ["decision_exampleco_001"], "evidence_refs": ["validation_record_first_wedge_001"], "rights": {"license_policy": "internal_research_only"}},
+    {"event_id": "evt_output_rendered_001", "event_type": "decision_created", "display_name": "Output Views Rendered", "observed_at": "2025-11-15T14:00:05Z", "available_at": "2025-11-15T14:00:05Z", "source_credibility": 5, "materiality": "low", "affects_entities": ["decision_exampleco_001"], "evidence_refs": ["validation_record_first_wedge_001"], "rights": {"license_policy": "internal_research_only"}},
+    {"event_id": "evt_package_rights_reviewed_001", "event_type": "source_rights_changed", "display_name": "Package Rights Reviewed", "observed_at": "2025-11-15T14:00:10Z", "available_at": "2025-11-15T14:00:10Z", "source_credibility": 5, "materiality": "low", "affects_entities": ["rights_policy_first_wedge_001"], "evidence_refs": ["validation_record_first_wedge_001"], "rights": {"license_policy": "internal_research_only"}}
+  ],
+
+  "insights": [
+    {"insight_id": "ins_cash_conversion_strength", "insight_type_key": "cash_conversion_strength", "insight_family": "fundamental_state", "direction_logic": "long_supportive", "evidence_refs": ["attr_cfo_to_ni_ttm", "attr_fcf_to_ni_ttm"], "profile_interpretation": "primary thesis support", "confidence_label": "high_confidence_core"},
+    {"insight_id": "ins_margin_of_safety_present", "insight_type_key": "margin_of_safety_present", "insight_family": "valuation_state", "direction_logic": "long_supportive", "evidence_refs": ["attr_margin_of_safety_pct"], "profile_interpretation": "primary signal", "confidence_label": "common_practice"},
+    {"insight_id": "ins_valuation_discount", "insight_type_key": "valuation_discount", "insight_family": "valuation_state", "direction_logic": "long_supportive", "evidence_refs": ["attr_pe_ttm", "valuation_model_exampleco_relative_001"], "profile_interpretation": "primary signal", "confidence_label": "high_confidence_core"},
+    {"insight_id": "ins_moat_widening", "insight_type_key": "moat_widening", "insight_family": "industry_state", "direction_logic": "long_supportive", "evidence_refs": ["attr_roic_ttm", "attr_moat_score_qualitative"], "profile_interpretation": "primary signal", "confidence_label": "common_practice", "downgrade_reason": "qualitative_moat_evidence_only"},
+    {"insight_id": "ins_balance_sheet_fragility_absent", "insight_type_key": "balance_sheet_fragility", "insight_family": "fundamental_state", "direction_logic": "risk_only_inverted", "evidence_refs": ["attr_net_debt_to_ebitda_ttm"], "profile_interpretation": "risk gate passes (1.8x leverage, below 3.0x threshold)", "confidence_label": "high_confidence_core", "result": "absent"},
+    {"insight_id": "ins_rights_export_status", "insight_type_key": "rights_restriction_blocks_export", "insight_family": "rights_state", "direction_logic": "risk_only", "evidence_refs": ["rights_policy_first_wedge_001"], "profile_interpretation": "internal_research_only objects (thesis, valuation_model, decision) must redact for marketplace_draft and block raw export.", "confidence_label": "high_confidence_core", "result": "rights_export_blocked_marketplace_redacted_for_internal_artifacts"},
+    {"insight_id": "ins_pit_status", "insight_type_key": "lookahead_risk_elevated", "insight_family": "pit_state", "direction_logic": "risk_only", "evidence_refs": ["attr_pit_status"], "profile_interpretation": "no PIT warning emitted because every input has available_at <= 2025-11-15", "confidence_label": "high_confidence_core", "result": "no_pit_warning"}
+  ],
+
+  "validation_checks_explicit": {
+    "no_lookahead": "PASS - max(available_at across attributes) = 2025-11-15T13:55:00Z (thesis creation event) <= decision_timestamp 2025-11-15T14:00:00Z. Earliest input is filing_accepted_at 2025-02-15T16:30:00Z (9 months before decision).",
+    "evidence_present": "PASS - thesis.supporting_evidence_ids has 7 entries; decision.evidence_bundle_ids = [evidence_bundle_exampleco_001]; valuation_model_dcf.assumptions has 3 named assumptions with sensitivity bands; valuation_model_relative.peer_set has methodology and 7 peers documented.",
+    "thesis_has_invalidation": "PASS - thesis.invalidation_conditions has 5 entries: moat_narrowing_observed, cash_conversion_breaks_below_70pct, leverage_above_3x_net_debt_ebitda, valuation_premium_above_peer_median, accounting_quality_red_flag_severity_high.",
+    "valuation_has_assumptions": "PASS - DCF carries 3 assumptions with sensitivity_band {low, base, high}; sensitivity_table has 6 entries (2x3 grid over WACC x growth); relative valuation carries peer_set methodology + min 5 peers requirement met (7 peers).",
+    "output_has_non_advice_boundary": "PASS - all 4 output views (equity_radar, investment_memo, validation_report, source_rights_report) explicitly include non_advice_boundary in required_sections per equity_output_views.json. The investment_memo non-advice boundary text is rendered in expected_memo_skeleton.md §13.",
+    "package_redacts_restricted_sections": "PASS - white_box, gray_box and output_only include full + redacted variants respectively per expected_package_behavior.json. marketplace_draft redacts thesis, valuation_models, decision rationale, and validation_record while preserving manifest + audit_proof + non-advice boundary + creator placeholder."
+  },
+
+  "fixture_acceptance_assertions": [
+    "All entity records resolve in equity_entity_types.json (company, issuer, equity_security, listing, filing, thesis, valuation_model, decision, validation_record, rights_policy).",
+    "Decision PIT_safe=true because max(available_at) <= decision_timestamp (no lookahead).",
+    "Decision rights_status.export_allowed=conditional and marketplace_allowed=redacted because thesis, valuation_models, and decision are internal_research_only and require redaction.",
+    "Validation record status=passed with 0 failures and 2 informational warnings.",
+    "Marketplace_draft package redacts every internal_research_only object while preserving non_advice_boundary and proof_checksum.",
+    "No ticker is used as a primary key anywhere in the fixture; ticker 'EXAMPLE.US' is display-only on the equity_security entity.",
+    "No licensed connector is invoked; consensus_estimates / borrow / options / news connectors are explicitly listed as locked_placeholder with license_status=missing.",
+    "Fixture is fully deterministic: every timestamp, value, and ID is fixed; re-running the verifier on the same fixture.json produces identical artifact hashes."
+  ]
+}

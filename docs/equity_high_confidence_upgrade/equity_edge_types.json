@@ -1,0 +1,178 @@
+[
+  {
+    "edge_type_id": "equity.edge.supports",
+    "label": "supports",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.conflicts_with",
+    "label": "conflicts with",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.requires",
+    "label": "requires",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.invalidates",
+    "label": "invalidates",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.derived_from",
+    "label": "derived from",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.observed_in",
+    "label": "observed in",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": true,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.belongs_to",
+    "label": "belongs to",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.maps_to",
+    "label": "maps to",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.gated_by",
+    "label": "gated by",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.translated_by",
+    "label": "translated by",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": false,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  },
+  {
+    "edge_type_id": "equity.edge.redacted_by",
+    "label": "redacted by",
+    "source_types": [
+      "any"
+    ],
+    "target_types": [
+      "any"
+    ],
+    "PIT_required": false,
+    "rights_sensitive": true,
+    "validation_rules": [
+      "EQ_VAL_SCHEMA_001"
+    ],
+    "confidence_label": "high_confidence_core"
+  }
+]

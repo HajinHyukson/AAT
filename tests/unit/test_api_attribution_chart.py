@@ -37,6 +37,23 @@ def test_chart_price_points_normalize_to_range_start() -> None:
     assert points[2].cumulative_return_pct == pytest.approx(-5)
 
 
+def test_weekly_chart_price_points_use_weekly_closes() -> None:
+    security_id = uuid4()
+    bars = [
+        price_bar(security_id=security_id, day=5, adjusted_close=100),
+        price_bar(security_id=security_id, day=6, adjusted_close=102),
+        price_bar(security_id=security_id, day=9, adjusted_close=104),
+        price_bar(security_id=security_id, day=12, adjusted_close=108),
+        price_bar(security_id=security_id, day=13, adjusted_close=112),
+    ]
+
+    points = api_main.build_chart_price_points(bars, cadence="weekly")
+
+    assert [point.date for point in points] == [dt(9), dt(13)]
+    assert points[0].cumulative_return_pct == pytest.approx(0)
+    assert points[1].cumulative_return_pct == pytest.approx((112 / 104 - 1) * 100)
+
+
 def test_chart_attribution_points_convert_bps_to_percent_points() -> None:
     run_id = uuid4()
     security_id = uuid4()
@@ -162,6 +179,7 @@ def attribution_run(*, attribution_run_id, security_id, observed_return_bps: flo
         attribution_cutoff=dt(4),
         observed_return_bps=observed_return_bps,
         unexplained_residual_bps=0,
+        methodology="legacy",
         model_version="test",
         data_version="test",
         factor_basket_version="test",

@@ -1,0 +1,43 @@
+{
+  "name": "@aat/viza-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "VIZA desktop prototype workspace.",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5174",
+    "dev:engine": "python -m viza.service",
+    "dev:desktop": "concurrently -k \"npm run dev\" \"wait-on http://127.0.0.1:5174 && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5174 electron electron/main.cjs\"",
+    "build:engine": "node scripts/buildEngineSidecar.mjs",
+    "build": "tsc --noEmit --project tsconfig.json && vite build",
+    "preflight:win": "node scripts/preflightWindowsRelease.mjs",
+    "package:win": "npm run preflight:win && npm run build:engine && npm run build && electron-builder --win --config electron-builder.yml",
+    "package:mac:dir": "npm run build:engine && npm run build && electron-builder --mac dir --config electron-builder.yml",
+    "preflight:mac": "node scripts/preflightMacRelease.mjs",
+    "release:mac": "node scripts/releaseMac.mjs",
+    "preview": "vite preview --host 127.0.0.1 --port 4174",
+    "smoke:package": "node scripts/smokePackage.mjs",
+    "smoke:package:mac": "node scripts/smokeMacPackage.mjs",
+    "test:desktop": "node --test test/*.test.mjs",
+    "typecheck": "tsc --noEmit --project tsconfig.json"
+  },
+  "dependencies": {
+    "@xyflow/react": "^12.8.4",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^42.0.1",
+    "electron-builder": "^26.0.12",
+    "typescript": ">=5.0.0",
+    "vite": "^6.0.11",
+    "wait-on": "^8.0.2"
+  }
+}

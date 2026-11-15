@@ -1,0 +1,165 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "feature": "viza.finance.text.sentiment",
+  "implementation": "local_finbert_mock_plus_transformers_scaffold",
+  "step": "SEC_filing_text_sentiment_resolver_stages_A_through_D",
+  "stages_delivered": ["A", "B", "C-backend", "D"],
+  "stages_deferred": ["C-desktop-ui", "B-prime-onnx"],
+  "feature_flags": {
+    "VIZA_EQUITY_SEC_TEXT_ANALYSIS_ENABLED": false,
+    "VIZA_EQUITY_TEXT_SENTIMENT_RESOLVER_ENABLED": false,
+    "VIZA_EQUITY_FINBERT_ENABLED": false,
+    "VIZA_EQUITY_FINBERT_MODEL_DOWNLOAD_ENABLED": false,
+    "VIZA_EQUITY_TEXT_PREPOPULATION_ENABLED": false,
+    "VIZA_EQUITY_TEXT_REPLAY_REFRESH_ENABLED": false,
+    "default": "all flags off; flag-off leaves existing runtime/UI/package behavior unchanged"
+  },
+  "registry_objects_added": [
+    {
+      "kind": "resolver",
+      "id": "viza.finance.text.sentiment",
+      "namespace": "viza.finance.text",
+      "version": "v0.1.0_stage_a",
+      "implementations": [
+        "local_finbert_mock",
+        "local_finbert_transformers",
+        "local_finbert_onnx"
+      ],
+      "default_implementation": "local_finbert_mock"
+    }
+  ],
+  "attributes_added": [
+    "sec_text.sentiment.distribution",
+    "sec_text.sentiment.label",
+    "sec_text.sentiment.positive_prob",
+    "sec_text.sentiment.neutral_prob",
+    "sec_text.sentiment.negative_prob",
+    "sec_text.sentiment.confidence",
+    "sec_text.section.net_sentiment",
+    "sec_text.section.negative_chunk_ratio",
+    "sec_text.section.high_confidence_negative_count",
+    "sec_text.section.sentiment_dispersion",
+    "sec_text.delta.negative_tone_vs_prior",
+    "sec_text.delta.net_sentiment_vs_prior",
+    "sec_text.model.version",
+    "sec_text.chunk.hash",
+    "sec_text.parser.version",
+    "sec_text.chunking_policy.hash"
+  ],
+  "attributes_added_via_registry_seed": false,
+  "attributes_added_via_registry_seed_note": "Surface-level attribute identifiers are returned by the resolver; CSV/JSON registry seeding deferred to Stage C alongside UI palette additions.",
+  "nodes_added": [],
+  "nodes_added_note": "Node-registry seed entries deferred to Stage C; the resolver functions today as a service-layer call from existing equity preview nodes.",
+  "events_added": [
+    "filing_text_human_review_required"
+  ],
+  "insights_added": [],
+  "insights_added_note": "Insight extraction follows Stage C wiring; Stage A surfaces the underlying observations from which Stage C will construct insights.",
+  "api_endpoints_added": [
+    "GET  /viza/equity/text/sentiment/status",
+    "POST /viza/equity/text/sentiment/resolve",
+    "GET  /viza/equity/text/sentiment/cache/{cache_key}",
+    "POST /viza/equity/text/sentiment/runs/{run_id}/replay"
+  ],
+  "api_endpoints_deferred": [
+    "POST /viza/equity/text/sentiment/prepopulate (Stage D supplies prepopulate() function; the HTTP wrapper lands with the desktop UI in Stage C-desktop)",
+    "GET  /viza/equity/text/sentiment/jobs/{job_id} (same)"
+  ],
+  "ui_components_added_or_modified": [],
+  "ui_components_added_or_modified_note": "Desktop UI (Electron/React/Tailwind) deferred to Stage C-desktop; backend exposes the API surface the UI will consume.",
+  "model_governance": {
+    "model_id": "ProsusAI/finbert (real) | viza.mock/finbert (mock)",
+    "model_version": "v1.0 | mock_v1",
+    "model_hash_recorded": true,
+    "tokenizer_hash_recorded": true,
+    "chunking_policy_hash_recorded": true,
+    "inference_config_hash_recorded": true,
+    "parser_version_recorded": true,
+    "hash_specifications_pinned": "viza/equity/text/hashing.py",
+    "model_release_dates_table": "viza/equity/text/release_dates.py"
+  },
+  "cache_policy": {
+    "exact_cache_key_fields": [
+      "filing_accession",
+      "section_id",
+      "section_text_hash",
+      "parser_version",
+      "chunking_policy_hash",
+      "model_id",
+      "model_version",
+      "model_hash",
+      "tokenizer_hash",
+      "inference_config_hash"
+    ],
+    "silent_upgrade_blocked": true,
+    "replay_from_stored_observations_no_live_calls": true,
+    "replay_pit_cutoff_filter_enforced": true,
+    "cache_key_to_observation_cardinality": "one cache_key maps to N chunk observations (one per chunk); chunk_id is unique within the cache_key bucket"
+  },
+  "pit_summary": {
+    "available_at_basis": "filing acceptanceDateTime (minute precision) or day-precision fallback at 21:00 ET",
+    "lookahead_risk_labels": ["low", "warning", "not_backtest_safe"],
+    "historical_pit_model_availability_gate": true,
+    "look_ahead_audit_test_file": "tests/lookahead_audit/test_finbert_observation_pit.py"
+  },
+  "rights_redaction_summary": {
+    "package_modes_supported": ["white_box", "output_only", "marketplace_draft"],
+    "raw_filing_text_redacted_by_default": true,
+    "marketplace_draft_excerpts_in_v0_1": false,
+    "partially_resolved_runs_blocked_in_marketplace_draft": true,
+    "non_advice_boundary_always_included": true,
+    "redaction_manifest_explicitly_records_absent_fields": true
+  },
+  "validation_summary": {
+    "human_review_gate_via_keyword_pre_filter": true,
+    "human_review_term_set_version": "v1",
+    "finbert_output_cannot_directly_produce_buy_sell_short": true,
+    "section_level_required_aggregates_chunks": true,
+    "deltas_warn_on_metadata_mismatch": true
+  },
+  "api_key_safety": {
+    "raw_keys_logged": false,
+    "raw_keys_serialized": false,
+    "sentinel_sweep_implemented": true,
+    "sentinel_sweep_module": "viza/equity/text/secrets.py",
+    "generated_files_scanned_in_tests": true
+  },
+  "tests_run": {
+    "command_unit_and_lookahead": "python -m pytest tests/unit tests/lookahead_audit -q",
+    "result": "438 passed in 137.99s",
+    "baseline_before_change": 350,
+    "net_new_tests": 88,
+    "new_test_files": [
+      "tests/unit/test_equity_text_hashing.py",
+      "tests/unit/test_equity_text_human_review.py",
+      "tests/unit/test_equity_text_section_parser.py",
+      "tests/unit/test_equity_text_chunker.py",
+      "tests/unit/test_equity_text_resolver.py",
+      "tests/unit/test_equity_text_cache_and_replay.py",
+      "tests/unit/test_equity_text_aggregation.py",
+      "tests/unit/test_equity_text_feature_flags.py",
+      "tests/unit/test_equity_finbert_model_governance.py",
+      "tests/unit/test_equity_text_secret_safety.py",
+      "tests/unit/test_equity_text_sentiment_package_redaction.py",
+      "tests/unit/test_equity_text_sentiment_api.py",
+      "tests/unit/test_equity_text_sentiment_prepopulation.py",
+      "tests/lookahead_audit/test_finbert_observation_pit.py"
+    ]
+  },
+  "known_limitations": [
+    "Real FinBERT inference requires `transformers` (and `torch`) to be installed; not installed in the verification environment. The transformers implementation imports lazily and raises FinbertDependencyMissing if absent.",
+    "ONNX/INT8 path is a deferred stub (raises OnnxDeferred). A follow-up commit (Stage B') must include accuracy-equivalence tests against the transformers baseline.",
+    "Section parser handles only iXBRL-tagged 10-K/10-Q and 8-K item lists. Pre-2009 filings without iXBRL tags emit `section_unparseable` with a warning.",
+    "MODEL_RELEASE_DATES table contains only ProsusAI/finbert v1.0; other model versions block live_historical_PIT mode with `model_release_date_unknown`.",
+    "Desktop UI surface (Electron panel) and the prepopulation HTTP endpoints are deferred to Stage C-desktop.",
+    "Live SEC filing fetch is deferred to Stage C-connector; Stage A-C accept `mock_parsed_sections` so the FastAPI surface is exercisable in tests today.",
+    "Not production-hardened. Outputs are research evidence, not investment advice."
+  ],
+  "next_backlog_items": [
+    "Stage B': ONNX export + INT8 quantization + accuracy-equivalence tests",
+    "Stage C-desktop: Electron React panel with 11 sub-surfaces; smoke-package extension",
+    "Stage C-connector: wire viza.equity.connectors.SecPublicClient into the resolver to replace mock_parsed_sections",
+    "Stage D-http: HTTP endpoints for prepopulate/jobs (function-level Python is complete and tested)",
+    "Loughran-McDonald dictionary baseline implementation under the same resolver_id for cross-method validation"
+  ]
+}

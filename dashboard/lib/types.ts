@@ -19,6 +19,7 @@ export type AttributionRun = {
   attribution_cutoff: string;
   observed_return_bps: number;
   unexplained_residual_bps: number;
+  methodology: string;
   model_version: string;
   data_version: string;
   factor_basket_version: string;
@@ -75,6 +76,7 @@ export type UniverseStock = {
   latest_residual_bps: number | null;
   latest_price_change_usd: number | null;
   latest_residual_usd: number | null;
+  methodology: string;
   top_driver: string | null;
   top_driver_confidence: string | null;
   contribution_count: number;
@@ -97,6 +99,43 @@ export type UniverseResponse = {
   sector_options: string[];
   industry_options: string[];
   exchange_options: string[];
+};
+
+export type AttributionMethodology = {
+  methodology: string;
+  display_name: string;
+  status: "active" | "archived" | string;
+  is_default: boolean;
+  model_version: string;
+  factor_basket_version: string;
+  supported_cadences: string[];
+};
+
+export type AttributionEnsureLatestResponse = {
+  status: "fresh" | "queued" | "running" | string;
+  job_id: string | null;
+  run: AttributionRun | null;
+  latest_existing_window_end: string | null;
+  target_window_end: string | null;
+};
+
+export type AttributionJob = {
+  job_id: string;
+  ticker: string;
+  security_id: string;
+  methodology: string;
+  cadence: "daily" | "weekly" | "monthly" | string;
+  status: "queued" | "running" | "completed" | "failed" | "skipped" | string;
+  target_range_start: string;
+  target_range_end: string;
+  latest_existing_window_end: string | null;
+  target_window_end: string | null;
+  expected_windows: number;
+  ran_windows: number;
+  skipped_windows: number;
+  latest_run_id: string | null;
+  error_payload: Record<string, unknown> | null;
+  run: AttributionRun | null;
 };
 
 export type ExposureUpdateDecision = {

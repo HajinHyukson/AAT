@@ -1,0 +1,22 @@
+{
+  "schema": "viza.event_registry.v1",
+  "registry_version": "0.1.0",
+  "event_types": [
+    {"event_type": "acquisition_rumor", "display_name": "Acquisition Rumor", "family": "mna", "family_concept_iri": "viza:family/event/mna", "fibo_iri": null},
+    {"event_type": "confirmed_mna", "display_name": "Confirmed M&A", "family": "mna", "family_concept_iri": "viza:family/event/mna", "fibo_iri": "https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateActionsAndEvents/Mergers/MergerEvent"},
+    {"event_type": "analyst_upgrade", "display_name": "Analyst Upgrade", "family": "analyst", "family_concept_iri": "viza:family/event/analyst", "fibo_iri": null},
+    {"event_type": "analyst_downgrade", "display_name": "Analyst Downgrade", "family": "analyst", "family_concept_iri": "viza:family/event/analyst", "fibo_iri": null},
+    {"event_type": "earnings_surprise", "display_name": "Earnings Surprise", "family": "earnings", "family_concept_iri": "viza:family/event/earnings", "fibo_iri": null},
+    {"event_type": "insider_purchase", "display_name": "Insider Purchase", "family": "insider", "family_concept_iri": "viza:family/event/insider", "fibo_iri": null},
+    {"event_type": "insider_sale", "display_name": "Insider Sale", "family": "insider", "family_concept_iri": "viza:family/event/insider", "fibo_iri": null},
+    {"event_type": "unusual_volume", "display_name": "Unusual Volume", "family": "market_activity", "family_concept_iri": "viza:family/event/market_activity", "fibo_iri": null},
+    {"event_type": "unusual_options_activity", "display_name": "Unusual Options Activity", "family": "market_activity", "family_concept_iri": "viza:family/event/market_activity", "fibo_iri": null},
+    {"event_type": "regulatory_action", "display_name": "Regulatory Action", "family": "regulatory", "family_concept_iri": "viza:family/event/regulatory", "fibo_iri": null},
+    {"event_type": "sec_filing_novelty", "display_name": "SEC Filing Novelty", "family": "filings", "family_concept_iri": "viza:family/event/filings", "fibo_iri": null},
+    {"event_type": "management_commentary_change", "display_name": "Management Commentary Change", "family": "management", "family_concept_iri": "viza:family/event/management", "fibo_iri": null},
+    {"event_type": "news_sentiment_shift", "display_name": "News Sentiment Shift", "family": "sentiment", "family_concept_iri": "viza:family/event/sentiment", "fibo_iri": null},
+    {"event_type": "social_sentiment_shift", "display_name": "Social Sentiment Shift", "family": "sentiment", "family_concept_iri": "viza:family/event/sentiment", "fibo_iri": null},
+    {"event_type": "peer_contagion_event", "display_name": "Peer Contagion Event", "family": "contagion", "family_concept_iri": "viza:family/event/contagion", "fibo_iri": null},
+    {"event_type": "sector_contagion_event", "display_name": "Sector Contagion Event", "family": "contagion", "family_concept_iri": "viza:family/event/contagion", "fibo_iri": null}
+  ]
+}

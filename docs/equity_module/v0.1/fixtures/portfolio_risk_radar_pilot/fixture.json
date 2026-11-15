@@ -1,0 +1,247 @@
+{
+  "$schema": "../../equity_registry_shared_metadata.schema.json",
+  "fixture_id": "portfolio_risk_radar_pilot_v0.1",
+  "fixture_description": "End-to-end pilot fixture for the portfolio_risk_radar strategy profile. Exercises risk-only / continuous monitoring mandate over a synthetic, user-private 5-name portfolio. Public market data + public factor data only; user portfolio fixture is synthetic and explicitly marked private (internal_research_only). License-gated factor models (Barra / Axioma) are listed as locked placeholders. Kenneth French current data is latest_only per PROJECT_STATUS.md — used for display, not for PIT-safe backtests.",
+  "fixture_purpose": "Confirm the portfolio-risk-radar code path: portfolio context loads, risk gates fire correctly, factor exposure decomposes against benchmark, PIT-warning emitted for latest_only factor data, marketplace_draft redacts the user portfolio entirely.",
+  "fixture_release_state": "alpha",
+  "fixture_baseline": "Phase 35 + post-phase remediation + 2026-05-13 packaged-engine/runtime hardening",
+  "fixture_module_id": "viza.finance.equity_investment",
+  "fixture_module_version": "0.1.0",
+  "fixture_run_id": "run_2025_11_15_portfolio_risk_radar_v01",
+  "fixture_decision_timestamp": "2025-11-15T14:00:00Z",
+  "fixture_strategy_profile_id": "portfolio_risk_radar",
+  "fixture_strategy_profile_hash_placeholder": "computed_at_load_time_from_profile_record",
+  "fixture_methodology_graph_hash_placeholder": "computed_at_load_time_from_graph",
+
+  "portfolio": {
+    "id": "portfolio_synthetic_user_001",
+    "object_family": "portfolio",
+    "display_name": "Synthetic User Portfolio (Pilot Fixture)",
+    "description": "Synthetic, user-private 5-name long-only portfolio used solely as a pilot fixture. No real portfolio is represented.",
+    "owner_user_id": "user_pilot_001",
+    "nav_usd": 10000000.0,
+    "currency": "USD",
+    "mandate": {
+      "objective": "risk_monitoring",
+      "horizon": "continuous",
+      "allowed_actions": ["watch", "monitor", "alert_only", "hedge_candidate", "size_adjustment", "research_deeper", "avoid"],
+      "benchmark_id": "benchmark_sp500_industrials",
+      "tracking_error_budget_bps": 200.0,
+      "directionality": "market_neutral"
+    },
+    "constraints": {
+      "max_position_pct": 0.25,
+      "max_sector_pct": 0.30,
+      "max_industry_pct": 0.20,
+      "max_issuer_pct": 0.25,
+      "min_position_count": 5,
+      "max_position_count": 200,
+      "max_days_to_unwind_at_20pct_adv": 5
+    },
+    "pit": {
+      "observed_at_policy": "creation_time_only",
+      "available_at_policy": "creation_time_only",
+      "retrieved_at_policy": "user_upload_at",
+      "source_version_policy": "not_applicable",
+      "data_version_policy": "latest_revisable",
+      "model_version_policy": "model_run_id_required",
+      "vintage_required": false,
+      "lookahead_risk": "low"
+    },
+    "rights": {
+      "license_policy": "internal_research_only",
+      "connector_roles": [],
+      "query_policy": "user_entitled",
+      "cache_policy": "allowed",
+      "display_policy": "allowed",
+      "export_policy": "blocked",
+      "derived_value_policy": "conditional",
+      "redistribution_policy": "blocked",
+      "marketplace_policy": "blocked",
+      "attribution_required": false,
+      "retention_policy": "delete_on_user_revocation",
+      "redaction_required": true
+    }
+  },
+
+  "positions": [
+    {"id": "position_001", "security_id_ref": "sec_exampleco_001", "company_id_ref": "co_exampleco_001", "display_name": "ExampleCo Industrial Common", "sector": "Industrials", "industry": "Capital Goods", "weight": 0.25, "active_weight": 0.05, "market_value_usd": 2500000.0, "days_to_unwind_at_20pct_adv": 1.2, "beta_to_benchmark": 1.05, "beta_mkt": 1.10, "beta_hml": 0.30, "beta_umd_mom": -0.05, "beta_qmj": 0.40, "rights": {"license_policy": "internal_research_only"}},
+    {"id": "position_002", "security_id_ref": "sec_fictitech_001", "company_id_ref": "co_fictitech_001", "display_name": "FictiTech Software Common", "sector": "Information Technology", "industry": "Software", "weight": 0.20, "active_weight": -0.10, "market_value_usd": 2000000.0, "days_to_unwind_at_20pct_adv": 0.8, "beta_to_benchmark": 1.25, "beta_mkt": 1.30, "beta_hml": -0.40, "beta_umd_mom": 0.25, "beta_qmj": 0.35, "rights": {"license_policy": "internal_research_only"}},
+    {"id": "position_003", "security_id_ref": "sec_examplebio_001", "company_id_ref": "co_examplebio_001", "display_name": "ExampleBio Pharma Common", "sector": "Healthcare", "industry": "Biotechnology", "weight": 0.20, "active_weight": 0.08, "market_value_usd": 2000000.0, "days_to_unwind_at_20pct_adv": 2.4, "beta_to_benchmark": 0.95, "beta_mkt": 0.90, "beta_hml": -0.20, "beta_umd_mom": 0.15, "beta_qmj": 0.20, "rights": {"license_policy": "internal_research_only"}},
+    {"id": "position_004", "security_id_ref": "sec_sampleenergy_001", "company_id_ref": "co_sampleenergy_001", "display_name": "SampleEnergy Common", "sector": "Energy", "industry": "Oil & Gas E&P", "weight": 0.15, "active_weight": -0.02, "market_value_usd": 1500000.0, "days_to_unwind_at_20pct_adv": 0.6, "beta_to_benchmark": 1.40, "beta_mkt": 1.45, "beta_hml": 0.55, "beta_umd_mom": -0.10, "beta_qmj": -0.10, "rights": {"license_policy": "internal_research_only"}},
+    {"id": "position_005", "security_id_ref": "sec_examplefin_001", "company_id_ref": "co_examplefin_001", "display_name": "ExampleFin Bank Common", "sector": "Financials", "industry": "Banks", "weight": 0.20, "active_weight": -0.01, "market_value_usd": 2000000.0, "days_to_unwind_at_20pct_adv": 0.4, "beta_to_benchmark": 1.10, "beta_mkt": 1.15, "beta_hml": 0.50, "beta_umd_mom": 0.05, "beta_qmj": 0.10, "rights": {"license_policy": "internal_research_only"}}
+  ],
+
+  "sample_graph": {
+    "graph_id": "graph_portfolio_risk_radar_pilot_001",
+    "schema": "viza_graph_v0",
+    "domain": "viza.finance.equity_investment",
+    "strategy_profile_id": "portfolio_risk_radar",
+    "nodes": [
+      {"node_id": "n_universe", "node_type": "universe_loader", "extends_core_primitive": "universe", "config": {"source": "user_portfolio_connector"}},
+      {"node_id": "n_portfolio_context", "node_type": "portfolio_context_loader", "extends_core_primitive": "attribute"},
+      {"node_id": "n_position_weight", "node_type": "factor_exposure_calculator", "extends_core_primitive": "score"},
+      {"node_id": "n_factor_exposure_total", "node_type": "factor_exposure_calculator", "extends_core_primitive": "score"},
+      {"node_id": "n_liquidity_capacity_validator", "node_type": "liquidity_capacity_validator", "extends_core_primitive": "filter"},
+      {"node_id": "n_position_cap_validator", "node_type": "position_cap_validator", "extends_core_primitive": "filter"},
+      {"node_id": "n_sector_cap_validator", "node_type": "sector_industry_cap_validator", "extends_core_primitive": "filter"},
+      {"node_id": "n_tracking_error_calculator", "node_type": "tracking_error_calculator", "extends_core_primitive": "score"},
+      {"node_id": "n_risk_contribution", "node_type": "risk_contribution_calculator", "extends_core_primitive": "score"},
+      {"node_id": "n_drawdown_simulator", "node_type": "drawdown_simulator", "extends_core_primitive": "transform"},
+      {"node_id": "n_stress_tester", "node_type": "stress_tester", "extends_core_primitive": "transform"},
+      {"node_id": "n_risk_dashboard", "node_type": "risk_dashboard_renderer", "extends_core_primitive": "output_radar"},
+      {"node_id": "n_portfolio_impact_report", "node_type": "portfolio_impact_report", "extends_core_primitive": "output_radar"},
+      {"node_id": "n_validation_report", "node_type": "validation_report_renderer", "extends_core_primitive": "output_radar"},
+      {"node_id": "n_source_rights_report", "node_type": "source_rights_report_renderer", "extends_core_primitive": "output_radar"}
+    ],
+    "edges": [
+      {"edge_id": "e1", "from": "n_universe", "to": "n_portfolio_context", "type": "data_flow"},
+      {"edge_id": "e2", "from": "n_portfolio_context", "to": "n_position_weight", "type": "data_flow"},
+      {"edge_id": "e3", "from": "n_portfolio_context", "to": "n_factor_exposure_total", "type": "data_flow"},
+      {"edge_id": "e4", "from": "n_portfolio_context", "to": "n_liquidity_capacity_validator", "type": "data_flow"},
+      {"edge_id": "e5", "from": "n_portfolio_context", "to": "n_position_cap_validator", "type": "data_flow"},
+      {"edge_id": "e6", "from": "n_portfolio_context", "to": "n_sector_cap_validator", "type": "data_flow"},
+      {"edge_id": "e7", "from": "n_factor_exposure_total", "to": "n_tracking_error_calculator", "type": "data_flow"},
+      {"edge_id": "e8", "from": "n_factor_exposure_total", "to": "n_risk_contribution", "type": "data_flow"},
+      {"edge_id": "e9", "from": "n_portfolio_context", "to": "n_drawdown_simulator", "type": "data_flow"},
+      {"edge_id": "e10", "from": "n_portfolio_context", "to": "n_stress_tester", "type": "data_flow"},
+      {"edge_id": "e11", "from": "n_risk_contribution", "to": "n_risk_dashboard", "type": "data_flow"},
+      {"edge_id": "e12", "from": "n_tracking_error_calculator", "to": "n_risk_dashboard", "type": "data_flow"},
+      {"edge_id": "e13", "from": "n_liquidity_capacity_validator", "to": "n_risk_dashboard", "type": "data_flow"},
+      {"edge_id": "e14", "from": "n_position_cap_validator", "to": "n_risk_dashboard", "type": "data_flow"},
+      {"edge_id": "e15", "from": "n_sector_cap_validator", "to": "n_risk_dashboard", "type": "data_flow"},
+      {"edge_id": "e16", "from": "n_drawdown_simulator", "to": "n_portfolio_impact_report", "type": "data_flow"},
+      {"edge_id": "e17", "from": "n_stress_tester", "to": "n_portfolio_impact_report", "type": "data_flow"}
+    ]
+  },
+
+  "required_entities": ["portfolio", "position", "equity_security", "company", "benchmark", "sector", "industry", "validation_record", "rights_policy"],
+  "required_attributes": ["position_weight", "active_weight", "days_to_unwind_at_20pct_adv_portfolio", "beta_to_benchmark", "beta_mkt", "beta_hml", "beta_umd_mom", "beta_qmj", "factor_exposure_total", "tracking_error_total_bps", "risk_contribution_pct", "cvar95_pct", "drawdown_historical_max_pct", "effective_number_of_bets"],
+  "required_events": ["position_increased", "position_decreased", "portfolio_rebalanced", "factor_exposure_breached", "tracking_error_breached", "liquidity_constraint_breached"],
+  "required_insights": ["position_concentration_warning", "sector_concentration_warning", "liquidity_capacity_warning", "factor_overexposure_warning", "tracking_error_breach", "drawdown_risk_elevated", "factor_diversification_low", "hedge_recommendation", "rebalance_recommendation"],
+  "required_output_views": ["risk_dashboard", "portfolio_impact_report", "validation_report", "source_rights_report"],
+  "required_validation_rules": ["portfolio_sizing_requires_portfolio_context", "portfolio_caps_enforced", "portfolio_tracking_error_budget", "data_no_ticker_as_primary_key", "rights_rights_policy_required", "rights_unclear_defaults_restrictive", "output_validation_summary_required", "output_pit_summary_required", "output_rights_summary_required", "package_marketplace_draft_redact_restricted", "package_proof_checksum_required", "package_no_monetized_endpoints", "evidence_non_advice_boundary", "pit_no_lookahead"],
+
+  "pit_report": {
+    "PIT_safe": true,
+    "lookahead_risk": "low",
+    "earliest_input_available_at": "2025-11-15T13:55:00Z",
+    "latest_input_available_at": "2025-11-15T13:59:00Z",
+    "decision_timestamp": "2025-11-15T14:00:00Z",
+    "vintage_warnings": [
+      {
+        "code": "pit_latest_only_not_backtest_safe_factor_data_public_kenneth_french",
+        "severity": "warn",
+        "scope": "factor_exposure_inputs",
+        "message": "Kenneth French factor data is ingestion-timestamped, not vintaged, per PROJECT_STATUS.md. Factor exposures (beta_mkt / beta_hml / beta_umd_mom / beta_qmj) are usable for display + live risk monitoring but cannot mark backtest paths PIT-safe. Block backtest promotion until ALFRED-style vintaged factor pipeline ships.",
+        "source_refs": ["PROJECT_STATUS.md", "§10.17", "§18.8"],
+        "affected_attributes": ["beta_mkt", "beta_hml", "beta_umd_mom", "beta_qmj", "factor_exposure_total", "tracking_error_factor_share_pct"]
+      }
+    ],
+    "vintage_blockers": [],
+    "notes": "All position metadata is user-upload at 13:55 (5 minutes before decision). Factor exposures derived from Kenneth French current snapshot retrieved at 13:59 with pit_safe_label=latest_only; usable for the continuous risk-monitoring mandate of this profile, NOT for backtest. Public market data (price, volume, ADV) is exchange-day-T with publication-time available_at."
+  },
+
+  "source_rights_report": {
+    "user_portfolio_data": {"license_policy": "internal_research_only", "behavior": "preserve_internal_redact_on_export"},
+    "public_market_data": {"license_policy": "public_professional", "connector_role": "licensed_market_data_connector", "behavior": "delayed_eod_fallback", "note": "Real-time licensed feed unavailable in this fixture; fall back to delayed EOD public data which is sufficient for risk monitoring."},
+    "factor_data_public_kenneth_french": {"license_policy": "academic_public", "connector_role": "official_public_connector", "behavior": "include_with_attribution_latest_only", "pit_caveat": "ingest_timestamp_only_until_vintaged_pipeline"},
+    "factor_data_licensed_barra_axioma": {"license_policy": "licensed_provider_required", "behavior": "locked_placeholder", "note": "Barra / Axioma factor models not used in this pilot; nodes referencing them open as locked-preserve-config."},
+    "benchmark_index_sp500_industrials": {"license_policy": "licensed_provider_required", "connector_role": "licensed_index_membership_connector", "behavior": "locked_placeholder", "note": "S&P index membership is licensed. For this pilot, benchmark is referenced by id only; constituent rebalance events not used."},
+    "credit_data_ice_bofa": {"license_policy": "public_professional", "connector_role": "official_public_connector", "behavior": "include_with_attribution", "note": "ICE BofA OAS used for credit-widening overlay in stress test."}
+  },
+
+  "expected_warnings": [
+    {
+      "code": "pit_latest_only_not_backtest_safe_factor_data_public_kenneth_french",
+      "severity": "warn",
+      "scope": "factor_exposure_inputs",
+      "remediation": "Wait for ALFRED-style vintaged factor pipeline to ship before promoting any backtest-bearing variant of this pilot to production."
+    },
+    {
+      "code": "licensed_factor_model_unavailable",
+      "severity": "info",
+      "scope": "factor_attribution_optional",
+      "remediation": "Barra / Axioma factor models are optional for risk-monitor mandate; locked-placeholder behavior is correct. Promote to common_practice if license is added."
+    },
+    {
+      "code": "factor_diversification_low_relative_to_default",
+      "severity": "warn",
+      "scope": "portfolio_state",
+      "remediation": "Effective number of bets (3.7) is below profile default (5). Surface to user but do not auto-rebalance.",
+      "current_value": 3.7,
+      "threshold": 5.0
+    }
+  ],
+
+  "package_behavior": {
+    "white_box": {
+      "allowed": true,
+      "redaction_required": false,
+      "contains_full": ["graph", "portfolio_records", "factor_exposures", "validation_record", "audit_proof"],
+      "intended_audience": "creator_only",
+      "note": "User portfolio data is internal_research_only but white_box runs locally for the owning user."
+    },
+    "output_only": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "rendered_outputs": ["risk_dashboard_summary", "portfolio_impact_report_summary", "validation_report", "source_rights_report"],
+        "user_portfolio_details": "redacted_to_aggregates_only",
+        "non_advice_boundary": "present"
+      },
+      "redaction_targets": [
+        "portfolio_synthetic_user_001.nav_usd",
+        "positions[*].market_value_usd",
+        "positions[*].security_id_ref",
+        "positions[*].company_id_ref",
+        "positions[*].weight"
+      ],
+      "preserves_aggregates": ["position_count", "max_position_pct_observed", "tracking_error_total_bps", "drawdown_historical_max_pct", "validation_status"]
+    },
+    "marketplace_draft": {
+      "allowed": true,
+      "redaction_required": true,
+      "contains": {
+        "methodology_graph": "absent (creator may upgrade)",
+        "registry_artifacts": "manifest only",
+        "user_portfolio_data": "FULLY REDACTED — never published",
+        "rendered_outputs": "risk_dashboard_aggregate_metrics_only + non_advice_boundary",
+        "creator_record": "creator_placeholder + non_advice_acknowledgement_signed",
+        "compliance_warnings": ["not_investment_advice", "user_portfolio_redacted", "fictional_fixture_identity"]
+      },
+      "blocked_targets_if_violated": [
+        "any_position_security_id_or_market_value_exposed -> block_export",
+        "monetized_marketplace_endpoint_reference -> block_export"
+      ],
+      "marketplace_endpoint_supported": false
+    }
+  },
+
+  "test_cases": [
+    {"id": "tc_portfolio_loads", "description": "portfolio_synthetic_user_001 loads from user_portfolio_connector with internal_research_only rights", "expected_result": "pass"},
+    {"id": "tc_position_cap_pass", "description": "All 5 positions <= max_position_pct (0.25)", "expected_result": "pass — max observed 0.25 (position_001 exactly at cap)"},
+    {"id": "tc_sector_cap_pass", "description": "No sector concentration exceeds max_sector_pct (0.30)", "expected_result": "pass — Industrials 0.25, IT 0.20, Healthcare 0.20, Energy 0.15, Financials 0.20"},
+    {"id": "tc_factor_exposure_total", "description": "Composite factor exposure within profile expectations", "expected_result": "tracking_error_total_bps approximately 180-220 bps (within 200 bps budget warning band)"},
+    {"id": "tc_factor_diversification_low_warn", "description": "Effective number of bets surfaces warning when below default", "expected_result": "warn — effective_number_of_bets=3.7 < threshold 5.0"},
+    {"id": "tc_pit_warning_kenneth_french", "description": "Factor inputs surface PIT warning because Kenneth French ingest is latest_only", "expected_result": "warn — pit_latest_only_not_backtest_safe_factor_data_public_kenneth_french"},
+    {"id": "tc_pit_safe_for_live_monitoring", "description": "PIT_safe=true for risk-monitoring mandate even with latest_only factor data", "expected_result": "pass — monitoring mandate is continuous, not backtest"},
+    {"id": "tc_marketplace_draft_redacts_portfolio", "description": "marketplace_draft fully redacts portfolio details (nav, positions, security ids)", "expected_result": "pass — only aggregates surface"},
+    {"id": "tc_no_ticker_as_primary_key", "description": "All position references use security_id, not ticker", "expected_result": "pass"},
+    {"id": "tc_non_advice_boundary_on_outputs", "description": "risk_dashboard + portfolio_impact_report carry non_advice_boundary", "expected_result": "pass"},
+    {"id": "tc_no_personalized_advice", "description": "Outputs label actions as 'watch / monitor / hedge_candidate' research actions, not buy/sell recommendations", "expected_result": "pass — risk-only directionality"},
+    {"id": "tc_licensed_factor_model_locked", "description": "Barra / Axioma factor model connectors listed as locked placeholders without blocking the pilot", "expected_result": "pass — fallback to Kenneth French latest_only with warning"},
+    {"id": "tc_stable_hash", "description": "Re-running verifier produces identical SHA-256 across all artifacts", "expected_result": "pass"}
+  ],
+
+  "expected_validation_summary": {
+    "pass": 14,
+    "warn": 2,
+    "fail": 0,
+    "not_applicable": 27,
+    "block": 0,
+    "total": 43
+  },
+
+  "non_advice_boundary": "This pilot fixture renders portfolio-risk-radar outputs against synthetic, fictional position data. The output is research / engineering scaffolding only and does NOT constitute investment advice, a recommendation, or solicitation. No real portfolio, issuer, or strategy is represented. Past performance does not predict future results."
+}

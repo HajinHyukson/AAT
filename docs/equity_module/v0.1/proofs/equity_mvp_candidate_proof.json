@@ -1,0 +1,180 @@
+{
+  "module_id": "viza.finance.equity_investment",
+  "module_version": "0.1.0",
+  "step": "mvp_closure_sprint",
+  "mvp_label": "VIZA MVP Candidate 0.1",
+  "primary_profile": "quality_value_long_only",
+  "primary_flow": "SEC-first equity preview",
+  "feature_flags": {
+    "VIZA_EQUITY_RUNTIME_HANDLERS_ENABLED": "false",
+    "VIZA_EQUITY_SEC_WEDGE_ENABLED": "false",
+    "VIZA_EQUITY_FMP_ENABLED": "false",
+    "VIZA_EQUITY_FRED_ENABLED": "false",
+    "VIZA_EQUITY_LIVE_INTEGRATION_TESTS": "false",
+    "VIZA_EQUITY_PREVIEW_PERSISTENCE_ENABLED": "false",
+    "VIZA_EQUITY_PREVIEW_REPLAY_REFRESH_ENABLED": "false"
+  },
+  "ui_surfaces": [
+    "apps/viza-desktop/src/App.tsx EquityRuntimePreviewPanel",
+    "apps/viza-desktop/src/vizaEngineClient.ts local sidecar bridge",
+    "apps/viza-desktop/src/vizaGraph.ts equity preview package draft types"
+  ],
+  "api_endpoints": [
+    "POST /viza/equity/runtime-wedge/preview",
+    "GET /viza/equity/runtime-wedge/runs",
+    "GET /viza/equity/runtime-wedge/runs/{run_id}",
+    "POST /viza/equity/runtime-wedge/runs/{run_id}/replay",
+    "POST /viza/equity/runtime-wedge/runs/{run_id}/package-draft"
+  ],
+  "storage": {
+    "run_records_store": "existing local SQLite project store run_records plus equity_preview_runs",
+    "observation_store": "existing local SQLite project store observations plus equity_preview_run_observations",
+    "evidence_bundle_store": "equity_preview_evidence_bundles",
+    "validation_store": "equity_preview_report_records report_type=validation_report",
+    "rights_report_store": "equity_preview_report_records report_type=source_rights_report",
+    "package_redaction_store": "equity_preview_report_records report_type=package_redaction_preview",
+    "package_export_store": "existing local SQLite project store viza_file_exports when project_id is supplied"
+  },
+  "package_modes_tested": [
+    "white_box",
+    "output_only",
+    "marketplace_draft"
+  ],
+  "packaged_smoke": {
+    "ran": true,
+    "result": "passed",
+    "notes": "Rebuilt Windows package and ran apps/viza-desktop/scripts/smokePackage.mjs. Smoke covers flags-off behavior, mocked preview, persisted run, run history/detail, stored-observation replay, package draft export, .viza inspection, and sentinel secret absence."
+  },
+  "pit_summary": {
+    "sec": "SEC-derived observations persist source_id, observed_at, available_at, retrieved_at, PIT_safe, and lookahead_risk.",
+    "fmp": "Optional FMP observations remain dev_only_unconfirmed and not production-scoring/export eligible unless production license is confirmed.",
+    "fred": "Optional FRED observations remain latest-only/not true PIT-safe unless ALFRED-style vintage cutoff enforcement is implemented.",
+    "replay": "Replay from stored observations does not call live connectors."
+  },
+  "rights_redaction_summary": {
+    "sec_public": "Public official metadata and derived values are packageable with source references.",
+    "fmp": "FMP dev-only observations are export-blocked and marketplace-redacted unless production rights are confirmed.",
+    "fred": "FRED latest-only macro context is labeled with PIT warning.",
+    "marketplace_draft": "Marketplace draft is non-monetized and redacts restricted, unclear, private, or unconfirmed-license data."
+  },
+  "validation_summary": {
+    "run_persistence": "Persisted runs include target, profile, input, connector modes, feature flags, status, warnings, blocks, hashes, and proof checksum.",
+    "history_and_replay": "Run list/detail and replay from stored observations are covered by backend and packaged smoke tests.",
+    "package_export": "Persisted run can prepare `.viza` draft packages for white_box, output_only, and marketplace_draft modes.",
+    "non_advice_boundary": "Preview, persisted detail, replay, and package draft payloads preserve the non-advice boundary."
+  },
+  "api_key_safety": {
+    "raw_keys_logged": false,
+    "raw_keys_serialized": false,
+    "generated_files_scanned": true,
+    "packaged_resources_scanned": true,
+    "sentinel_keys_tested": true,
+    "secret_scan": {
+      "actual_env_secret_values_checked": 2,
+      "actual_env_files_scanned": 539,
+      "actual_env_matches": 0,
+      "sentinel_values_checked": 4,
+      "sentinel_output_files_scanned": 312,
+      "sentinel_output_matches": 0,
+      "env_gitignored": true
+    }
+  },
+  "artifact_checksums": {
+    "viza/equity/package_export.py": "F3BB1F38CC5027876393A803A6D1D3956ACFFB6F5344465C88D56458725367E8",
+    "viza/service.py": "DE86D6A1709F26F5EFF584EEB65B0FD2AE2FC9847A71FFC20B6157D1926615D3",
+    "apps/viza-desktop/src/App.tsx": "3412F6E5991902739FB96819620337DB337D520EB6218E24F1487F328AADBB1B",
+    "apps/viza-desktop/src/vizaEngineClient.ts": "4EC1EA9B9F5218F78C0633015A2389495279B38FAA7ED4D0BCDB44C7EB370ECD",
+    "apps/viza-desktop/src/vizaGraph.ts": "A5D5A865676BDA1FDBC515C70FCD0B7BA3E8DCE051E2131C4B600BF36E9B1B08",
+    "apps/viza-desktop/scripts/smokePackage.mjs": "10030983244A254C40CAF7132D9E4EAD786519ACAE63E5ED4C08A7F6DFB1835A",
+    "apps/viza-desktop/test/equityPreviewPanel.test.mjs": "962576578E7EF28062431AE773DCCD7448C1B43124294C8687E4F23F164D9E00",
+    "tests/unit/test_equity_mvp_package_export.py": "9E47440A3EDECC4A50997D347A1E44E5DC667857EC145023209F05A74ABC8BD0",
+    "tests/unit/test_equity_packaged_preview.py": "B9148E1217DA24AA393D5805680056061E43038FF96BB2DB9401F8CC25170EE9",
+    "docs/equity_module/v0.1/reports/mvp_closure_repo_map.md": "9819861504BE81934EF7EFE6C17FC36010FE07DA0FAB3B3D3C3FC7DE6826FCA3"
+  },
+  "tests_run": [
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "12 passed in 5.78s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_module_loader.py tests\\unit\\test_equity_module_fixtures.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "10 passed in 0.74s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge_api.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "8 passed in 4.13s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_preview_persistence.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "8 passed in 9.56s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_mvp_package_export.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "4 passed in 5.12s"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_equity_runtime_wedge_api.py tests\\unit\\test_equity_preview_persistence.py tests\\unit\\test_equity_mvp_package_export.py tests\\unit\\test_equity_packaged_preview.py -q",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "25 passed in 19.44s"
+    },
+    {
+      "command": "python -m pytest tests\\unit tests\\lookahead_audit",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "350 passed in 207.94s"
+    },
+    {
+      "command": "node --test tests\\dashboard\\attribution-period-bars.test.mjs",
+      "working_directory": "c:\\Users\\gkwls\\AAT",
+      "result": "2 passed in 123.4459ms; existing module-type warning emitted"
+    },
+    {
+      "command": "npm run typecheck",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:desktop",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "23 passed in 210.9028ms"
+    },
+    {
+      "command": "npx tsc --noEmit --project tsconfig.json",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\dashboard",
+      "result": "passed"
+    },
+    {
+      "command": "npm run package:win",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "passed in 98.6s with unsigned/icon/chunk-size/toolchain warnings"
+    },
+    {
+      "command": "npm run smoke:package",
+      "working_directory": "c:\\Users\\gkwls\\AAT\\apps\\viza-desktop",
+      "result": "VIZA Windows package contents smoke passed."
+    }
+  ],
+  "known_limitations": [
+    "not production-hardened",
+    "mocked preview remains the default test path",
+    "live external API tests are opt-in only",
+    "FMP production rights need legal/source-rights review",
+    "FRED true PIT backtesting needs ALFRED-style cutoff enforcement",
+    "ticker alias resolution through full security master remains future work unless already implemented",
+    "valuation and margin-of-safety output remains blocked or warned when market price is unavailable",
+    "quality_value_long_only remains the only fully wired equity profile",
+    "no personalized investment advice",
+    "no order routing",
+    "no monetized marketplace"
+  ],
+  "next_backlog_items": [
+    "MVP user test + demo script + installer handoff",
+    "Second profile pilot: portfolio_risk_radar after MVP handoff",
+    "Replay diff visualization for explicit replay_with_refresh runs",
+    "Legal/source-rights review for any production FMP redistribution"
+  ]
+}

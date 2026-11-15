@@ -1,0 +1,87 @@
+{
+  "schema": "viza.module_manifest.v1",
+  "module_id": "viza.real_estate.acquisition",
+  "module_version": "0.1.0",
+  "display_name": "Real Estate Acquisition",
+  "domain": "real_estate.acquisition",
+  "description": "Minimal real estate acquisition smoke-test module for module-defined strategy packages.",
+  "entity_types": {
+    "property": {
+      "type_id": "viza.real_estate.acquisition.property",
+      "display_name": "Property",
+      "description": "Commercial or multifamily property candidate.",
+      "identifiers": ["property_id"]
+    },
+    "parcel": {
+      "type_id": "viza.real_estate.acquisition.parcel",
+      "display_name": "Parcel",
+      "identifiers": ["parcel_id"]
+    },
+    "market": {
+      "type_id": "viza.real_estate.acquisition.market",
+      "display_name": "Market",
+      "identifiers": ["market"]
+    },
+    "tenant": {
+      "type_id": "viza.real_estate.acquisition.tenant",
+      "display_name": "Tenant",
+      "identifiers": ["tenant_id"]
+    },
+    "lease": {
+      "type_id": "viza.real_estate.acquisition.lease",
+      "display_name": "Lease",
+      "identifiers": ["lease_id"]
+    },
+    "loan": {
+      "type_id": "viza.real_estate.acquisition.loan",
+      "display_name": "Loan",
+      "identifiers": ["loan_id"]
+    },
+    "sponsor": {
+      "type_id": "viza.real_estate.acquisition.sponsor",
+      "display_name": "Sponsor",
+      "identifiers": ["sponsor_id"]
+    }
+  },
+  "node_types": {},
+  "edge_types": {
+    "data_flow": {"display_name": "Data Flow"},
+    "evidence": {"display_name": "Evidence"}
+  },
+  "output_views": {
+    "deal_pipeline": {
+      "view_id": "deal_pipeline",
+      "display_name": "Deal Pipeline",
+      "result_key": "deal_pipeline"
+    },
+    "investment_memo": {
+      "view_id": "investment_memo",
+      "display_name": "Investment Memo",
+      "result_key": "investment_memo"
+    }
+  },
+  "data_connectors": ["local_csv"],
+  "validation_rules": ["experimental_module_aware_graph", "local_csv_only"],
+  "runtime_handlers": {},
+  "palette_groups": [
+    {
+      "group_id": "real_estate_acquisition",
+      "display_name": "Real Estate Acquisition",
+      "node_types": [
+        "viza.real_estate.acquisition.property_universe",
+        "viza.real_estate.acquisition.market_filter",
+        "viza.real_estate.acquisition.comparable_sales",
+        "viza.real_estate.acquisition.rent_roll",
+        "viza.real_estate.acquisition.noi_model",
+        "viza.real_estate.acquisition.cap_rate_filter",
+        "viza.real_estate.acquisition.debt_terms",
+        "viza.real_estate.acquisition.dscr_gate",
+        "viza.real_estate.acquisition.renovation_budget",
+        "viza.real_estate.acquisition.exit_scenario",
+        "viza.real_estate.acquisition.deal_score",
+        "viza.real_estate.acquisition.deal_pipeline",
+        "viza.real_estate.acquisition.investment_memo"
+      ]
+    }
+  ]
+}

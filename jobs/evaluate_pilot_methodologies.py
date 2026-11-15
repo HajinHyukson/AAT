@@ -70,6 +70,7 @@ def evaluate_pilot_methodologies(*, methodologies: tuple[str, ...]) -> list[Meth
                     select(models.AttributionRun)
                     .join(models.ModelUniverseMember, models.ModelUniverseMember.security_id == models.AttributionRun.security_id)
                     .where(models.ModelUniverseMember.universe_name == PILOT_UNIVERSE_NAME)
+                    .where(models.AttributionRun.methodology == methodology)
                     .where(models.AttributionRun.model_version == model_version)
                 ).scalars()
             )

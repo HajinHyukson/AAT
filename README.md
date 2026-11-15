@@ -23,7 +23,7 @@ Current state by major capability:
 | Entity model | `company`, `security`, ticker history, sector classification, peer baskets, and universe membership are implemented. | Robust issuer/security/share-class handling, corporate actions, identifiers, delistings, restatements, and audit workflows. |
 | Attribution engine | French five-factor, sector, peer, macro, style descriptors, event evidence, residual safety, and pilot hierarchical methodology exist. | Calibrated production methodology with residualized or regularized factors, event impact models, validation gates, and stable reporting rules. |
 | Backfill execution | Large FaustCalc backfill is resumable, checkpointed, and can use advisory-lock-aware distributed workers. Local S&P pilot backfill supports resume-by-skipping completed windows. | Scheduler-managed jobs, monitoring, retries, resource controls, post-run validation, and reproducible run manifests. |
-| Dashboard/API | Universe, attribution, evidence, summary, feedback, and export paths exist. Expanded universe summary depends on backfill completion. | Fast paginated production dashboards with quality flags, coverage explanations, model comparisons, and operational health surfaces. |
+| Dashboard/API | Universe, attribution, methodology, chart, on-demand job, evidence, summary, feedback, and export paths exist. Expanded universe summary depends on backfill completion. | Fast paginated production dashboards with quality flags, coverage explanations, model comparisons, and operational health surfaces. |
 | Validation/governance | Unit tests, look-ahead audit tests, guardrail docs, and source/license warnings exist. | Formal model validation, source entitlement checks, confidence calibration, out-of-sample promotion gates, and release controls. |
 
 ## AAT Layers
@@ -90,6 +90,8 @@ This layer decides which windows to run, tracks progress, resumes interrupted wo
 The FaustCalc backfill creates one task per security/cadence, checkpoints within long tasks, and stores progress in `attribution_backfill_task`. It uses Postgres advisory locks so multiple workers can join the same run safely when they run compatible code.
 
 The S&P pilot runner is lighter: it checks existing attribution rows and skips already-completed windows by default. It is meant for local methodology iteration, not server-scale production scheduling.
+
+Dashboard-triggered missing-window requests are stored in `attribution_on_demand_job` and processed by `jobs.run_on_demand_attribution_worker`. This path is for filling requested chart/detail windows, not for replacing the large backfill scheduler.
 
 The complete version should add job scheduling, worker health monitoring, retry dashboards, resource controls, alerting, and post-run validation reports.
 
@@ -272,9 +274,9 @@ python -m jobs.evaluate_pilot_methodologies
 Implemented:
 
 - Python engine with typed Pydantic contracts, deterministic return accounting, French five-factor attribution, expanded sector/peer/style/macro helpers, event taxonomy, exposure gates, confidence scoring, replay audit helpers, and deterministic narrative generation.
-- SQLAlchemy and Alembic schema for companies, securities, price bars, factors, macro series, events, exposures, attribution runs, contribution evidence, peer baskets, sector classifications, event taxonomy/surprises, analyst feedback, backfill tasks, universe membership, and attribution summaries.
+- SQLAlchemy and Alembic schema for companies, securities, price bars, factors, macro series, events, exposures, attribution methodologies, attribution runs, contribution evidence, peer baskets, sector classifications, event taxonomy/surprises, analyst feedback, backfill tasks, universe membership, on-demand jobs, and attribution summaries.
 - Adapters and ingestion jobs for FMP prices, Kenneth French factors, SEC EDGAR submissions, FRED macro series, curated MVP universe mappings, FaustCalc imports, S&P 500 pilot population, and proxy factor-return construction.
-- FastAPI endpoints and a Next.js dashboard for universe state, run history, grouped driver tables, evidence payloads, CSV export, exposure decisions, narrative text, and analyst feedback.
+- FastAPI endpoints and a Next.js dashboard for universe state, methodology selection, attribution charts, on-demand missing-window jobs, run history, grouped driver tables, evidence payloads, CSV export, exposure decisions, narrative text, and analyst feedback.
 - Resumable FaustCalc full-history attribution backfill with DB-backed progress, window checkpointing, advisory locks, and optional distributed workers.
 - Local S&P 500 pilot methodology workflow with residual-share safety and hierarchical market-first research attribution.
 
@@ -282,9 +284,14 @@ Latest local verification:
 
 ```powershell
 python -m pytest tests\unit tests\lookahead_audit
+node --test tests\dashboard\attribution-period-bars.test.mjs
 ```
 
-Recent result: `105 passed`.
+Recent result on 2026-05-12:
+
+- Python: `114 passed`.
+- Dashboard Node test: `2 passed`.
+- Node emitted a module-type warning for `dashboard/components/attribution-period-bars.ts`; the test still passed.
 
 ## Legacy Proving Backfills
 
@@ -326,6 +333,8 @@ python -m jobs.run_historical_universe_backfill --dry-run --skip-alembic --to 20
 ## Key Docs
 
 - [PROJECT_STATUS.md](PROJECT_STATUS.md): most recent implementation state and next action.
+- [docs/VIZA_PRODUCT_SPEC.md](docs/VIZA_PRODUCT_SPEC.md): desktop research-sandbox product vision.
+- [docs/VIZA_PROTOTYPE_PLAN.md](docs/VIZA_PROTOTYPE_PLAN.md): concrete prototype implementation plan.
 - [docs/LIVE_BACKFILL_DEVELOPMENT_GUARDRAILS.md](docs/LIVE_BACKFILL_DEVELOPMENT_GUARDRAILS.md): rules while the server FaustCalc backfill is active.
 - [docs/FAUSTCALC_DATA_IMPLEMENTATION_REPORT.md](docs/FAUSTCALC_DATA_IMPLEMENTATION_REPORT.md): FaustCalc data contents, migration state, and server backfill status.
 - [docs/AAT_FUNCTIONAL_REPORT.md](docs/AAT_FUNCTIONAL_REPORT.md): full system behavior and methodology boundaries.

@@ -1,0 +1,132 @@
+{
+  "schema": "viza.command_taxonomy.v1",
+  "registry_version": "0.1.0",
+  "concept_scheme": "http://viza.local/concepts/commands",
+  "description": "Investment-command concepts. Each concept declares its kind (PositionCommand | AttentionCommand | SystemCommand), the orthogonal axes that define it, and the SKOS-broader command family it belongs to. The proposal lists BUY_TO_OPEN / TRIM_LONG / etc. as flat labels; this file decomposes them into (direction × position_change × side × sizing_method) so the schema does not encode policy in the label. See VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md §2.1.",
+  "commands": [
+    {
+      "iri": "viza:cmd/buy_to_open",
+      "skos_pref_label": "BUY_TO_OPEN",
+      "skos_alt_labels": ["BUY OPEN", "OPEN LONG"],
+      "skos_broader": ["viza:family/command/position_entry"],
+      "kind": "PositionCommand",
+      "axes": {
+        "direction": "BUY",
+        "position_change": "OPEN",
+        "side": "LONG",
+        "default_sizing_method": "TARGET_WEIGHT"
+      },
+      "command_priority": 70,
+      "fibo_related_iri": null,
+      "description": "Open a long position at a declared sizing target."
+    },
+    {
+      "iri": "viza:cmd/add_long",
+      "skos_pref_label": "ADD_LONG",
+      "skos_alt_labels": ["SCALE_IN_LONG"],
+      "skos_broader": ["viza:family/command/position_increase"],
+      "kind": "PositionCommand",
+      "axes": {
+        "direction": "BUY",
+        "position_change": "INCREASE",
+        "side": "LONG",
+        "default_sizing_method": "DELTA_WEIGHT"
+      },
+      "command_priority": 60,
+      "description": "Add to an existing long position by a declared delta."
+    },
+    {
+      "iri": "viza:cmd/hold",
+      "skos_pref_label": "HOLD",
+      "skos_alt_labels": ["MAINTAIN_POSITION", "NO_ACTION"],
+      "skos_broader": ["viza:family/command/position_maintain"],
+      "kind": "PositionCommand",
+      "axes": {
+        "direction": "NONE",
+        "position_change": "MAINTAIN",
+        "side": "LONG",
+        "default_sizing_method": "IMPLICIT"
+      },
+      "command_priority": 30,
+      "description": "Do not change the existing long position."
+    },
+    {
+      "iri": "viza:cmd/trim_long",
+      "skos_pref_label": "TRIM_LONG",
+      "skos_alt_labels": ["REDUCE_LONG"],
+      "skos_broader": ["viza:family/command/position_reduce"],
+      "kind": "PositionCommand",
+      "axes": {
+        "direction": "SELL",
+        "position_change": "REDUCE",
+        "side": "LONG",
+        "default_sizing_method": "DELTA_WEIGHT"
+      },
+      "command_priority": 60,
+      "description": "Reduce an existing long position by a declared delta."
+    },
+    {
+      "iri": "viza:cmd/sell_to_close",
+      "skos_pref_label": "SELL_TO_CLOSE",
+      "skos_alt_labels": ["LIQUIDATE_LONG"],
+      "skos_broader": ["viza:family/command/position_exit"],
+      "kind": "PositionCommand",
+      "axes": {
+        "direction": "SELL",
+        "position_change": "CLOSE",
+        "side": "LONG",
+        "default_sizing_method": "IMPLICIT"
+      },
+      "command_priority": 80,
+      "description": "Close an existing long position."
+    },
+    {
+      "iri": "viza:cmd/watch_closely",
+      "skos_pref_label": "WATCH_CLOSELY",
+      "skos_alt_labels": ["MONITOR"],
+      "skos_broader": ["viza:family/command/monitoring"],
+      "kind": "AttentionCommand",
+      "axes": {
+        "urgency": "ELEVATED"
+      },
+      "command_priority": 40,
+      "description": "Elevate the target into the user's attention without a position change."
+    },
+    {
+      "iri": "viza:cmd/avoid",
+      "skos_pref_label": "AVOID",
+      "skos_alt_labels": ["DO_NOT_BUY", "REMOVE_FROM_UNIVERSE"],
+      "skos_broader": ["viza:family/command/exclusion"],
+      "kind": "AttentionCommand",
+      "axes": {
+        "urgency": "EXCLUDE"
+      },
+      "command_priority": 50,
+      "description": "Mark the target as ineligible for entry under the current strategy profile."
+    },
+    {
+      "iri": "viza:cmd/block_action",
+      "skos_pref_label": "BLOCK_ACTION",
+      "skos_alt_labels": ["VETO"],
+      "skos_broader": ["viza:family/command/system_veto"],
+      "kind": "SystemCommand",
+      "axes": {
+        "veto_kind": "EMIT_BLOCKED"
+      },
+      "command_priority": 100,
+      "description": "System-level veto. Emitted by guard rules when PIT, rights, validation, or live-mode preconditions fail for the target. Defeats every PositionCommand on the same target."
+    },
+    {
+      "iri": "viza:cmd/block_export",
+      "skos_pref_label": "BLOCK_EXPORT",
+      "skos_alt_labels": [],
+      "skos_broader": ["viza:family/command/system_veto"],
+      "kind": "SystemCommand",
+      "axes": {
+        "veto_kind": "EXPORT_BLOCKED"
+      },
+      "command_priority": 100,
+      "description": "System-level veto on export. Emitted when source_rights_state.export_allowed=False for any triggering observation."
+    }
+  ]
+}

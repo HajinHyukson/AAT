@@ -1,0 +1,77 @@
+{
+  "schema": "viza.bkm_registry.v1",
+  "registry_version": "0.1.0",
+  "description": "Business Knowledge Models for the indicators VIZA computes inside the engine. Each entry declares an indicator's identity, version, inputs, outputs, and the implementation pointer back into the Python codebase. DMN XML export (`viza/dmn_export.py`) emits one <dmn:businessKnowledgeModel> element per BKM so an external DMN engine can resolve the function reference; the Phase 29 runtime continues to compute these inline via `viza/observations.py:technical_values_from_ohlcv`.",
+  "business_knowledge_models": [
+    {
+      "iri": "viza:bkm/rsi_14",
+      "name": "rsi_14",
+      "display_name": "Relative Strength Index (14-day)",
+      "version": "1.0.0",
+      "inputs": [
+        {"name": "closes", "type": "list_of_number", "description": "Closing prices in ascending date order"}
+      ],
+      "outputs": [
+        {"name": "value", "type": "number", "description": "RSI in [0, 100]; null if fewer than 15 closes"}
+      ],
+      "implementation_ref": "viza.observations:calculate_rsi_14d",
+      "feel_signature": "rsi_14(closes)"
+    },
+    {
+      "iri": "viza:bkm/volume_spike",
+      "name": "volume_spike",
+      "display_name": "Volume spike vs. 20-day mean",
+      "version": "1.0.0",
+      "inputs": [
+        {"name": "volumes", "type": "list_of_number", "description": "Volumes in ascending date order"}
+      ],
+      "outputs": [
+        {"name": "value", "type": "number", "description": "Ratio of today's volume to trailing-20 mean"}
+      ],
+      "implementation_ref": "viza.observations:technical_values_from_ohlcv",
+      "feel_signature": "volume_spike(volumes)"
+    },
+    {
+      "iri": "viza:bkm/momentum_21",
+      "name": "momentum_21",
+      "display_name": "21-day price momentum",
+      "version": "1.0.0",
+      "inputs": [
+        {"name": "closes", "type": "list_of_number"}
+      ],
+      "outputs": [
+        {"name": "value", "type": "number", "description": "(close_t / close_t-21) - 1"}
+      ],
+      "implementation_ref": "viza.observations:technical_values_from_ohlcv",
+      "feel_signature": "momentum_21(closes)"
+    },
+    {
+      "iri": "viza:bkm/moving_average_trend",
+      "name": "moving_average_trend",
+      "display_name": "20-vs-50 day moving-average trend",
+      "version": "1.0.0",
+      "inputs": [
+        {"name": "closes", "type": "list_of_number"}
+      ],
+      "outputs": [
+        {"name": "value", "type": "number", "description": "(ma_20 / ma_50) - 1"}
+      ],
+      "implementation_ref": "viza.observations:technical_values_from_ohlcv",
+      "feel_signature": "moving_average_trend(closes)"
+    },
+    {
+      "iri": "viza:bkm/realized_volatility_20",
+      "name": "realized_volatility_20",
+      "display_name": "Realized volatility (20-day, annualized)",
+      "version": "1.0.0",
+      "inputs": [
+        {"name": "closes", "type": "list_of_number"}
+      ],
+      "outputs": [
+        {"name": "value", "type": "number"}
+      ],
+      "implementation_ref": "viza.observations:technical_values_from_ohlcv",
+      "feel_signature": "realized_volatility_20(closes)"
+    }
+  ]
+}

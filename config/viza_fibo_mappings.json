@@ -1,0 +1,40 @@
+{
+  "schema": "viza.fibo_mappings.v1",
+  "registry_version": "0.1.0",
+  "description": "Mapping of VIZA-local taxonomy strings to canonical FIBO IRIs. The Phase 30 asset resolver consults this file to populate CommandTarget.fibo_legal_entity_iri and CommandTarget.fibo_instrument_iri so emitted commands are portable across security masters that speak FIBO. The IRIs use the spec.edmcouncil.org production base; consumers that prefer the development tree can rewrite the prefix. Mappings left as `null` are intentionally absent — the underlying concept has no direct FIBO equivalent and is VIZA-native.",
+  "asset_class_to_fibo_instrument_class": {
+    "US_EQ": "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/CommonStock",
+    "US_PREFERRED": "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/PreferredStock",
+    "US_ETF": "https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/PooledInvestmentFunds/ExchangeTradedFund",
+    "US_OPTION": "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/OptionsContracts/OptionContract",
+    "REAL_ESTATE": null
+  },
+  "identifier_scheme_to_fibo_iri": {
+    "ticker": "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/IdentifiersAndIndicators/ExchangeTicker",
+    "cik": "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/SecCikIdentifier",
+    "figi": "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/FinancialInstrumentIdentifier",
+    "isin": "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/IdentifiersAndIndicators/ISIN",
+    "cusip": "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/IdentifiersAndIndicators/CUSIP",
+    "sedol": "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/IdentifiersAndIndicators/SEDOL",
+    "lei": "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/LEIIdentifier"
+  },
+  "event_type_to_fibo_iri": {
+    "confirmed_mna": "https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateActionsAndEvents/Mergers/MergerEvent",
+    "acquisition_rumor": null,
+    "analyst_upgrade": null,
+    "analyst_downgrade": null,
+    "earnings_surprise": null,
+    "insider_purchase": null,
+    "insider_sale": null,
+    "unusual_volume": null,
+    "unusual_options_activity": null,
+    "regulatory_action": null,
+    "sec_filing_novelty": null,
+    "management_commentary_change": null,
+    "news_sentiment_shift": null,
+    "social_sentiment_shift": null,
+    "peer_contagion_event": null,
+    "sector_contagion_event": null
+  },
+  "fallback_legal_entity_class_iri": "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/Corporation"
+}
