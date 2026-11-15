@@ -8,6 +8,7 @@ and dtypes produced here are contracts consumed downstream. See
 from __future__ import annotations
 
 from datetime import date, datetime, time, timezone
+from collections.abc import Sequence
 from typing import Any, Protocol
 
 import polars as pl
@@ -21,6 +22,7 @@ from sqlalchemy import (
     String,
     Table,
     create_engine,
+    func,
     select,
     text,
 )
@@ -122,40 +124,59 @@ def _empty_price_bars() -> pl.DataFrame:
     return pl.DataFrame(schema=PRICE_BARS_SCHEMA)
 
 
-def _security_record(row: Any) -> dict[str, Any]:
-    """Build one `securities()` record from a row mapping.
+def _column(rows: Sequence[Any], name: str) -> list[Any]:
+    return [row[name] for row in rows]
+
+
+def _securities_frame(rows: Sequence[Any]) -> pl.DataFrame:
+    """Build the `securities()` frame column by column from row mappings.
 
     `security_id` is cast to ``str`` because PostgreSQL returns native
     ``uuid.UUID`` objects for the UUID-typed canonical column, while the
     frame's column is declared ``Utf8``.
     """
-    return {
-        "security_id": str(row["security_id"]),
-        "ticker": row["ticker"],
-        "exchange": row["exchange"],
-        "currency": "USD",
-        "sector": row["sector"],
-        "industry": row["industry"],
-        "classification_as_of": _as_utc(row["source_last_updated"]),
+    if not rows:
+        return _empty_securities()
+    columns = {
+        "security_id": [str(v) for v in _column(rows, "security_id")],
+        "ticker": _column(rows, "ticker"),
+        "exchange": _column(rows, "exchange"),
+        "currency": ["USD"] * len(rows),
+        "sector": _column(rows, "sector"),
+        "industry": _column(rows, "industry"),
+        "classification_as_of": [_as_utc(v) for v in _column(rows, "source_last_updated")],
     }
+    return pl.DataFrame(columns, schema=SECURITIES_SCHEMA)
+
+
+def _price_bars_frame(rows: Sequence[Any]) -> pl.DataFrame:
+    """Build the `price_bars()` frame column by column from row mappings.
+
+    `security_id` is cast to ``str`` for the same reason as in
+    `_securities_frame`.
+    """
+    if not rows:
+        return _empty_price_bars()
+    columns = {
+        "security_id": [str(v) for v in _column(rows, "security_id")],
+        "event_date": [_as_utc(v).date() for v in _column(rows, "event_time")],
+        "close": [float(v) for v in _column(rows, "close")],
+        "adjusted_close": [float(v) for v in _column(rows, "adjusted_close")],
+        "volume": [int(v) if v is not None else None for v in _column(rows, "volume")],
+        "currency": _column(rows, "currency"),
+        "ingestion_time": [_as_utc(v) for v in _column(rows, "ingestion_time")],
+    }
+    return pl.DataFrame(columns, schema=PRICE_BARS_SCHEMA)
+
+
+def _security_record(row: Any) -> dict[str, Any]:
+    """One `securities()` record; same conversions as `_securities_frame`."""
+    return _securities_frame([row]).row(0, named=True)
 
 
 def _price_bar_record(row: Any) -> dict[str, Any]:
-    """Build one `price_bars()` record from a row mapping.
-
-    `security_id` is cast to ``str`` for the same reason as in
-    `_security_record`.
-    """
-    event_time = _as_utc(row["event_time"])
-    return {
-        "security_id": str(row["security_id"]),
-        "event_date": event_time.date(),
-        "close": float(row["close"]),
-        "adjusted_close": float(row["adjusted_close"]),
-        "volume": int(row["volume"]) if row["volume"] is not None else None,
-        "currency": row["currency"],
-        "ingestion_time": _as_utc(row["ingestion_time"]),
-    }
+    """One `price_bars()` record; same conversions as `_price_bars_frame`."""
+    return _price_bars_frame([row]).row(0, named=True)
 
 
 class InMemoryCanonicalSource:
@@ -226,12 +247,7 @@ class PostgresCanonicalSource:
         )
         with self._connect_read_only() as conn:
             rows = conn.execute(query).mappings().all()
-
-        if not rows:
-            return _empty_securities()
-
-        records = [_security_record(row) for row in rows]
-        return pl.DataFrame(records, schema=SECURITIES_SCHEMA)
+        return _securities_frame(rows)
 
     def price_bars(
         self, start: date, end: date, *, source: str = "faustcalc_fmp_snapshot"
@@ -253,21 +269,17 @@ class PostgresCanonicalSource:
         )
         with self._connect_read_only() as conn:
             rows = conn.execute(query).mappings().all()
-
-        if not rows:
-            return _empty_price_bars()
-
-        records = [_price_bar_record(row) for row in rows]
-        return pl.DataFrame(records, schema=PRICE_BARS_SCHEMA)
+        return _price_bars_frame(rows)
 
     def snapshot_id(self, *, source: str = "faustcalc_fmp_snapshot") -> str:
-        query = select(price_bar_t.c.ingestion_time).where(price_bar_t.c.source == source)
+        query = select(func.max(price_bar_t.c.ingestion_time)).where(
+            price_bar_t.c.source == source
+        )
         with self._connect_read_only() as conn:
-            rows = [row[0] for row in conn.execute(query).all()]
-        if not rows:
+            max_time = conn.execute(query).scalar_one_or_none()
+        if max_time is None:
             return "empty"
-        max_time = max(_as_utc(value) for value in rows)
-        return max_time.isoformat()
+        return _as_utc(max_time).isoformat()
 
     def create_tables_for_tests(self) -> None:
         if self._engine.dialect.name == "postgresql":

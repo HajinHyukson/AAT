@@ -159,3 +159,67 @@ def test_postgres_source_reads_through_sqlite_schema(tmp_path):
     assert first["ticker"] == "AAA" and first["sector"] == "Tech"
     bars = src.price_bars(date(2024, 1, 1), date(2024, 1, 31))
     assert bars["event_date"].to_list() == [date(2024, 1, 2)]
+
+
+def _bar(price_bar_id, ingestion_time, source="faustcalc_fmp_snapshot"):
+    return {
+        "price_bar_id": price_bar_id,
+        "security_id": "a",
+        "event_time": datetime(2024, 1, 2, tzinfo=timezone.utc),
+        "ingestion_time": ingestion_time,
+        "timestamp_available": ingestion_time,
+        "close": 10.0,
+        "adjusted_close": 10.0,
+        "volume": 100,
+        "currency": "USD",
+        "source": source,
+    }
+
+
+def test_postgres_snapshot_id_is_one_sql_aggregate(tmp_path):
+    from sqlalchemy import event
+
+    src = PostgresCanonicalSource(f"sqlite:///{tmp_path/'canon.db'}")
+    src.create_tables_for_tests()
+    assert src.snapshot_id() == "empty"
+    src.insert_for_tests(
+        price_bar_t,
+        [
+            _bar("p1", datetime(2024, 5, 1, tzinfo=timezone.utc)),
+            _bar("p2", datetime(2024, 6, 1, tzinfo=timezone.utc)),
+            _bar("p3", datetime(2025, 1, 1, tzinfo=timezone.utc), source="other"),
+        ],
+    )
+    statements: list[str] = []
+    event.listen(
+        src._engine,
+        "before_cursor_execute",
+        lambda conn, cursor, statement, *args: statements.append(statement.lower()),
+    )
+    assert src.snapshot_id() == "2024-06-01T00:00:00+00:00"
+    assert src.snapshot_id(source="other") == "2025-01-01T00:00:00+00:00"
+    assert statements and all("max(" in s for s in statements)
+
+
+def test_postgres_price_bars_columnar_frame_keeps_types(tmp_path):
+    src = PostgresCanonicalSource(f"sqlite:///{tmp_path/'canon.db'}")
+    src.create_tables_for_tests()
+    first = _bar("p1", datetime(2024, 5, 1, tzinfo=timezone.utc))
+    second = dict(
+        _bar("p2", datetime(2024, 5, 2, tzinfo=timezone.utc)),
+        event_time=datetime(2024, 1, 3, tzinfo=timezone.utc),
+        volume=None,
+    )
+    src.insert_for_tests(price_bar_t, [first, second])
+    bars = src.price_bars(date(2024, 1, 1), date(2024, 1, 31)).sort("event_date")
+    assert dict(bars.schema) == {
+        "security_id": pl.Utf8,
+        "event_date": pl.Date,
+        "close": pl.Float64,
+        "adjusted_close": pl.Float64,
+        "volume": pl.Int64,
+        "currency": pl.Utf8,
+        "ingestion_time": pl.Datetime("us", "UTC"),
+    }
+    assert bars["volume"].to_list() == [100, None]
+    assert bars["ingestion_time"].to_list()[1] == datetime(2024, 5, 2, tzinfo=timezone.utc)
