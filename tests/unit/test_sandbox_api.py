@@ -288,3 +288,66 @@ def test_result_parquet_junction_is_refused(tmp_path):
         _OutputRunner(0, lambda out: _winapi.CreateJunction(str(target), str(out / "result.parquet"))),
     )
     _assert_refused(run, settings, tmp_path, "Result file is not a regular file.")
+
+
+def test_app_startup_fails_runs_left_queued_or_running(tmp_path):
+    settings, store, service = _service(tmp_path)
+    user, _ = store.create_user("alice")
+    queued = store.create_run(user.user_id, "x", {}, {})
+    running = store.create_run(user.user_id, "y", {}, {})
+    store.update_run(running.run_id, status="running")
+    done = store.create_run(user.user_id, "z", {}, {})
+    store.update_run(done.run_id, status="completed")
+
+    create_app(service, store)
+
+    for run_id in (queued.run_id, running.run_id):
+        run = store.get_run(run_id)
+        assert run.status == "failed"
+        assert run.error == "Interrupted by a service restart."
+        assert run.finished_at is not None
+    untouched = store.get_run(done.run_id)
+    assert untouched.status == "completed" and untouched.error is None
+
+
+class _BlockingRunner:
+    def __init__(self):
+        import threading
+
+        self.entered = threading.Semaphore(0)
+        self.release = threading.Event()
+
+    def run(self, run_dir, limits):
+        self.entered.release()
+        assert self.release.wait(30)
+        return _StubRunner(1).run(run_dir, limits)
+
+
+def test_runs_beyond_the_concurrency_limit_stay_queued(tmp_path):
+    import threading
+
+    settings, store, service = _service(tmp_path)
+    assert settings.max_concurrent_runs == 2
+    settings = settings.model_copy(update={"max_concurrent_runs": 1})
+    runner = _BlockingRunner()
+    service = SandboxService(settings, store, service._source, runner)
+    user, _ = store.create_user("alice")
+    req = RunRequest(
+        code=MOMENTUM,
+        start=date(2024, 1, 1),
+        end=date(2024, 1, 31),
+        backtest={"quantiles": 3, "rebalance": "daily"},
+    )
+    first = service.submit(user, req).run_id
+    second = service.submit(user, req).run_id
+    threads = [threading.Thread(target=service.execute, args=(rid,)) for rid in (first, second)]
+    threads[0].start()
+    assert runner.entered.acquire(timeout=30)
+    threads[1].start()
+    assert not runner.entered.acquire(timeout=1.0)
+    assert store.get_run(first).status == "running"
+    assert store.get_run(second).status == "queued"
+    runner.release.set()
+    for thread in threads:
+        thread.join(30)
+    assert {store.get_run(first).status, store.get_run(second).status} == {"failed"}

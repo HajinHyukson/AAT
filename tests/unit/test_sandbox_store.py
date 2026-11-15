@@ -32,3 +32,18 @@ def test_run_lifecycle(tmp_path):
     updated = store.update_run(run.run_id, status="completed", exit_code=0)
     assert updated.status == "completed"
     assert [r.run_id for r in store.list_runs(user.user_id)] == [run.run_id]
+
+
+def test_list_runs_by_status_spans_users(tmp_path):
+    store = SandboxStore(f"sqlite:///{tmp_path/'s.db'}")
+    store.create_schema()
+    alice, _ = store.create_user("alice")
+    bob, _ = store.create_user("bob")
+    queued = store.create_run(alice.user_id, "x", {}, {})
+    running = store.create_run(bob.user_id, "y", {}, {})
+    store.update_run(running.run_id, status="running")
+    done = store.create_run(bob.user_id, "z", {}, {})
+    store.update_run(done.run_id, status="completed")
+    found = store.list_runs_by_status({"queued", "running"})
+    assert sorted(r.run_id for r in found) == sorted([queued.run_id, running.run_id])
+    assert store.list_runs_by_status({"timed_out"}) == []

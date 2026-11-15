@@ -13,6 +13,8 @@ from viza_sandbox.store import SandboxRun, SandboxStore, SandboxUser
 
 
 def create_app(service: SandboxService, store: SandboxStore) -> FastAPI:
+    # Runs a previous process left queued or running can never finish; fail them now.
+    service.fail_interrupted_runs()
     app = FastAPI(title="VIZA Sandbox")
 
     def current_user(authorization: Annotated[str | None, Header()] = None) -> SandboxUser:

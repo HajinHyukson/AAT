@@ -7,6 +7,7 @@ import os
 import shutil
 import stat
 import sys
+import threading
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -96,6 +97,18 @@ class SandboxService:
         self._store = store
         self._source = source
         self._runner = runner
+        # At most this many runs execute at once; the rest wait here still "queued".
+        self._slots = threading.BoundedSemaphore(settings.max_concurrent_runs)
+
+    def fail_interrupted_runs(self) -> None:
+        """Mark runs a previous process left "queued" or "running" as failed."""
+        for run in self._store.list_runs_by_status({"queued", "running"}):
+            self._store.update_run(
+                run.run_id,
+                status="failed",
+                error="Interrupted by a service restart.",
+                finished_at=_utcnow(),
+            )
 
     def _limits(self) -> RunLimits:
         return RunLimits(
@@ -113,6 +126,10 @@ class SandboxService:
         )
 
     def execute(self, run_id: str) -> SandboxRun:
+        with self._slots:
+            return self._execute_guarded(run_id)
+
+    def _execute_guarded(self, run_id: str) -> SandboxRun:
         try:
             return self._execute(run_id)
         except Exception as exc:  # noqa: BLE001 - never leave a run stuck in "running"

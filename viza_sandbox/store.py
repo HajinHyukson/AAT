@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import secrets
+from collections.abc import Collection
 from datetime import datetime, timezone
 from uuid import uuid4
 
@@ -146,6 +147,15 @@ class SandboxStore:
             return (
                 session.query(SandboxRun)
                 .filter(SandboxRun.user_id == user_id)
+                .order_by(SandboxRun.created_at)
+                .all()
+            )
+
+    def list_runs_by_status(self, statuses: Collection[str]) -> list[SandboxRun]:
+        with self._session_factory() as session:
+            return (
+                session.query(SandboxRun)
+                .filter(SandboxRun.status.in_(list(statuses)))
                 .order_by(SandboxRun.created_at)
                 .all()
             )
