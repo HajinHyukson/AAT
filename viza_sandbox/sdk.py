@@ -64,12 +64,10 @@ def coerce_return(value: object) -> Scores:
 
 
 def _day_end(dates: pd.Series) -> pd.Series:
-    """Last instant of each UTC calendar day, as tz-aware timestamps."""
-    return (
-        pd.to_datetime(dates).dt.tz_localize("UTC")
-        + pd.Timedelta(days=1)
-        - pd.Timedelta(microseconds=1)
-    )
+    """``end_of_day_utc`` of each date (computed once per distinct date), as UTC timestamps."""
+    days = pd.to_datetime(dates)
+    ends = {day: end_of_day_utc(day.date()) for day in days.unique()}
+    return pd.to_datetime(days.map(ends), utc=True)
 
 
 class VizaData:

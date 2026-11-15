@@ -4,8 +4,10 @@ A value observed on date ``D`` (an ``event_date``) is only visible to a
 backtest or materialization run on date ``D`` or later once its
 ``available_at`` timestamp has passed. This module defines the single
 availability policy the sandbox currently supports (end-of-day snapshot
-availability) and the primitives used to enforce it: no caller may bypass
-``visible_on`` to read a row before its ``available_at``.
+availability) and the primitives used to enforce it. ``end_of_day_utc`` is the
+single definition of the visibility boundary: ``visible_on`` applies it to
+polars frames and ``viza_sandbox.sdk.VizaData`` applies it to every pandas
+read. No reader may see a row before its ``available_at``.
 """
 
 from __future__ import annotations
