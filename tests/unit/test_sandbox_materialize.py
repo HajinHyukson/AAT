@@ -199,3 +199,94 @@ def test_membership_matches_index_definition_on_random_panels():
         assert list(zip(got["event_date"].to_list(), got["security_id"].to_list())) == (
             _reference_membership(prices, lookback)
         )
+
+
+# --- Catalog attributes sliced from the attribute store ------------------------------------
+
+import json  # noqa: E402
+
+from sandbox_helpers import synthetic_bars, synthetic_securities  # noqa: E402
+
+from viza_sandbox.attribute_store import build_attribute_store  # noqa: E402
+from viza_sandbox.catalog import CATALOG_VERSION, load_catalog  # noqa: E402
+
+_NO_STORE = "No attribute store is built for this data snapshot. Run build-attributes."
+
+
+def _attr_source(extra=None):
+    bars = synthetic_bars(date(2023, 11, 1), date(2024, 2, 29))
+    if extra is not None:
+        bars = pl.concat([bars, extra])
+    return InMemoryCanonicalSource(synthetic_securities(), bars)
+
+
+def test_panel_includes_attributes_when_the_store_covers_the_range(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _attr_source()
+    store = build_attribute_store(source, settings, start=date(2024, 1, 1), end=date(2024, 2, 29))
+    panel = materialize(source, PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings)
+    manifest = panel.manifest
+    assert manifest.series == ["prices", "universe", "attributes"]
+    assert manifest.panel_schema_version == 2
+    assert manifest.catalog_version == CATALOG_VERSION
+    assert manifest.attribute_store_id == store.store_id
+    assert manifest.attributes_unavailable_reason is None
+    attributes = pl.read_parquet(panel.directory / "attributes.parquet")
+    assert attributes.columns == ["security_id", "event_date", "available_at", *load_catalog().keys()]
+    assert manifest.row_counts["attributes"] == attributes.height > 0
+    assert attributes["event_date"].min() == date(2024, 1, 8)
+    assert attributes["event_date"].max() == date(2024, 1, 31)
+    for row in attributes.select(["event_date", "available_at"]).unique().iter_rows():
+        assert row[1] == datetime(row[0].year, row[0].month, row[0].day, 21, tzinfo=timezone.utc)
+    catalog = json.loads((panel.directory / "catalog.json").read_text(encoding="utf-8"))
+    assert catalog["catalog_version"] == CATALOG_VERSION
+    assert [a["key"] for a in catalog["attributes"]] == load_catalog().keys()
+
+
+def test_panel_without_a_store_says_why(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    panel = materialize(
+        _attr_source(), PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings
+    )
+    assert not (panel.directory / "attributes.parquet").exists()
+    assert not (panel.directory / "catalog.json").exists()
+    assert panel.manifest.series == ["prices", "universe"]
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.catalog_version is None
+    assert panel.manifest.attributes_unavailable_reason == _NO_STORE
+
+
+def test_store_that_does_not_cover_the_range_is_refused(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _attr_source()
+    build_attribute_store(source, settings, start=date(2024, 1, 1), end=date(2024, 1, 31))
+    panel = materialize(source, PanelSpec(start=date(2024, 1, 15), end=date(2024, 2, 15)), settings)
+    assert not (panel.directory / "attributes.parquet").exists()
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.attributes_unavailable_reason == (
+        "The attribute store covers 2024-01-01 to 2024-01-31, not the requested range."
+    )
+
+
+def test_store_from_an_older_snapshot_is_not_used(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    build_attribute_store(_attr_source(), settings, start=date(2024, 1, 1), end=date(2024, 2, 29))
+    later = _prices(
+        [("a", date(2024, 3, 1), 9.0, 9.0, 1, "USD", datetime(2024, 10, 1, tzinfo=timezone.utc))]
+    )
+    panel = materialize(
+        _attr_source(later), PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings
+    )
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.attributes_unavailable_reason == _NO_STORE
+
+
+def test_manifest_id_changes_when_a_store_appears(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _attr_source()
+    spec = PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31))
+    first = materialize(source, spec, settings)
+    build_attribute_store(source, settings, start=date(2024, 1, 1), end=date(2024, 2, 29))
+    second = materialize(source, spec, settings)
+    assert second.manifest.manifest_id != first.manifest.manifest_id
+    assert (second.directory / "attributes.parquet").exists()

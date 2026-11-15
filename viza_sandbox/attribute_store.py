@@ -185,7 +185,9 @@ def read_attributes(
         pl.read_parquet(directory / f"{year}.parquet").filter(
             (pl.col("event_date") >= start) & (pl.col("event_date") <= end)
         )
-        for year in range(max(start.year, manifest.start.year), min(end.year, manifest.end.year) + 1)
+        for year in range(
+            max(start.year, manifest.start.year), min(end.year, manifest.end.year) + 1
+        )
     ]
     if not parts:
         return pl.DataFrame(schema=_schema(manifest.keys))

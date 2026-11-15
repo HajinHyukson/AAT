@@ -20,13 +20,27 @@ from pathlib import Path
 import polars as pl
 from pydantic import BaseModel
 
+from viza_sandbox.attribute_store import (
+    AttributeStoreManifest,
+    attribute_store_id,
+    find_attribute_store,
+    read_attributes,
+)
 from viza_sandbox.canonical import CanonicalSource
+from viza_sandbox.catalog import CATALOG_VERSION, DEFAULT_CATALOG_PATH
 from viza_sandbox.config import SandboxSettings
 from viza_sandbox.pit import EOD_POLICY_VERSION, eod_available_at, end_of_day_utc
 
 PRICES_FILENAME = "prices.parquet"
 UNIVERSE_FILENAME = "universe.parquet"
 MANIFEST_FILENAME = "manifest.json"
+ATTRIBUTES_FILENAME = "attributes.parquet"
+CATALOG_FILENAME = "catalog.json"
+# Bumped when the files in a panel change shape, so older cached panels are not reused.
+PANEL_SCHEMA_VERSION = 2
+NO_ATTRIBUTE_STORE_REASON = (
+    "No attribute store is built for this data snapshot. Run build-attributes."
+)
 
 
 class PanelSpec(BaseModel):
@@ -48,6 +62,10 @@ class DataManifest(BaseModel):
     row_counts: dict[str, int]
     currencies: list[str]
     created_at: datetime
+    panel_schema_version: int = 1
+    catalog_version: str | None = None
+    attribute_store_id: str | None = None
+    attributes_unavailable_reason: str | None = None
 
 
 class MaterializedPanel(BaseModel):
@@ -64,8 +82,12 @@ def _manifest_id(
     availability_policy_version: str,
     canonical_snapshot_id: str,
     price_adjustment_status: str,
+    attribute_store_id: str | None,
 ) -> str:
     payload = {
+        "panel_schema_version": PANEL_SCHEMA_VERSION,
+        "catalog_version": CATALOG_VERSION if attribute_store_id else None,
+        "attribute_store_id": attribute_store_id,
         "spec": spec.model_dump(mode="json"),
         "availability_policy_version": availability_policy_version,
         "canonical_snapshot_id": canonical_snapshot_id,
@@ -140,12 +162,45 @@ def _load_cached(directory: Path) -> MaterializedPanel:
     return MaterializedPanel(directory=directory, manifest=manifest)
 
 
+def _resolve_attribute_store(
+    spec: PanelSpec, settings: SandboxSettings, canonical_snapshot_id: str
+) -> tuple[AttributeStoreManifest | None, str | None]:
+    """The attribute store usable for this panel, or the reason there is none.
+
+    A store is used only if it was built from this exact data snapshot and covers the whole
+    requested range; a partial or stale store would be a silent gap.
+    """
+    store = find_attribute_store(
+        settings,
+        attribute_store_id(
+            CATALOG_VERSION, canonical_snapshot_id, spec.price_source,
+            settings.price_adjustment_status,
+        ),
+    )
+    if store is None:
+        return None, NO_ATTRIBUTE_STORE_REASON
+    if store.start > spec.start or store.end < spec.end:
+        return None, (
+            f"The attribute store covers {store.start.isoformat()} to {store.end.isoformat()}, "
+            "not the requested range."
+        )
+    return store, None
+
+
 def materialize(
     source: CanonicalSource, spec: PanelSpec, settings: SandboxSettings
 ) -> MaterializedPanel:
     canonical_snapshot_id = source.snapshot_id(source=spec.price_source)
+    store, attributes_unavailable_reason = _resolve_attribute_store(
+        spec, settings, canonical_snapshot_id
+    )
+    store_id = store.store_id if store is not None else None
     manifest_id = _manifest_id(
-        spec, EOD_POLICY_VERSION, canonical_snapshot_id, settings.price_adjustment_status
+        spec,
+        EOD_POLICY_VERSION,
+        canonical_snapshot_id,
+        settings.price_adjustment_status,
+        store_id,
     )
     directory = settings.data_dir / "panels" / manifest_id
     if (directory / MANIFEST_FILENAME).exists():
@@ -196,6 +251,18 @@ def materialize(
         )
     )
 
+    attributes_out = None
+    row_counts = {"prices": prices_out.height, "universe": universe_out.height}
+    series = ["prices", "universe"]
+    if store_id is not None:
+        attributes = read_attributes(settings, store_id, spec.start, spec.end)
+        keys = [c for c in attributes.columns if c not in ("security_id", "event_date")]
+        attributes_out = attributes.with_columns(
+            eod_available_at(pl.col("event_date")).alias("available_at")
+        ).select(["security_id", "event_date", "available_at", *keys])
+        row_counts["attributes"] = attributes_out.height
+        series.append("attributes")
+
     manifest = DataManifest(
         manifest_id=manifest_id,
         spec=spec,
@@ -204,7 +271,12 @@ def materialize(
         price_adjustment_status=settings.price_adjustment_status,
         source_rights_state=settings.source_rights_state,
         cutoff_available_at=end_of_day_utc(spec.end),
-        row_counts={"prices": prices_out.height, "universe": universe_out.height},
+        series=series,
+        row_counts=row_counts,
+        panel_schema_version=PANEL_SCHEMA_VERSION,
+        catalog_version=CATALOG_VERSION if store_id is not None else None,
+        attribute_store_id=store_id,
+        attributes_unavailable_reason=attributes_unavailable_reason,
         currencies=sorted(prices_out["currency"].unique().to_list()),
         created_at=datetime.now(timezone.utc),
     )
@@ -216,6 +288,9 @@ def materialize(
     try:
         prices_out.write_parquet(staging / PRICES_FILENAME)
         universe_out.write_parquet(staging / UNIVERSE_FILENAME)
+        if attributes_out is not None:
+            attributes_out.write_parquet(staging / ATTRIBUTES_FILENAME)
+            shutil.copyfile(DEFAULT_CATALOG_PATH, staging / CATALOG_FILENAME)
         (staging / MANIFEST_FILENAME).write_text(manifest.model_dump_json())
         try:
             os.replace(staging, directory)
