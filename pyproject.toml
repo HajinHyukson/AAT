@@ -11,8 +11,10 @@ dependencies = [
   "alembic>=1.13",
   "fastapi>=0.111",
   "numpy>=1.26",
+  "pandas>=2.2",
   "polars>=0.20",
   "psycopg[binary]>=3.2",
+  "pyarrow>=15",
   "pydantic>=2.7",
   "pydantic-settings>=2.2",
   "sqlalchemy>=2.0",
@@ -31,7 +33,7 @@ release = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["api*", "adapters*", "config*", "db*", "engine*", "jobs*", "viza*"]
+include = ["api*", "adapters*", "config*", "db*", "engine*", "jobs*", "viza*", "viza_sandbox*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
