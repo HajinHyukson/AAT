@@ -19,6 +19,8 @@ from viza_sandbox.canonical import CanonicalSource
 from viza_sandbox.config import SandboxSettings
 from viza_sandbox.evaluate import (
     EXECUTION_CONVENTION,
+    RETURN_BASIS,
+    WEIGHTING_BASIS,
     BacktestSettings,
     EvaluationError,
     evaluate_scores,
@@ -219,6 +221,8 @@ class SandboxService:
 
 def result_header(run: SandboxRun, settings: SandboxSettings | None = None) -> dict:
     settings = settings or SandboxSettings()
+    # Prefer what the run actually recorded; settings may have changed since.
+    manifest = run.data_manifest or {}
     return {
         "run_id": run.run_id,
         "code_hash": run.code_hash,
@@ -226,8 +230,12 @@ def result_header(run: SandboxRun, settings: SandboxSettings | None = None) -> d
         "data_manifest": run.data_manifest,
         "limits": run.limits,
         "execution": dict(EXECUTION_CONVENTION),
-        "source_rights_state": settings.source_rights_state,
-        "price_adjustment_status": settings.price_adjustment_status,
+        "weighting_basis": WEIGHTING_BASIS,
+        "return_basis": RETURN_BASIS,
+        "source_rights_state": manifest.get("source_rights_state", settings.source_rights_state),
+        "price_adjustment_status": manifest.get(
+            "price_adjustment_status", settings.price_adjustment_status
+        ),
         "created_at": run.created_at,
         "started_at": run.started_at,
         "finished_at": run.finished_at,

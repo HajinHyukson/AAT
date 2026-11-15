@@ -10,6 +10,12 @@ from pydantic import BaseModel, Field
 from scipy.stats import spearmanr
 
 EXECUTION_CONVENTION = {"signal_lag_days": 1, "transaction_cost": 0.0, "benchmark": None}
+# Disclosures for the run header: what the bucket mean and the close-to-close return model.
+WEIGHTING_BASIS = (
+    "equal weight within each quantile, re-equalized every trading day at zero cost "
+    "between rebalances"
+)
+RETURN_BASIS = "price return on close; dividends not included"
 _EXECUTION_DELAY = 2  # weights set at D earn r_t for t >= D + 2 trading days
 
 

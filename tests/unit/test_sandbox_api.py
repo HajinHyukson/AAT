@@ -351,3 +351,46 @@ def test_runs_beyond_the_concurrency_limit_stay_queued(tmp_path):
     for thread in threads:
         thread.join(30)
     assert {store.get_run(first).status, store.get_run(second).status} == {"failed"}
+
+
+def test_header_discloses_weighting_and_return_basis(tmp_path):
+    from viza_sandbox.evaluate import RETURN_BASIS, WEIGHTING_BASIS
+    from viza_sandbox.runs import result_header
+
+    assert WEIGHTING_BASIS == (
+        "equal weight within each quantile, re-equalized every trading day at zero cost "
+        "between rebalances"
+    )
+    assert RETURN_BASIS == "price return on close; dividends not included"
+    settings, store, _ = _service(tmp_path)
+    user, _ = store.create_user("alice")
+    header = result_header(store.create_run(user.user_id, "x", {}, {}), settings)
+    assert header["weighting_basis"] == WEIGHTING_BASIS
+    assert header["return_basis"] == RETURN_BASIS
+
+
+def test_header_rights_and_adjustment_come_from_recorded_manifest(tmp_path):
+    from viza_sandbox.runs import result_header
+
+    settings, store, _ = _service(tmp_path)
+    user, _ = store.create_user("alice")
+    run = store.create_run(user.user_id, "x", {}, {})
+    header = result_header(run, settings)
+    assert header["source_rights_state"] == settings.source_rights_state
+    assert header["price_adjustment_status"] == settings.price_adjustment_status
+    run = store.update_run(
+        run.run_id,
+        data_manifest={"source_rights_state": "licensed", "price_adjustment_status": "adjusted"},
+    )
+    header = result_header(run, settings)
+    assert header["source_rights_state"] == "licensed"
+    assert header["price_adjustment_status"] == "adjusted"
+
+
+def test_get_run_does_not_expose_host_result_path(tmp_path):
+    client, auth, _ = _client(tmp_path)
+    run_id = client.post("/sandbox/runs", json=_request(), headers=auth).json()["run_id"]
+    body = client.get(f"/sandbox/runs/{run_id}", headers=auth).json()
+    assert body["run"]["status"] == "completed"
+    assert "result_path" not in body["run"]
+    assert not any(str(tmp_path) in str(value) for value in body["run"].values())

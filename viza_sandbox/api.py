@@ -11,6 +11,8 @@ from viza_sandbox.runner import DockerRunner, LocalProcessRunner
 from viza_sandbox.runs import RunRequest, SandboxService, result_header
 from viza_sandbox.store import SandboxRun, SandboxStore, SandboxUser
 
+_HIDDEN_RUN_COLUMNS = {"result_path"}
+
 
 def create_app(service: SandboxService, store: SandboxStore) -> FastAPI:
     # Runs a previous process left queued or running can never finish; fail them now.
@@ -47,7 +49,12 @@ def create_app(service: SandboxService, store: SandboxStore) -> FastAPI:
     @app.get("/sandbox/runs/{run_id}")
     def get_run(run_id: str, user: Annotated[SandboxUser, Depends(current_user)]) -> dict:
         run = owned_run(run_id, user)
-        columns = {c.name: getattr(run, c.name) for c in SandboxRun.__table__.columns}
+        # result_path is an absolute host path; it stays server-side.
+        columns = {
+            c.name: getattr(run, c.name)
+            for c in SandboxRun.__table__.columns
+            if c.name not in _HIDDEN_RUN_COLUMNS
+        }
         return jsonable_encoder({"run": columns, "header": service.result_header(run)})
 
     @app.get("/sandbox/runs/{run_id}/result")
