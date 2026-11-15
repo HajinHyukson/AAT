@@ -9,6 +9,9 @@ Use this file at the beginning of a new coding-agent session. It tells you which
 3. [viza_end_product/VIZA_KR_COMPLIANCE_REPORT.md](viza_end_product/VIZA_KR_COMPLIANCE_REPORT.md) - knowledge-representation compliance gaps and target discipline.
 4. [viza_end_product/VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md](viza_end_product/VIZA_INVESTMENT_COMMAND_IMPLEMENTATION_PLAN.md) - current command/compliance implementation plan.
 5. [viza_end_product/VIZA_OUTPUT_RADAR_DECISIONS_PLAN.md](viza_end_product/VIZA_OUTPUT_RADAR_DECISIONS_PLAN.md) - decisions output plan and simulator framing.
+6. [superpowers/specs/2026-11-15-viza-quant-sandbox-design.md](superpowers/specs/2026-11-15-viza-quant-sandbox-design.md) - quant sandbox design spec.
+7. [superpowers/plans/2026-11-15-viza-quant-sandbox-phase-1-2.md](superpowers/plans/2026-11-15-viza-quant-sandbox-phase-1-2.md) - quant sandbox phase 1-2 implementation plan.
+8. [viza_end_product/VIZA_SANDBOX_OPERATIONS.md](viza_end_product/VIZA_SANDBOX_OPERATIONS.md) - quant sandbox operations guide.
 
 ## Current Baseline
 
