@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import uuid
+
 import polars as pl
 from datetime import date, datetime, timezone
 
 from viza_sandbox.canonical import (
     InMemoryCanonicalSource,
     PostgresCanonicalSource,
+    _price_bar_record,
+    _security_record,
     price_bar_t,
     security_t,
     security_ticker_history_t,
@@ -45,6 +49,39 @@ def test_in_memory_filters_range_and_reports_snapshot():
     out = src.price_bars(date(2024, 1, 3), date(2024, 1, 3))
     assert out["security_id"].to_list() == ["a"]
     assert src.snapshot_id() == "2024-05-01T00:00:00+00:00"
+
+
+def test_security_record_casts_uuid_security_id_to_str():
+    sec_id = uuid.uuid4()
+    row = {
+        "security_id": sec_id,
+        "ticker": "AAA",
+        "exchange": "NYSE",
+        "sector": "Tech",
+        "industry": "Chips",
+        "source_last_updated": datetime(2024, 5, 1, tzinfo=timezone.utc),
+    }
+    record = _security_record(row)
+    assert record["security_id"] == str(sec_id)
+    frame = pl.DataFrame([record])
+    assert frame["security_id"].dtype == pl.Utf8
+
+
+def test_price_bar_record_casts_uuid_security_id_to_str():
+    sec_id = uuid.uuid4()
+    row = {
+        "security_id": sec_id,
+        "event_time": datetime(2024, 1, 2, tzinfo=timezone.utc),
+        "close": 10.0,
+        "adjusted_close": 10.0,
+        "volume": 100,
+        "currency": "USD",
+        "ingestion_time": datetime(2024, 5, 1, tzinfo=timezone.utc),
+    }
+    record = _price_bar_record(row)
+    assert record["security_id"] == str(sec_id)
+    frame = pl.DataFrame([record])
+    assert frame["security_id"].dtype == pl.Utf8
 
 
 def test_lightweight_tables_match_canonical_column_names():

@@ -122,6 +122,42 @@ def _empty_price_bars() -> pl.DataFrame:
     return pl.DataFrame(schema=PRICE_BARS_SCHEMA)
 
 
+def _security_record(row: Any) -> dict[str, Any]:
+    """Build one `securities()` record from a row mapping.
+
+    `security_id` is cast to ``str`` because PostgreSQL returns native
+    ``uuid.UUID`` objects for the UUID-typed canonical column, while the
+    frame's column is declared ``Utf8``.
+    """
+    return {
+        "security_id": str(row["security_id"]),
+        "ticker": row["ticker"],
+        "exchange": row["exchange"],
+        "currency": "USD",
+        "sector": row["sector"],
+        "industry": row["industry"],
+        "classification_as_of": _as_utc(row["source_last_updated"]),
+    }
+
+
+def _price_bar_record(row: Any) -> dict[str, Any]:
+    """Build one `price_bars()` record from a row mapping.
+
+    `security_id` is cast to ``str`` for the same reason as in
+    `_security_record`.
+    """
+    event_time = _as_utc(row["event_time"])
+    return {
+        "security_id": str(row["security_id"]),
+        "event_date": event_time.date(),
+        "close": float(row["close"]),
+        "adjusted_close": float(row["adjusted_close"]),
+        "volume": int(row["volume"]) if row["volume"] is not None else None,
+        "currency": row["currency"],
+        "ingestion_time": _as_utc(row["ingestion_time"]),
+    }
+
+
 class InMemoryCanonicalSource:
     """Fixture-backed ``CanonicalSource`` for tests and local development."""
 
@@ -194,19 +230,7 @@ class PostgresCanonicalSource:
         if not rows:
             return _empty_securities()
 
-        records = []
-        for row in rows:
-            records.append(
-                {
-                    "security_id": row["security_id"],
-                    "ticker": row["ticker"],
-                    "exchange": row["exchange"],
-                    "currency": "USD",
-                    "sector": row["sector"],
-                    "industry": row["industry"],
-                    "classification_as_of": _as_utc(row["source_last_updated"]),
-                }
-            )
+        records = [_security_record(row) for row in rows]
         return pl.DataFrame(records, schema=SECURITIES_SCHEMA)
 
     def price_bars(
@@ -233,20 +257,7 @@ class PostgresCanonicalSource:
         if not rows:
             return _empty_price_bars()
 
-        records = []
-        for row in rows:
-            event_time = _as_utc(row["event_time"])
-            records.append(
-                {
-                    "security_id": row["security_id"],
-                    "event_date": event_time.date(),
-                    "close": float(row["close"]),
-                    "adjusted_close": float(row["adjusted_close"]),
-                    "volume": int(row["volume"]) if row["volume"] is not None else None,
-                    "currency": row["currency"],
-                    "ingestion_time": _as_utc(row["ingestion_time"]),
-                }
-            )
+        records = [_price_bar_record(row) for row in rows]
         return pl.DataFrame(records, schema=PRICE_BARS_SCHEMA)
 
     def snapshot_id(self, *, source: str = "faustcalc_fmp_snapshot") -> str:
