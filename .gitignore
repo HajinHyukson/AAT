@@ -113,3 +113,7 @@ playwright/.cache/
 # --- Misc --------------------------------------------------------------------
 *.bak
 *.tmp
+
+# --- VIZA sandbox ------------------------------------------------------------
+# Panels (vendor-raw parquet) and per-run directories (user strategy code).
+data/viza_sandbox/

@@ -3,6 +3,7 @@
 ## 2026-11-15
 
 - Added the VIZA quant sandbox (spec phases 1-2): `viza_sandbox/` package with a read-only canonical price source, point-in-time panel materialization, isolated runner (Docker and local-dev backends), quantile backtest with disclosed D+1 execution convention, per-user-token HTTP API, and the operator CLI `python -m viza_sandbox.cli` (`init-db`, `create-user`, `check-split-adjustment`, `serve`). Operator guide: `docs/viza_end_product/VIZA_SANDBOX_OPERATIONS.md`; spec `docs/superpowers/specs/2026-11-15-viza-quant-sandbox-design.md`; plan `docs/superpowers/plans/2026-11-15-viza-quant-sandbox-phase-1-2.md`. The Docker image and `DockerRunner` are not yet exercised against a daemon.
+
 ## 2026-05-21
 
 - Verified the full Phase A–D decisions feature in the Windows packaged build. Production pipeline `npm run package:win` (preflight + PyInstaller engine sidecar + vite renderer + electron-builder NSIS) completed cleanly; `npm run smoke:package` passed end-to-end.
