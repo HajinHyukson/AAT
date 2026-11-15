@@ -101,3 +101,59 @@ def test_rank_stability_and_top_bottom():
 def test_settings_require_quantiles_and_rebalance():
     with pytest.raises(Exception):
         BacktestSettings()
+
+
+# --- Extreme one-day moves are disclosed, never removed --------------------------------------
+
+from viza_sandbox.evaluate import EXTREME_MOVE_RATIO  # noqa: E402
+
+LONG_DATES = pd.bdate_range("2024-01-02", periods=8)
+
+
+def _constant_scores(columns):
+    s = pd.DataFrame(np.nan, index=LONG_DATES, columns=columns)
+    s.loc[LONG_DATES[0]] = [float(i + 1) for i in range(len(columns))]
+    return s
+
+
+def test_extreme_moves_are_counted_and_warned_not_removed():
+    close = pd.DataFrame(
+        {
+            "w": [10.0, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7],
+            "x": [1.0, 1.0, 1.0, 1.0, 1000.0, 1.0, 1.0, 1.0],
+            "y": [20.0] * 8,
+            "z": [30.0, 30.3, 30.6, 30.9, 31.2, 31.5, 31.8, 32.1],
+        },
+        index=LONG_DATES,
+    )
+    out = evaluate_scores(
+        _constant_scores(["w", "x", "y", "z"]),
+        close,
+        BacktestSettings(quantiles=2, rebalance="daily"),
+    )
+    assert EXTREME_MOVE_RATIO == 10.0
+    assert out.extreme_moves == {"ratio": 10.0, "security_days": 2, "securities": 1}
+    assert (
+        "2 scored security-days across 1 securities had a one-day close move of 10x or more; "
+        "quantile returns include them unclipped."
+    ) in out.warnings
+    spike_day = LONG_DATES[4].strftime("%Y-%m-%d")
+    assert out.quantile_daily_returns["q1"][spike_day] == pytest.approx((0.1 / 10.3 + 999.0) / 2)
+
+
+def test_extreme_move_outside_the_held_window_is_not_counted():
+    close = pd.DataFrame(
+        {"w": [10.0, 10.1, 10.2, 10.3], "x": [1.0, 1000.0, 1000.0, 1000.0], "y": [20.0] * 4},
+        index=LONG_DATES[:4],
+    )
+    scores = pd.DataFrame(np.nan, index=LONG_DATES[:4], columns=["w", "x", "y"])
+    scores.loc[LONG_DATES[0]] = [1.0, 2.0, 3.0]
+    out = evaluate_scores(scores, close, BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.extreme_moves == {"ratio": 10.0, "security_days": 0, "securities": 0}
+    assert not any("one-day close move" in w for w in out.warnings)
+
+
+def test_no_extreme_moves_no_warning():
+    out = evaluate_scores(_scores_once(), _close(), BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.extreme_moves == {"ratio": 10.0, "security_days": 0, "securities": 0}
+    assert not any("one-day close move" in w for w in out.warnings)

@@ -236,6 +236,9 @@ def result_header(run: SandboxRun, settings: SandboxSettings | None = None) -> d
         "price_adjustment_status": manifest.get(
             "price_adjustment_status", settings.price_adjustment_status
         ),
+        "catalog_version": manifest.get("catalog_version"),
+        "attribute_store_id": manifest.get("attribute_store_id"),
+        "attributes_unavailable_reason": manifest.get("attributes_unavailable_reason"),
         "created_at": run.created_at,
         "started_at": run.started_at,
         "finished_at": run.finished_at,

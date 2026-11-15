@@ -394,3 +394,48 @@ def test_get_run_does_not_expose_host_result_path(tmp_path):
     assert body["run"]["status"] == "completed"
     assert "result_path" not in body["run"]
     assert not any(str(tmp_path) in str(value) for value in body["run"].values())
+
+
+# --- Catalog attributes through the API -----------------------------------------------------
+
+ATTRIBUTE_STRATEGY = (
+    "from viza_sandbox.sdk import scores\n"
+    "def strategy(data):\n"
+    "    return scores(data.attribute('ret_1d'))\n"
+)
+
+
+def test_api_run_can_call_data_attribute(tmp_path):
+    from viza_sandbox.attribute_store import build_attribute_store
+
+    settings, store, service = _service(tmp_path)
+    built = build_attribute_store(
+        service._source, settings, start=date(2024, 1, 1), end=date(2024, 1, 31)
+    )
+    client = TestClient(create_app(service, store))
+    _, token = store.create_user("alice", is_owner=True)
+    auth = {"Authorization": f"Bearer {token}"}
+    request = {**_request(), "code": ATTRIBUTE_STRATEGY}
+    run_id = client.post("/sandbox/runs", json=request, headers=auth).json()["run_id"]
+    result = client.get(f"/sandbox/runs/{run_id}/result", headers=auth)
+    assert result.status_code == 200, client.get(f"/sandbox/runs/{run_id}", headers=auth).json()
+    body = result.json()
+    assert body["header"]["catalog_version"] == "viza_sandbox_catalog_v1"
+    assert body["header"]["attribute_store_id"] == built.store_id
+    assert body["header"]["attributes_unavailable_reason"] is None
+    assert body["evaluation"]["extreme_moves"]["security_days"] == 0
+    assert body["evaluation"]["dates_scored"] == 7
+
+
+def test_api_run_without_a_store_fails_with_the_reason(tmp_path):
+    client, auth, _ = _client(tmp_path)
+    request = {**_request(), "code": ATTRIBUTE_STRATEGY}
+    run_id = client.post("/sandbox/runs", json=request, headers=auth).json()["run_id"]
+    body = client.get(f"/sandbox/runs/{run_id}", headers=auth).json()
+    assert body["run"]["status"] == "failed"
+    assert body["run"]["error"] == (
+        "AttributeUnavailableError: No attribute store is built for this data snapshot. "
+        "Run build-attributes."
+    )
+    assert body["header"]["catalog_version"] is None
+    assert body["header"]["attributes_unavailable_reason"].startswith("No attribute store")

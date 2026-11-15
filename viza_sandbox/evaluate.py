@@ -15,6 +15,9 @@ WEIGHTING_BASIS = (
     "between rebalances"
 )
 RETURN_BASIS = "price return on close; dividends not included"
+# A held security-day whose close moved by this factor or more (up or down) in one day is
+# counted and disclosed. It is never removed from the returns.
+EXTREME_MOVE_RATIO = 10.0
 _EXECUTION_DELAY = 2  # weights set at D earn r_t for t >= D + 2 trading days
 
 
@@ -41,6 +44,7 @@ class ScoresEvaluation(BaseModel):
     warnings: list[str]
     securities_scored: int
     dates_scored: int
+    extreme_moves: dict
 
 
 def rebalance_dates(index: pd.DatetimeIndex, rebalance: str) -> pd.DatetimeIndex:
@@ -107,6 +111,8 @@ def evaluate_scores(
         effective.append((date, bucket, list(rank.sort_values().index)))
 
     buckets_by_date: dict[str, dict[str, float]] = {lab: {} for lab in labels}
+    extreme_days = 0
+    extreme_securities: set[str] = set()
     for n, (date, bucket, _) in enumerate(effective):
         start = positions[date] + _EXECUTION_DELAY
         end = (
@@ -117,11 +123,22 @@ def evaluate_scores(
         window = returns.iloc[start:end]
         if window.empty:
             continue
+        held = window[bucket.index]
+        extreme = (held >= EXTREME_MOVE_RATIO - 1.0) | (held <= 1.0 / EXTREME_MOVE_RATIO - 1.0)
+        extreme_days += int(extreme.to_numpy().sum())
+        extreme_securities.update(str(c) for c in extreme.columns[extreme.any(axis=0)])
         for q, lab in enumerate(labels):
             members = bucket.index[bucket == q]
             mean = window[members].mean(axis=1)  # skipna: absent closes never count as zero
             for ts, value in mean.items():
                 buckets_by_date[lab][_iso(ts)] = _num(value)
+
+    if extreme_days:
+        warnings.append(
+            f"{extreme_days} scored security-days across {len(extreme_securities)} securities "
+            f"had a one-day close move of {EXTREME_MOVE_RATIO:g}x or more; quantile returns "
+            "include them unclipped."
+        )
 
     quantile_daily = buckets_by_date
     equity: dict[str, dict[str, float]] = {}
@@ -171,4 +188,9 @@ def evaluate_scores(
         warnings=warnings,
         securities_scored=int(scores.notna().any(axis=0).sum()),
         dates_scored=int(scores.notna().any(axis=1).sum()),
+        extreme_moves={
+            "ratio": EXTREME_MOVE_RATIO,
+            "security_days": extreme_days,
+            "securities": len(extreme_securities),
+        },
     )

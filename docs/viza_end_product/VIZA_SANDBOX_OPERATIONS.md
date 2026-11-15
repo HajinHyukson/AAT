@@ -114,6 +114,47 @@ python -m viza_sandbox.cli serve --host 127.0.0.1 --port 8781
 `user_id=...` and `token=...`. The token is shown once and only its hash is stored; give it to
 the user over a private channel. `--owner` marks an owner account.
 
+## Build the attribute store
+
+Catalog attributes (`data.attribute(key)`) are precomputed, not computed per run. Build the
+store once per data snapshot:
+
+```bash
+python -m viza_sandbox.cli build-attributes --from 2023-04-06 --to 2026-04-03
+```
+
+It prints `store_id=...` and one `YYYY rows=N` line per year, and writes
+`<VIZA_SANDBOX_DATA_DIR>/attributes/<store_id>/`. The command reads prices from 400 calendar
+days before each year so the 252-day windows are complete. It holds a year of wide frames in
+memory at a time; measure peak memory on the first full build.
+
+- Rebuild after every canonical refresh and after changing
+  `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS`: the store is keyed by the catalog version, the data
+  snapshot, the price source and the adjustment status.
+- Rebuild the runtime image after pulling this change. The strategy SDK lives in the image.
+- A run is given attributes only if a store exists for the exact data snapshot and covers the
+  whole requested date range. Otherwise `data.attribute` fails the run with the reason, which
+  is also in the header as `attributes_unavailable_reason`:
+  `No attribute store is built for this data snapshot. Run build-attributes.` or
+  `The attribute store covers <start> to <end>, not the requested range.`
+
+The catalog is `config/viza_sandbox_attribute_catalog.json`, version `viza_sandbox_catalog_v1`.
+It is separate from the desktop registry `config/viza_attribute_registry.json`. All windows count
+trading-calendar days; a security with no bar on a day inside a window gets a null. Nothing is
+filled, clipped or winsorized.
+
+| Key | Definition |
+|---|---|
+| `ret_1d`, `ret_5d`, `ret_21d`, `ret_63d`, `ret_252d` | `close[t] / close[t-n] - 1` |
+| `vol_21d`, `vol_63d` | sample standard deviation of `ret_1d` over n days |
+| `ma_20d`, `ma_50d`, `ma_200d` | mean close over n days |
+| `rsi_14d` | Cutler RSI: simple 14-day mean gain and loss, not Wilder smoothing |
+| `adv_21d` | mean of `close * volume` over 21 days |
+| `<key>_sector_z` | z-score of each key above within the security's sector on that date; null with no sector, fewer than 3 valued members, or zero dispersion. Sector is a snapshot classification. |
+
+Every attribute row has `available_at` of its own date at 21:00 UTC, like prices.
+`data.catalog()` lists the keys inside a strategy.
+
 ## Split-adjustment check
 
 Whether FaustCalc closes are split-adjusted is unverified (spec section 7.4). The promotion
@@ -175,6 +216,10 @@ Execution convention (spec 7.8), printed in every result header:
 - Price return on close; dividends not included (header key `return_basis`). Dividends are
   absent from the sources.
 
+Extreme price moves: the evaluation reports `extreme_moves` (`ratio`, `security_days`,
+`securities`), the number of held security-days whose close moved 10x or more in one day, up or
+down, and adds a warning when there are any. Those returns stay in the result unclipped.
+
 These defaults are disclosed in the header (`execution` with `signal_lag_days`,
 `transaction_cost`, `benchmark`; `weighting_basis`; `return_basis`).
 
@@ -186,6 +231,6 @@ are snapshot-only and carry `classification_as_of`.
 
 ## Not in this phase
 
-Fundamentals, catalog attributes (`data.attribute`, `data.series`), the `signals`, `weights` and
+Fundamentals, market cap and the fundamental catalog attributes, `data.series`, the `signals`, `weights` and
 `report` return kinds, the vendor rights filter on the result channel, the desktop surface, and
 the daily refresh job. See spec section 8, phases 3 to 6.
