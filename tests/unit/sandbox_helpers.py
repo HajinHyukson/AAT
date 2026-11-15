@@ -83,3 +83,38 @@ def synthetic_securities(security_ids=("a", "b", "c", "d"), sector="Tech"):
             "industry": pl.Utf8, "classification_as_of": pl.Datetime("us", "UTC"),
         },
     )
+
+
+def make_panel_with_attributes(root: Path, late_row: bool = False) -> Path:
+    """``make_panel`` plus ``attributes.parquet`` and ``catalog.json`` for two keys.
+
+    ``late_row`` adds a row for security ``b`` on 2024-01-03 whose ``available_at`` is a day
+    after its own date; it must never be visible.
+    """
+    d = make_panel(root)
+    eod = lambda day: datetime(2024, 1, day, 21, tzinfo=timezone.utc)  # noqa: E731
+    rows = {
+        "security_id": ["a", "a", "b"],
+        "event_date": [date(2024, 1, 2), date(2024, 1, 3), date(2024, 1, 2)],
+        "available_at": [eod(2), eod(3), eod(2)],
+        "ret_1d": [None, 0.1, None],
+        "adv_21d": [10.0, 22.0, 15.0],
+    }
+    if late_row:
+        rows["security_id"].append("b")
+        rows["event_date"].append(date(2024, 1, 3))
+        rows["available_at"].append(eod(4))
+        rows["ret_1d"].append(9.9)
+        rows["adv_21d"].append(99.0)
+    pl.DataFrame(rows, schema_overrides={"ret_1d": pl.Float64}).write_parquet(
+        d / "attributes.parquet"
+    )
+    entry = {
+        "display_name": "n", "description": "d", "unit": "ratio",
+        "classification_snapshot": False,
+    }
+    (d / "catalog.json").write_text(json.dumps({
+        "catalog_version": "viza_sandbox_catalog_v1",
+        "attributes": [{"key": "ret_1d", **entry}, {"key": "adv_21d", **entry}],
+    }))
+    return d

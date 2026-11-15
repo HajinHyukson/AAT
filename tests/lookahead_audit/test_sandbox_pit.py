@@ -211,3 +211,46 @@ def test_attribute_values_do_not_depend_on_later_prices(tmp_path):
     assert_frame_equal(before[0], before[1])
     after = [read_attributes(settings, store_id, cut, end) for store_id in stores]
     assert not after[0]["ret_1d"].equals(after[1]["ret_1d"])
+
+
+# --- data.attribute obeys the same visibility rule as data.prices -------------------------
+
+
+def _attribute_panel(tmp_path, late_row=False):
+    import json
+
+    d = tmp_path / "panel"
+    d.mkdir()
+    eod = lambda day: datetime(2024, 1, day, 21, tzinfo=timezone.utc)  # noqa: E731
+    rows = {
+        "security_id": ["a", "a", "b"],
+        "event_date": [date(2024, 1, 2), date(2024, 1, 3), date(2024, 1, 2)],
+        "available_at": [eod(2), eod(3), eod(2)],
+        "ret_1d": [0.5, 0.1, 0.2],
+    }
+    if late_row:
+        rows["security_id"].append("b")
+        rows["event_date"].append(date(2024, 1, 3))
+        rows["available_at"].append(eod(4))
+        rows["ret_1d"].append(9.9)
+    pl.DataFrame(rows).write_parquet(d / "attributes.parquet")
+    (d / "manifest.json").write_text(json.dumps({"manifest_id": "m"}))
+    return d
+
+
+def test_attribute_respects_as_of_cutoff(tmp_path):
+    from viza_sandbox.sdk import VizaData
+
+    data = VizaData(_attribute_panel(tmp_path))
+    assert len(data.attribute("ret_1d")) == 2
+    cut = data.as_of(date(2024, 1, 2)).attribute("ret_1d")
+    assert [d.date() for d in cut.index] == [date(2024, 1, 2)]
+
+
+def test_attribute_row_with_late_available_at_is_hidden(tmp_path):
+    from viza_sandbox.sdk import VizaData
+
+    wide = VizaData(_attribute_panel(tmp_path, late_row=True)).attribute("ret_1d")
+    assert wide.loc["2024-01-02", "b"] == 0.2
+    assert wide.loc["2024-01-03"].isna()["b"]
+    assert 9.9 not in wide.to_numpy()
