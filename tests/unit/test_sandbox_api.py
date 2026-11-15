@@ -55,6 +55,7 @@ def _service(tmp_path):
         runs_dir=tmp_path / "runs",
         runner="local",
         wall_clock_seconds=120,
+        min_median_dollar_volume=0,
     )
     store = SandboxStore(settings.database_url)
     store.create_schema()
@@ -439,3 +440,38 @@ def test_api_run_without_a_store_fails_with_the_reason(tmp_path):
     )
     assert body["header"]["catalog_version"] is None
     assert body["header"]["attributes_unavailable_reason"].startswith("No attribute store")
+
+
+# --- Liquidity floor ---------------------------------------------------------------------------
+
+
+def test_default_floor_setting_is_one_million():
+    assert SandboxSettings().min_median_dollar_volume == 1_000_000.0
+
+
+def test_api_header_discloses_the_universe_filter(tmp_path):
+    client, auth, _ = _client(tmp_path)
+    run_id = client.post("/sandbox/runs", json=_request(), headers=auth).json()["run_id"]
+    header = client.get(f"/sandbox/runs/{run_id}", headers=auth).json()["header"]
+    assert header["universe_filter"] == {
+        "min_median_dollar_volume": 0.0, "window": 21, "min_observations": 15,
+    }
+
+
+def test_request_can_override_the_floor_and_illiquid_scores_are_not_ranked(tmp_path):
+    client, auth, _ = _client(tmp_path)
+    request = {**_request(), "min_median_dollar_volume": 500_000}
+    run_id = client.post("/sandbox/runs", json=request, headers=auth).json()["run_id"]
+    body = client.get(f"/sandbox/runs/{run_id}", headers=auth).json()
+    assert body["header"]["universe_filter"]["min_median_dollar_volume"] == 500_000.0
+    assert body["run"]["data_manifest"]["row_counts"]["universe"] == 0
+    assert body["run"]["status"] == "completed"
+    evaluation = body["run"]["evaluation"]
+    assert evaluation["scores_outside_universe"] > 0
+    assert evaluation["rebalance_dates"] == []
+
+
+def test_negative_floor_is_rejected(tmp_path):
+    client, auth, _ = _client(tmp_path)
+    request = {**_request(), "min_median_dollar_volume": -1}
+    assert client.post("/sandbox/runs", json=request, headers=auth).status_code == 422

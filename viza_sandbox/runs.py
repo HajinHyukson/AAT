@@ -25,7 +25,13 @@ from viza_sandbox.evaluate import (
     EvaluationError,
     evaluate_scores,
 )
-from viza_sandbox.materialize import MaterializationError, PanelSpec, materialize
+from viza_sandbox.materialize import (
+    LIQUIDITY_MIN_OBSERVATIONS,
+    LIQUIDITY_WINDOW,
+    MaterializationError,
+    PanelSpec,
+    materialize,
+)
 from viza_sandbox.runner import Runner, RunLimits
 from viza_sandbox.sdk import VizaData
 from viza_sandbox.store import SandboxRun, SandboxStore, SandboxUser
@@ -36,6 +42,8 @@ class RunRequest(BaseModel):
     start: date
     end: date
     backtest: BacktestSettings
+    # Universe liquidity floor for this run; None uses the deployment setting, 0 disables it.
+    min_median_dollar_volume: float | None = Field(default=None, ge=0)
 
     @model_validator(mode="after")
     def _end_not_before_start(self) -> RunRequest:
@@ -150,8 +158,13 @@ class SandboxService:
         request = RunRequest.model_validate(run.request)
         limits = RunLimits.model_validate(run.limits)
 
+        floor = request.min_median_dollar_volume
+        if floor is None:
+            floor = self._settings.min_median_dollar_volume
         panel = materialize(
-            self._source, PanelSpec(start=request.start, end=request.end), self._settings
+            self._source,
+            PanelSpec(start=request.start, end=request.end, min_median_dollar_volume=floor),
+            self._settings,
         )
         run_dir = (self._settings.runs_dir / run_id).resolve()
         (run_dir / "out").mkdir(parents=True, exist_ok=True)
@@ -204,8 +217,11 @@ class SandboxService:
             long = pd.read_parquet(result_path, engine="pyarrow")
             wide = long.pivot(index="event_date", columns="security_id", values="score")
             wide.index = pd.to_datetime(wide.index)
-            close = VizaData(panel.directory).prices("close")
-            evaluation = evaluate_scores(wide, close, request.backtest)
+            data = VizaData(panel.directory)
+            universe = data.universe()[["event_date", "security_id"]]
+            evaluation = evaluate_scores(
+                wide, data.prices("close"), request.backtest, universe=universe
+            )
         except EvaluationError as exc:
             return {"status": "failed", "error": str(exc)}
         return {
@@ -236,6 +252,13 @@ def result_header(run: SandboxRun, settings: SandboxSettings | None = None) -> d
         "price_adjustment_status": manifest.get(
             "price_adjustment_status", settings.price_adjustment_status
         ),
+        "universe_filter": {
+            "min_median_dollar_volume": (manifest.get("spec") or {}).get(
+                "min_median_dollar_volume", 0.0
+            ),
+            "window": LIQUIDITY_WINDOW,
+            "min_observations": LIQUIDITY_MIN_OBSERVATIONS,
+        },
         "catalog_version": manifest.get("catalog_version"),
         "attribute_store_id": manifest.get("attribute_store_id"),
         "attributes_unavailable_reason": manifest.get("attributes_unavailable_reason"),

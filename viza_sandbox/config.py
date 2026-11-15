@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,3 +23,5 @@ class SandboxSettings(BaseSettings):
     source_rights_state: str = "development_proving"
     max_result_bytes: int = 268435456
     max_concurrent_runs: int = 2
+    # Default universe floor: median daily dollar volume over 21 trading days. 0 disables it.
+    min_median_dollar_volume: float = Field(default=1_000_000.0, ge=0)

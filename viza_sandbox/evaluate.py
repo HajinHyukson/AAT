@@ -45,6 +45,7 @@ class ScoresEvaluation(BaseModel):
     securities_scored: int
     dates_scored: int
     extreme_moves: dict
+    scores_outside_universe: int = 0
 
 
 def rebalance_dates(index: pd.DatetimeIndex, rebalance: str) -> pd.DatetimeIndex:
@@ -71,8 +72,17 @@ def _num(value: float) -> float | None:
 
 
 def evaluate_scores(
-    scores: pd.DataFrame, close: pd.DataFrame, settings: BacktestSettings
+    scores: pd.DataFrame,
+    close: pd.DataFrame,
+    settings: BacktestSettings,
+    universe: pd.DataFrame | None = None,
 ) -> ScoresEvaluation:
+    """Quantile backtest of ``scores``.
+
+    ``universe`` (columns ``event_date``, ``security_id``), when given, is the membership list:
+    a score dated D for a security that is not a member on D is not ranked, and is counted.
+    Realized returns always come from ``close``, whatever a security's later membership.
+    """
     close = close.sort_index()
     scores = scores.sort_index()
     warnings: list[str] = []
@@ -87,6 +97,22 @@ def evaluate_scores(
     scores = scores.loc[scores.index.isin(close.index), kept]
     if scores.empty:
         raise EvaluationError("No scores fall inside the panel date range.")
+
+    outside = 0
+    if universe is not None:
+        member = (
+            universe.assign(member=True, event_date=pd.to_datetime(universe["event_date"]))
+            .pivot(index="event_date", columns="security_id", values="member")
+            .reindex(index=scores.index, columns=scores.columns)
+            .eq(True)
+        )
+        outside = int((scores.notna() & ~member).to_numpy().sum())
+        scores = scores.where(member)
+        if outside:
+            warnings.append(
+                f"{outside} scores were for securities outside the universe on their date "
+                "and were not ranked."
+            )
 
     # Plain ratio: a missing close yields NaN returns for that day and the next, never a fill.
     returns = close / close.shift(1) - 1
@@ -188,6 +214,7 @@ def evaluate_scores(
         warnings=warnings,
         securities_scored=int(scores.notna().any(axis=0).sum()),
         dates_scored=int(scores.notna().any(axis=1).sum()),
+        scores_outside_universe=outside,
         extreme_moves={
             "ratio": EXTREME_MOVE_RATIO,
             "security_days": extreme_days,

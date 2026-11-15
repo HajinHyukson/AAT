@@ -85,6 +85,7 @@ All have the prefix `VIZA_SANDBOX_` and a default, except the canonical URL.
 | `VIZA_SANDBOX_DOCKER_IMAGE` | `viza-sandbox-runtime:latest` | Image used by the docker runner. |
 | `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS` | `unverified` | `unverified`, `adjusted` or `unadjusted`. Disclosed in the run header. |
 | `VIZA_SANDBOX_MAX_CONCURRENT_RUNS` | `2` | Runs executing at once in the service process. Further runs stay `queued` until a slot frees. |
+| `VIZA_SANDBOX_MIN_MEDIAN_DOLLAR_VOLUME` | `1000000` | Universe liquidity floor in the price currency. `0` disables it. A run may override it with `min_median_dollar_volume` in the request. |
 | `VIZA_SANDBOX_MAX_RESULT_BYTES` | `268435456` | Largest `out/result.parquet` the host will read; a larger file fails the run. `out/error.json` has a fixed 1 MiB cap. |
 
 Limits (`VIZA_SANDBOX_WALL_CLOCK_SECONDS` 600, `VIZA_SANDBOX_MEMORY_GB` 8, `VIZA_SANDBOX_CPUS` 2)
@@ -215,6 +216,21 @@ Execution convention (spec 7.8), printed in every result header:
   dates.
 - Price return on close; dividends not included (header key `return_basis`). Dividends are
   absent from the sources.
+
+Universe and the liquidity floor (owner decision, 2026-11-15): a security is in the universe on
+date D if it has a close within the previous 5 trading days and the median of `close * volume`
+over the 21 trading days ending on D, with at least 15 of them present, is at least the floor
+(1,000,000 by default). The median is used so that isolated bad-tick days cannot lift a shell
+ticker over the floor. The floor in force is printed in the header as `universe_filter`.
+
+- `data.universe()` returns the filtered membership. `data.prices` and `data.attribute` are not
+  filtered: they hold every security.
+- A score dated D for a security that is not a member on D is not ranked. The evaluation counts
+  these in `scores_outside_universe` and adds a warning. Realized returns still come from the
+  full price panel, so a held name that later turns illiquid keeps its return.
+- Membership needs 15 observations, so a panel has no members before the 15th trading day of
+  the available price history (prices from 45 calendar days before the run's start are used).
+- To rank every scored security, send `"min_median_dollar_volume": 0` in the run request.
 
 Extreme price moves: the evaluation reports `extreme_moves` (`ratio`, `security_days`,
 `securities`), the number of held security-days whose close moved 10x or more in one day, up or

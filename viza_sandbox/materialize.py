@@ -14,11 +14,12 @@ import json
 import os
 import shutil
 import tempfile
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+import pandas as pd
 import polars as pl
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from viza_sandbox.attribute_store import (
     AttributeStoreManifest,
@@ -38,6 +39,12 @@ ATTRIBUTES_FILENAME = "attributes.parquet"
 CATALOG_FILENAME = "catalog.json"
 # Bumped when the files in a panel change shape, so older cached panels are not reused.
 PANEL_SCHEMA_VERSION = 2
+# Liquidity floor: a member's median close * volume over the trailing LIQUIDITY_WINDOW trading
+# days (at least LIQUIDITY_MIN_OBSERVATIONS of them present) must reach the spec's floor. The
+# median, not the mean, so that isolated bad-tick days cannot lift a shell ticker over it.
+LIQUIDITY_WINDOW = 21
+LIQUIDITY_MIN_OBSERVATIONS = 15
+LIQUIDITY_LOOKBACK_CALENDAR_DAYS = 45
 NO_ATTRIBUTE_STORE_REASON = (
     "No attribute store is built for this data snapshot. Run build-attributes."
 )
@@ -48,6 +55,7 @@ class PanelSpec(BaseModel):
     end: date
     price_source: str = "faustcalc_fmp_snapshot"
     membership_lookback_trading_days: int = 5
+    min_median_dollar_volume: float = Field(default=0.0, ge=0)
 
 
 class DataManifest(BaseModel):
@@ -157,6 +165,29 @@ def derive_membership(prices: pl.DataFrame, lookback_trading_days: int) -> pl.Da
     )
 
 
+def liquid_pairs(prices: pl.DataFrame, floor: float) -> pl.DataFrame:
+    """(event_date, security_id) pairs whose trailing median dollar volume reaches ``floor``.
+
+    ``prices`` should start ``LIQUIDITY_LOOKBACK_CALENDAR_DAYS`` before the first date of
+    interest. Windows count trading-calendar days; days without a bar or a volume are not
+    observations.
+    """
+    schema = {"event_date": pl.Date, "security_id": pl.Utf8}
+    if prices.is_empty():
+        return pl.DataFrame(schema=schema)
+    frame = prices.select(
+        "security_id", "event_date", (pl.col("close") * pl.col("volume")).alias("dollar_volume")
+    ).to_pandas()
+    wide = frame.pivot(index="event_date", columns="security_id", values="dollar_volume")
+    median = wide.astype("float64").rolling(
+        LIQUIDITY_WINDOW, min_periods=LIQUIDITY_MIN_OBSERVATIONS
+    ).median()
+    passing = (median >= floor).stack()
+    pairs = passing[passing].index.to_frame(index=False)
+    pairs["event_date"] = pd.to_datetime(pairs["event_date"]).dt.date
+    return pl.from_pandas(pairs[["event_date", "security_id"]], schema_overrides=schema)
+
+
 def _load_cached(directory: Path) -> MaterializedPanel:
     manifest = DataManifest.model_validate_json((directory / MANIFEST_FILENAME).read_text())
     return MaterializedPanel(directory=directory, manifest=manifest)
@@ -206,8 +237,11 @@ def materialize(
     if (directory / MANIFEST_FILENAME).exists():
         return _load_cached(directory)
 
-    prices = source.price_bars(spec.start, spec.end, source=spec.price_source)
-    _assert_no_duplicate_price_rows(prices)
+    floor = spec.min_median_dollar_volume
+    lookback = timedelta(days=LIQUIDITY_LOOKBACK_CALENDAR_DAYS if floor > 0 else 0)
+    loaded = source.price_bars(spec.start - lookback, spec.end, source=spec.price_source)
+    _assert_no_duplicate_price_rows(loaded)
+    prices = loaded.filter(pl.col("event_date") >= spec.start)
 
     # Universe currency = currency of each security's earliest event_date price row.
     currency_by_security = (
@@ -234,6 +268,10 @@ def materialize(
     securities = source.securities()
     _assert_no_duplicate_securities(securities)
     membership = derive_membership(prices, spec.membership_lookback_trading_days)
+    if floor > 0:
+        membership = membership.join(
+            liquid_pairs(loaded, floor), on=["event_date", "security_id"], how="inner"
+        )
     universe_out = (
         membership.join(securities.drop("currency"), on="security_id", how="left")
         .join(currency_by_security, on="security_id", how="left")

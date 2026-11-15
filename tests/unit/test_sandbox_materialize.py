@@ -290,3 +290,111 @@ def test_manifest_id_changes_when_a_store_appears(tmp_path):
     second = materialize(source, spec, settings)
     assert second.manifest.manifest_id != first.manifest.manifest_id
     assert (second.directory / "attributes.parquet").exists()
+
+
+# --- Liquidity floor on universe membership --------------------------------------------------
+
+from viza_sandbox.materialize import (  # noqa: E402
+    LIQUIDITY_LOOKBACK_CALENDAR_DAYS,
+    LIQUIDITY_MIN_OBSERVATIONS,
+    LIQUIDITY_WINDOW,
+)
+
+_FLOOR = 1_000_000.0
+
+
+def _weekdays(start, count):
+    days, day = [], start
+    while len(days) < count:
+        if day.weekday() < 5:
+            days.append(day)
+        day += timedelta(days=1)
+    return days
+
+
+def _liquidity_source(days, extra_rows=()):
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    rows = []
+    for i, day in enumerate(days):
+        rows.append(("liquid", day, 10.0, 10.0, 200_000, "USD", t))
+        rows.append(("thin", day, 10.0, 10.0, 50_000, "USD", t))
+        shell_close = 5000.0 if i % 7 == 3 else 0.05
+        rows.append(("shell", day, shell_close, shell_close, 2_000_000, "USD", t))
+    rows.extend(extra_rows)
+    ids = sorted({row[0] for row in rows})
+    secs = pl.DataFrame({
+        "security_id": ids, "ticker": [s.upper() for s in ids], "exchange": ["NYSE"] * len(ids),
+        "currency": ["USD"] * len(ids), "sector": [None] * len(ids),
+        "industry": [None] * len(ids), "classification_as_of": [None] * len(ids),
+    })
+    return InMemoryCanonicalSource(secs, _prices(rows))
+
+
+def _members(panel):
+    return sorted(pl.read_parquet(panel.directory / "universe.parquet")["security_id"].unique())
+
+
+def test_liquidity_constants():
+    assert (LIQUIDITY_WINDOW, LIQUIDITY_MIN_OBSERVATIONS) == (21, 15)
+    assert LIQUIDITY_LOOKBACK_CALENDAR_DAYS == 45
+
+
+def test_membership_requires_median_dollar_volume(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(_liquidity_source(days), spec, SandboxSettings(data_dir=tmp_path))
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert _members(panel) == ["liquid"]
+    # 15 observations are needed, so membership starts on the 15th trading day.
+    assert universe["event_date"].min() == days[14]
+    assert universe["event_date"].max() == days[-1]
+    prices = pl.read_parquet(panel.directory / "prices.parquet")
+    assert sorted(prices["security_id"].unique()) == ["liquid", "shell", "thin"]
+    assert panel.manifest.row_counts["universe"] == universe.height == 16
+
+
+def test_floor_uses_prices_before_start(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 40)
+    start = days[30]
+    assert (start - days[0]).days <= LIQUIDITY_LOOKBACK_CALENDAR_DAYS
+    spec = PanelSpec(start=start, end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(_liquidity_source(days), spec, SandboxSettings(data_dir=tmp_path))
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert _members(panel) == ["liquid"]
+    assert universe["event_date"].min() == start
+    prices = pl.read_parquet(panel.directory / "prices.parquet")
+    assert prices["event_date"].min() == start
+
+
+def test_fewer_than_15_observations_is_not_a_member(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    newcomer = [("new", day, 10.0, 10.0, 900_000, "USD", t) for day in days[-14:]]
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(
+        _liquidity_source(days, newcomer), spec, SandboxSettings(data_dir=tmp_path)
+    )
+    assert _members(panel) == ["liquid"]
+
+
+def test_zero_disables_the_floor(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=0)
+    panel = materialize(_liquidity_source(days), spec, SandboxSettings(data_dir=tmp_path))
+    assert _members(panel) == ["liquid", "shell", "thin"]
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert universe["event_date"].min() == days[0]
+
+
+def test_floor_is_part_of_the_manifest_id(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _liquidity_source(days)
+    ids = {
+        materialize(
+            source, PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=floor),
+            settings,
+        ).manifest.manifest_id
+        for floor in (0, _FLOOR, 2 * _FLOOR)
+    }
+    assert len(ids) == 3
