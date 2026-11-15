@@ -25,7 +25,9 @@ def test_run_lifecycle(tmp_path):
     store = SandboxStore(f"sqlite:///{tmp_path/'s.db'}")
     store.create_schema()
     user, _ = store.create_user("bob")
-    run = store.create_run(user.user_id, "def strategy(data): ...", {"start": "2024-01-01"}, {"cpus": 2})
+    run = store.create_run(
+        user.user_id, "def strategy(data): ...", {"start": "2024-01-01"}, {"cpus": 2}
+    )
     assert run.status == "queued" and len(run.code_hash) == 64
     updated = store.update_run(run.run_id, status="completed", exit_code=0)
     assert updated.status == "completed"
