@@ -1,5 +1,6 @@
-import polars as pl, pytest
-from datetime import date, datetime, timezone
+import polars as pl
+import pytest
+from datetime import date, datetime, timedelta, timezone
 from viza_sandbox.canonical import InMemoryCanonicalSource
 from viza_sandbox.config import SandboxSettings
 from viza_sandbox.materialize import PanelSpec, materialize, derive_membership, MaterializationError
@@ -122,7 +123,8 @@ def test_duplicate_securities_rows_raise(tmp_path):
     src = InMemoryCanonicalSource(
         secs, _prices([("a", date(2024, 1, 2), 10.0, 10.0, 1, "USD", t)])
     )
-    with pytest.raises(MaterializationError, match=r"^Duplicate securities rows for security_id=a$"):
+    message = r"^Duplicate securities rows for security_id=a$"
+    with pytest.raises(MaterializationError, match=message):
         materialize(src, _spec(), SandboxSettings(data_dir=tmp_path))
 
 
@@ -183,7 +185,7 @@ def test_membership_matches_index_definition_on_random_panels():
 
     rng = random.Random(7)
     t = datetime(2024, 5, 1, tzinfo=timezone.utc)
-    days = [date(2024, 1, 1) + __import__("datetime").timedelta(days=k) for k in range(40)]
+    days = [date(2024, 1, 1) + timedelta(days=k) for k in range(40)]
     for lookback in (1, 3, 5, 10):
         rows = [
             (sid, d, 1.0, 1.0, 1, "USD", t)

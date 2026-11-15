@@ -217,7 +217,7 @@ def test_oversized_result_parquet_is_refused(tmp_path):
     service._settings = settings.model_copy(update={"max_result_bytes": 10})
     service._runner = _OutputRunner(0, _write_scores)
     user, _ = store.create_user("alice")
-    req = RunRequest.model_validate(dict(_request(), backtest={"quantiles": 3, "rebalance": "daily"}))
+    req = RunRequest.model_validate(_request())
     run = service.execute(service.submit(user, req).run_id)
     _assert_refused(run, settings, tmp_path, "Result file exceeds the size limit.")
 
@@ -283,10 +283,10 @@ def test_result_parquet_junction_is_refused(tmp_path):
 
     target = tmp_path / "elsewhere"
     target.mkdir()
-    run, settings = _stub_run(
-        tmp_path,
-        _OutputRunner(0, lambda out: _winapi.CreateJunction(str(target), str(out / "result.parquet"))),
-    )
+    def make(out):
+        _winapi.CreateJunction(str(target), str(out / "result.parquet"))
+
+    run, settings = _stub_run(tmp_path, _OutputRunner(0, make))
     _assert_refused(run, settings, tmp_path, "Result file is not a regular file.")
 
 

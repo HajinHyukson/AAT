@@ -8,7 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from viza_sandbox.canonical import PostgresCanonicalSource
 from viza_sandbox.config import SandboxSettings
 from viza_sandbox.runner import DockerRunner, LocalProcessRunner
-from viza_sandbox.runs import RunRequest, SandboxService, result_header
+from viza_sandbox.runs import RunRequest, SandboxService
 from viza_sandbox.store import SandboxRun, SandboxStore, SandboxUser
 
 _HIDDEN_RUN_COLUMNS = {"result_path"}
