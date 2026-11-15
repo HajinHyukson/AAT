@@ -63,3 +63,62 @@ def test_coerce_return_rules():
 def test_as_of_cannot_widen_an_existing_cutoff(tmp_path):
     data = VizaData(_panel(tmp_path)).as_of(date(2024, 1, 2)).as_of(date(2030, 1, 1))
     assert data.prices("close").index.max() == pd.Timestamp("2024-01-02")
+
+
+# --- Catalog attributes ---------------------------------------------------------------------
+
+import json  # noqa: E402
+
+from sandbox_helpers import make_panel_with_attributes  # noqa: E402
+
+from viza_sandbox.sdk import AttributeUnavailableError  # noqa: E402
+
+
+def test_attribute_returns_a_wide_frame_like_prices(tmp_path):
+    data = VizaData(make_panel_with_attributes(tmp_path))
+    wide = data.attribute("adv_21d")
+    prices = data.prices("close")
+    assert wide.index.equals(prices.index) and wide.index.name == "event_date"
+    assert list(wide.columns) == list(prices.columns) == ["a", "b"]
+    assert wide.columns.name is None
+    assert wide.loc["2024-01-02", "b"] == 15.0
+    assert np.isnan(wide.loc["2024-01-03", "b"])
+    returns = data.attribute("ret_1d")
+    assert returns.loc["2024-01-03", "a"] == pytest.approx(0.1)
+    assert np.isnan(returns.loc["2024-01-02", "a"])
+
+
+def test_attribute_honours_start_and_end(tmp_path):
+    data = VizaData(make_panel_with_attributes(tmp_path))
+    wide = data.attribute("adv_21d", start=date(2024, 1, 3), end=date(2024, 1, 3))
+    assert [d.date() for d in wide.index] == [date(2024, 1, 3)]
+
+
+def test_unknown_key_lists_the_available_keys(tmp_path):
+    data = VizaData(make_panel_with_attributes(tmp_path))
+    with pytest.raises(AttributeUnavailableError) as raised:
+        data.attribute("nope")
+    assert str(raised.value) == "Unknown attribute 'nope'. Available: ret_1d, adv_21d"
+
+
+def test_panel_without_attributes_raises_the_manifest_reason(tmp_path):
+    panel = _panel(tmp_path)
+    with pytest.raises(AttributeUnavailableError) as raised:
+        VizaData(panel).attribute("ret_1d")
+    assert str(raised.value) == "This panel has no catalog attributes."
+    manifest = json.loads((panel / "manifest.json").read_text())
+    manifest["attributes_unavailable_reason"] = "No store. Run build-attributes."
+    (panel / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(AttributeUnavailableError) as raised:
+        VizaData(panel).attribute("ret_1d")
+    assert str(raised.value) == "No store. Run build-attributes."
+    with pytest.raises(AttributeUnavailableError):
+        VizaData(panel).catalog()
+
+
+def test_catalog_lists_every_key(tmp_path):
+    catalog = VizaData(make_panel_with_attributes(tmp_path)).catalog()
+    assert list(catalog.columns) == [
+        "key", "display_name", "description", "unit", "classification_snapshot",
+    ]
+    assert catalog["key"].tolist() == ["ret_1d", "adv_21d"]

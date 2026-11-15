@@ -101,3 +101,141 @@ def test_rank_stability_and_top_bottom():
 def test_settings_require_quantiles_and_rebalance():
     with pytest.raises(Exception):
         BacktestSettings()
+
+
+# --- Extreme one-day moves are disclosed, never removed --------------------------------------
+
+from viza_sandbox.evaluate import EXTREME_MOVE_RATIO  # noqa: E402
+
+LONG_DATES = pd.bdate_range("2024-01-02", periods=8)
+
+
+def _constant_scores(columns):
+    s = pd.DataFrame(np.nan, index=LONG_DATES, columns=columns)
+    s.loc[LONG_DATES[0]] = [float(i + 1) for i in range(len(columns))]
+    return s
+
+
+def test_extreme_moves_are_counted_and_warned_not_removed():
+    close = pd.DataFrame(
+        {
+            "w": [10.0, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7],
+            "x": [1.0, 1.0, 1.0, 1.0, 1000.0, 1.0, 1.0, 1.0],
+            "y": [20.0] * 8,
+            "z": [30.0, 30.3, 30.6, 30.9, 31.2, 31.5, 31.8, 32.1],
+        },
+        index=LONG_DATES,
+    )
+    out = evaluate_scores(
+        _constant_scores(["w", "x", "y", "z"]),
+        close,
+        BacktestSettings(quantiles=2, rebalance="daily"),
+    )
+    assert EXTREME_MOVE_RATIO == 10.0
+    assert out.extreme_moves == {"ratio": 10.0, "security_days": 2, "securities": 1}
+    assert (
+        "2 scored security-days across 1 securities had a one-day close move of 10x or more; "
+        "quantile returns include them unclipped."
+    ) in out.warnings
+    spike_day = LONG_DATES[4].strftime("%Y-%m-%d")
+    assert out.quantile_daily_returns["q1"][spike_day] == pytest.approx((0.1 / 10.3 + 999.0) / 2)
+
+
+def test_extreme_move_outside_the_held_window_is_not_counted():
+    close = pd.DataFrame(
+        {"w": [10.0, 10.1, 10.2, 10.3], "x": [1.0, 1000.0, 1000.0, 1000.0], "y": [20.0] * 4},
+        index=LONG_DATES[:4],
+    )
+    scores = pd.DataFrame(np.nan, index=LONG_DATES[:4], columns=["w", "x", "y"])
+    scores.loc[LONG_DATES[0]] = [1.0, 2.0, 3.0]
+    out = evaluate_scores(scores, close, BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.extreme_moves == {"ratio": 10.0, "security_days": 0, "securities": 0}
+    assert not any("one-day close move" in w for w in out.warnings)
+
+
+def test_no_extreme_moves_no_warning():
+    out = evaluate_scores(_scores_once(), _close(), BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.extreme_moves == {"ratio": 10.0, "security_days": 0, "securities": 0}
+    assert not any("one-day close move" in w for w in out.warnings)
+
+
+# --- Scores for securities outside the universe are not ranked -------------------------------
+
+
+def test_scores_outside_universe_are_dropped_and_counted():
+    close = pd.DataFrame(
+        {"a": [10, 11, 12, 13, 14], "b": [10.0] * 5, "c": [10, 9, 8, 7, 6], "junk": [1.0] * 5},
+        index=DATES,
+        dtype=float,
+    )
+    scores = pd.DataFrame(
+        {"a": 3.0, "b": 2.0, "c": 1.0, "junk": 99.0}, index=DATES, columns=["a", "b", "c", "junk"]
+    )
+    universe = pd.DataFrame(
+        [(d, s) for d in DATES for s in ("a", "b", "c")], columns=["event_date", "security_id"]
+    )
+    out = evaluate_scores(
+        scores, close, BacktestSettings(quantiles=3, rebalance="daily"), universe=universe
+    )
+    assert out.scores_outside_universe == 5
+    assert out.securities_scored == 3
+    assert "5 scores were for securities outside the universe on their date and were not ranked." \
+        in out.warnings
+    assert all("junk" not in ids["top"] for ids in out.top_bottom.values())
+
+
+def test_membership_is_checked_per_date():
+    close = pd.DataFrame(
+        {"a": [10, 11, 12, 13, 14], "b": [10.0] * 5, "c": [10, 9, 8, 7, 6]},
+        index=DATES,
+        dtype=float,
+    )
+    scores = pd.DataFrame({"a": 3.0, "b": 2.0, "c": 1.0}, index=DATES, columns=["a", "b", "c"])
+    pairs = [(d, s) for d in DATES for s in ("a", "b", "c") if not (s == "a" and d == DATES[0])]
+    universe = pd.DataFrame(pairs, columns=["event_date", "security_id"])
+    out = evaluate_scores(
+        scores, close, BacktestSettings(quantiles=2, rebalance="daily"), universe=universe
+    )
+    assert out.scores_outside_universe == 1
+    first = out.top_bottom[DATES[0].strftime("%Y-%m-%d")]
+    assert "a" not in first["top"] and "a" not in first["bottom"]
+    assert out.top_bottom[DATES[1].strftime("%Y-%m-%d")]["top"][0] == "a"
+
+
+def test_without_a_universe_nothing_is_dropped():
+    out = evaluate_scores(_scores_once(), _close(), BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.scores_outside_universe == 0
+
+
+# --- Sparse dates are not trading days ---------------------------------------------------------
+
+
+def test_return_across_a_sparse_date_is_kept():
+    index = pd.to_datetime(
+        ["2024-01-11", "2024-01-12", "2024-01-15", "2024-01-16", "2024-01-17"]
+    )
+    close = pd.DataFrame(
+        {
+            "a": [10.0, 11.0, np.nan, 12.1, 13.31],
+            "b": [10.0, 10.0, np.nan, 10.0, 10.0],
+            "c": [10.0, 9.0, np.nan, 8.1, 7.29],
+            "odd": [5.0, 5.0, 5.0, 5.0, 5.0],
+        },
+        index=index,
+    )
+    scores = pd.DataFrame(np.nan, index=index, columns=["a", "b", "c"])
+    scores.loc[index[0]] = [3.0, 2.0, 1.0]
+    out = evaluate_scores(scores, close, BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.non_trading_dates == ["2024-01-15"]
+    assert "2024-01-15" not in out.quantile_daily_returns["q3"]
+    # Scores on 01-11 earn from the close of 01-12; the holiday is not a row, so the
+    # 01-12 -> 01-16 return is realized on 01-16 instead of being lost.
+    assert out.quantile_daily_returns["q3"]["2024-01-16"] == pytest.approx(0.10)
+    assert out.quantile_daily_returns["q1"]["2024-01-16"] == pytest.approx(-0.10)
+    assert any("non-trading" in w for w in out.warnings)
+
+
+def test_no_sparse_dates_no_warning():
+    out = evaluate_scores(_scores_once(), _close(), BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.non_trading_dates == []
+    assert not any("non-trading" in w for w in out.warnings)

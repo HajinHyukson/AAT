@@ -13,10 +13,18 @@ This delivers spec phases 1 (data foundation) and 2 (execution) only.
 
 ## Known gaps to close before trusting isolation
 
-- The Docker image build and `DockerRunner` have not been executed in development, because no
-  Docker daemon was available. On the server, build the image (below) and run
-  `python -m pytest tests/unit/test_sandbox_runner.py -q`. The Docker test must pass, not skip.
-  Until it does, treat container isolation as unverified.
+- The Docker image build and `DockerRunner` were first executed on 2026-11-15 on a development
+  machine (Docker Desktop 29.4.1, Windows): `python -m pytest tests/unit/test_sandbox_runner.py -q`
+  gave 11 passed, 0 skipped, and one strategy ran end to end through the API with the `docker`
+  runner against a local copy of the canonical database. They have not been executed on the
+  Linux server. Repeat the build and the test there; the Docker test must pass, not skip. The
+  `--user uid:gid` path is POSIX-only and is still unexercised.
+- Bad ticks in `faustcalc_fmp_snapshot` dominate equal-weight results. In January 2024, 164 of
+  284,106 daily bars are a 10x or larger jump on the previous close (for example FSBN alternating
+  between 0.05 and 5000), almost all in OTC and bankrupt-shell tickers. A 2-day momentum run over
+  the default universe returned a bottom-tercile equity curve of about 43,000x for the month, and
+  a 5 USD price floor inside the strategy did not remove it. Until the universe is filtered or
+  returns are screened, treat full-universe quantile results as unusable.
 - `VIZA_SANDBOX_RUNNER=local` runs user code as a plain subprocess with no network, memory or
   filesystem isolation, and with write access to the shared panel cache through the run
   directory's data link. It is for tests and development only. Never use it for code written by
@@ -25,12 +33,14 @@ This delivers spec phases 1 (data foundation) and 2 (execution) only.
 ## Pre-flight before the first real run
 
 - Build the image, run the Docker test above, and confirm it passes (not skips).
-- On the first server build, pin the image's dependency versions in
-  `viza_sandbox/runtime_image/Dockerfile` and record the built image digest
-  (`docker image inspect --format '{{.Id}}' viza-sandbox-runtime:latest`) alongside the
-  deployment, so a rebuild cannot silently change results for the same code and data manifest.
+- The image's dependency versions are pinned in `viza_sandbox/runtime_image/Dockerfile`. Record
+  the built image digest (`docker image inspect --format '{{.Id}}' viza-sandbox-runtime:latest`)
+  alongside the deployment, so a rebuild cannot silently change results for the same code and
+  data manifest. The digest differs per build host.
 - Measure materialization time and memory for the intended date range before the first real
-  run. Materialization runs in the API process, outside the container's limits.
+  run. Materialization runs in the API process, outside the container's limits. One reference
+  point: one month (2024-01, 299,077 price rows) took about 11 seconds on the development
+  machine; memory was not measured.
 - Run the split-adjustment check below and set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS`.
 
 ## Server prerequisites
@@ -75,6 +85,7 @@ All have the prefix `VIZA_SANDBOX_` and a default, except the canonical URL.
 | `VIZA_SANDBOX_DOCKER_IMAGE` | `viza-sandbox-runtime:latest` | Image used by the docker runner. |
 | `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS` | `unverified` | `unverified`, `adjusted` or `unadjusted`. Disclosed in the run header. |
 | `VIZA_SANDBOX_MAX_CONCURRENT_RUNS` | `2` | Runs executing at once in the service process. Further runs stay `queued` until a slot frees. |
+| `VIZA_SANDBOX_MIN_MEDIAN_DOLLAR_VOLUME` | `1000000` | Universe liquidity floor in the price currency. `0` disables it. A run may override it with `min_median_dollar_volume` in the request. |
 | `VIZA_SANDBOX_MAX_RESULT_BYTES` | `268435456` | Largest `out/result.parquet` the host will read; a larger file fails the run. `out/error.json` has a fixed 1 MiB cap. |
 
 Limits (`VIZA_SANDBOX_WALL_CLOCK_SECONDS` 600, `VIZA_SANDBOX_MEMORY_GB` 8, `VIZA_SANDBOX_CPUS` 2)
@@ -104,6 +115,65 @@ python -m viza_sandbox.cli serve --host 127.0.0.1 --port 8781
 `user_id=...` and `token=...`. The token is shown once and only its hash is stored; give it to
 the user over a private channel. `--owner` marks an owner account.
 
+## Build the attribute store
+
+Catalog attributes (`data.attribute(key)`) are precomputed, not computed per run. Build the
+store once per data snapshot:
+
+```bash
+python -m viza_sandbox.cli build-attributes --from 2023-04-06 --to 2026-04-03
+```
+
+It prints `store_id=...` and one `YYYY rows=N` line per year, and writes
+`<VIZA_SANDBOX_DATA_DIR>/attributes/<store_id>/`. The command reads prices from 400 calendar
+days before each year so the 252-day windows are complete. It holds a year of wide frames in
+memory at a time; measure peak memory on the first full build.
+
+- Rebuild after every canonical refresh, after a sector reclassification, after editing the
+  catalog file, and after changing `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS`.
+- Rebuild the runtime image after pulling this change. The strategy SDK lives in the image.
+- A run is given attributes only if a store exists for the exact data snapshot and covers the
+  whole requested date range. Otherwise `data.attribute` fails the run with the reason, which
+  is also in the header as `attributes_unavailable_reason`:
+  `No attribute store is built for this data snapshot. Run build-attributes.` or
+  `The attribute store covers <start> to <end>, not the requested range.`
+
+The catalog is `config/viza_sandbox_attribute_catalog.json`, version `viza_sandbox_catalog_v1`.
+It is separate from the desktop registry `config/viza_attribute_registry.json`. All windows count
+trading-calendar days; a security with no bar on a day inside a window gets a null. Nothing is
+filled, clipped or winsorized.
+
+| Key | Definition |
+|---|---|
+| `ret_1d`, `ret_5d`, `ret_21d`, `ret_63d`, `ret_252d` | `close[t] / close[t-n] - 1` |
+| `vol_21d`, `vol_63d` | sample standard deviation of `ret_1d` over n days |
+| `ma_20d`, `ma_50d`, `ma_200d` | mean close over n days |
+| `rsi_14d` | Cutler RSI: simple 14-day mean gain and loss, not Wilder smoothing |
+| `adv_21d` | mean of `close * volume` over 21 days |
+| `<key>_sector_z` | z-score of each key above within the security's sector on that date; null with no sector, fewer than 3 valued members, or zero dispersion. Sector is a snapshot classification. |
+
+Trading days: the price source has dates with bars for only a few securities (stray weekend
+bars, and holidays on which only some listings trade; 29 such dates in the 2023-04 to 2026-04
+snapshot). A date counts as a trading day only if at least half the usual number of securities
+have a bar on it. Other dates are left out of attribute windows, of the liquidity floor and of
+backtest returns, so a holiday does not erase the return across it. `build-attributes` prints
+each excluded date with its bar count, and an evaluation lists them in `non_trading_dates`.
+`data.prices` still returns every bar, including those dates.
+
+Sector z-scores use every security in the price source as peers, including illiquid names the
+universe floor excludes, so one bad tick in a sector compresses that sector's z-scores for the
+length of the attribute's window. Whether to restrict peers to universe members is an open
+owner decision.
+
+The store's identity also covers the catalog file's content and every security's sector, so an
+edited catalog or a reclassification makes the store unavailable until it is rebuilt.
+
+Panel cache: every distinct date range and liquidity floor caches its own copy of prices and
+attributes under `<VIZA_SANDBOX_DATA_DIR>/panels/`. Nothing evicts them; watch the disk.
+
+Every attribute row has `available_at` of its own date at 21:00 UTC, like prices.
+`data.catalog()` lists the keys inside a strategy.
+
 ## Split-adjustment check
 
 Whether FaustCalc closes are split-adjusted is unverified (spec section 7.4). The promotion
@@ -120,6 +190,11 @@ or a data gap) the command exits nonzero with no verdict; that is not evidence o
 - `verdict=unadjusted`: a consecutive close ratio of 3x or more (or 1/3 or less) was found, so
   closes are not split-adjusted. Set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS=unadjusted`. Per the
   spec, the remedy is to source FMP `adjClose`; that is not built in this phase.
+On 2026-11-15 the check returned `no_split_signature` on a local copy of the canonical database
+for NVDA (2024-06-10, 10-for-1), CMG (2024-06-26, 50-for-1), AVGO (2024-07-15, 10-for-1) and WMT
+(2024-02-26, 3-for-1), with pre-split closes at post-split scale (NVDA 122.44 on 2024-06-05).
+Repeat it on the server before setting the status there.
+
 - `verdict=no_split_signature`: no jump was found in the window. This supports, but a single
   ticker does not prove, adjustment. Set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS=adjusted` only
   after you are satisfied, and leave `unverified` otherwise.
@@ -160,6 +235,25 @@ Execution convention (spec 7.8), printed in every result header:
 - Price return on close; dividends not included (header key `return_basis`). Dividends are
   absent from the sources.
 
+Universe and the liquidity floor (owner decision, 2026-11-15): a security is in the universe on
+date D if it has a close within the previous 5 trading days and the median of `close * volume`
+over the 21 trading days ending on D, with at least 15 of them present, is at least the floor
+(1,000,000 by default). The median is used so that isolated bad-tick days cannot lift a shell
+ticker over the floor. The floor in force is printed in the header as `universe_filter`.
+
+- `data.universe()` returns the filtered membership. `data.prices` and `data.attribute` are not
+  filtered: they hold every security.
+- A score dated D for a security that is not a member on D is not ranked. The evaluation counts
+  these in `scores_outside_universe` and adds a warning. Realized returns still come from the
+  full price panel, so a held name that later turns illiquid keeps its return.
+- Membership needs 15 observations, so a panel has no members before the 15th trading day of
+  the available price history (prices from 45 calendar days before the run's start are used).
+- To rank every scored security, send `"min_median_dollar_volume": 0` in the run request.
+
+Extreme price moves: the evaluation reports `extreme_moves` (`ratio`, `security_days`,
+`securities`), the number of held security-days whose close moved 10x or more in one day, up or
+down, and adds a warning when there are any. Those returns stay in the result unclipped.
+
 These defaults are disclosed in the header (`execution` with `signal_lag_days`,
 `transaction_cost`, `benchmark`; `weighting_basis`; `return_basis`).
 
@@ -171,6 +265,6 @@ are snapshot-only and carry `classification_as_of`.
 
 ## Not in this phase
 
-Fundamentals, catalog attributes (`data.attribute`, `data.series`), the `signals`, `weights` and
+Fundamentals, market cap and the fundamental catalog attributes, `data.series`, the `signals`, `weights` and
 `report` return kinds, the vendor rights filter on the result channel, the desktop surface, and
 the daily refresh job. See spec section 8, phases 3 to 6.

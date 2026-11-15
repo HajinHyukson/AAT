@@ -1,0 +1,378 @@
+{
+  "catalog_version": "viza_sandbox_catalog_v1",
+  "attributes": [
+    {
+      "key": "ret_1d",
+      "display_name": "1-day return",
+      "description": "close[t] / close[t-1] - 1 on the trading calendar; null if either endpoint is missing.",
+      "unit": "ratio",
+      "formula": "simple_return",
+      "params": {
+        "window": 1
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ret_5d",
+      "display_name": "5-day return",
+      "description": "close[t] / close[t-5] - 1 on the trading calendar; null if either endpoint is missing.",
+      "unit": "ratio",
+      "formula": "simple_return",
+      "params": {
+        "window": 5
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ret_21d",
+      "display_name": "21-day return",
+      "description": "close[t] / close[t-21] - 1 on the trading calendar; null if either endpoint is missing.",
+      "unit": "ratio",
+      "formula": "simple_return",
+      "params": {
+        "window": 21
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ret_63d",
+      "display_name": "63-day return",
+      "description": "close[t] / close[t-63] - 1 on the trading calendar; null if either endpoint is missing.",
+      "unit": "ratio",
+      "formula": "simple_return",
+      "params": {
+        "window": 63
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ret_252d",
+      "display_name": "252-day return",
+      "description": "close[t] / close[t-252] - 1 on the trading calendar; null if either endpoint is missing.",
+      "unit": "ratio",
+      "formula": "simple_return",
+      "params": {
+        "window": 252
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "vol_21d",
+      "display_name": "21-day volatility",
+      "description": "Sample standard deviation (ddof=1) of ret_1d over the last 21 trading days; null unless all 21 are present.",
+      "unit": "ratio",
+      "formula": "rolling_std",
+      "params": {
+        "window": 21
+      },
+      "inputs": [
+        "ret_1d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "vol_63d",
+      "display_name": "63-day volatility",
+      "description": "Sample standard deviation (ddof=1) of ret_1d over the last 63 trading days; null unless all 63 are present.",
+      "unit": "ratio",
+      "formula": "rolling_std",
+      "params": {
+        "window": 63
+      },
+      "inputs": [
+        "ret_1d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ma_20d",
+      "display_name": "20-day moving average",
+      "description": "Mean close over the last 20 trading days; null unless all 20 are present.",
+      "unit": "price",
+      "formula": "rolling_mean",
+      "params": {
+        "window": 20
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ma_50d",
+      "display_name": "50-day moving average",
+      "description": "Mean close over the last 50 trading days; null unless all 50 are present.",
+      "unit": "price",
+      "formula": "rolling_mean",
+      "params": {
+        "window": 50
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ma_200d",
+      "display_name": "200-day moving average",
+      "description": "Mean close over the last 200 trading days; null unless all 200 are present.",
+      "unit": "price",
+      "formula": "rolling_mean",
+      "params": {
+        "window": 200
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "rsi_14d",
+      "display_name": "14-day RSI (Cutler)",
+      "description": "100 - 100 / (1 + G/L), G and L the simple mean gain and loss of close differences over the last 14 trading days; null unless all 14 are present.",
+      "unit": "index_0_100",
+      "formula": "rsi_cutler",
+      "params": {
+        "window": 14
+      },
+      "inputs": [
+        "close"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "adv_21d",
+      "display_name": "21-day average dollar volume",
+      "description": "Mean of close * volume over the last 21 trading days; null unless all 21 are present.",
+      "unit": "currency",
+      "formula": "rolling_mean_dollar_volume",
+      "params": {
+        "window": 21
+      },
+      "inputs": [
+        "close",
+        "volume"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed"
+    },
+    {
+      "key": "ret_1d_sector_z",
+      "display_name": "1-day return, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ret_1d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ret_1d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ret_5d_sector_z",
+      "display_name": "5-day return, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ret_5d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ret_5d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ret_21d_sector_z",
+      "display_name": "21-day return, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ret_21d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ret_21d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ret_63d_sector_z",
+      "display_name": "63-day return, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ret_63d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ret_63d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ret_252d_sector_z",
+      "display_name": "252-day return, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ret_252d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ret_252d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "vol_21d_sector_z",
+      "display_name": "21-day volatility, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of vol_21d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "vol_21d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "vol_63d_sector_z",
+      "display_name": "63-day volatility, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of vol_63d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "vol_63d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ma_20d_sector_z",
+      "display_name": "20-day moving average, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ma_20d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ma_20d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ma_50d_sector_z",
+      "display_name": "50-day moving average, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ma_50d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ma_50d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "ma_200d_sector_z",
+      "display_name": "200-day moving average, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of ma_200d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "ma_200d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "rsi_14d_sector_z",
+      "display_name": "14-day RSI (Cutler), sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of rsi_14d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "rsi_14d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    },
+    {
+      "key": "adv_21d_sector_z",
+      "display_name": "21-day average dollar volume, sector z-score",
+      "description": "Cross-sectional z-score (ddof=1) of adv_21d within the security's sector on each date; null without a sector, with fewer than 3 valued members, or with zero dispersion. Sector is a snapshot classification.",
+      "unit": "z_score",
+      "formula": "sector_zscore",
+      "params": {},
+      "inputs": [
+        "adv_21d"
+      ],
+      "availability_rule": "eod_of_latest_input",
+      "source_type": "viza_computed",
+      "rights_class": "viza_computed",
+      "classification_snapshot": true
+    }
+  ]
+}

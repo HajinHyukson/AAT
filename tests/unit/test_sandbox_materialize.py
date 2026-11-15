@@ -199,3 +199,228 @@ def test_membership_matches_index_definition_on_random_panels():
         assert list(zip(got["event_date"].to_list(), got["security_id"].to_list())) == (
             _reference_membership(prices, lookback)
         )
+
+
+# --- Catalog attributes sliced from the attribute store ------------------------------------
+
+import json  # noqa: E402
+
+from sandbox_helpers import synthetic_bars, synthetic_securities  # noqa: E402
+
+from viza_sandbox.attribute_store import build_attribute_store  # noqa: E402
+from viza_sandbox.catalog import CATALOG_VERSION, load_catalog  # noqa: E402
+
+_NO_STORE = "No attribute store is built for this data snapshot. Run build-attributes."
+
+
+def _attr_source(extra=None):
+    bars = synthetic_bars(date(2023, 11, 1), date(2024, 2, 29))
+    if extra is not None:
+        bars = pl.concat([bars, extra])
+    return InMemoryCanonicalSource(synthetic_securities(), bars)
+
+
+def test_panel_includes_attributes_when_the_store_covers_the_range(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _attr_source()
+    store = build_attribute_store(source, settings, start=date(2024, 1, 1), end=date(2024, 2, 29))
+    panel = materialize(source, PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings)
+    manifest = panel.manifest
+    assert manifest.series == ["prices", "universe", "attributes"]
+    assert manifest.panel_schema_version == 2
+    assert manifest.catalog_version == CATALOG_VERSION
+    assert manifest.attribute_store_id == store.store_id
+    assert manifest.attributes_unavailable_reason is None
+    attributes = pl.read_parquet(panel.directory / "attributes.parquet")
+    assert attributes.columns == ["security_id", "event_date", "available_at", *load_catalog().keys()]
+    assert manifest.row_counts["attributes"] == attributes.height > 0
+    assert attributes["event_date"].min() == date(2024, 1, 8)
+    assert attributes["event_date"].max() == date(2024, 1, 31)
+    for row in attributes.select(["event_date", "available_at"]).unique().iter_rows():
+        assert row[1] == datetime(row[0].year, row[0].month, row[0].day, 21, tzinfo=timezone.utc)
+    catalog = json.loads((panel.directory / "catalog.json").read_text(encoding="utf-8"))
+    assert catalog["catalog_version"] == CATALOG_VERSION
+    assert [a["key"] for a in catalog["attributes"]] == load_catalog().keys()
+
+
+def test_panel_without_a_store_says_why(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    panel = materialize(
+        _attr_source(), PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings
+    )
+    assert not (panel.directory / "attributes.parquet").exists()
+    assert not (panel.directory / "catalog.json").exists()
+    assert panel.manifest.series == ["prices", "universe"]
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.catalog_version is None
+    assert panel.manifest.attributes_unavailable_reason == _NO_STORE
+
+
+def test_store_that_does_not_cover_the_range_is_refused(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _attr_source()
+    build_attribute_store(source, settings, start=date(2024, 1, 1), end=date(2024, 1, 31))
+    panel = materialize(source, PanelSpec(start=date(2024, 1, 15), end=date(2024, 2, 15)), settings)
+    assert not (panel.directory / "attributes.parquet").exists()
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.attributes_unavailable_reason == (
+        "The attribute store covers 2024-01-01 to 2024-01-31, not the requested range."
+    )
+
+
+def test_store_from_an_older_snapshot_is_not_used(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    build_attribute_store(_attr_source(), settings, start=date(2024, 1, 1), end=date(2024, 2, 29))
+    later = _prices(
+        [("a", date(2024, 3, 1), 9.0, 9.0, 1, "USD", datetime(2024, 10, 1, tzinfo=timezone.utc))]
+    )
+    panel = materialize(
+        _attr_source(later), PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings
+    )
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.attributes_unavailable_reason == _NO_STORE
+
+
+def test_manifest_id_changes_when_a_store_appears(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _attr_source()
+    spec = PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31))
+    first = materialize(source, spec, settings)
+    build_attribute_store(source, settings, start=date(2024, 1, 1), end=date(2024, 2, 29))
+    second = materialize(source, spec, settings)
+    assert second.manifest.manifest_id != first.manifest.manifest_id
+    assert (second.directory / "attributes.parquet").exists()
+
+
+# --- Liquidity floor on universe membership --------------------------------------------------
+
+from viza_sandbox.materialize import (  # noqa: E402
+    LIQUIDITY_LOOKBACK_CALENDAR_DAYS,
+    LIQUIDITY_MIN_OBSERVATIONS,
+    LIQUIDITY_WINDOW,
+)
+
+_FLOOR = 1_000_000.0
+
+
+def _weekdays(start, count):
+    days, day = [], start
+    while len(days) < count:
+        if day.weekday() < 5:
+            days.append(day)
+        day += timedelta(days=1)
+    return days
+
+
+def _liquidity_source(days, extra_rows=()):
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    rows = []
+    for i, day in enumerate(days):
+        rows.append(("liquid", day, 10.0, 10.0, 200_000, "USD", t))
+        rows.append(("thin", day, 10.0, 10.0, 50_000, "USD", t))
+        shell_close = 5000.0 if i % 7 == 3 else 0.05
+        rows.append(("shell", day, shell_close, shell_close, 2_000_000, "USD", t))
+    rows.extend(extra_rows)
+    ids = sorted({row[0] for row in rows})
+    secs = pl.DataFrame({
+        "security_id": ids, "ticker": [s.upper() for s in ids], "exchange": ["NYSE"] * len(ids),
+        "currency": ["USD"] * len(ids), "sector": [None] * len(ids),
+        "industry": [None] * len(ids), "classification_as_of": [None] * len(ids),
+    })
+    return InMemoryCanonicalSource(secs, _prices(rows))
+
+
+def _members(panel):
+    return sorted(pl.read_parquet(panel.directory / "universe.parquet")["security_id"].unique())
+
+
+def test_liquidity_constants():
+    assert (LIQUIDITY_WINDOW, LIQUIDITY_MIN_OBSERVATIONS) == (21, 15)
+    assert LIQUIDITY_LOOKBACK_CALENDAR_DAYS == 45
+
+
+def test_membership_requires_median_dollar_volume(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(_liquidity_source(days), spec, SandboxSettings(data_dir=tmp_path))
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert _members(panel) == ["liquid"]
+    # 15 observations are needed, so membership starts on the 15th trading day.
+    assert universe["event_date"].min() == days[14]
+    assert universe["event_date"].max() == days[-1]
+    prices = pl.read_parquet(panel.directory / "prices.parquet")
+    assert sorted(prices["security_id"].unique()) == ["liquid", "shell", "thin"]
+    assert panel.manifest.row_counts["universe"] == universe.height == 16
+
+
+def test_floor_uses_prices_before_start(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 40)
+    start = days[30]
+    assert (start - days[0]).days <= LIQUIDITY_LOOKBACK_CALENDAR_DAYS
+    spec = PanelSpec(start=start, end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(_liquidity_source(days), spec, SandboxSettings(data_dir=tmp_path))
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert _members(panel) == ["liquid"]
+    assert universe["event_date"].min() == start
+    prices = pl.read_parquet(panel.directory / "prices.parquet")
+    assert prices["event_date"].min() == start
+
+
+def test_fewer_than_15_observations_is_not_a_member(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    newcomer = [("new", day, 10.0, 10.0, 900_000, "USD", t) for day in days[-14:]]
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(
+        _liquidity_source(days, newcomer), spec, SandboxSettings(data_dir=tmp_path)
+    )
+    assert _members(panel) == ["liquid"]
+
+
+def test_zero_disables_the_floor(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=0)
+    panel = materialize(_liquidity_source(days), spec, SandboxSettings(data_dir=tmp_path))
+    assert _members(panel) == ["liquid", "shell", "thin"]
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert universe["event_date"].min() == days[0]
+
+
+def test_floor_is_part_of_the_manifest_id(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = _liquidity_source(days)
+    ids = {
+        materialize(
+            source, PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=floor),
+            settings,
+        ).manifest.manifest_id
+        for floor in (0, _FLOOR, 2 * _FLOOR)
+    }
+    assert len(ids) == 3
+
+
+def test_reclassified_sector_makes_the_store_unavailable(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    bars = synthetic_bars(date(2023, 11, 1), date(2024, 2, 29))
+    build_attribute_store(
+        InMemoryCanonicalSource(synthetic_securities(), bars), settings,
+        start=date(2024, 1, 1), end=date(2024, 2, 29),
+    )
+    moved = InMemoryCanonicalSource(synthetic_securities(sector="Energy"), bars)
+    panel = materialize(moved, PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings)
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.attributes_unavailable_reason == _NO_STORE
+
+
+def test_floor_ignores_sparse_dates(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    stray = [("liquid", date(2024, 1, 21), 10.0, 10.0, 200_000, "USD", t)]  # a Sunday
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(
+        _liquidity_source(days, stray), spec, SandboxSettings(data_dir=tmp_path)
+    )
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert date(2024, 1, 21) not in universe["event_date"].to_list()
+    assert universe["event_date"].min() == days[14]

@@ -151,3 +151,106 @@ def test_sdk_visibility_boundary_is_pit_end_of_day(tmp_path):
         ).write_parquet(path)
         rows = VizaData(panel).prices_long(("close",))
         assert (rows["event_date"].dt.date == day).any() == visible
+
+
+# --- Attribute store: a value dated D must not depend on any price after D ----------------
+
+
+def _attribute_bars(scale_after=None, factor=1.0):
+    import math
+    from datetime import timedelta
+
+    rows = []
+    day, i = date(2023, 1, 2), 0
+    ingested = datetime(2024, 9, 1 if scale_after is None else 2, tzinfo=timezone.utc)
+    while day <= date(2024, 6, 28):
+        if day.weekday() < 5:
+            for n, security_id in enumerate(["a", "b", "c", "d"]):
+                close = (20.0 + 10.0 * n) * (1.0 + 0.3 * math.sin(i * (0.11 + 0.03 * n)))
+                if scale_after is not None and day > scale_after:
+                    close *= factor
+                rows.append((security_id, day, close, close, 1000 + i, "USD", ingested))
+            i += 1
+        day += timedelta(days=1)
+    return pl.DataFrame(rows, orient="row", schema={
+        "security_id": pl.Utf8, "event_date": pl.Date, "close": pl.Float64,
+        "adjusted_close": pl.Float64, "volume": pl.Int64, "currency": pl.Utf8,
+        "ingestion_time": pl.Datetime("us", "UTC"),
+    })
+
+
+def test_attribute_values_do_not_depend_on_later_prices(tmp_path):
+    from polars.testing import assert_frame_equal
+
+    from viza_sandbox.attribute_store import build_attribute_store, read_attributes
+    from viza_sandbox.canonical import InMemoryCanonicalSource
+    from viza_sandbox.config import SandboxSettings
+
+    securities = pl.DataFrame({
+        "security_id": ["a", "b", "c", "d"], "ticker": ["A", "B", "C", "D"],
+        "exchange": ["NYSE"] * 4, "currency": ["USD"] * 4, "sector": ["Tech"] * 4,
+        "industry": [None] * 4, "classification_as_of": [None] * 4,
+    }, schema_overrides={"industry": pl.Utf8, "classification_as_of": pl.Datetime("us", "UTC")})
+    settings = SandboxSettings(data_dir=tmp_path)
+    cut = date(2024, 3, 15)
+    start, end = date(2023, 1, 2), date(2024, 6, 28)
+
+    stores = []
+    for bars in (_attribute_bars(), _attribute_bars(scale_after=cut, factor=7.0)):
+        manifest = build_attribute_store(
+            InMemoryCanonicalSource(securities, bars), settings, start=start, end=end
+        )
+        stores.append(manifest.store_id)
+    assert stores[0] != stores[1]
+
+    before = [
+        read_attributes(settings, store_id, start, cut).sort(["event_date", "security_id"])
+        for store_id in stores
+    ]
+    assert before[0].height > 0
+    assert_frame_equal(before[0], before[1])
+    after = [read_attributes(settings, store_id, cut, end) for store_id in stores]
+    assert not after[0]["ret_1d"].equals(after[1]["ret_1d"])
+
+
+# --- data.attribute obeys the same visibility rule as data.prices -------------------------
+
+
+def _attribute_panel(tmp_path, late_row=False):
+    import json
+
+    d = tmp_path / "panel"
+    d.mkdir()
+    eod = lambda day: datetime(2024, 1, day, 21, tzinfo=timezone.utc)  # noqa: E731
+    rows = {
+        "security_id": ["a", "a", "b"],
+        "event_date": [date(2024, 1, 2), date(2024, 1, 3), date(2024, 1, 2)],
+        "available_at": [eod(2), eod(3), eod(2)],
+        "ret_1d": [0.5, 0.1, 0.2],
+    }
+    if late_row:
+        rows["security_id"].append("b")
+        rows["event_date"].append(date(2024, 1, 3))
+        rows["available_at"].append(eod(4))
+        rows["ret_1d"].append(9.9)
+    pl.DataFrame(rows).write_parquet(d / "attributes.parquet")
+    (d / "manifest.json").write_text(json.dumps({"manifest_id": "m"}))
+    return d
+
+
+def test_attribute_respects_as_of_cutoff(tmp_path):
+    from viza_sandbox.sdk import VizaData
+
+    data = VizaData(_attribute_panel(tmp_path))
+    assert len(data.attribute("ret_1d")) == 2
+    cut = data.as_of(date(2024, 1, 2)).attribute("ret_1d")
+    assert [d.date() for d in cut.index] == [date(2024, 1, 2)]
+
+
+def test_attribute_row_with_late_available_at_is_hidden(tmp_path):
+    from viza_sandbox.sdk import VizaData
+
+    wide = VizaData(_attribute_panel(tmp_path, late_row=True)).attribute("ret_1d")
+    assert wide.loc["2024-01-02", "b"] == 0.2
+    assert wide.loc["2024-01-03"].isna()["b"]
+    assert 9.9 not in wide.to_numpy()

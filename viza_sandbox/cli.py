@@ -70,6 +70,30 @@ def _check_split_adjustment(args: argparse.Namespace) -> int:
     return 0
 
 
+def _build_attributes(args: argparse.Namespace) -> int:
+    from viza_sandbox.attribute_store import build_attribute_store
+
+    settings = SandboxSettings()
+    if not settings.canonical_database_url:
+        print("VIZA_SANDBOX_CANONICAL_DATABASE_URL is required", file=sys.stderr)
+        return 2
+    source = PostgresCanonicalSource(settings.canonical_database_url)
+    kwargs = {"price_source": args.source} if args.source else {}
+    manifest = build_attribute_store(
+        source,
+        settings,
+        start=date.fromisoformat(args.date_from),
+        end=date.fromisoformat(args.date_to),
+        **kwargs,
+    )
+    print(f"store_id={manifest.store_id}")
+    for year, rows in sorted(manifest.row_counts.items()):
+        print(f"{year} rows={rows}")
+    for day, bars in sorted(manifest.excluded_dates.items()):
+        print(f"excluded non-trading date {day} bars={bars}")
+    return 0
+
+
 def _serve(args: argparse.Namespace) -> int:
     import uvicorn
 
@@ -93,6 +117,11 @@ def _parser() -> argparse.ArgumentParser:
     split.add_argument("--to", dest="date_to", required=True)
     split.add_argument("--source")
     split.set_defaults(func=_check_split_adjustment)
+    build = sub.add_parser("build-attributes")
+    build.add_argument("--from", dest="date_from", required=True)
+    build.add_argument("--to", dest="date_to", required=True)
+    build.add_argument("--source")
+    build.set_defaults(func=_build_attributes)
     serve = sub.add_parser("serve")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8781)

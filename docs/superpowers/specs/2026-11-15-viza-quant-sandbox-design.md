@@ -127,6 +127,7 @@ The only existing FaustCalc universe (`faustcalc_active_us_equities_v0`) is a to
 
 - The sandbox universe includes all FaustCalc assets, active and inactive (about 24,500), not only the 12,657 active ones.
 - Membership on date D is derived from price coverage: a security is a member on D if it has a close within the previous 5 trading days. Delisted names therefore leave the universe when their prices stop.
+- Owner decision, 2026-11-15, after the first real run showed OTC and shell tickers with bad price ticks dominating equal-weight results: the default universe also excludes illiquid names. A security is a member on D only if the median of `close * volume` over the trailing 21 trading days (at least 15 observations) is at least 1,000,000 USD. The floor is a deployment setting, is overridable per run (0 disables it), and is printed in the run header. Scores for non-members are not ranked and are counted in the result. `data.prices` is not filtered.
 - Sector and industry are snapshot-only in FaustCalc. They are served with a `classification_as_of` column and flagged in the data-quality panel. Sector-relative attributes inherit this flag.
 - A real membership-history source is a later improvement, not v1.
 
