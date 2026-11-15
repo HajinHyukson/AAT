@@ -58,3 +58,8 @@ def test_coerce_return_rules():
         coerce_return(f > 0)
     with pytest.raises(ReturnDeclarationError, match="Report returns"):
         coerce_return({"x": 1})
+
+
+def test_as_of_cannot_widen_an_existing_cutoff(tmp_path):
+    data = VizaData(_panel(tmp_path)).as_of(date(2024, 1, 2)).as_of(date(2030, 1, 1))
+    assert data.prices("close").index.max() == pd.Timestamp("2024-01-02")

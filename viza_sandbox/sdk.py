@@ -82,7 +82,10 @@ class VizaData:
         return json.loads((self._dir / "manifest.json").read_text())
 
     def as_of(self, on: date) -> VizaData:
-        return VizaData(self._dir, cutoff=end_of_day_utc(on))
+        cutoff = end_of_day_utc(on)
+        if self._cutoff is not None:
+            cutoff = min(self._cutoff, cutoff)
+        return VizaData(self._dir, cutoff=cutoff)
 
     def _read(self, name: str) -> pd.DataFrame:
         frame = pd.read_parquet(self._dir / name, engine="pyarrow")
