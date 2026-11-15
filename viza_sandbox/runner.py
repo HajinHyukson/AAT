@@ -79,18 +79,27 @@ class DockerRunner:
     def __init__(self, image: str) -> None:
         self.image = image
 
-    def run(self, run_dir: Path, limits: RunLimits) -> RunOutcome:
+    def _command(self, run_dir: Path, limits: RunLimits, name: str) -> list[str]:
         run_dir = Path(run_dir).resolve()
-        name = f"viza-run-{uuid.uuid4().hex}"
         cmd = [
             "docker", "run", "--rm", "--name", name, "--network", "none",
             "--memory", f"{limits.memory_gb}g", "--cpus", str(limits.cpus),
             "--read-only", "--tmpfs", "/tmp",
+        ]
+        if hasattr(os, "getuid"):
+            # Match the host owner of out/ so the non-root container can write to it.
+            cmd += ["--user", f"{os.getuid()}:{os.getgid()}"]
+        cmd += [
             "-v", f"{run_dir / 'strategy.py'}:/run/strategy.py:ro",
             "-v", f"{run_dir / 'data'}:/run/data:ro",
             "-v", f"{run_dir / 'out'}:/run/out:rw",
             self.image, "python", "-m", "viza_sandbox.runner_entry", "/run",
         ]
+        return cmd
+
+    def run(self, run_dir: Path, limits: RunLimits) -> RunOutcome:
+        name = f"viza-run-{uuid.uuid4().hex}"
+        cmd = self._command(run_dir, limits, name)
         outcome, timed_out = _run(cmd, limits)
         if timed_out:
             subprocess.run(["docker", "kill", name], capture_output=True, timeout=30, check=False)

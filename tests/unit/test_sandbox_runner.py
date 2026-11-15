@@ -1,4 +1,5 @@
 import json
+import os
 import shutil
 
 import pytest
@@ -72,3 +73,20 @@ def test_docker_runner_blocks_network(tmp_path):
     )
     out = DockerRunner("viza-sandbox-runtime:latest").run(rd, RunLimits(wall_clock_seconds=120))
     assert out.exit_code == 0, out.stderr
+
+
+def _docker_cmd(tmp_path):
+    return DockerRunner("img:1")._command(tmp_path, RunLimits(), "viza-run-x")
+
+
+def test_docker_command_runs_as_host_uid(tmp_path, monkeypatch):
+    monkeypatch.setattr(os, "getuid", lambda: 1234, raising=False)
+    monkeypatch.setattr(os, "getgid", lambda: 5678, raising=False)
+    cmd = _docker_cmd(tmp_path)
+    assert cmd[cmd.index("--user") + 1] == "1234:5678"
+    assert cmd.index("--user") < cmd.index("img:1")
+
+
+def test_docker_command_has_no_user_flag_without_getuid(tmp_path, monkeypatch):
+    monkeypatch.delattr(os, "getuid", raising=False)
+    assert "--user" not in _docker_cmd(tmp_path)
