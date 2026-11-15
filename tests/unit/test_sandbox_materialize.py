@@ -54,3 +54,25 @@ def test_membership_uses_five_trading_day_lookback():
     members = derive_membership(_prices(rows), 5)
     b_days = members.filter(pl.col("security_id") == "b")["event_date"].to_list()
     assert b_days == days[:5]          # b priced only on day 1 stays a member through day 5, drops on day 6
+
+
+def _universe_currency(panel):
+    uni = pl.read_parquet(panel.directory / "universe.parquet")
+    return sorted(zip(uni["security_id"].to_list(), uni["currency"].to_list()))
+
+
+def test_universe_currency_comes_from_price_rows_not_securities(tmp_path):
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    # securities() says b is "KRW"/a is "USD"; price rows say the opposite.
+    src = _source(_prices([("a", date(2024,1,2), 10.0, 10.0, 1, "KRW", t), ("b", date(2024,1,2), 5.0, 5.0, 1, "USD", t)]))
+    panel = materialize(src, PanelSpec(start=date(2024,1,1), end=date(2024,1,31)), SandboxSettings(data_dir=tmp_path))
+    assert _universe_currency(panel) == [("a", "KRW"), ("b", "USD")]
+    assert panel.manifest.currencies == ["KRW", "USD"]
+
+
+def test_universe_currency_is_earliest_event_date_regardless_of_row_order(tmp_path):
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    # Rows deliberately out of date order; earliest event_date currency is EUR.
+    src = _source(_prices([("b", date(2024,1,3), 5.0, 5.0, 1, "USD", t), ("b", date(2024,1,2), 5.0, 5.0, 1, "EUR", t)]))
+    panel = materialize(src, PanelSpec(start=date(2024,1,1), end=date(2024,1,31)), SandboxSettings(data_dir=tmp_path))
+    assert set(_universe_currency(panel)) == {("b", "EUR")}

@@ -140,8 +140,11 @@ def materialize(
     prices = source.price_bars(spec.start, spec.end, source=spec.price_source)
     _assert_no_duplicate_price_rows(prices)
 
-    currency_by_security = prices.group_by("security_id", maintain_order=True).agg(
-        pl.col("currency").first()
+    # Universe currency = currency of each security's earliest event_date price row.
+    currency_by_security = (
+        prices.sort(["security_id", "event_date"])
+        .group_by("security_id", maintain_order=True)
+        .agg(pl.col("currency").first())
     )
 
     prices_out = prices.with_columns(
@@ -160,7 +163,7 @@ def materialize(
 
     membership = derive_membership(prices, spec.membership_lookback_trading_days)
     universe_out = (
-        membership.join(source.securities(), on="security_id", how="left")
+        membership.join(source.securities().drop("currency"), on="security_id", how="left")
         .join(currency_by_security, on="security_id", how="left")
         .select(
             [
