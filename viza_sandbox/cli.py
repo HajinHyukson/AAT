@@ -57,6 +57,13 @@ def _check_split_adjustment(args: argparse.Namespace) -> int:
         date.fromisoformat(args.date_from), date.fromisoformat(args.date_to), **kwargs
     ).filter(pl.col("security_id") == security_id)
     bars = bars.sort("event_date")
+    if bars.height < 2:
+        print(
+            f"cannot give a verdict for {ticker} from {args.date_from} to {args.date_to}: "
+            f"{bars.height} bar(s) found, need at least 2",
+            file=sys.stderr,
+        )
+        return 1
     for row in bars.iter_rows(named=True):
         print(f"{row['event_date']} {row['close']} {row['adjusted_close']}")
     print(f"verdict={split_adjustment_verdict(bars)}")

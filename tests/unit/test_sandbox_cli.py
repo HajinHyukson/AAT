@@ -55,3 +55,60 @@ def test_check_split_adjustment_fails_closed_without_canonical_url(monkeypatch, 
                  "--to", "2024-06-12"])
     assert code != 0
     assert "VIZA_SANDBOX_CANONICAL_DATABASE_URL is required" in capsys.readouterr().err
+
+
+def _fake_source(bars):
+    class FakeSource:
+        def __init__(self, url):
+            pass
+
+        def securities(self):
+            return pl.DataFrame({"security_id": ["s1"], "ticker": ["NVDA"]})
+
+        def price_bars(self, start, end, **kwargs):
+            return bars
+
+    return FakeSource
+
+
+def _bars(closes):
+    return pl.DataFrame(
+        {
+            "security_id": ["s1"] * len(closes),
+            "event_date": [date(2024, 6, 7 + i) for i in range(len(closes))],
+            "close": closes,
+            "adjusted_close": closes,
+        },
+        schema={
+            "security_id": pl.Utf8,
+            "event_date": pl.Date,
+            "close": pl.Float64,
+            "adjusted_close": pl.Float64,
+        },
+    )
+
+
+def test_check_split_adjustment_refuses_verdict_on_fewer_than_two_bars(monkeypatch, capsys):
+    from viza_sandbox import cli
+
+    monkeypatch.setenv("VIZA_SANDBOX_CANONICAL_DATABASE_URL", "sqlite://")
+    for closes in ([], [120.0]):
+        monkeypatch.setattr(cli, "PostgresCanonicalSource", _fake_source(_bars(closes)))
+        code = main(["check-split-adjustment", "--ticker", "NVDA", "--from", "2024-06-05",
+                     "--to", "2024-06-12"])
+        captured = capsys.readouterr()
+        assert code != 0
+        assert "verdict=" not in captured.out
+        assert "NVDA" in captured.err and "2024-06-05" in captured.err
+        assert f"{len(closes)} bar" in captured.err
+
+
+def test_check_split_adjustment_prints_verdict_with_two_bars(monkeypatch, capsys):
+    from viza_sandbox import cli
+
+    monkeypatch.setenv("VIZA_SANDBOX_CANONICAL_DATABASE_URL", "sqlite://")
+    monkeypatch.setattr(cli, "PostgresCanonicalSource", _fake_source(_bars([1208.88, 121.79])))
+    code = main(["check-split-adjustment", "--ticker", "NVDA", "--from", "2024-06-05",
+                 "--to", "2024-06-12"])
+    assert code == 0
+    assert "verdict=unadjusted" in capsys.readouterr().out

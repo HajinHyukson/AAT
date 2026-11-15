@@ -93,6 +93,8 @@ python -m viza_sandbox.cli check-split-adjustment --ticker NVDA --from 2024-06-0
 ```
 
 It prints each `event_date close adjusted_close` row and a final `verdict=...` line.
+If fewer than two bars fall in the window (wrong `--source`, a window that misses the split,
+or a data gap) the command exits nonzero with no verdict; that is not evidence of adjustment.
 
 - `verdict=unadjusted`: a consecutive close ratio of 3x or more (or 1/3 or less) was found, so
   closes are not split-adjusted. Set `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS=unadjusted`. Per the
