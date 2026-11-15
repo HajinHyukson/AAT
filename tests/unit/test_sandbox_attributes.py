@@ -118,3 +118,37 @@ def test_sector_zscore_ignores_members_without_a_value():
     z = sector_zscore(values, {"a": "T", "b": "T", "c": "T", "d": "T"}).iloc[0]
     assert z[["a", "b", "c"]].tolist() == approx([-1.0, 0.0, 1.0])
     assert pd.isna(z["d"])
+
+
+# --- Final-review fixes ---------------------------------------------------------------------
+
+
+def _path_with_tick(days=90, tick_at=5):
+    closes = [100.0]
+    for i in range(days - 1):
+        closes.append(closes[-1] * (1.0005 if i % 2 == 0 else 0.9995))
+    closes[tick_at] *= 100_000.0
+    return closes
+
+
+def test_volatility_is_exact_after_a_bad_tick_has_left_the_window():
+    closes = _path_with_tick()
+    out = base(wide({"a": closes}))["vol_21d"]["a"]
+    returns = pd.Series(closes).pct_change(fill_method=None)
+    expected = np.std(returns.iloc[-21:].to_numpy(), ddof=1)
+    assert out.iloc[-1] == approx(expected, rel=1e-12)
+
+
+def test_windowed_values_do_not_depend_on_where_history_starts():
+    closes = _path_with_tick()
+    full = base(wide({"a": closes}))
+    late = base(wide({"a": closes[20:]}))
+    for key in ("vol_21d", "ma_20d", "adv_21d", "rsi_14d"):
+        assert full[key]["a"].iloc[-1] == late[key]["a"].iloc[-1], key
+
+
+def test_sector_zscore_is_null_for_identical_values_that_are_not_exact_in_binary():
+    values = wide({"a": [0.1], "b": [0.1], "c": [0.1], "d": [1.1], "e": [1.1], "f": [1.1],
+                   "g": [1.1], "h": [1.1], "i": [1.1], "j": [1.1]})
+    sector = {k: "T" for k in "abc"} | {k: "U" for k in "defghij"}
+    assert sector_zscore(values, sector).iloc[0].isna().all()

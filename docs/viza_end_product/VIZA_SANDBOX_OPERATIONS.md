@@ -129,9 +129,8 @@ It prints `store_id=...` and one `YYYY rows=N` line per year, and writes
 days before each year so the 252-day windows are complete. It holds a year of wide frames in
 memory at a time; measure peak memory on the first full build.
 
-- Rebuild after every canonical refresh and after changing
-  `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS`: the store is keyed by the catalog version, the data
-  snapshot, the price source and the adjustment status.
+- Rebuild after every canonical refresh, after a sector reclassification, after editing the
+  catalog file, and after changing `VIZA_SANDBOX_PRICE_ADJUSTMENT_STATUS`.
 - Rebuild the runtime image after pulling this change. The strategy SDK lives in the image.
 - A run is given attributes only if a store exists for the exact data snapshot and covers the
   whole requested date range. Otherwise `data.attribute` fails the run with the reason, which
@@ -152,6 +151,25 @@ filled, clipped or winsorized.
 | `rsi_14d` | Cutler RSI: simple 14-day mean gain and loss, not Wilder smoothing |
 | `adv_21d` | mean of `close * volume` over 21 days |
 | `<key>_sector_z` | z-score of each key above within the security's sector on that date; null with no sector, fewer than 3 valued members, or zero dispersion. Sector is a snapshot classification. |
+
+Trading days: the price source has dates with bars for only a few securities (stray weekend
+bars, and holidays on which only some listings trade; 29 such dates in the 2023-04 to 2026-04
+snapshot). A date counts as a trading day only if at least half the usual number of securities
+have a bar on it. Other dates are left out of attribute windows, of the liquidity floor and of
+backtest returns, so a holiday does not erase the return across it. `build-attributes` prints
+each excluded date with its bar count, and an evaluation lists them in `non_trading_dates`.
+`data.prices` still returns every bar, including those dates.
+
+Sector z-scores use every security in the price source as peers, including illiquid names the
+universe floor excludes, so one bad tick in a sector compresses that sector's z-scores for the
+length of the attribute's window. Whether to restrict peers to universe members is an open
+owner decision.
+
+The store's identity also covers the catalog file's content and every security's sector, so an
+edited catalog or a reclassification makes the store unavailable until it is rebuilt.
+
+Panel cache: every distinct date range and liquidity floor caches its own copy of prices and
+attributes under `<VIZA_SANDBOX_DATA_DIR>/panels/`. Nothing evicts them; watch the disk.
 
 Every attribute row has `available_at` of its own date at 21:00 UTC, like prices.
 `data.catalog()` lists the keys inside a strategy.

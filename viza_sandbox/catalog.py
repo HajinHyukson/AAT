@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Literal
@@ -66,6 +67,12 @@ class Catalog(BaseModel):
 
     def sector_relative(self) -> list[AttributeSpec]:
         return [spec for spec in self.attributes if spec.formula == SECTOR_ZSCORE]
+
+
+def catalog_digest(path: Path | None = None) -> str:
+    """sha256 of the catalog file, so a store built from an edited catalog is not reused."""
+    source = Path(path) if path is not None else DEFAULT_CATALOG_PATH
+    return hashlib.sha256(source.read_bytes()).hexdigest()
 
 
 def load_catalog(path: Path | None = None) -> Catalog:

@@ -398,3 +398,29 @@ def test_floor_is_part_of_the_manifest_id(tmp_path):
         for floor in (0, _FLOOR, 2 * _FLOOR)
     }
     assert len(ids) == 3
+
+
+def test_reclassified_sector_makes_the_store_unavailable(tmp_path):
+    settings = SandboxSettings(data_dir=tmp_path)
+    bars = synthetic_bars(date(2023, 11, 1), date(2024, 2, 29))
+    build_attribute_store(
+        InMemoryCanonicalSource(synthetic_securities(), bars), settings,
+        start=date(2024, 1, 1), end=date(2024, 2, 29),
+    )
+    moved = InMemoryCanonicalSource(synthetic_securities(sector="Energy"), bars)
+    panel = materialize(moved, PanelSpec(start=date(2024, 1, 8), end=date(2024, 1, 31)), settings)
+    assert panel.manifest.attribute_store_id is None
+    assert panel.manifest.attributes_unavailable_reason == _NO_STORE
+
+
+def test_floor_ignores_sparse_dates(tmp_path):
+    days = _weekdays(date(2024, 1, 1), 30)
+    t = datetime(2024, 5, 1, tzinfo=timezone.utc)
+    stray = [("liquid", date(2024, 1, 21), 10.0, 10.0, 200_000, "USD", t)]  # a Sunday
+    spec = PanelSpec(start=days[0], end=days[-1], min_median_dollar_volume=_FLOOR)
+    panel = materialize(
+        _liquidity_source(days, stray), spec, SandboxSettings(data_dir=tmp_path)
+    )
+    universe = pl.read_parquet(panel.directory / "universe.parquet")
+    assert date(2024, 1, 21) not in universe["event_date"].to_list()
+    assert universe["event_date"].min() == days[14]

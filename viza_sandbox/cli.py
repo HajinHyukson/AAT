@@ -89,6 +89,8 @@ def _build_attributes(args: argparse.Namespace) -> int:
     print(f"store_id={manifest.store_id}")
     for year, rows in sorted(manifest.row_counts.items()):
         print(f"{year} rows={rows}")
+    for day, bars in sorted(manifest.excluded_dates.items()):
+        print(f"excluded non-trading date {day} bars={bars}")
     return 0
 
 

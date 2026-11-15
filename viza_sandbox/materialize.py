@@ -25,11 +25,13 @@ from viza_sandbox.attribute_store import (
     AttributeStoreManifest,
     attribute_store_id,
     find_attribute_store,
+    sector_digest,
     read_attributes,
 )
 from viza_sandbox.canonical import CanonicalSource
-from viza_sandbox.catalog import CATALOG_VERSION, DEFAULT_CATALOG_PATH
+from viza_sandbox.catalog import CATALOG_VERSION, DEFAULT_CATALOG_PATH, catalog_digest
 from viza_sandbox.config import SandboxSettings
+from viza_sandbox.trading_calendar import trading_day_mask
 from viza_sandbox.pit import EOD_POLICY_VERSION, eod_available_at, end_of_day_utc
 
 PRICES_FILENAME = "prices.parquet"
@@ -169,8 +171,8 @@ def liquid_pairs(prices: pl.DataFrame, floor: float) -> pl.DataFrame:
     """(event_date, security_id) pairs whose trailing median dollar volume reaches ``floor``.
 
     ``prices`` should start ``LIQUIDITY_LOOKBACK_CALENDAR_DAYS`` before the first date of
-    interest. Windows count trading-calendar days; days without a bar or a volume are not
-    observations.
+    interest. Windows count trading days (see ``trading_calendar``); days without a bar or a
+    volume are not observations. Sparse dates are not trading days and yield no pairs.
     """
     schema = {"event_date": pl.Date, "security_id": pl.Utf8}
     if prices.is_empty():
@@ -179,6 +181,7 @@ def liquid_pairs(prices: pl.DataFrame, floor: float) -> pl.DataFrame:
         "security_id", "event_date", (pl.col("close") * pl.col("volume")).alias("dollar_volume")
     ).to_pandas()
     wide = frame.pivot(index="event_date", columns="security_id", values="dollar_volume")
+    wide = wide[trading_day_mask(wide)]
     median = wide.astype("float64").rolling(
         LIQUIDITY_WINDOW, min_periods=LIQUIDITY_MIN_OBSERVATIONS
     ).median()
@@ -194,18 +197,26 @@ def _load_cached(directory: Path) -> MaterializedPanel:
 
 
 def _resolve_attribute_store(
-    spec: PanelSpec, settings: SandboxSettings, canonical_snapshot_id: str
+    spec: PanelSpec,
+    settings: SandboxSettings,
+    canonical_snapshot_id: str,
+    securities: pl.DataFrame,
 ) -> tuple[AttributeStoreManifest | None, str | None]:
     """The attribute store usable for this panel, or the reason there is none.
 
-    A store is used only if it was built from this exact data snapshot and covers the whole
-    requested range; a partial or stale store would be a silent gap.
+    A store is used only if it was built from this exact data snapshot, catalog file and
+    sector assignment, and covers the whole requested range; a partial or stale store would
+    be a silent gap.
     """
     store = find_attribute_store(
         settings,
         attribute_store_id(
-            CATALOG_VERSION, canonical_snapshot_id, spec.price_source,
+            CATALOG_VERSION,
+            canonical_snapshot_id,
+            spec.price_source,
             settings.price_adjustment_status,
+            catalog_digest(),
+            sector_digest(securities),
         ),
     )
     if store is None:
@@ -222,8 +233,10 @@ def materialize(
     source: CanonicalSource, spec: PanelSpec, settings: SandboxSettings
 ) -> MaterializedPanel:
     canonical_snapshot_id = source.snapshot_id(source=spec.price_source)
+    securities = source.securities()
+    _assert_no_duplicate_securities(securities)
     store, attributes_unavailable_reason = _resolve_attribute_store(
-        spec, settings, canonical_snapshot_id
+        spec, settings, canonical_snapshot_id, securities
     )
     store_id = store.store_id if store is not None else None
     manifest_id = _manifest_id(
@@ -265,8 +278,6 @@ def materialize(
         ]
     )
 
-    securities = source.securities()
-    _assert_no_duplicate_securities(securities)
     membership = derive_membership(prices, spec.membership_lookback_trading_days)
     if floor > 0:
         membership = membership.join(

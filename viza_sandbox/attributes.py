@@ -12,22 +12,46 @@ from collections.abc import Mapping
 
 import numpy as np
 import pandas as pd
+from numpy.lib.stride_tricks import sliding_window_view
 
 from viza_sandbox.catalog import AttributeSpec, Catalog
 
 MIN_SECTOR_MEMBERS = 3
+# Cells of temporary window data per batch of columns (about 200 MB of float64).
+_WINDOW_BATCH_CELLS = 25_000_000
 
 
 def _simple_return(close: pd.DataFrame, window: int) -> pd.DataFrame:
     return close / close.shift(window) - 1.0
 
 
+def _windowed(frame: pd.DataFrame, window: int, reduce) -> pd.DataFrame:
+    """Apply ``reduce`` to every full trailing window, each computed from its own values.
+
+    pandas' rolling mean and variance update a running sum, which keeps a floating-point
+    residue after a huge value (a bad tick) leaves the window and makes a date's value depend
+    on where the history starts. Reducing each window independently has neither problem. A
+    window containing a NaN reduces to NaN.
+    """
+    values = frame.to_numpy(dtype="float64")
+    out = np.full(values.shape, np.nan)
+    rows, columns = values.shape
+    if rows >= window and columns:
+        step = max(1, _WINDOW_BATCH_CELLS // (rows * window))
+        for first in range(0, columns, step):
+            block = sliding_window_view(values[:, first : first + step], window, axis=0)
+            out[window - 1 :, first : first + step] = reduce(block)
+    return pd.DataFrame(out, index=frame.index, columns=frame.columns)
+
+
 def _rolling_mean(frame: pd.DataFrame, window: int) -> pd.DataFrame:
-    return frame.rolling(window, min_periods=window).mean()
+    return _windowed(frame, window, lambda block: block.mean(axis=-1))
 
 
 def _rolling_std(frame: pd.DataFrame, window: int) -> pd.DataFrame:
-    return frame.rolling(window, min_periods=window).std(ddof=1)
+    if window < 2:
+        raise ValueError("a sample standard deviation needs a window of at least 2")
+    return _windowed(frame, window, lambda block: block.std(axis=-1, ddof=1))
 
 
 def _rsi_cutler(close: pd.DataFrame, window: int) -> pd.DataFrame:
@@ -85,7 +109,10 @@ def sector_zscore(values: pd.DataFrame, sector: Mapping[str, str | None]) -> pd.
             continue
         group = values[columns]
         std = group.std(axis=1, ddof=1)
-        usable = (group.notna().sum(axis=1) >= MIN_SECTOR_MEMBERS) & (std > 0.0)
+        # max > min, not std > 0: identical values that are inexact in binary (0.1, 1.1) can
+        # give a tiny non-zero std and a meaningless z-score.
+        differs = group.max(axis=1) > group.min(axis=1)
+        usable = (group.notna().sum(axis=1) >= MIN_SECTOR_MEMBERS) & differs
         centered = group.sub(group.mean(axis=1), axis=0).div(std.where(usable), axis=0)
         out[columns] = centered
     return out

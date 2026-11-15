@@ -60,7 +60,8 @@ def test_build_writes_one_file_per_year_and_a_manifest(tmp_path):
     source = _source()
     manifest = build_attribute_store(source, settings, start=HISTORY_START, end=END)
     assert manifest.store_id == attribute_store_id(
-        CATALOG_VERSION, source.snapshot_id(), "faustcalc_fmp_snapshot", "unverified"
+        CATALOG_VERSION, source.snapshot_id(), "faustcalc_fmp_snapshot", "unverified",
+        catalog_digest(), sector_digest(source.securities()),
     )
     assert (manifest.start, manifest.end) == (HISTORY_START, END)
     assert manifest.keys == load_catalog().keys()
@@ -134,3 +135,46 @@ def test_cli_build_attributes_fails_closed_without_canonical_url(monkeypatch, ca
     code = cli.main(["build-attributes", "--from", "2024-01-01", "--to", "2024-01-31"])
     assert code != 0
     assert "VIZA_SANDBOX_CANONICAL_DATABASE_URL is required" in capsys.readouterr().err
+
+
+# --- Final-review fixes ---------------------------------------------------------------------
+
+from datetime import datetime, timezone  # noqa: E402
+
+from viza_sandbox.attribute_store import sector_digest  # noqa: E402
+from viza_sandbox.catalog import catalog_digest  # noqa: E402
+from viza_sandbox.trading_calendar import TRADING_DAY_MIN_COVERAGE  # noqa: E402
+
+
+def test_sparse_dates_are_not_trading_days(tmp_path):
+    assert TRADING_DAY_MIN_COVERAGE == 0.5
+    bars = synthetic_bars(HISTORY_START, END)
+    sunday = date(2024, 2, 4)
+    stray = pl.DataFrame(
+        [("a", sunday, 31.0, 31.0, 5, "USD", datetime(2024, 9, 1, tzinfo=timezone.utc))],
+        schema=bars.schema, orient="row",
+    )
+    settings = SandboxSettings(data_dir=tmp_path)
+    source = InMemoryCanonicalSource(synthetic_securities(), pl.concat([bars, stray]))
+    manifest = build_attribute_store(source, settings, start=date(2024, 1, 1), end=END)
+    assert manifest.excluded_dates == {"2024-02-04": 1}
+    stored = read_attributes(settings, manifest.store_id, date(2024, 2, 1), date(2024, 2, 9))
+    assert sunday not in stored["event_date"].to_list()
+    monday = stored.filter(pl.col("event_date") == date(2024, 2, 5))
+    assert monday.height == 4
+    assert monday["ret_1d"].null_count() == 0
+    assert monday["ma_200d"].null_count() == 0
+
+
+def test_store_id_depends_on_catalog_content_and_sectors():
+    args = (CATALOG_VERSION, "snap", "faustcalc_fmp_snapshot", "unverified")
+    base_id = attribute_store_id(*args, catalog_digest(), sector_digest(synthetic_securities()))
+    moved = synthetic_securities().with_columns(
+        pl.when(pl.col("security_id") == "a").then(pl.lit("Energy")).otherwise(pl.col("sector"))
+        .alias("sector")
+    )
+    assert attribute_store_id(*args, catalog_digest(), sector_digest(moved)) != base_id
+    assert attribute_store_id(*args, "other-catalog", sector_digest(synthetic_securities())) \
+        != base_id
+    reordered = synthetic_securities().reverse()
+    assert attribute_store_id(*args, catalog_digest(), sector_digest(reordered)) == base_id

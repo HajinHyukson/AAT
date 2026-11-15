@@ -205,3 +205,37 @@ def test_membership_is_checked_per_date():
 def test_without_a_universe_nothing_is_dropped():
     out = evaluate_scores(_scores_once(), _close(), BacktestSettings(quantiles=3, rebalance="daily"))
     assert out.scores_outside_universe == 0
+
+
+# --- Sparse dates are not trading days ---------------------------------------------------------
+
+
+def test_return_across_a_sparse_date_is_kept():
+    index = pd.to_datetime(
+        ["2024-01-11", "2024-01-12", "2024-01-15", "2024-01-16", "2024-01-17"]
+    )
+    close = pd.DataFrame(
+        {
+            "a": [10.0, 11.0, np.nan, 12.1, 13.31],
+            "b": [10.0, 10.0, np.nan, 10.0, 10.0],
+            "c": [10.0, 9.0, np.nan, 8.1, 7.29],
+            "odd": [5.0, 5.0, 5.0, 5.0, 5.0],
+        },
+        index=index,
+    )
+    scores = pd.DataFrame(np.nan, index=index, columns=["a", "b", "c"])
+    scores.loc[index[0]] = [3.0, 2.0, 1.0]
+    out = evaluate_scores(scores, close, BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.non_trading_dates == ["2024-01-15"]
+    assert "2024-01-15" not in out.quantile_daily_returns["q3"]
+    # Scores on 01-11 earn from the close of 01-12; the holiday is not a row, so the
+    # 01-12 -> 01-16 return is realized on 01-16 instead of being lost.
+    assert out.quantile_daily_returns["q3"]["2024-01-16"] == pytest.approx(0.10)
+    assert out.quantile_daily_returns["q1"]["2024-01-16"] == pytest.approx(-0.10)
+    assert any("non-trading" in w for w in out.warnings)
+
+
+def test_no_sparse_dates_no_warning():
+    out = evaluate_scores(_scores_once(), _close(), BacktestSettings(quantiles=3, rebalance="daily"))
+    assert out.non_trading_dates == []
+    assert not any("non-trading" in w for w in out.warnings)

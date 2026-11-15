@@ -8,6 +8,8 @@ import pandas as pd
 from pydantic import BaseModel, Field
 from scipy.stats import spearmanr
 
+from viza_sandbox.trading_calendar import trading_day_mask
+
 EXECUTION_CONVENTION = {"signal_lag_days": 1, "transaction_cost": 0.0, "benchmark": None}
 # Disclosures for the run header: what the bucket mean and the close-to-close return model.
 WEIGHTING_BASIS = (
@@ -46,6 +48,7 @@ class ScoresEvaluation(BaseModel):
     dates_scored: int
     extreme_moves: dict
     scores_outside_universe: int = 0
+    non_trading_dates: list[str] = []
 
 
 def rebalance_dates(index: pd.DatetimeIndex, rebalance: str) -> pd.DatetimeIndex:
@@ -86,6 +89,17 @@ def evaluate_scores(
     close = close.sort_index()
     scores = scores.sort_index()
     warnings: list[str] = []
+
+    # Dates on which only a few securities have a bar (holidays, stray weekend bars) are not
+    # trading days: as rows they would erase every other security's return across them.
+    trading = trading_day_mask(close)
+    non_trading = [_iso(day) for day in close.index[~trading]]
+    close = close[trading]
+    if non_trading:
+        warnings.append(
+            f"{len(non_trading)} dates had bars for fewer than half the usual number of "
+            f"securities and were treated as non-trading days: {', '.join(non_trading[:5])}"
+        )
 
     dropped = [c for c in scores.columns if c not in close.columns]
     if dropped:
@@ -215,6 +229,7 @@ def evaluate_scores(
         securities_scored=int(scores.notna().any(axis=0).sum()),
         dates_scored=int(scores.notna().any(axis=1).sum()),
         scores_outside_universe=outside,
+        non_trading_dates=non_trading,
         extreme_moves={
             "ratio": EXTREME_MOVE_RATIO,
             "security_days": extreme_days,
