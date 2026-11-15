@@ -20,7 +20,7 @@ from viza_sandbox.evaluate import (
     EvaluationError,
     evaluate_scores,
 )
-from viza_sandbox.materialize import PanelSpec, materialize
+from viza_sandbox.materialize import MaterializationError, PanelSpec, materialize
 from viza_sandbox.runner import Runner, RunLimits
 from viza_sandbox.sdk import VizaData
 from viza_sandbox.store import SandboxRun, SandboxStore, SandboxUser
@@ -94,11 +94,14 @@ class SandboxService:
         try:
             return self._execute(run_id)
         except Exception as exc:  # noqa: BLE001 - never leave a run stuck in "running"
+            # Only failures before the runner returns reach here; str(exc) may expose host paths.
+            message = (
+                str(exc)
+                if isinstance(exc, MaterializationError)
+                else f"{type(exc).__name__}: could not prepare run."
+            )
             return self._store.update_run(
-                run_id,
-                status="failed",
-                error=f"{type(exc).__name__}: {exc}",
-                finished_at=_utcnow(),
+                run_id, status="failed", error=message, finished_at=_utcnow()
             )
 
     def _execute(self, run_id: str) -> SandboxRun:
@@ -123,36 +126,43 @@ class SandboxService:
             "finished_at": _utcnow(),
         }
         out_dir = run_dir / "out"
-        if outcome.timed_out:
+        try:
+            fields.update(self._post_process(outcome, out_dir, panel, request, limits))
+        except Exception as exc:  # noqa: BLE001 - outcome fields above must always persist
             fields.update(
-                status="timed_out",
-                error=f"Timed out after {limits.wall_clock_seconds} seconds.",
+                status="failed", error=f"{type(exc).__name__}: could not process run output."
             )
-        elif outcome.exit_code != 0:
+        return self._store.update_run(run_id, **fields)
+
+    @staticmethod
+    def _post_process(outcome, out_dir: Path, panel, request: RunRequest, limits: RunLimits):
+        if outcome.timed_out:
+            return {
+                "status": "timed_out",
+                "error": f"Timed out after {limits.wall_clock_seconds} seconds.",
+            }
+        if outcome.exit_code != 0:
             error_path = out_dir / "error.json"
             if error_path.exists():
                 info = json.loads(error_path.read_text(encoding="utf-8"))
                 message = f"{info['type']}: {info['message']}"
             else:
                 message = f"Run exited with code {outcome.exit_code}."
-            fields.update(status="failed", error=message)
-        else:
-            try:
-                long = pd.read_parquet(out_dir / "result.parquet", engine="pyarrow")
-                wide = long.pivot(index="event_date", columns="security_id", values="score")
-                wide.index = pd.to_datetime(wide.index)
-                close = VizaData(panel.directory).prices("close")
-                evaluation = evaluate_scores(wide, close, request.backtest)
-            except EvaluationError as exc:
-                fields.update(status="failed", error=str(exc))
-            else:
-                fields.update(
-                    status="completed",
-                    evaluation=evaluation.model_dump(mode="json"),
-                    result_kind="scores",
-                    result_path=str(out_dir / "result.parquet"),
-                )
-        return self._store.update_run(run_id, **fields)
+            return {"status": "failed", "error": message}
+        try:
+            long = pd.read_parquet(out_dir / "result.parquet", engine="pyarrow")
+            wide = long.pivot(index="event_date", columns="security_id", values="score")
+            wide.index = pd.to_datetime(wide.index)
+            close = VizaData(panel.directory).prices("close")
+            evaluation = evaluate_scores(wide, close, request.backtest)
+        except EvaluationError as exc:
+            return {"status": "failed", "error": str(exc)}
+        return {
+            "status": "completed",
+            "evaluation": evaluation.model_dump(mode="json"),
+            "result_kind": "scores",
+            "result_path": str(out_dir / "result.parquet"),
+        }
 
     def result_header(self, run: SandboxRun) -> dict:
         return result_header(run, self._settings)

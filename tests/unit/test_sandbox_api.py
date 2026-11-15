@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from viza_sandbox.api import create_app
 from viza_sandbox.canonical import InMemoryCanonicalSource
 from viza_sandbox.config import SandboxSettings
-from viza_sandbox.runner import LocalProcessRunner
+from viza_sandbox.runner import LocalProcessRunner, RunOutcome
 from viza_sandbox.runs import SandboxService, RunRequest
 from viza_sandbox.store import SandboxStore
 
@@ -128,3 +128,49 @@ def test_same_code_and_manifest_reproduce_identical_evaluation(tmp_path):
     second = service.execute(service.submit(user, req).run_id)
     assert first.data_manifest["manifest_id"] == second.data_manifest["manifest_id"]
     assert first.code_hash == second.code_hash and first.evaluation == second.evaluation
+
+
+class _StubRunner:
+    def __init__(self, exit_code, write_error=None):
+        self.exit_code = exit_code
+        self.write_error = write_error
+
+    def run(self, run_dir, limits):
+        if self.write_error is not None:
+            (run_dir / "out" / "error.json").write_text(self.write_error)
+        return RunOutcome(
+            exit_code=self.exit_code,
+            timed_out=False,
+            stdout="hello",
+            stderr="oops",
+            duration_seconds=0.1,
+        )
+
+
+def _stub_run(tmp_path, runner):
+    settings, store, service = _service(tmp_path)
+    service._runner = runner
+    user, _ = store.create_user("alice")
+    req = RunRequest(
+        code=MOMENTUM,
+        start=date(2024, 1, 1),
+        end=date(2024, 1, 31),
+        backtest={"quantiles": 3, "rebalance": "daily"},
+    )
+    return service.execute(service.submit(user, req).run_id), settings
+
+
+def test_malformed_error_json_still_persists_output(tmp_path):
+    run, _ = _stub_run(tmp_path, _StubRunner(1, write_error="{not json"))
+    assert run.status == "failed"
+    assert run.stdout == "hello" and run.stderr == "oops" and run.exit_code == 1
+    assert run.data_manifest is not None and run.finished_at is not None
+    assert run.error.startswith("JSONDecodeError: ")
+
+
+def test_missing_result_parquet_hides_paths_and_keeps_output(tmp_path):
+    run, settings = _stub_run(tmp_path, _StubRunner(0))
+    assert run.status == "failed"
+    assert run.stdout == "hello" and run.exit_code == 0
+    assert run.data_manifest is not None and run.finished_at is not None
+    assert str(settings.runs_dir) not in run.error and str(tmp_path) not in run.error
