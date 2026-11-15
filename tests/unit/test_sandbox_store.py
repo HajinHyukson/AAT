@@ -47,3 +47,19 @@ def test_list_runs_by_status_spans_users(tmp_path):
     found = store.list_runs_by_status({"queued", "running"})
     assert sorted(r.run_id for r in found) == sorted([queued.run_id, running.run_id])
     assert store.list_runs_by_status({"timed_out"}) == []
+
+
+def test_store_creates_parent_directory_for_sqlite_file_url(tmp_path):
+    db_path = tmp_path / "nested" / "dir" / "sandbox.db"
+    store = SandboxStore(f"sqlite:///{db_path}")
+    store.create_schema()
+    assert db_path.exists()
+
+
+def test_init_db_works_with_default_relative_url(tmp_path, monkeypatch):
+    from viza_sandbox.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("VIZA_SANDBOX_DATABASE_URL", raising=False)
+    assert main(["init-db"]) == 0
+    assert (tmp_path / "data" / "viza_sandbox" / "sandbox.db").exists()

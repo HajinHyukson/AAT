@@ -4,9 +4,11 @@ import hashlib
 import secrets
 from collections.abc import Collection
 from datetime import datetime, timezone
+from pathlib import Path
 from uuid import uuid4
 
 from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, Text, create_engine
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 ALLOWED_RUN_STATUSES = {"queued", "running", "completed", "failed", "timed_out"}
@@ -59,8 +61,20 @@ class SandboxRun(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+def _ensure_sqlite_parent_dir(database_url: str) -> None:
+    """Create the directory of a SQLite database file; SQLite will not create it."""
+    url = make_url(database_url)
+    if url.get_backend_name() != "sqlite":
+        return
+    database = url.database
+    if not database or database == ":memory:" or database.startswith("file:"):
+        return
+    Path(database).parent.mkdir(parents=True, exist_ok=True)
+
+
 class SandboxStore:
     def __init__(self, database_url: str) -> None:
+        _ensure_sqlite_parent_dir(database_url)
         connect_args = {"check_same_thread": False} if database_url.startswith("sqlite") else {}
         self._engine = create_engine(database_url, connect_args=connect_args)
         self._session_factory: sessionmaker[Session] = sessionmaker(
