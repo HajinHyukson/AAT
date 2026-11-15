@@ -37,3 +37,49 @@ def make_panel(root: Path) -> Path:
         "availability_policy_version": "faustcalc_fmp_snapshot_eod_policy_v1",
     }))
     return d
+
+
+def synthetic_bars(start: date, end: date, security_ids=("a", "b", "c", "d"), scale=None):
+    """Deterministic weekday bars. ``scale(security_id, event_date)`` may rescale a close."""
+    import math
+    from datetime import timedelta
+
+    rows = []
+    ingested = datetime(2024, 9, 1, tzinfo=timezone.utc)
+    day, i = start, 0
+    while day <= end:
+        if day.weekday() < 5:
+            for n, security_id in enumerate(security_ids):
+                close = (20.0 + 10.0 * n) * (1.0 + 0.3 * math.sin(i * (0.11 + 0.03 * n)))
+                if scale is not None:
+                    close *= scale(security_id, day)
+                rows.append((security_id, day, close, close, 1000 + 7 * i + n, "USD", ingested))
+            i += 1
+        day += timedelta(days=1)
+    return pl.DataFrame(
+        rows,
+        schema={
+            "security_id": pl.Utf8, "event_date": pl.Date, "close": pl.Float64,
+            "adjusted_close": pl.Float64, "volume": pl.Int64, "currency": pl.Utf8,
+            "ingestion_time": pl.Datetime("us", "UTC"),
+        },
+        orient="row",
+    )
+
+
+def synthetic_securities(security_ids=("a", "b", "c", "d"), sector="Tech"):
+    n = len(security_ids)
+    return pl.DataFrame(
+        {
+            "security_id": list(security_ids),
+            "ticker": [s.upper() * 3 for s in security_ids],
+            "exchange": ["NYSE"] * n,
+            "currency": ["USD"] * n,
+            "sector": [sector] * n,
+            "industry": [None] * n,
+            "classification_as_of": [None] * n,
+        },
+        schema_overrides={
+            "industry": pl.Utf8, "classification_as_of": pl.Datetime("us", "UTC"),
+        },
+    )
