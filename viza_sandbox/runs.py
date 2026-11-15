@@ -5,11 +5,13 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import stat
 import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
 
 import pandas as pd
+import pyarrow.parquet as pq
 from pydantic import BaseModel, Field, model_validator
 
 from viza_sandbox.canonical import CanonicalSource
@@ -37,6 +39,26 @@ class RunRequest(BaseModel):
         if self.end < self.start:
             raise ValueError("end must be on or after start")
         return self
+
+
+_JSON_OUTPUT_MAX_BYTES = 1024 * 1024
+_RESULT_COLUMNS = ["event_date", "security_id", "score"]
+
+
+class _OutputRefused(Exception):
+    """A run output file the host refuses to read; the message is shown to the user."""
+
+
+def _check_output_file(path: Path, label: str, max_bytes: int) -> None:
+    """Refuse links, non-regular files and oversized files before the host reads ``path``."""
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        raise _OutputRefused(f"{label} is missing.") from None
+    if path.is_symlink() or path.is_junction() or not stat.S_ISREG(info.st_mode):
+        raise _OutputRefused(f"{label} is not a regular file.")
+    if info.st_size > max_bytes:
+        raise _OutputRefused(f"{label} exceeds the size limit.")
 
 
 def _utcnow() -> datetime:
@@ -128,14 +150,17 @@ class SandboxService:
         out_dir = run_dir / "out"
         try:
             fields.update(self._post_process(outcome, out_dir, panel, request, limits))
+        except _OutputRefused as exc:
+            fields.update(status="failed", error=str(exc))
         except Exception as exc:  # noqa: BLE001 - outcome fields above must always persist
             fields.update(
                 status="failed", error=f"{type(exc).__name__}: could not process run output."
             )
         return self._store.update_run(run_id, **fields)
 
-    @staticmethod
-    def _post_process(outcome, out_dir: Path, panel, request: RunRequest, limits: RunLimits):
+    def _post_process(
+        self, outcome, out_dir: Path, panel, request: RunRequest, limits: RunLimits
+    ):
         if outcome.timed_out:
             return {
                 "status": "timed_out",
@@ -143,14 +168,21 @@ class SandboxService:
             }
         if outcome.exit_code != 0:
             error_path = out_dir / "error.json"
-            if error_path.exists():
+            if os.path.lexists(error_path):
+                _check_output_file(error_path, "Error file", _JSON_OUTPUT_MAX_BYTES)
                 info = json.loads(error_path.read_text(encoding="utf-8"))
                 message = f"{info['type']}: {info['message']}"
             else:
                 message = f"Run exited with code {outcome.exit_code}."
             return {"status": "failed", "error": message}
+        result_path = out_dir / "result.parquet"
+        _check_output_file(result_path, "Result file", self._settings.max_result_bytes)
+        if pq.read_schema(result_path).names != _RESULT_COLUMNS:
+            raise _OutputRefused(
+                "Result file must have exactly the columns event_date, security_id, score."
+            )
         try:
-            long = pd.read_parquet(out_dir / "result.parquet", engine="pyarrow")
+            long = pd.read_parquet(result_path, engine="pyarrow")
             wide = long.pivot(index="event_date", columns="security_id", values="score")
             wide.index = pd.to_datetime(wide.index)
             close = VizaData(panel.directory).prices("close")

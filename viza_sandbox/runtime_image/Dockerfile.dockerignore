@@ -1,0 +1,7 @@
+# Dockerfile-specific ignore file (BuildKit): applies only to builds that use
+# viza_sandbox/runtime_image/Dockerfile, leaving the repo-root build context
+# semantics unchanged for every other build. Patterns are relative to the
+# context root. The image needs only the viza_sandbox package.
+*
+!viza_sandbox/
+viza_sandbox/**/__pycache__

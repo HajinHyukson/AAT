@@ -20,3 +20,5 @@ class SandboxSettings(BaseSettings):
     cpus: int = 2
     price_adjustment_status: Literal["unverified", "adjusted", "unadjusted"] = "unverified"
     source_rights_state: str = "development_proving"
+    max_result_bytes: int = 268435456
+    max_concurrent_runs: int = 2

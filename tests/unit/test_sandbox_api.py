@@ -1,4 +1,5 @@
 import polars as pl
+import json
 import pytest
 from datetime import date, datetime, timezone
 from fastapi.testclient import TestClient
@@ -174,3 +175,116 @@ def test_missing_result_parquet_hides_paths_and_keeps_output(tmp_path):
     assert run.stdout == "hello" and run.exit_code == 0
     assert run.data_manifest is not None and run.finished_at is not None
     assert str(settings.runs_dir) not in run.error and str(tmp_path) not in run.error
+
+
+class _OutputRunner:
+    """Stub runner that leaves crafted files in out/ and exits with ``exit_code``."""
+
+    def __init__(self, exit_code, make_outputs):
+        self.exit_code = exit_code
+        self.make_outputs = make_outputs
+
+    def run(self, run_dir, limits):
+        self.make_outputs(run_dir / "out")
+        return RunOutcome(
+            exit_code=self.exit_code, timed_out=False, stdout="", stderr="", duration_seconds=0.1
+        )
+
+
+def _write_scores(out_dir, columns=("event_date", "security_id", "score")):
+    import pandas as pd
+
+    frame = pd.DataFrame(
+        {
+            "event_date": pd.to_datetime(["2024-01-03"] * 3),
+            "security_id": ["a", "b", "c"],
+            "score": [1.0, 2.0, 3.0],
+        }
+    )
+    frame.columns = list(columns)
+    frame.to_parquet(out_dir / "result.parquet", index=False)
+
+
+def _assert_refused(run, settings, tmp_path, message):
+    assert run.status == "failed" and run.error == message
+    assert run.evaluation is None
+    assert str(settings.runs_dir) not in run.error and str(tmp_path) not in run.error
+
+
+def test_oversized_result_parquet_is_refused(tmp_path):
+    settings, store, service = _service(tmp_path)
+    assert settings.max_result_bytes == 268435456
+    service._settings = settings.model_copy(update={"max_result_bytes": 10})
+    service._runner = _OutputRunner(0, _write_scores)
+    user, _ = store.create_user("alice")
+    req = RunRequest.model_validate(dict(_request(), backtest={"quantiles": 3, "rebalance": "daily"}))
+    run = service.execute(service.submit(user, req).run_id)
+    _assert_refused(run, settings, tmp_path, "Result file exceeds the size limit.")
+
+
+def test_result_parquet_with_wrong_columns_is_refused(tmp_path):
+    run, settings = _stub_run(
+        tmp_path,
+        _OutputRunner(0, lambda out: _write_scores(out, ("event_date", "security_id", "extra"))),
+    )
+    _assert_refused(
+        run,
+        settings,
+        tmp_path,
+        "Result file must have exactly the columns event_date, security_id, score.",
+    )
+
+
+def test_result_parquet_that_is_a_directory_is_refused(tmp_path):
+    run, settings = _stub_run(
+        tmp_path, _OutputRunner(0, lambda out: (out / "result.parquet").mkdir())
+    )
+    _assert_refused(run, settings, tmp_path, "Result file is not a regular file.")
+
+
+def test_result_parquet_symlink_is_refused(tmp_path):
+    import os
+
+    target = tmp_path / "elsewhere.parquet"
+    _write_scores(tmp_path)
+    (tmp_path / "result.parquet").rename(target)
+
+    def make(out):
+        try:
+            os.symlink(target, out / "result.parquet")
+        except OSError:
+            pytest.skip("symlinks not permitted on this host")
+
+    run, settings = _stub_run(tmp_path, _OutputRunner(0, make))
+    _assert_refused(run, settings, tmp_path, "Result file is not a regular file.")
+
+
+def test_oversized_error_json_is_refused(tmp_path):
+    def make(out):
+        big = json.dumps({"type": "ValueError", "message": "x" * (1024 * 1024 + 1)})
+        (out / "error.json").write_text(big)
+
+    run, settings = _stub_run(tmp_path, _OutputRunner(1, make))
+    _assert_refused(run, settings, tmp_path, "Error file exceeds the size limit.")
+    assert run.exit_code == 1
+
+
+def test_valid_result_parquet_still_completes(tmp_path):
+    run, _ = _stub_run(tmp_path, _OutputRunner(0, _write_scores))
+    assert run.status == "completed", run.error
+
+
+def test_result_parquet_junction_is_refused(tmp_path):
+    import sys
+
+    if sys.platform != "win32":
+        pytest.skip("junctions are Windows-only")
+    import _winapi
+
+    target = tmp_path / "elsewhere"
+    target.mkdir()
+    run, settings = _stub_run(
+        tmp_path,
+        _OutputRunner(0, lambda out: _winapi.CreateJunction(str(target), str(out / "result.parquet"))),
+    )
+    _assert_refused(run, settings, tmp_path, "Result file is not a regular file.")
