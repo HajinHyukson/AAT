@@ -319,7 +319,57 @@ def test_api_run_can_call_data_attribute(tmp_path):
 - [ ] **Step 5: Update the docs.** Operations guide: a "Build the attribute store" section (`python -m viza_sandbox.cli build-attributes --from ... --to ...`, rebuild after every canonical refresh, rebuild the runtime image since the SDK changed), the 24 keys with one-line definitions, the three "why attributes are unavailable" reasons, and the `extreme_moves` disclosure. `PROJECT_STATUS.md`: phase 3a done, 3b next. Append one line to `CHANGELOG.md`.
 - [ ] **Step 6: Commit** `feat(sandbox): disclose extreme price moves; document the attribute catalog`.
 
+### Task 7: Liquidity floor on the default universe
+
+Owner decision, 2026-11-15: the default universe excludes illiquid names (spec 7.3.1, amended).
+
+**Files:**
+- Modify: `viza_sandbox/config.py`, `viza_sandbox/materialize.py`, `viza_sandbox/evaluate.py`, `viza_sandbox/runs.py`, `docs/viza_end_product/VIZA_SANDBOX_OPERATIONS.md`, `CHANGELOG.md`
+- Test: `tests/unit/test_sandbox_materialize.py`, `tests/unit/test_sandbox_evaluate.py`, `tests/unit/test_sandbox_api.py` (append to each)
+
+**Interfaces:**
+- Produces: setting `min_median_dollar_volume: float = 1_000_000.0` (`VIZA_SANDBOX_MIN_MEDIAN_DOLLAR_VOLUME`); `PanelSpec.min_median_dollar_volume: float = 1_000_000.0`; `RunRequest.min_median_dollar_volume: float | None = None` (`>= 0`; `None` uses the setting, `0` disables the floor); constants `LIQUIDITY_WINDOW = 21`, `LIQUIDITY_MIN_OBSERVATIONS = 15`, `LIQUIDITY_LOOKBACK_CALENDAR_DAYS = 45` in `materialize.py`; `evaluate_scores(..., universe: pd.DataFrame | None = None)` where `universe` has columns `event_date`, `security_id`; new `ScoresEvaluation` field `scores_outside_universe: int`; header key `universe_filter = {"min_median_dollar_volume": x, "window": 21, "min_observations": 15}`.
+- Rule: a security is a member on D iff it has a close within the previous 5 trading days **and** the median of `close * volume` over the 21 trading-calendar days ending on D, taken over its non-null days, has at least 15 observations and is `>= min_median_dollar_volume`. The median (not the mean) is used so that single bad-tick days cannot lift a shell ticker over the floor. Prices from `LIQUIDITY_LOOKBACK_CALENDAR_DAYS` before `spec.start` are loaded for this computation only; `prices.parquet` still holds `[start, end]` and still holds every security.
+- Evaluation: a score dated D for a security that is not a universe member on D is dropped before ranking and counted. When the count is above zero, `warnings` gains `"{n} scores were for securities outside the universe on their date and were not ranked."`. Realized returns still come from the full price panel, so a held name that later turns illiquid keeps its return.
+
+- [ ] **Step 1: Write the failing tests**
+
+```python
+def test_membership_requires_median_dollar_volume(tmp_path):
+    # 30 trading days; "liquid": close 10, volume 200_000 (2.0M/day);
+    # "thin": close 10, volume 50_000 (0.5M/day);
+    # "shell": close 0.05, volume 2_000_000, but close 5000 on 4 scattered days
+    #   (mean dollar volume far above 1M, median 100_000)
+    # -> universe.parquet contains only "liquid"; prices.parquet contains all three
+
+def test_floor_uses_prices_before_start(tmp_path):
+    # bars begin 40 calendar days before spec.start -> "liquid" is a member on spec.start itself
+
+def test_fewer_than_15_observations_is_not_a_member(tmp_path): ...
+
+def test_zero_disables_the_floor(tmp_path):
+    # PanelSpec(min_median_dollar_volume=0) -> all three are members (5-day rule only)
+
+def test_floor_is_part_of_the_manifest_id(tmp_path): ...
+
+def test_scores_outside_universe_are_dropped_and_counted():
+    # scores for 4 securities, universe lists 3 of them on every date ->
+    # scores_outside_universe == number of dates; securities_scored == 3; warning present
+
+def test_api_header_discloses_the_universe_filter(tmp_path):
+    # default run -> header["universe_filter"] ==
+    #   {"min_median_dollar_volume": 1000000.0, "window": 21, "min_observations": 15}
+    # request with "min_median_dollar_volume": 0 -> header shows 0.0
+```
+
+- [ ] **Step 2: Run the three files.** Expected: the new tests FAIL.
+- [ ] **Step 3: Implement.** Existing fixtures that build tiny universes must keep passing: where a test's securities would now fail the floor, pass `min_median_dollar_volume=0` in that test's `PanelSpec` or settings rather than inflating its data.
+- [ ] **Step 4: Run** `python -m pytest tests/unit tests/lookahead_audit -q -k sandbox`. Expected: all pass.
+- [ ] **Step 5: Update the operations guide** (the rule, the setting, the per-run override, and that `data.prices` is not filtered) and append one line to `CHANGELOG.md`.
+- [ ] **Step 6: Commit** `feat(sandbox): liquidity floor on the default universe`.
+
 ## Operator verification after the last task (not automatable in unit tests)
 
 1. `build-attributes` over the full price range against the canonical database; record wall time and peak memory in the operations guide.
-2. Rebuild the runtime image, submit `scores(data.attribute("ret_21d").where(data.attribute("adv_21d") > 1e6))` for one month, and confirm the header shows `catalog_version` and the `extreme_moves` count.
+2. Re-run the January 2024 2-day momentum strategy from the phase 1-2 verification and confirm no tercile has a daily return above 100%.
+3. Rebuild the runtime image, submit `scores(data.attribute("ret_21d").where(data.attribute("adv_21d") > 1e6))` for one month, and confirm the header shows `catalog_version` and the `extreme_moves` count.
